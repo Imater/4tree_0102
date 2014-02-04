@@ -86,6 +86,7 @@
 #p_right_wrap {
     @include absolute_me(0, 0, 0, $p_center_procent);
     background: #FFF;
+    @include side_gradient;
 }
 
 
