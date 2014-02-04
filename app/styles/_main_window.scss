@@ -35,8 +35,8 @@
     @include absolute_me(0, auto, 0, 0);
     width: $p_left_side_width;
     background: $main_color;
-    .p_inside_wrap {
-        @include side_gradient(0.3);        
+    .p_inside_content {
+        @include side_gradient;        
     }
 }
 
@@ -92,6 +92,9 @@
     @include absolute_me(0, 0, 0, $p_center_procent);
 }
 
+.left_line {
+    border-left: 1px solid lighten($main_color, 5%);
+}
 
 .p_inside_wrap {
     position: relative;
@@ -105,35 +108,32 @@
         color: $main_font_color;
         cursor: pointer;
         .title {
-            font-family: "Ubuntu", sans-serif;
+            font-family: $font_family;
             font-size: 1em;
-            color: lighten($main_color, 20%);
+            color: lighten($main_color, $title_lighten);
             letter-spacing:1px;
             display: inline-block;
             @include nowrap_me;
             vertical-align: middle;
             line-height: $p_inside_header_height;
+            i:before {
+                margin-right: 0 !important;
+            }
         }
         .title.drop:after {
             font-size: 0.9em;
-            color: lighten($main_color, 20%);
+            color: lighten($main_color, $title_lighten);
             content: "\e869";
             font-family: 'fontello';
             margin-left: 1em;
             margin-top: 2px;
         }
     }
+
+    .p_inside_content {
+        @include absolute_me($p_inside_header_height,0,0,0)
+    }
 }
-
-
-.editor {
-    font-family: "Ubuntu", sans-serif;
-    font-size: 0.85em;
-    line-height: 1.5em;
-    padding: 30px;
-    max-width: 800px;
-}
-
 
 
 

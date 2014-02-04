@@ -60,19 +60,19 @@ body, html {
   bottom: 0;
   left: 0;
   width: 30px;
-  background: black; }
-  #p_left_side_wrap .p_inside_wrap {
-    background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
+  background: #306f18; }
+  #p_left_side_wrap .p_inside_content {
+    background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 200, 0.5) 100%);
     /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, rgba(255, 255, 255, 0.3)));
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, rgba(255, 255, 200, 0.5)));
     /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
+    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 200, 0.5) 100%);
     /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
+    background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 200, 0.5) 100%);
     /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
+    background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 200, 0.5) 100%);
     /* IE10+ */
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 200, 0.5) 100%);
     /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ffffff', endColorstr='#80ffffff',GradientType=0 );
     /* IE6-9 */ }
@@ -125,19 +125,22 @@ body, html {
   bottom: 0;
   left: 50%; }
 
+.left_line {
+  border-left: 1px solid #39841d; }
+
 .p_inside_wrap {
   position: relative;
   height: 100%; }
   .p_inside_wrap .p_inside_header {
     height: 30px;
-    background: black;
+    background: #306f18;
     text-align: center;
     color: white;
     cursor: pointer; }
     .p_inside_wrap .p_inside_header .title {
-      font-family: "Ubuntu", sans-serif;
+      font-family: "Ubuntu", Verdana;
       font-size: 1em;
-      color: #333333;
+      color: #91e172;
       letter-spacing: 1px;
       display: inline-block;
       white-space: nowrap;
@@ -147,17 +150,18 @@ body, html {
       text-overflow: ellipsis;
       vertical-align: middle;
       line-height: 30px; }
+      .p_inside_wrap .p_inside_header .title i:before {
+        margin-right: 0 !important; }
     .p_inside_wrap .p_inside_header .title.drop:after {
       font-size: 0.9em;
-      color: #333333;
+      color: #91e172;
       content: "\e869";
       font-family: 'fontello';
       margin-left: 1em;
       margin-top: 2px; }
-
-.editor {
-  font-family: "Ubuntu", sans-serif;
-  font-size: 0.85em;
-  line-height: 1.5em;
-  padding: 30px;
-  max-width: 800px; }
+  .p_inside_wrap .p_inside_content {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    bottom: 0;
+    left: 0; }
