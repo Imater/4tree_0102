@@ -52,7 +52,9 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', ( $t
     ]
   }
 
-  $scope.text_example1 = "Тут будет дерево"
+  $scope.text_example1 += (num+"<br>" for num in [1000..1]);
+
+
 
   $scope.myname = "Huper..."
 

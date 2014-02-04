@@ -16,7 +16,7 @@
             set.p_right_side_open=!set.p_right_side_open">правая панель</a>
 
         <!-- Линия с календарем -->
-        <div id="calendar_box_line" ng-if="set.header_panel_opened">
+        <div id="calendar_box_line" class="calendar_box_line1" ng-if="set.header_panel_opened"  scrollpane="calendar_box_line1">
             <div class="calendar_box_wrap" ng-repeat="box in db.calendar_boxes">
                 <div class="calendar_box" bindonce bo-class="{weekend:(box.box_class=='weekend')}">
                     <div bindonce bo-text="box.week_day" class="box_week_day"></div>
@@ -57,9 +57,8 @@
                     <div class="p_inside_header2">
                     </div>
 
-                    <div class="p_inside_content vertical_scroll">
-                        <div class="editor">
-                            {{text_example1}}
+                    <div class="p_inside_content vertical_scroll" scrollable="{alwaysVisible:'true'}">
+                        <div class="editor" ng-bind-html="text_example1">
                         </div>
                     </div>
                 </div>
@@ -74,9 +73,8 @@
                     <div class="p_inside_header2">
                     </div>
 
-                    <div class="p_inside_content vertical_scroll">
-                        <div class="editor">
-                            {{text_example1}}
+                    <div class="p_inside_content vertical_scroll" scrollable="{alwaysVisible:'true'}">
+                        <div class="editor" ng-bind-html="text_example1">
                         </div>
                     </div>
                 </div>

@@ -7,7 +7,7 @@
 
 #calendar_box_line {
 	@include nowrap_me; 
-	text-overflow: none;
+	width: 100%;
 }
 
 .calendar_box_wrap {
@@ -55,10 +55,13 @@
 			cursor: pointer;
 		}
 		.box_stat {
-			color: #444;
+			color: #CCC;
+			font-size: 0.8em;
 			position: absolute;
-			background: red;
 			line-height: 1em;
+			left: 0px;
+			right: 0px;
+			bottom: -1.3em;
 		}
 	}
 }

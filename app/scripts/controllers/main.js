@@ -2,6 +2,8 @@
 (function() {
   "use strict";  angular.module("4treeApp").controller("MainCtrl", [
     '$translate', '$scope', function($translate, $scope) {
+      var num;
+
       $scope.awesomeThings = ["HTML5 Boilerplate", "AngularJS", "Karma", "SEXS", "LEXUS", "LEXUS2", "LEXUS333", "VALENTINA", "SAAA"];
       $scope.set = {
         header_panel_opened: true,
@@ -163,7 +165,15 @@
           }
         ]
       };
-      $scope.text_example1 = "Тут будет дерево";
+      $scope.text_example1 += (function() {
+        var _i, _results;
+
+        _results = [];
+        for (num = _i = 1000; _i >= 1; num = --_i) {
+          _results.push(num + "<br>");
+        }
+        return _results;
+      })();
       return $scope.myname = "Huper...";
     }
   ]);

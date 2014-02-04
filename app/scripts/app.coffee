@@ -6,6 +6,7 @@ angular.module("4treeApp", [
   "pasvaz.bindonce"
   "pascalprecht.translate"
   "ngTouch"
+  "sun.scrollable"
 ])
 
 angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($translateProvider, $routeProvider) ->
@@ -28,3 +29,17 @@ angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($tra
 
 
 ]
+
+
+angular.module("4treeApp").directive "scrollpane", ($compile) ->
+  restrict: "A"
+  link: (scope, element, attrs) ->
+    console.info element
+    element.addClass "scroll-pane"
+    element.jScrollPane()
+    api = element.data("jsp")
+    scope.$watch (->
+      element.find("." + attrs.scrollpane).length
+    ), (length) ->
+      api.reinitialise()
+      return

@@ -199,7 +199,6 @@ body, html {
   margin-left: 25px; }
 
 .vertical_scroll {
-  overflow-y: scroll;
   -webkit-overflow-scrolling: touch; }
 
 .editor {
@@ -212,7 +211,7 @@ body, html {
   overflow: hidden;
   /* Обрезаем все, что не помещается в область */
   text-overflow: ellipsis;
-  text-overflow: none; }
+  width: 100%; }
 
 .calendar_box_wrap {
   display: inline-block; }
@@ -257,7 +256,10 @@ body, html {
       vertical-align: middle;
       cursor: pointer; }
     .calendar_box_wrap .calendar_box .box_stat {
-      color: #444;
+      color: #CCC;
+      font-size: 0.8em;
       position: absolute;
-      background: red;
-      line-height: 1em; }
+      line-height: 1em;
+      left: 0px;
+      right: 0px;
+      bottom: -1.3em; }
