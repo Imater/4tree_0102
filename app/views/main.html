@@ -15,6 +15,17 @@
         <a class="btn" ng-click="
             set.p_right_side_open=!set.p_right_side_open">правая панель</a>
 
+        <!-- Линия с календарем -->
+        <div id="calendar_box_line" ng-if="set.header_panel_opened">
+            <div class="calendar_box_wrap" ng-repeat="box in db.calendar_boxes">
+                <div class="calendar_box" bindonce bo-class="{weekend:(box.box_class=='weekend')}">
+                    <div bindonce bo-text="box.week_day" class="box_week_day"></div>
+                    <div bindonce bo-text="box.day" class="box_day"></div>
+                    <div bindonce bo-text="box.month" class="box_month"></div>
+                    <div class="box_stat">{{box.stat}}</div>
+                </div>
+            </div>
+        </div>
 
 
     </div>

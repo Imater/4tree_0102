@@ -1,0 +1,64 @@
+@charset "UTF-8";
+// Главное окно приложения
+
+@import 'settings';
+@import 'mymixins';
+
+
+#calendar_box_line {
+	@include nowrap_me; 
+	text-overflow: none;
+}
+
+.calendar_box_wrap {
+	display: inline-block;
+	.calendar_box {
+		position: relative;
+		display: inline-block;
+		height: $grid * 2;
+		width: $grid * 2;
+		margin: 0px $grid/3;
+		line-height: $grid * 2;
+		text-align: center;
+		color: lighten($main_color, 50%);
+		background: $main_color;
+		font-family: $font_family;
+		font-weight: 300;
+		@include animate_me(background, 0.5s);
+		&.weekend {
+			background: lighten($main_color, 10%);;
+		}
+		&:hover {
+			background: darken($main_color, 10%);
+		}
+		.box_week_day {
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			right: 0px;
+			vertical-align: top;
+			line-height: $grid/1.6;
+			font-size: $grid/2.5;
+		}
+		.box_month {
+			position: absolute;
+			bottom: 0px;
+			left: 0px;
+			right: 0px;
+			vertical-align: top;
+			line-height: $grid/1.5;
+			font-size: $grid/2.5;
+		}
+		.box_day {
+			font-size: $grid * 0.95;
+			vertical-align: middle;		
+			cursor: pointer;
+		}
+		.box_stat {
+			color: #444;
+			position: absolute;
+			background: red;
+			line-height: 1em;
+		}
+	}
+}

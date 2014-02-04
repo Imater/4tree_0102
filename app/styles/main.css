@@ -205,3 +205,59 @@ body, html {
 .editor {
   padding: 15px;
   font-family: "Ubuntu", Verdana; }
+
+#calendar_box_line {
+  white-space: nowrap;
+  /* Запрещаем перенос строк */
+  overflow: hidden;
+  /* Обрезаем все, что не помещается в область */
+  text-overflow: ellipsis;
+  text-overflow: none; }
+
+.calendar_box_wrap {
+  display: inline-block; }
+  .calendar_box_wrap .calendar_box {
+    position: relative;
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    margin: 0px 8.33333px;
+    line-height: 50px;
+    text-align: center;
+    color: #b2ea9c;
+    background: #306f18;
+    font-family: "Ubuntu", Verdana;
+    font-weight: 300;
+    -webkit-transition: background 0.5s ease-out;
+    -o-transition: background 0.5s ease-out;
+    -moz-transition: background 0.5s ease-out;
+    transition: background 0.5s ease-out; }
+    .calendar_box_wrap .calendar_box.weekend {
+      background: #429921; }
+    .calendar_box_wrap .calendar_box:hover {
+      background: #1e450f; }
+    .calendar_box_wrap .calendar_box .box_week_day {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      vertical-align: top;
+      line-height: 15.625px;
+      font-size: 10px; }
+    .calendar_box_wrap .calendar_box .box_month {
+      position: absolute;
+      bottom: 0px;
+      left: 0px;
+      right: 0px;
+      vertical-align: top;
+      line-height: 16.66667px;
+      font-size: 10px; }
+    .calendar_box_wrap .calendar_box .box_day {
+      font-size: 23.75px;
+      vertical-align: middle;
+      cursor: pointer; }
+    .calendar_box_wrap .calendar_box .box_stat {
+      color: #444;
+      position: absolute;
+      background: red;
+      line-height: 1em; }
