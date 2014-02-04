@@ -8,7 +8,7 @@ $title_lighten: 40%;
 
 $font_family: "Ubuntu", Verdana;
 
-$grid: 30px;
+$grid: 25px;
 
 //шапка приложения - высота
 $header_height_closed: $grid * 2;
@@ -17,7 +17,7 @@ $header_height_opened: $grid * 2 //панель
 
 //боковые панели - ширина
 $p_left_side_width: $grid * 1; 
-$p_right_side_width: $grid * 5;
+$p_right_side_width: $grid * 10;
 
 //процент разделения левой/правой панели по умолчанию
 $p_center_procent: 50%;

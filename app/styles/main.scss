@@ -1,9 +1,13 @@
 @charset "UTF-8";
 
+//параметры
+@import 'settings'; 
+
 /* Space out content a bit */
 body, html {
     padding: 0px;
     margin: 0px;
+    font-size: $grid/2;
 }
 
 /* Responsive: Portrait tablets and up 
@@ -14,13 +18,9 @@ body, html {
 }
 */
 
-//параметры
-@import 'settings'; 
 
 //мои миксины
 @import 'mymixins'; 
 
 //главное окно
 @import 'main_window'; 
-
-

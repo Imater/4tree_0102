@@ -38,6 +38,10 @@
     .p_inside_content {
         @include side_gradient;        
     }
+    .p_inside_header2 {
+        background: $main_color;
+    }
+
 }
 
 
@@ -130,12 +134,37 @@
         }
     }
 
-    .p_inside_content {
-        @include absolute_me($p_inside_header_height,0,0,0)
+    .p_inside_header2 {
+        height: $p_inside_header_height;
     }
+    .p_inside_content {
+        @include absolute_me($p_inside_header_height*2,0,0,0);
+    }
+    .p_inside_sidebar {
+        background: $main_color;
+        @include absolute_me($p_inside_header_height,auto,0,0);
+        width: $grid;
+        .p_inside_sidebar_gradient {
+            @include side_gradient;        
+            height: 100%;
+        }
+    }
+
 }
 
+.margin_left {
+    margin-left: $grid;
+}
 
+.vertical_scroll {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.editor {
+    padding: 15px;
+    font-family: $font_family;
+}
 
 
 
