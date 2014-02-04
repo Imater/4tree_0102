@@ -1,0 +1,145 @@
+@charset "UTF-8";
+// Главное окно приложения
+
+@import 'settings';
+@import 'mymixins';
+
+#w_main {
+    @include absolute_me(0, 0, 0, 0);
+    #w_header_main {
+        @include animate_me(height, 0.1s);
+        @include absolute_me(0, 0, auto, 0);
+        height: $header_height_closed;
+    }
+    #w_content_main {
+        @include animate_me(top, 0.1s);
+        @include absolute_me($header_height_closed, 0, 0, 0);
+    }
+}
+
+//если верхняя панель открыта
+#w_main.header_panel_opened {
+    #w_header_main {
+        @include animate_me(height, 0.1s);
+        height: $header_height_opened;
+    }
+    #w_content_main {
+        @include animate_me(top, 0.1s);
+        top: $header_height_opened;
+    }
+}
+
+//левая крайняя панель (избранные)
+#p_left_side_wrap {
+    display: none;
+    @include absolute_me(0, auto, 0, 0);
+    width: $p_left_side_width;
+    background: $main_color;
+}
+
+//правая крайняя панель (план дня)
+#p_right_side_wrap {
+    display: none;
+    @include absolute_me(0, 0, 0, auto);
+    width: $p_right_side_width;
+}
+
+
+#p_center_wrap {
+    @include absolute_me(0, 0, 0, 0);
+}
+
+
+//левая панель открыта
+#w_main.p_left_side_open {
+    #p_left_side_wrap {
+        display: block;
+    }
+
+    #p_center_wrap {
+        left: $p_left_side_width;
+        @include animate_me(left, 0.1s);
+    }
+
+}
+//правая панель открыта
+#w_main.p_right_side_open {
+    #p_right_side_wrap {
+        display: block;
+    }
+
+    #p_center_wrap {
+        right: $p_right_side_width;
+        @include animate_me(right, 0.1s);
+    }
+
+}
+
+
+
+
+
+#p_left_wrap {
+    @include absolute_me(0, $p_center_procent, 0, 0);
+}
+
+#p_right_wrap {
+    @include absolute_me(0, 0, 0, $p_center_procent);
+    background: #FFF;
+}
+
+
+.p_inside_wrap {
+    position: relative;
+    height: 100%;
+    //border: 1px solid #EEE;
+
+    .p_inside_header {
+        height: $p_inside_header_height;
+        background: $main_color;
+        text-align: center;
+        color: $main_font_color;
+        cursor: pointer;
+        .title {
+            font-family: "Ubuntu", sans-serif;
+            font-size: 1em;
+            color: lighten($main_color, 20%);
+            letter-spacing:1px;
+            display: inline-block;
+            @include nowrap_me;
+            vertical-align: middle;
+            line-height: $p_inside_header_height;
+        }
+        .title.drop:after {
+            font-size: 0.9em;
+            color: lighten($main_color, 20%);
+            content: "\e869";
+            font-family: 'fontello';
+            margin-left: 1em;
+            margin-top: 2px;
+        }
+    }
+}
+
+
+.editor {
+    font-family: "Ubuntu", sans-serif;
+    font-size: 0.85em;
+    line-height: 1.5em;
+    padding: 30px;
+    max-width: 800px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

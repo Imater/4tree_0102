@@ -1,0 +1,149 @@
+@charset "UTF-8";
+/* Space out content a bit */
+body, html {
+  padding: 0px;
+  margin: 0px; }
+
+/* Responsive: Portrait tablets and up 
+@media screen and (min-width: 768px) {
+    .container {
+        max-width: 730px;
+    }
+}
+*/
+#w_main {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0; }
+  #w_main #w_header_main {
+    -webkit-transition: height 0.1s ease-out;
+    -o-transition: height 0.1s ease-out;
+    -moz-transition: height 0.1s ease-out;
+    transition: height 0.1s ease-out;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: auto;
+    left: 0;
+    height: 60px; }
+  #w_main #w_content_main {
+    -webkit-transition: top 0.1s ease-out;
+    -o-transition: top 0.1s ease-out;
+    -moz-transition: top 0.1s ease-out;
+    transition: top 0.1s ease-out;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    bottom: 0;
+    left: 0; }
+
+#w_main.header_panel_opened #w_header_main {
+  -webkit-transition: height 0.1s ease-out;
+  -o-transition: height 0.1s ease-out;
+  -moz-transition: height 0.1s ease-out;
+  transition: height 0.1s ease-out;
+  height: 120px; }
+#w_main.header_panel_opened #w_content_main {
+  -webkit-transition: top 0.1s ease-out;
+  -o-transition: top 0.1s ease-out;
+  -moz-transition: top 0.1s ease-out;
+  transition: top 0.1s ease-out;
+  top: 120px; }
+
+#p_left_side_wrap {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: auto;
+  bottom: 0;
+  left: 0;
+  width: 30px;
+  background: #336405; }
+
+#p_right_side_wrap {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  width: 150px; }
+
+#p_center_wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0; }
+
+#w_main.p_left_side_open #p_left_side_wrap {
+  display: block; }
+#w_main.p_left_side_open #p_center_wrap {
+  left: 30px;
+  -webkit-transition: left 0.1s ease-out;
+  -o-transition: left 0.1s ease-out;
+  -moz-transition: left 0.1s ease-out;
+  transition: left 0.1s ease-out; }
+
+#w_main.p_right_side_open #p_right_side_wrap {
+  display: block; }
+#w_main.p_right_side_open #p_center_wrap {
+  right: 150px;
+  -webkit-transition: right 0.1s ease-out;
+  -o-transition: right 0.1s ease-out;
+  -moz-transition: right 0.1s ease-out;
+  transition: right 0.1s ease-out; }
+
+#p_left_wrap {
+  position: absolute;
+  top: 0;
+  right: 50%;
+  bottom: 0;
+  left: 0; }
+
+#p_right_wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 50%;
+  background: #FFF; }
+
+.p_inside_wrap {
+  position: relative;
+  height: 100%; }
+  .p_inside_wrap .p_inside_header {
+    height: 30px;
+    background: #336405;
+    text-align: center;
+    color: white;
+    cursor: pointer; }
+    .p_inside_wrap .p_inside_header .title {
+      font-family: "Ubuntu", sans-serif;
+      font-size: 1em;
+      color: #65c50a;
+      letter-spacing: 1px;
+      display: inline-block;
+      white-space: nowrap;
+      /* Запрещаем перенос строк */
+      overflow: hidden;
+      /* Обрезаем все, что не помещается в область */
+      text-overflow: ellipsis;
+      vertical-align: middle;
+      line-height: 30px; }
+    .p_inside_wrap .p_inside_header .title.drop:after {
+      font-size: 0.9em;
+      color: #65c50a;
+      content: "\e869";
+      font-family: 'fontello';
+      margin-left: 1em;
+      margin-top: 2px; }
+
+.editor {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 0.85em;
+  line-height: 1.5em;
+  padding: 30px;
+  max-width: 800px; }

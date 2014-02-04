@@ -1,0 +1,193 @@
+By = protractor.By
+describe "angularjs homepage!!!", ->
+  it "should greet the named user", ->
+    browser.get "http://www.angularjs.org"
+    element(By.model("yourName")).sendKeys "Julie"
+    greeting = element(By.binding("yourName"))
+    expect(greeting.getText()).toEqual "Hello Julie!"
+
+  describe "todo list", ->
+    todoList = undefined
+    beforeEach ->
+      browser.get "http://www.angularjs.org"
+      todoList = element.all(By.repeater("todo in todos"))
+
+    it "should list todos", ->
+      expect(todoList.count()).toEqual 2
+      expect(todoList.get(1).getText()).toEqual "build an angular app"
+
+    it "should add a todo", ->
+      addTodo = element(By.model("todoText"))
+      addButton = element(By.css("[value=\"add\"]"))
+      addTodo.sendKeys "write a protractor test"
+      addButton.click()
+      expect(todoList.count()).toEqual 3
+      expect(todoList.get(2).getText()).toEqual "write a protractor test"
+
+
+
+
+
+
+
+
+
+
+describe('angularjs homepage', function() {
+  it('should greet the named user', function() {
+    browser.get('http://www.angularjs.org');
+
+    element(by.model('yourName')).sendKeys('Julie');
+
+    var greeting = element(by.binding('yourName'));
+
+    expect(greeting.getText()).toEqual('Hello Julie!');
+  });
+
+  describe('todo list', function() {
+    var todoList;
+
+    beforeEach(function() {
+      browser.get('http://www.angularjs.org');
+
+      todoList = element.all(by.repeater('todo in todos'));
+    });
+
+    it('should list todos', function() {
+      expect(todoList.count()).toEqual(2);
+      expect(todoList.get(1).getText()).toEqual('build an angular app');
+    });
+
+    it('should add a todo', function() {
+      var addTodo = element(by.model('todoText'));
+      var addButton = element(by.css('[value="add"]'));
+
+      addTodo.sendKeys('write a protractor test');
+      addButton.click();
+
+      expect(todoList.count()).toEqual(3);
+      expect(todoList.get(2).getText()).toEqual('write a protractor test');
+    });
+  });
+});
+
+
+
+
+
+
+
+describe "angularjs homepage", ->
+  it "should greet the named user", ->
+    browser.get "http://www.angularjs.org"
+    element(by_.model("yourName")).sendKeys "Julie"
+    greeting = element(by_.binding("yourName"))
+    expect(greeting.getText()).toEqual "Hello Julie!"
+
+  describe "todo list", ->
+    todoList = undefined
+    beforeEach ->
+      browser.get "http://www.angularjs.org"
+      todoList = element.all(by_.repeater("todo in todos"))
+
+    it "should list todos", ->
+      expect(todoList.count()).toEqual 2
+      expect(todoList.get(1).getText()).toEqual "build an angular app"
+
+    it "should add a todo", ->
+      addTodo = element(by_.model("todoText"))
+      addButton = element(by_.css("[value=\"add\"]"))
+      addTodo.sendKeys "write a protractor test"
+      addButton.click()
+      expect(todoList.count()).toEqual 3
+      expect(todoList.get(2).getText()).toEqual "write a protractor test"
+
+
+
+
+
+
+#Удобный способ запускать таймер
+delay = (ms, func) -> setTimeout func, ms
+
+delay 1000, -> alert(1)
+
+#Второй вариант таймера
+setTimeout ( ->
+  x = 12
+  alert x
+), 10000
+
+#Angular Filter
+app.filter "length2", ->
+  (text) ->
+    ("" + (text or "")).length
+
+
+app.directive 'enterKey', ($timeout) ->
+  (scope, elem, attrs) ->
+    elem.bind 'keydown', (e) ->
+      if e.keyCode is 13
+        $timeout ->
+          scope.$apply attrs.enterKey
+        , +attrs.enterKeyDelay
+
+
+gandalf.service 'gandalfService',
+  class Gandalf
+    constructor: (@$timeout) -> @color = 'grey'
+    comeBack: (time) ->
+      # the 'fat arrow' in coffeescript binds the function to the existing
+      # value of 'this', so @color is the same variable as above.
+      console.info('!!!!!!!!!!!!!!!');
+      @color = 'white'
+
+
+
+app.controller 'TodoCtrl',
+  class TodoCtrl
+    list: [
+      text: "learn coffescript"
+      done: false
+    ,
+      text: "learn angular"
+      done: true
+    ]
+
+    addTodo: ->
+      @list.push
+        text: @input
+        done: false
+      @input = ''
+
+    remaining: ->
+      count = 0
+      for todo in @list
+        count += if todo.done then 0 else 1
+      count
+
+    archive: ->
+      oldList = @list
+      @list = []
+      for todo in oldList
+        unless todo.done
+          @list.push todo     
+
+# ANGULAR END
+
+closestEdge =
+if x > width / 2
+  'right'
+else if x < width / 2
+  'left'
+else
+  'center'
+
+############################  
+
+app.factory 'urlify', (text) -> text.toLowerCase().replace " ", ""
+
+app.factory "urlifyService", () ->
+  urlify: (text) ->
+    text.toLowerCase().replace " ", "%20"
+

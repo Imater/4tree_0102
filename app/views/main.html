@@ -1,0 +1,62 @@
+<div id="w_main" ng-class="{
+        header_panel_opened: set.header_panel_opened,
+        p_left_side_open: set.p_left_side_open,
+        p_right_side_open: set.p_right_side_open
+        }">
+
+    <div id="w_header_main">
+
+        <a class="btn" ng-click="
+            set.header_panel_opened=!set.header_panel_opened">показать даты</a>
+
+        <a class="btn" ng-click="
+            set.p_left_side_open=!set.p_left_side_open">левая панель</a>
+
+        <a class="btn" ng-click="
+            set.p_right_side_open=!set.p_right_side_open">правая панель</a>
+
+
+
+    </div>
+
+    <div id="w_content_main">
+
+        <div id="p_left_side_wrap">
+            <div class="p_inside_wrap">
+                <div class="p_inside_header">
+                    <span class="title"><i class="icon-star"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <div id="p_center_wrap">
+
+            <div id="p_left_wrap">
+                <div class="p_inside_wrap">
+                    <div class="p_inside_header">
+                        <span class="title drop">Дерево</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="p_right_wrap">
+                <div class="p_inside_wrap">
+                    <div class="p_inside_header">
+                        <span class="title drop">Календарь</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="p_right_side_wrap">
+            <div class="p_inside_wrap">
+                <div class="p_inside_header">
+                    <span class="title drop">План на день</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
