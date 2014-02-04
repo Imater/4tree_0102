@@ -35,7 +35,12 @@
     @include absolute_me(0, auto, 0, 0);
     width: $p_left_side_width;
     background: $main_color;
+    .p_inside_wrap {
+        @include side_gradient(0.3);        
+    }
 }
+
+
 
 //правая крайняя панель (план дня)
 #p_right_side_wrap {
@@ -85,8 +90,6 @@
 
 #p_right_wrap {
     @include absolute_me(0, 0, 0, $p_center_procent);
-    background: #FFF;
-    @include side_gradient;
 }
 
 
