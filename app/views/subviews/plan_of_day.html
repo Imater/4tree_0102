@@ -1,0 +1,35 @@
+<div class="plan_of_day">
+	<h5>дела на сегодня</h5>
+	<ul>
+		<li ng-repeat="the_do in db.today_do" class="{{the_do.myclass}}">
+			<div class="time">{{the_do.time}}</div>
+			<div class="title">{{the_do.title}}</div>
+		</li>
+		<li class="add_do">
+			<div class="time">&nbsp;</div>
+			<div class="title">{{'ADD' | translate}}</div>
+
+		</li>
+	</ul>
+
+	<h5>дела без даты</h5>
+	<ul>
+		<li ng-repeat="the_do in db.nodate_do" class="{{the_do.myclass}}">
+			<input type="checkbox">
+			<div class="title">{{the_do.title}}</div>
+		</li>
+	</ul>
+
+	<h5>достижения на сегодня</h5>
+	<ul>
+		<li ng-repeat="the_do in db.reward_do" class="{{the_do.myclass}}">
+			<div class="title">{{the_do.title}}</div>
+		</li>
+	</ul>
+
+	<h5>дневник</h5>
+	<div class="diary" contenteditable="true">
+		Сегодня отличный день. Собираюсь помыть машину и поехать в кинотеатр. В субботу Валюшка поедет на горячие источники.
+	</div>
+
+</div>

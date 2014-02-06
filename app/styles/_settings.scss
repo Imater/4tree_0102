@@ -4,6 +4,8 @@ $main_color: #306f18;
 $main_font_color: #FFF;
 $side_gradient_stop_opacity: 0.5;
 $side_gradient_stop_color: rgba(255,255,200, $side_gradient_stop_opacity);
+$gray: #CCC;
+
 $title_lighten: 40%;
 
 $font_family: "Ubuntu", Verdana;
@@ -16,8 +18,9 @@ $header_height_opened: $grid * 2 //панель
 					 + $grid * 2; //место для кнопок календаря
 
 //боковые панели - ширина
-$p_left_side_width: $grid * 1; 
-$p_right_side_width: $grid * 10;
+$p_left_side_width: $grid * 3; 
+$p_right_side_width: $grid * 12;
+$p_right_calendar_line_width: $grid * 2;
 
 //процент разделения левой/правой панели по умолчанию
 $p_center_procent: 50%;

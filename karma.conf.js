@@ -11,14 +11,22 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'app/bower_components/jquery/jquery.js',
       'app/bower_components/angular/angular.js',
       'app/bower_components/angular-mocks/angular-mocks.js',
       'app/bower_components/angular-resource/angular-resource.js',
       'app/bower_components/angular-cookies/angular-cookies.js',
       'app/bower_components/angular-sanitize/angular-sanitize.js',
       'app/bower_components/angular-route/angular-route.js',
+      'app/bower_components/angular-translate/angular-translate.js',
+      'app/bower_components/nanoscroller/bin/javascripts/jquery.nanoscroller.js',
+      'app/bower_components/angular-nanoscroller/scrollable.js',
+      'app/bower_components/underscore/underscore.js',
+      'app/bower_components/angular-virtual-scroll/angular-virtual-scroll.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
+      'app/scripts/services/srv_calendar_box.js',
+      'app/others/**/*.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'
     ],

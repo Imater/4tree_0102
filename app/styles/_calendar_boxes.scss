@@ -10,26 +10,82 @@
 	width: 100%;
 }
 
+#p_right_calendar_line {
+	.p_inside_content {
+		top: $grid;
+	}
+}
+
 .calendar_box_wrap {
-	display: inline-block;
+	height: $grid * 2;
+	//display: inline-block;
 	.calendar_box {
 		position: relative;
 		display: inline-block;
 		height: $grid * 2;
 		width: $grid * 2;
-		margin: 0px $grid/3;
+		//margin: $grid/4 $grid/4;
 		line-height: $grid * 2;
 		text-align: center;
-		color: lighten($main_color, 50%);
-		background: $main_color;
+		background: lighten($main_color, 58%);
+		color: $main_color;
 		font-family: $font_family;
 		font-weight: 300;
-		@include animate_me(background, 0.5s);
+		cursor: pointer;
+		@include animate_me(background, 0.1s);
 		&.weekend {
-			background: lighten($main_color, 10%);;
+			background: lighten($main_color, 35%);
+			color: lighten($main_color, 0%);
 		}
+		&.week_0 {
+			opacity: 0.55;			
+		}
+		&.week_1 {
+			opacity: 0.97;
+		}
+		&.week_2 {
+			opacity: 0.9;
+		}
+		&.week_3 {
+			opacity: 0.84;			
+		}
+		&.week_4 {
+			opacity: 0.76;			
+		}
+		&.week_5 {
+			opacity: 0.69;			
+		}
+		&.week_6 {
+			opacity: 0.62;			
+		}
+		&.week_7 {
+			opacity: 0.55;			
+		}
+
 		&:hover {
-			background: darken($main_color, 10%);
+			//background: darken($main_color, 10%);
+		}
+		&.odd_month {
+			background: #ddd3ff;
+		}
+		&.active {
+			background: #FFF;
+			opacity: 1;
+			box-shadow: inset -2px 1px 2px rgba(0,0,0,0.5);
+		}
+		&.today {
+			color: lighten($main_color, 35%);
+			background: $main_color;
+			opacity: 1 !important;
+			&.active {
+				background: #FFF;
+				color: #000;
+				.box_day {
+					font-weight: bold;										
+				}
+			}
+		}
+		&.this_month {
 		}
 		.box_week_day {
 			position: absolute;
@@ -55,6 +111,7 @@
 			cursor: pointer;
 		}
 		.box_stat {
+			display: none;
 			color: #CCC;
 			font-size: 0.8em;
 			position: absolute;

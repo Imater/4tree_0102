@@ -60,34 +60,26 @@ body, html {
   right: auto;
   bottom: 0;
   left: 0;
-  width: 25px;
-  background: #306f18; }
-  #p_left_side_wrap .p_inside_content {
-    background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 200, 0.5) 100%);
-    /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, rgba(255, 255, 200, 0.5)));
-    /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 200, 0.5) 100%);
-    /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 200, 0.5) 100%);
-    /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 200, 0.5) 100%);
-    /* IE10+ */
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 200, 0.5) 100%);
-    /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ffffff', endColorstr='#80ffffff',GradientType=0 );
-    /* IE6-9 */ }
-  #p_left_side_wrap .p_inside_header2 {
-    background: #306f18; }
+  width: 75px; }
 
 #p_right_side_wrap {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 50px;
+  bottom: 0;
+  left: auto;
+  width: 250px; }
+
+#p_right_calendar_line {
   display: none;
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: auto;
-  width: 250px; }
+  width: 50px;
+  background: #306f18; }
 
 #p_center_wrap {
   position: absolute;
@@ -99,7 +91,7 @@ body, html {
 #w_main.p_left_side_open #p_left_side_wrap {
   display: block; }
 #w_main.p_left_side_open #p_center_wrap {
-  left: 25px;
+  left: 75px;
   -webkit-transition: left 0.1s ease-out;
   -o-transition: left 0.1s ease-out;
   -moz-transition: left 0.1s ease-out;
@@ -108,11 +100,13 @@ body, html {
 #w_main.p_right_side_open #p_right_side_wrap {
   display: block; }
 #w_main.p_right_side_open #p_center_wrap {
-  right: 250px;
+  right: 300px;
   -webkit-transition: right 0.1s ease-out;
   -o-transition: right 0.1s ease-out;
   -moz-transition: right 0.1s ease-out;
   transition: right 0.1s ease-out; }
+#w_main.p_right_side_open #p_right_calendar_line {
+  display: block; }
 
 #p_left_wrap {
   position: absolute;
@@ -198,11 +192,32 @@ body, html {
 .margin_left {
   margin-left: 25px; }
 
+.left_main_line {
+  position: absolute;
+  top: 0;
+  right: auto;
+  bottom: 0;
+  left: 0;
+  background: #306f18;
+  width: 12.5px;
+  cursor: pointer; }
+
+.right_main_line {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  background: #306f18;
+  width: 12.5px;
+  cursor: pointer; }
+
 .vertical_scroll {
   -webkit-overflow-scrolling: touch; }
 
 .editor {
-  padding: 15px;
+  position: relative;
+  padding: 0px 12.5px 0px 50px;
   font-family: "Ubuntu", Verdana; }
 
 #calendar_box_line {
@@ -213,28 +228,61 @@ body, html {
   text-overflow: ellipsis;
   width: 100%; }
 
+#p_right_calendar_line .p_inside_content {
+  top: 25px; }
+
 .calendar_box_wrap {
-  display: inline-block; }
+  height: 50px; }
   .calendar_box_wrap .calendar_box {
     position: relative;
     display: inline-block;
     height: 50px;
     width: 50px;
-    margin: 0px 8.33333px;
     line-height: 50px;
     text-align: center;
-    color: #b2ea9c;
-    background: #306f18;
+    background: #ccf1be;
+    color: #306f18;
     font-family: "Ubuntu", Verdana;
     font-weight: 300;
-    -webkit-transition: background 0.5s ease-out;
-    -o-transition: background 0.5s ease-out;
-    -moz-transition: background 0.5s ease-out;
-    transition: background 0.5s ease-out; }
+    cursor: pointer;
+    -webkit-transition: background 0.1s ease-out;
+    -o-transition: background 0.1s ease-out;
+    -moz-transition: background 0.1s ease-out;
+    transition: background 0.1s ease-out; }
     .calendar_box_wrap .calendar_box.weekend {
-      background: #429921; }
-    .calendar_box_wrap .calendar_box:hover {
-      background: #1e450f; }
+      background: #80dc5d;
+      color: #306f18; }
+    .calendar_box_wrap .calendar_box.week_0 {
+      opacity: 0.55; }
+    .calendar_box_wrap .calendar_box.week_1 {
+      opacity: 0.97; }
+    .calendar_box_wrap .calendar_box.week_2 {
+      opacity: 0.9; }
+    .calendar_box_wrap .calendar_box.week_3 {
+      opacity: 0.84; }
+    .calendar_box_wrap .calendar_box.week_4 {
+      opacity: 0.76; }
+    .calendar_box_wrap .calendar_box.week_5 {
+      opacity: 0.69; }
+    .calendar_box_wrap .calendar_box.week_6 {
+      opacity: 0.62; }
+    .calendar_box_wrap .calendar_box.week_7 {
+      opacity: 0.55; }
+    .calendar_box_wrap .calendar_box.odd_month {
+      background: #ddd3ff; }
+    .calendar_box_wrap .calendar_box.active {
+      background: #FFF;
+      opacity: 1;
+      box-shadow: inset -2px 1px 2px rgba(0, 0, 0, 0.5); }
+    .calendar_box_wrap .calendar_box.today {
+      color: #80dc5d;
+      background: #306f18;
+      opacity: 1 !important; }
+      .calendar_box_wrap .calendar_box.today.active {
+        background: #FFF;
+        color: #000; }
+        .calendar_box_wrap .calendar_box.today.active .box_day {
+          font-weight: bold; }
     .calendar_box_wrap .calendar_box .box_week_day {
       position: absolute;
       top: 0px;
@@ -256,6 +304,7 @@ body, html {
       vertical-align: middle;
       cursor: pointer; }
     .calendar_box_wrap .calendar_box .box_stat {
+      display: none;
       color: #CCC;
       font-size: 0.8em;
       position: absolute;
@@ -263,3 +312,45 @@ body, html {
       left: 0px;
       right: 0px;
       bottom: -1.3em; }
+
+.plan_of_day {
+  margin: 0px 25px; }
+  .plan_of_day h5 {
+    color: #46a123;
+    font-size: 1em;
+    font-weight: normal;
+    letter-spacing: 0px;
+    font-weight: normal;
+    cursor: pointer;
+    margin-top: 25px; }
+  .plan_of_day h5:first-child {
+    margin-top: 0px; }
+  .plan_of_day h5:before {
+    content: "\25be";
+    position: absolute;
+    margin-left: -15.5px;
+    font-family: 'fontello'; }
+  .plan_of_day ul {
+    list-style: none;
+    padding-left: 0px; }
+    .plan_of_day ul li {
+      font-size: 1em; }
+      .plan_of_day ul li .time {
+        display: inline-block;
+        width: 3.5em; }
+      .plan_of_day ul li .title {
+        display: inline-block; }
+      .plan_of_day ul li.done {
+        color: #222; }
+        .plan_of_day ul li.done div {
+          text-decoration: line-through; }
+  .plan_of_day .diary {
+    outline: none;
+    font-style: italic;
+    width: 100%;
+    height: 10em; }
+  .plan_of_day .add_do .title {
+    color: #cccccc;
+    cursor: pointer; }
+    .plan_of_day .add_do .title:hover {
+      color: #46a123; }

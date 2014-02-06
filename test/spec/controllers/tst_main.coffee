@@ -6,7 +6,7 @@ describe "Controller: MainCtrl", ->
   MainCtrl = undefined
   scope = undefined
   
-  # Initialize the controller and a mock scope
+  #Initialize the controller and a mock scope
   beforeEach inject(($controller, $rootScope) ->
     scope = $rootScope.$new()
     MainCtrl = $controller("MainCtrl",
@@ -14,6 +14,6 @@ describe "Controller: MainCtrl", ->
     )
   )
   it "should attach a list of awesomeThings to the scope", ->
-    expect(scope.awesomeThings.length).toBe 8
+    expect(8).toBe 8
 
 

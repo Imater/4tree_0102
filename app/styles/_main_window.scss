@@ -34,12 +34,9 @@
     display: none;
     @include absolute_me(0, auto, 0, 0);
     width: $p_left_side_width;
-    background: $main_color;
     .p_inside_content {
-        @include side_gradient;        
     }
     .p_inside_header2 {
-        background: $main_color;
     }
 
 }
@@ -49,10 +46,16 @@
 //правая крайняя панель (план дня)
 #p_right_side_wrap {
     display: none;
-    @include absolute_me(0, 0, 0, auto);
-    width: $p_right_side_width;
+    @include absolute_me(0, $p_right_calendar_line_width, 0, auto);
+    width: $p_right_side_width - $p_right_calendar_line_width;
 }
 
+#p_right_calendar_line {
+    display: none;
+    @include absolute_me(0, 0, 0, auto);
+    width: $p_right_calendar_line_width;
+    background: $main_color;    
+}
 
 #p_center_wrap {
     @include absolute_me(0, 0, 0, 0);
@@ -81,6 +84,11 @@
         right: $p_right_side_width;
         @include animate_me(right, 0.1s);
     }
+
+    #p_right_calendar_line {
+        display: block;
+    }
+
 
 }
 
@@ -156,12 +164,28 @@
     margin-left: $grid;
 }
 
+.left_main_line {
+    @include absolute_me(0,auto,0,0);
+    background: $main_color;
+    width: $grid/2;
+    cursor: pointer;
+}
+
+.right_main_line {
+    @include absolute_me(0,0,0,auto);
+    background: $main_color;
+    width: $grid/2;
+    cursor: pointer;
+}
+
+
 .vertical_scroll {
     -webkit-overflow-scrolling: touch;
 }
 
 .editor {
-    padding: 15px;
+    position: relative;
+    padding: 0px $grid/2 0px $grid * 2;
     font-family: $font_family;
 }
 

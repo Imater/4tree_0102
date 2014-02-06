@@ -8,26 +8,11 @@
 
         <a class="btn" ng-click="
             set.header_panel_opened=!set.header_panel_opened">показать даты</a>
-
-        <a class="btn" ng-click="
-            set.p_left_side_open=!set.p_left_side_open">левая панель</a>
-
-        <a class="btn" ng-click="
-            set.p_right_side_open=!set.p_right_side_open">правая панель</a>
-
-        <!-- Линия с календарем -->
-        <div id="calendar_box_line" class="calendar_box_line1" ng-if="set.header_panel_opened"  scrollpane="calendar_box_line1">
-            <div class="calendar_box_wrap" ng-repeat="box in db.calendar_boxes">
-                <div class="calendar_box" bindonce bo-class="{weekend:(box.box_class=='weekend')}">
-                    <div bindonce bo-text="box.week_day" class="box_week_day"></div>
-                    <div bindonce bo-text="box.day" class="box_day"></div>
-                    <div bindonce bo-text="box.month" class="box_month"></div>
-                    <div class="box_stat">{{box.stat}}</div>
-                </div>
-            </div>
-        </div>
-
-
+        <a class="btn" ng-click="fn.changeLanguage('en');set.refresh=1;">Eng</a>
+        <a class="btn" ng-click="fn.changeLanguage('ru');set.refresh=1;">Ru</a>
+        
+        <a class="btn" ng-click="db.state.active=227;db.state.firstAcrive=79; db.state.firstVisible=179; db.state.visible=17;fn.setCalendarBox();">GoTo</a>
+<br<br>{{scrollModel}} {{fn.scr}}
     </div>
 
     <div id="w_content_main">
@@ -41,7 +26,7 @@
                 <div class="p_inside_header2">
                 </div>
 
-                <div class="p_inside_content">
+                <div class="p_inside_content vertical_scroll"  scrollable="{alwaysVisible:'true'}">
                 </div>
             </div>
         </div>
@@ -51,14 +36,20 @@
             <div id="p_left_wrap">
                 <div class="p_inside_wrap">
                     <div class="p_inside_header">
-                        <span class="title drop">Дерево</span>
+                        <span class="title drop" bindonce>{{'TREE' | translate}}</span>
                     </div>
 
                     <div class="p_inside_header2">
+                        <div class="left_main_line">
+                        </div>
                     </div>
 
                     <div class="p_inside_content vertical_scroll" scrollable="{alwaysVisible:'true'}">
-                        <div class="editor" ng-bind-html="text_example1">
+                        <div class="editor">
+                            <div class="left_main_line" ng-click="
+            set.p_left_side_open=!set.p_left_side_open">
+                            </div>
+                            <div class="editor_content"></div>
                         </div>
                     </div>
                 </div>
@@ -67,14 +58,20 @@
             <div id="p_right_wrap">
                 <div class="p_inside_wrap">
                     <div class="p_inside_header left_line">
-                        <span class="title drop">Календарь</span>
+                        <span class="title drop" bindonce>{{'CALENDAR' | translate}}</span>
                     </div>
 
                     <div class="p_inside_header2">
+                        <div class="right_main_line">
+                        </div>
                     </div>
 
                     <div class="p_inside_content vertical_scroll" scrollable="{alwaysVisible:'true'}">
-                        <div class="editor" ng-bind-html="text_example1">
+                        <div class="editor">
+                            <div class="right_main_line" ng-click="
+            set.p_right_side_open=!set.p_right_side_open">
+                            </div>
+                            <div class="editor_content" ng-bind-html="text_example1"></div>
                         </div>
                     </div>
                 </div>
@@ -84,22 +81,30 @@
 
         <div id="p_right_side_wrap">
             <div class="p_inside_wrap">
-                <div class="p_inside_sidebar">
-                    <div class="p_inside_sidebar_gradient">
-                        &nbsp;
-                    </div>
-                </div>
                 <div class="p_inside_header">
-                    <span class="title drop margin_left">План на день</span>
+                    <span class="title drop margin_left" bindonce>{{'PLANOFDAY' | translate}}</span>
                 </div>
 
                 <div class="p_inside_header2">
                 </div>
 
-                <div class="p_inside_content">
+                <div class="p_inside_content vertical_scroll" scrollable="{alwaysVisible:'true'}">
+                    <div ng-include="set.plan_of_day_template"></div>
                 </div>
             </div>
         </div>
+
+        <div id="p_right_calendar_line">
+            <div class="p_inside_wrap">
+                <div class="p_inside_header">
+                    <span class="title margin_left"></span>
+                </div>
+
+                <div ng-include="set.calendar_box_template"></div>
+
+            </div>
+        </div>
+
 
     </div>
 
