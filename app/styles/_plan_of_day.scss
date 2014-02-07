@@ -52,6 +52,7 @@
 	}
 	.add_do {
 		.title {
+			@include animate_me(color, 0.3s);
 			color: $gray;
 			cursor: pointer;
 			&:hover {

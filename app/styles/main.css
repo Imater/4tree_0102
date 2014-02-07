@@ -29,6 +29,35 @@ body, html {
     bottom: auto;
     left: 0;
     height: 50px; }
+    #w_main #w_header_main .w_header_top {
+      line-height: 50px;
+      vertical-align: middle; }
+      #w_main #w_header_main .w_header_top .w_header_left {
+        position: absolute;
+        top: 0;
+        right: auto;
+        bottom: 0;
+        left: 12.5px; }
+      #w_main #w_header_main .w_header_top .w_header_center {
+        text-align: center; }
+        #w_main #w_header_main .w_header_top .w_header_center input {
+          display: inline-block;
+          line-height: 1.4em;
+          padding: 3px 10px 4px 10px;
+          width: 250px;
+          border: 1px solid #dddddd; }
+      #w_main #w_header_main .w_header_top .w_header_right {
+        position: absolute;
+        top: 0;
+        right: 12.5px;
+        bottom: 0;
+        left: auto; }
+      #w_main #w_header_main .w_header_top .btn {
+        border: 1px solid #dddddd;
+        background: #EEE;
+        padding: 3px 12.5px;
+        font-size: 1em;
+        color: #306f18; }
   #w_main #w_content_main {
     -webkit-transition: top 0.1s ease-out;
     -o-transition: top 0.1s ease-out;
@@ -108,6 +137,13 @@ body, html {
 #w_main.p_right_side_open #p_right_calendar_line {
   display: block; }
 
+#w_main.p_plan_of_day_closed.p_right_side_open #p_center_wrap {
+  right: 50px;
+  -webkit-transition: right 0.1s ease-out;
+  -o-transition: right 0.1s ease-out;
+  -moz-transition: right 0.1s ease-out;
+  transition: right 0.1s ease-out; }
+
 #p_left_wrap {
   position: absolute;
   top: 0;
@@ -121,6 +157,8 @@ body, html {
   right: 0;
   bottom: 0;
   left: 50%; }
+  #p_right_wrap .p_inside_content, #p_right_wrap .p_inside_header2 {
+    border-left: 1px solid rgba(0, 0, 0, 0.05); }
 
 .left_line {
   border-left: 1px solid #39841d; }
@@ -217,8 +255,10 @@ body, html {
 
 .editor {
   position: relative;
-  padding: 0px 12.5px 0px 50px;
+  padding: 0px 25px 0px 25px;
   font-family: "Ubuntu", Verdana; }
+  .editor img {
+    max-width: 90%; }
 
 #calendar_box_line {
   white-space: nowrap;
@@ -272,8 +312,7 @@ body, html {
       background: #ddd3ff; }
     .calendar_box_wrap .calendar_box.active {
       background: #FFF;
-      opacity: 1;
-      box-shadow: inset -2px 1px 2px rgba(0, 0, 0, 0.5); }
+      opacity: 1; }
     .calendar_box_wrap .calendar_box.today {
       color: #80dc5d;
       background: #306f18;
@@ -350,7 +389,11 @@ body, html {
     width: 100%;
     height: 10em; }
   .plan_of_day .add_do .title {
-    color: #cccccc;
+    -webkit-transition: color 0.3s ease-out;
+    -o-transition: color 0.3s ease-out;
+    -moz-transition: color 0.3s ease-out;
+    transition: color 0.3s ease-out;
+    color: #dddddd;
     cursor: pointer; }
     .plan_of_day .add_do .title:hover {
       color: #46a123; }

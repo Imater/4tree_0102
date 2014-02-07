@@ -19,8 +19,10 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     header_panel_opened: false
     p_left_side_open: false
     p_right_side_open: true
+    p_plan_of_day_open: false
     calendar_box_template: "views/subviews/calendar_box.html"
     plan_of_day_template: "views/subviews/plan_of_day.html"
+    text_template: "views/subviews/text.html"
     refresh: 0
   }
 
@@ -34,6 +36,13 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       _([-500..500]).each (el)->
         today = new Date( (new Date()).getTime() + (el * 24 * 60 * 60 * 1000) )
         $scope.db.calendar_boxes.push( calendarBox.getDateBox( today ) )
+    calendar_box_click: ($index)->
+      if $scope.db.box_active != $index 
+        $scope.set.p_plan_of_day_open = true;
+        $scope.db.box_active = $index 
+      else
+        $scope.db.box_active = null
+        $scope.set.p_plan_of_day_open = false;
 
   }
 

@@ -1,18 +1,48 @@
 <div id="w_main" ng-class="{
         header_panel_opened: set.header_panel_opened,
         p_left_side_open: set.p_left_side_open,
-        p_right_side_open: set.p_right_side_open
+        p_right_side_open: set.p_right_side_open,
+        p_plan_of_day_closed: !set.p_plan_of_day_open
         }">
 
     <div id="w_header_main">
 
-        <a class="btn" ng-click="
-            set.header_panel_opened=!set.header_panel_opened">показать даты</a>
-        <a class="btn" ng-click="fn.changeLanguage('en');set.refresh=1;">Eng</a>
-        <a class="btn" ng-click="fn.changeLanguage('ru');set.refresh=1;">Ru</a>
-        
-        <a class="btn" ng-click="db.state.active=227;db.state.firstAcrive=79; db.state.firstVisible=179; db.state.visible=17;fn.setCalendarBox();">GoTo</a>
-<br<br>{{scrollModel}} {{fn.scr}}
+        <div class="w_header_top">
+            <div class="w_header_left">
+              <div class="btn-group">
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">4tree.ru</button>
+                <ul class="dropdown-menu">
+                  <li><a  ng-click="fn.changeLanguage('en');set.refresh=1;">English language</a></li>
+                  <li><a  ng-click="fn.changeLanguage('ru');set.refresh=1;">Russian language</a></li>
+                </ul>                    
+              </div>
+                <a class="btn"  ng-click="
+                    set.header_panel_opened=!set.header_panel_opened"><i class="icon-star"></i></a>
+                <a class="btn" ng-click="fn.changeLanguage('ru');set.refresh=1;">Ru</a>
+            </div>
+            <div class="w_header_center">
+                <input placeholder="Искать...">
+            </div>
+            <div class="w_header_right">
+                <a class="btn" ng-click="">пн 23 февр</a>
+
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default">+ Добавить</button>
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu pull-right" role="menu">
+                    <li><a href="#">Дело</a></li>
+                    <li><a href="#">Заметку</a></li>
+                    <li><a href="#">Помидорку</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Дневник на сегодня</a></li>
+                  </ul>
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <div id="w_content_main">
@@ -49,7 +79,7 @@
                             <div class="left_main_line" ng-click="
             set.p_left_side_open=!set.p_left_side_open">
                             </div>
-                            <div class="editor_content"></div>
+                            <div class="editor_content" ng-bind-html="text_example1"></div>
                         </div>
                     </div>
                 </div>
@@ -58,7 +88,7 @@
             <div id="p_right_wrap">
                 <div class="p_inside_wrap">
                     <div class="p_inside_header left_line">
-                        <span class="title drop" bindonce>{{'CALENDAR' | translate}}</span>
+                        <span class="title drop" bindonce>{{'EDITOR' | translate}}</span>
                     </div>
 
                     <div class="p_inside_header2">
@@ -71,7 +101,11 @@
                             <div class="right_main_line" ng-click="
             set.p_right_side_open=!set.p_right_side_open">
                             </div>
-                            <div class="editor_content" ng-bind-html="text_example1"></div>
+                            <div class="editor_content">
+                                <div ng-include="set.text_template"></div>
+
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -79,7 +113,7 @@
 
         </div>
 
-        <div id="p_right_side_wrap">
+        <div id="p_right_side_wrap" ng-if="set.p_plan_of_day_open">
             <div class="p_inside_wrap">
                 <div class="p_inside_header">
                     <span class="title drop margin_left" bindonce>{{'PLANOFDAY' | translate}}</span>

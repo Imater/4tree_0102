@@ -20,6 +20,7 @@ angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($tra
   $translateProvider.translations "en",
     TREE: "Tree"
     CALENDAR: "Calendar"
+    EDITOR: "Editor"
     PLANOFDAY: "Plan of the day"
     ADD: "Add task..."
     MONTH: { 
@@ -50,6 +51,7 @@ angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($tra
   $translateProvider.translations "ru",
     TREE: "Дерево"
     CALENDAR: "Календарь"
+    EDITOR: "Редактор"
     PLANOFDAY: "План на день"
     ADD: "Добавить..."
     MONTH: { 
