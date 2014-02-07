@@ -27,7 +27,7 @@
                 <a class="btn" ng-click="">пн 23 февр</a>
 
                 <div class="btn-group">
-                  <button type="button" class="btn btn-default">+ Добавить</button>
+                  <button type="button" class="btn btn-default" ng-click="fn.addNote('Привет!!!')">+ Добавить</button>
                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
@@ -79,7 +79,9 @@
                             <div class="left_main_line" ng-click="
             set.p_left_side_open=!set.p_left_side_open">
                             </div>
-                            <div class="editor_content" ng-bind-html="text_example1"></div>
+                            <div class="editor_content">
+                                <div ng-include="set.tree_template"></div>                                
+                            </div>
                         </div>
                     </div>
                 </div>

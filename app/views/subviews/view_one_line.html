@@ -1,0 +1,4 @@
+<div class="title">{{tree.title}}</div>
+<ul>
+	<li ng-repeat="tree in fn.jsFindByParent(tree.id)" ng-include="set.tree_one_line_template"></li>
+</ul>

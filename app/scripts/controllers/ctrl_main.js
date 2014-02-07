@@ -2,7 +2,7 @@
 (function() {
   "use strict";
   angular.module("4treeApp").controller("MainCtrl", [
-    '$translate', '$scope', 'calendarBox', function($translate, $scope, calendarBox) {
+    '$translate', '$scope', 'calendarBox', 'db_tree', function($translate, $scope, calendarBox, db_tree) {
       var num;
       $scope.awesomeThings = ["HTML5 Boilerplate", "AngularJS", "Karma", "SEXS", "LEXUS", "LEXUS2", "LEXUS333", "VALENTINA", "SAAA"];
       $scope.set = {
@@ -10,9 +10,11 @@
         p_left_side_open: false,
         p_right_side_open: true,
         p_plan_of_day_open: false,
-        calendar_box_template: "views/subviews/calendar_box.html",
-        plan_of_day_template: "views/subviews/plan_of_day.html",
-        text_template: "views/subviews/text.html",
+        calendar_box_template: "views/subviews/view_calendar_box.html",
+        plan_of_day_template: "views/subviews/view_plan_of_day.html",
+        text_template: "views/subviews/view_text.html",
+        tree_template: "views/subviews/view_tree.html",
+        tree_one_line_template: "views/subviews/view_one_line.html",
         refresh: 0
       };
       $scope.fn = {
@@ -42,6 +44,15 @@
             $scope.db.box_active = null;
             return $scope.set.p_plan_of_day_open = false;
           }
+        },
+        addNote: function(title) {
+          return $scope.db.db_tree.push({
+            id: 888,
+            title: "Hi!!!!!!!!!!!"
+          });
+        },
+        jsFindByParent: function(args) {
+          return db_tree.jsFindByParent(args);
         }
       };
       $scope.scrollModel = {};
@@ -102,6 +113,8 @@
           }
         ]
       };
+      db_tree.constructor();
+      $scope.db.db_tree = db_tree.getTree();
       $scope.text_example1 += (function() {
         var _i, _results;
         _results = [];

@@ -1,5 +1,5 @@
 "use strict"
-angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'calendarBox', ($translate, $scope, calendarBox) ->
+angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'calendarBox', 'db_tree', ($translate, $scope, calendarBox, db_tree) ->
 
 
   $scope.awesomeThings = [
@@ -20,11 +20,14 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     p_left_side_open: false
     p_right_side_open: true
     p_plan_of_day_open: false
-    calendar_box_template: "views/subviews/calendar_box.html"
-    plan_of_day_template: "views/subviews/plan_of_day.html"
-    text_template: "views/subviews/text.html"
+    calendar_box_template: "views/subviews/view_calendar_box.html"
+    plan_of_day_template: "views/subviews/view_plan_of_day.html"
+    text_template: "views/subviews/view_text.html"
+    tree_template: "views/subviews/view_tree.html"
+    tree_one_line_template: "views/subviews/view_one_line.html"
     refresh: 0
   }
+
 
   #общие функции
   $scope.fn = {
@@ -43,6 +46,10 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       else
         $scope.db.box_active = null
         $scope.set.p_plan_of_day_open = false;
+    addNote: (title)->
+      $scope.db.db_tree.push({id:888, title: "Hi!!!!!!!!!!!"})
+    jsFindByParent: (args)->
+      db_tree.jsFindByParent(args)
 
   }
 
@@ -72,6 +79,8 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     ]
   }
 
+  db_tree.constructor();
+  $scope.db.db_tree = db_tree.getTree();
 
   $scope.text_example1 += (num+"<br>" for num in [1000..1]);
 

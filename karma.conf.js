@@ -25,7 +25,7 @@ module.exports = function(config) {
       'app/bower_components/angular-virtual-scroll/angular-virtual-scroll.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
-      'app/scripts/services/srv_calendar_box.js',
+      'app/scripts/services/*.js',
       'app/others/**/*.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'
