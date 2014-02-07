@@ -47,7 +47,7 @@
         },
         addNote: function(title) {
           return $scope.db.db_tree.push({
-            id: 888,
+            id: 0,
             title: "Hi!!!!!!!!!!!"
           });
         },

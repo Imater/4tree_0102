@@ -47,7 +47,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
         $scope.db.box_active = null
         $scope.set.p_plan_of_day_open = false;
     addNote: (title)->
-      $scope.db.db_tree.push({id:888, title: "Hi!!!!!!!!!!!"})
+      $scope.db.db_tree.push({id:0, title: "Hi!!!!!!!!!!!"})
     jsFindByParent: (args)->
       db_tree.jsFindByParent(args)
 

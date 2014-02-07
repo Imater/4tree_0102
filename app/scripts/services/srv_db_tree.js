@@ -10,42 +10,120 @@
               {
                 id: -1,
                 parent: 0,
-                title: "Новое"
+                title: "Новое",
+                icon: 'icon-download',
+                open: false,
+                childs: 5
               }, {
                 id: 1,
                 parent: 0,
-                title: "Рабочие дела"
+                title: "Рабочие дела",
+                icon: 'icon-wrench-1',
+                open: true,
+                childs: 1
+              }, {
+                id: 9,
+                parent: 1,
+                title: "Сделать очень срочно",
+                icon: 'icon-flash',
+                open: true,
+                childs: 1
+              }, {
+                id: 10,
+                parent: 9,
+                title: "Позвонить Боссу",
+                icon: 'icon-phone',
+                open: true,
+                childs: 4,
+                settings: false
+              }, {
+                id: 11,
+                parent: 10,
+                title: "Спросить про финансирование",
+                icon: 'icon-phone',
+                open: false,
+                childs: 0,
+                settings: false
+              }, {
+                id: 12,
+                parent: 10,
+                title: "Узнать вводные данные",
+                icon: 'icon-phone',
+                open: false,
+                childs: 0,
+                settings: false
+              }, {
+                id: 13,
+                parent: 10,
+                title: "Записать пожелания",
+                icon: 'icon-phone',
+                open: false,
+                childs: 0,
+                settings: false
+              }, {
+                id: 14,
+                parent: 10,
+                title: "Подчеркнуть самое важное",
+                icon: 'icon-phone',
+                open: false,
+                childs: 0,
+                settings: false
               }, {
                 id: 2,
                 parent: 0,
-                title: "Домашние дела"
+                title: "Домашние дела",
+                icon: 'icon-home-2',
+                open: false,
+                childs: 0
               }, {
                 id: 3,
                 parent: 0,
-                title: "Дневник"
+                title: "Дневник",
+                icon: 'icon-calendar',
+                open: true,
+                childs: 2
               }, {
                 id: 4,
                 parent: 0,
-                title: "Архив"
+                title: "Архив",
+                icon: 'icon-archive',
+                open: false,
+                childs: 0
               }, {
                 id: 5,
                 parent: 3,
-                title: "2013"
+                title: "2013",
+                icon: 'icon-calendar',
+                open: false,
+                childs: 4
               }, {
                 id: 6,
                 parent: 3,
-                title: "2014"
+                title: "2014",
+                icon: 'icon-calendar',
+                open: true,
+                childs: 1
               }, {
                 id: 7,
                 parent: 6,
-                title: "1 квартал"
+                title: "1 квартал",
+                icon: 'icon-calendar',
+                open: true,
+                childs: 1
               }, {
                 id: 8,
                 parent: 7,
-                title: "7 февраля 2014"
+                title: "7 февраля 2014",
+                icon: 'icon-calendar',
+                open: false,
+                childs: 0
               }
             ];
-            return console.info('tree constructored...');
+            return _.each(this.db_tree, function(el) {
+              if (parseInt(Math.random() * 3) === 1) {
+                return el.note = "Это очень длинный текст заметки " + el.title + Math.random();
+              }
+            });
           }
         },
         getTree: function(args) {

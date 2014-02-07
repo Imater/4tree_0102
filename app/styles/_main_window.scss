@@ -202,7 +202,8 @@
 }
 
 .margin_left {
-    margin-left: $grid;
+    margin-left: $grid/2;
+    margin-right: $grid;
 }
 
 .left_main_line {
@@ -226,7 +227,7 @@
 
 .editor {
     position: relative;
-    padding: 0px $grid 0px $grid;
+    padding: 0px $grid/2 0px $grid/2;
     font-family: $font_family;
     img {
         max-width: 90%;
