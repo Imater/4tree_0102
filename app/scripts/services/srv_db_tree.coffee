@@ -2,7 +2,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', ($translate) ->
 	constructor: (@$timeout) -> 
 		if(!@db_tree)
 			@db_tree = [
-				{id:-1, parent: 0, title: "Новое", icon: 'icon-download', open: false, childs: 5}
+				{id:0, parent: -1, title: "4tree", icon: 'icon-record', open: false, childs: 5}
+				{id:-2, parent: 0, title: "Новое", icon: 'icon-download', open: false, childs: 5}
 				{id:1, parent: 0, title: "Рабочие дела", icon: 'icon-wrench-1', open: true, childs: 1}
 				{id:9, parent: 1, title: "Сделать очень срочно", icon: 'icon-flash', open: true, childs: 1}
 				{id:10, parent: 9, title: "Позвонить Боссу", icon: 'icon-phone', open: true, childs: 4, settings: false}
@@ -25,4 +26,15 @@ angular.module("4treeApp").service 'db_tree', ['$translate', ($translate) ->
 	jsFindByParent: (args) ->
 		_.filter @db_tree, (el)->
 			el.parent == args
+	jsFind: (id) ->
+		_.find @db_tree, (el)->
+			el.id == id
+	jsGetPath: (id) ->
+		path = [];
+		prevent_recursive = 5000;
+		while (el = @jsFind(id)) and (prevent_recursive--)
+			id = el.parent
+			path.push(el);
+		path.reverse();
+
 ]

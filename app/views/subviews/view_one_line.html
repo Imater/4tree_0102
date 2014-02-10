@@ -1,12 +1,13 @@
 <div class="tree_line">
 	<div class="h_line">
 		<div class="is_folder" ng-class="{open:tree.open, folder:tree.childs}" ng-click="tree.open=!tree.open">
-		</div><div class="box" ng-click="tree.settings=!tree.settings">
+		</div><div class="box" ng-click="fn.jsTreeFocus(tree.id)">
 			<div class="childs">{{tree.childs}}</div>
 			<i class="{{tree.icon}}"></i>
 		</div>
 		<div class="title" ng-click="tree.open=!tree.open">{{tree.title}}</div>
 		<div class="note_line">{{tree.note}}</div>
+		<div class="btn_menu" ng-click="tree.settings=!tree.settings"></div>
 	</div>
 
 	<div class="settings"  jq-show-effect="tree.settings" jq-options="{type:'slide', duration:300, delay:0, hideImmediately: false}">

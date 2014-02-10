@@ -1,5 +1,5 @@
 "use strict"
-angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'calendarBox', 'db_tree', ($translate, $scope, calendarBox, db_tree) ->
+angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', ($translate, $scope, calendarBox, db_tree, $interval) ->
 
 
   $scope.awesomeThings = [
@@ -20,10 +20,14 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     p_left_side_open: false
     p_right_side_open: true
     p_plan_of_day_open: false
+    main_parent_id: 0
+    show_pomidor_timer: true
     calendar_box_template: "views/subviews/view_calendar_box.html"
     plan_of_day_template: "views/subviews/view_plan_of_day.html"
     text_template: "views/subviews/view_text.html"
     tree_template: "views/subviews/view_tree.html"
+    pomidor_template: "views/subviews/view_pomidor_timer.html"
+    tree_header_template: "views/subviews/view_tree_header.html"
     tree_one_line_template: "views/subviews/view_one_line.html"
     refresh: 0
   }
@@ -50,7 +54,27 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       $scope.db.db_tree.push({id:0, title: "Hi!!!!!!!!!!!"})
     jsFindByParent: (args)->
       db_tree.jsFindByParent(args)
+    jsTreeFocus: (id)->
+      $scope.set.main_parent_id = id
+      $scope.db.tree_path = db_tree.jsGetPath(id);
+    jsStartPomidor: (pomidor)->
+      _.each $scope.db.pomidors.list, (el)->
+        console.info el;
+        if(el.id==pomidor.id)
+          el.active = true
+        else
+          el.active = false
+      $scope.db.pomidors.procent = 0;
+      if($scope.db.pomidors.now<8) 
+        $scope.db.pomidors.now+=1;
+      else
+        $scope.db.pomidors.now=0;
 
+      $scope.db.pomidors.timer = $interval ()->
+        $scope.db.pomidors.procent += 10;
+        if $scope.db.pomidors.procent >= 100 
+          $interval.cancel($scope.db.pomidors.timer);
+      , 1000
   }
 
   $scope.scrollModel = {};
@@ -60,6 +84,19 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   $scope.db = {
     calendar_boxes: []
     mystate: undefined
+    tree_path: []
+    pomidors: {
+      active: false,
+      procent: 100,
+      now: 0,
+      timer: 0,
+      list: [
+        {id: 1, active: true, did: 2}
+        {id: 3, active: false, did: 2}
+        {id: 5, active: false, did: 2}
+        {id: 7, active: false, did: 1}
+      ]
+    }
     today_do: [
       {title: "Записаться в бассейн", myclass: "done", time: "11:00"}
       {title: "Ехать за деньгами", myclass: "future", time: "12:30"}
@@ -81,6 +118,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
 
   db_tree.constructor();
   $scope.db.db_tree = db_tree.getTree();
+  $scope.db.tree_path = db_tree.jsGetPath(1);
 
   $scope.text_example1 += (num+"<br>" for num in [1000..1]);
 

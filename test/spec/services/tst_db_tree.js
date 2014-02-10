@@ -19,11 +19,18 @@
       srv_db_tree.constructor();
       return translate = $translate;
     }));
-    return it("Get db_tree from service db_tree", function() {
+    it("Get db_tree from service db_tree", function() {
       var db_tree;
       db_tree = srv_db_tree.getTree();
-      console.info(db_tree);
       expect(db_tree.length).toBeGreaterThan(1);
+    });
+    it("Test jsFind function", function() {
+      expect(srv_db_tree.jsFind(1).title).toBe('Рабочие дела');
+      return expect(srv_db_tree.jsFind(500000)).toBeUndefined();
+    });
+    return it("Test jsGetPath function", function() {
+      console.info(srv_db_tree.jsGetPath(11));
+      return expect(srv_db_tree.jsGetPath(11).length).toBeGreaterThan(2);
     });
   });
 

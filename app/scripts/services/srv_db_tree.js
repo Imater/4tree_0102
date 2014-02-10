@@ -8,7 +8,14 @@
           if (!this.db_tree) {
             this.db_tree = [
               {
-                id: -1,
+                id: 0,
+                parent: -1,
+                title: "4tree",
+                icon: 'icon-record',
+                open: false,
+                childs: 5
+              }, {
+                id: -2,
                 parent: 0,
                 title: "Новое",
                 icon: 'icon-download',
@@ -133,6 +140,21 @@
           return _.filter(this.db_tree, function(el) {
             return el.parent === args;
           });
+        },
+        jsFind: function(id) {
+          return _.find(this.db_tree, function(el) {
+            return el.id === id;
+          });
+        },
+        jsGetPath: function(id) {
+          var el, path, prevent_recursive;
+          path = [];
+          prevent_recursive = 5000;
+          while ((el = this.jsFind(id)) && (prevent_recursive--)) {
+            id = el.parent;
+            path.push(el);
+          }
+          return path.reverse();
         }
       };
     }

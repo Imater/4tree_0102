@@ -24,6 +24,15 @@
                 <input placeholder="Искать...">
             </div>
             <div class="w_header_right">
+
+                <div class="pomidor_wrap">
+                <a class="btn" ng-click="set.show_pomidor_timer=!set.show_pomidor_timer" ng-class="{active:set.show_pomidor_timer}"><i class="icon-record"></i> 25:00</a>
+                <div class="pomidor_timer" ng-if="set.show_pomidor_timer">
+                    <div ng-include="set.pomidor_template"></div>
+                </div>
+                </div>
+
+
                 <a class="btn" ng-click="">пн 23 февр</a>
 
                 <div class="btn-group">
@@ -70,8 +79,9 @@
                     </div>
 
                     <div class="p_inside_header2">
-                        <div class="left_main_line">
+                        <div class="left_main_line">                         
                         </div>
+                        <div ng-include="set.tree_header_template"></div>
                     </div>
 
                     <div class="p_inside_content vertical_scroll" scrollable="{alwaysVisible:'true'}">

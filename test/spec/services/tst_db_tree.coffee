@@ -24,9 +24,16 @@ describe "Service db_tree test", ->
   
 	it "Get db_tree from service db_tree", ->
 		db_tree = srv_db_tree.getTree()
-		console.info db_tree;
 		expect( db_tree.length ).toBeGreaterThan 1
 		return
+
+	it "Test jsFind function", ->
+		expect( srv_db_tree.jsFind(1).title ).toBe 'Рабочие дела'
+		expect( srv_db_tree.jsFind(500000) ).toBeUndefined()
+
+	it "Test jsGetPath function", ->
+		console.info srv_db_tree.jsGetPath(11)
+		expect( srv_db_tree.jsGetPath(11).length ).toBeGreaterThan 2
 
 
 

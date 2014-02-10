@@ -18,6 +18,7 @@ $grid_box: $grid*1.2;
 	.tree_line {
 
 		.h_line {
+			position: relative;
 			@include nowrap_me();
 			height: $grid_box;
 			line-height: $grid_box;
@@ -81,7 +82,7 @@ $grid_box: $grid*1.2;
 			}
 			.title {
 				@include nowrap_me();
-				margin-left: $grid_box/3;
+				margin-left: $grid_box - 3px;
 				vertical-align: top;
 				height: $grid_box;
 				display: inline-block;
@@ -94,6 +95,27 @@ $grid_box: $grid*1.2;
 				color: $gray;
 				font-weight: normal;
 				font-family: Arial;
+			}
+			.btn_menu {
+				//background: green;
+				@include animate_me(color, 0.2s);
+				width: $grid_box;
+				height: $grid_box;
+				@include absolute_me(0,0,0,auto);
+				text-align: center;
+				cursor: pointer;
+				color: darken($gray,10%);
+				&:before {
+					content: '\25aa';//"\2630";
+					font-family: 'fontello';
+					font-size: $grid_box/2;
+					margin: 0px;
+				}
+			}
+			&:hover {
+				.btn_menu {
+					color: #000;
+				}
 			}
 
 		} //.h_line

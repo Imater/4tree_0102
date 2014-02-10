@@ -1,0 +1,88 @@
+@charset "UTF-8";
+//Линия пути до дерева
+
+@import 'settings';
+@import 'mymixins';
+
+.pomidor_wrap {
+	display: inline-block;
+	position: relative;
+	background: #FFF;
+	.title {
+		@include absolute_me(0,5px,auto,auto);
+		font-size: 2em;
+		color: $gray;
+		line-height: 2.85*$grid;
+	}
+	.pomidor_score {
+		@include absolute_me(0,auto,auto,7px);
+		font-size: 2em;		
+		color: lighten($gray,5%);
+		line-height: 2.85*$grid;
+	}
+	.pomidor_timer {
+		@include absolute_me(auto,0,auto,auto);
+		margin-top: -$grid/3;
+		width: 13*$grid;
+		height: 3*$grid;
+		background: white;
+		border: 1px solid $gray;
+		border-radius: 5px;
+		@include box-shadow();
+		padding: $grid/1.4;
+		z-index: 1;
+
+		.pomidor_timer_wrap {
+			text-align: center;
+			.pomidor_wrap {
+				position: relative;
+				display: inline-block;
+				width: $grid*1.5;
+				margin: 0px $grid/2;				
+				.pomidor {
+					@include box-shadow(1px, 1px, 2px, rgba(0,0,0,0.9), inset);
+					position: relative;
+					left: 0px;
+					width: $grid*1.5;
+					height: $grid*1.5;
+					border-radius: $grid;
+					background: rgba(0,0,0,0.8);
+					cursor: pointer;
+					overflow: hidden;
+					&.active {
+						background-color: #FFF;
+					}
+					.target {
+						@include absolute_me(-$grid/6,0,0,0);
+						margin-top: -1px;
+						i {
+							@include animate_me(opacity, 0.2s);
+							opacity: 1;
+							font-size: $grid*0.6;
+							color: #888;
+							&:before {
+								margin: 0px;
+							}
+						}
+					}
+					&.active .target {
+						i {
+							opacity: 0;
+						}
+					}
+				}
+				.pomidor_white {
+					@include absolute_me(1px,0,0,1px);
+					display: inline-block;
+					overflow: hidden;
+					margin-left: 0%;
+					border-radius: $grid * 1.4;
+					width: $grid*1.5 - 2px;
+					height: $grid*1.5 - 2px;
+					background: #FFF;					
+				}
+			}
+		}
+
+	}
+}

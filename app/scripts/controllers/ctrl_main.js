@@ -2,7 +2,7 @@
 (function() {
   "use strict";
   angular.module("4treeApp").controller("MainCtrl", [
-    '$translate', '$scope', 'calendarBox', 'db_tree', function($translate, $scope, calendarBox, db_tree) {
+    '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', function($translate, $scope, calendarBox, db_tree, $interval) {
       var num;
       $scope.awesomeThings = ["HTML5 Boilerplate", "AngularJS", "Karma", "SEXS", "LEXUS", "LEXUS2", "LEXUS333", "VALENTINA", "SAAA"];
       $scope.set = {
@@ -10,10 +10,14 @@
         p_left_side_open: false,
         p_right_side_open: true,
         p_plan_of_day_open: false,
+        main_parent_id: 0,
+        show_pomidor_timer: true,
         calendar_box_template: "views/subviews/view_calendar_box.html",
         plan_of_day_template: "views/subviews/view_plan_of_day.html",
         text_template: "views/subviews/view_text.html",
         tree_template: "views/subviews/view_tree.html",
+        pomidor_template: "views/subviews/view_pomidor_timer.html",
+        tree_header_template: "views/subviews/view_tree_header.html",
         tree_one_line_template: "views/subviews/view_one_line.html",
         refresh: 0
       };
@@ -53,12 +57,64 @@
         },
         jsFindByParent: function(args) {
           return db_tree.jsFindByParent(args);
+        },
+        jsTreeFocus: function(id) {
+          $scope.set.main_parent_id = id;
+          return $scope.db.tree_path = db_tree.jsGetPath(id);
+        },
+        jsStartPomidor: function(pomidor) {
+          _.each($scope.db.pomidors.list, function(el) {
+            console.info(el);
+            if (el.id === pomidor.id) {
+              return el.active = true;
+            } else {
+              return el.active = false;
+            }
+          });
+          $scope.db.pomidors.procent = 0;
+          if ($scope.db.pomidors.now < 8) {
+            $scope.db.pomidors.now += 1;
+          } else {
+            $scope.db.pomidors.now = 0;
+          }
+          return $scope.db.pomidors.timer = $interval(function() {
+            $scope.db.pomidors.procent += 10;
+            if ($scope.db.pomidors.procent >= 100) {
+              return $interval.cancel($scope.db.pomidors.timer);
+            }
+          }, 1000);
         }
       };
       $scope.scrollModel = {};
       $scope.db = {
         calendar_boxes: [],
         mystate: void 0,
+        tree_path: [],
+        pomidors: {
+          active: false,
+          procent: 100,
+          now: 0,
+          timer: 0,
+          list: [
+            {
+              id: 1,
+              active: true,
+              did: 2
+            }, {
+              id: 3,
+              active: false,
+              did: 2
+            }, {
+              id: 5,
+              active: false,
+              did: 2
+            }, {
+              id: 7,
+              active: false,
+              did: 1
+            }
+          ]
+        },
         today_do: [
           {
             title: "Записаться в бассейн",
@@ -115,6 +171,7 @@
       };
       db_tree.constructor();
       $scope.db.db_tree = db_tree.getTree();
+      $scope.db.tree_path = db_tree.jsGetPath(1);
       $scope.text_example1 += (function() {
         var _i, _results;
         _results = [];

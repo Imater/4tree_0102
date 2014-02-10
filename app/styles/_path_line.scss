@@ -1,0 +1,27 @@
+@charset "UTF-8";
+//Линия пути до дерева
+
+@import 'settings';
+@import 'mymixins';
+
+.path_line {
+	ul {
+		list-style: none;
+		li {
+			display: inline-block;
+			.path_title {
+				overflow: hidden;
+				text-overflow: ellipsis;				
+				cursor: pointer;
+				&:hover {
+					text-decoration: underline;
+				}
+				&:after {
+					content: '->';
+					display: inline-block;
+					margin: 0px 5px;
+				}
+			}
+		}
+	}
+}
