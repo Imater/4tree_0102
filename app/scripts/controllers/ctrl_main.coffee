@@ -57,24 +57,77 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     jsTreeFocus: (id)->
       $scope.set.main_parent_id = id
       $scope.db.tree_path = db_tree.jsGetPath(id);
+    jsClosePomidor: ()->
+      $scope.set.show_pomidor_timer=false if $scope.set.show_pomidor_timer
+      console.info 'close'
+    jsGetTimeRest: (dif)->
+      minutes = parseInt( dif / (60 * 1000) );
+      seconds = parseInt( dif/1000 - minutes*60 );
+      ('0'+minutes).slice(-2) + ":" + ('0'+seconds).slice(-2)
+    jsStartPomidorInterval: ()->
+      $scope.db.pomidors.timer = $interval ()->
+        dif = $scope.db.pomidors.finish_time - (new Date()).getTime();
+        $scope.db.pomidors.procent = 3 + (1 - dif / ($scope.db.pomidors.how_long*60*1000) ) * 100;
+        $scope.db.pomidors.btn_text = $scope.fn.jsGetTimeRest( dif );
+        if $scope.db.pomidors.procent >= 100 
+          $scope.db.pomidors.finish_time = 0;
+          $interval.cancel($scope.db.pomidors.timer);
+          if [2,4,6].indexOf($scope.db.pomidors.now) != -1
+            timerNotification2 = new Notification("Таймер Pomodorro", {
+              tag : "notify-pomidor" + $scope.db.pomidors.now + new Date(),
+              body : "Отдохнули? Чтобы начать следующую помидорку на 25 минут, нажмите сюда.",
+              icon : "images/pomidor.png"
+            });
+            timerNotification2.onclick = ()->
+                $scope.fn.jsStartPomidor({id: 1});
+                this.cancel();
+
+          if [1,3,5,7].indexOf($scope.db.pomidors.now) != -1
+            $scope.fn.jsStartPomidor({id: 1});
+            how_long = '5 минут...';
+            how_long = '15 минут...' if $scope.db.pomidors.now == 7;
+            timerNotification = new Notification("Таймер Pomodorro", {
+              tag : "notify-pomidor" + $scope.db.pomidors.now + new Date(),
+              body : "Отлично поработали, теперь отдохните "+how_long,
+              icon : "images/pomidor.png"
+            });
+            setTimeout ()->
+              timerNotification.cancel();
+            , 10000;
+            timerNotification.onclick = ()->
+                window.focus();
+                this.cancel();
+      , 1000
+
     jsStartPomidor: (pomidor)->
       _.each $scope.db.pomidors.list, (el)->
-        console.info el;
         if(el.id==pomidor.id)
           el.active = true
         else
           el.active = false
+
       $scope.db.pomidors.procent = 0;
       if($scope.db.pomidors.now<8) 
         $scope.db.pomidors.now+=1;
       else
         $scope.db.pomidors.now=0;
+        $interval.cancel($scope.db.pomidors.timer);
+        $scope.db.pomidors.btn_text = "25:00";
+        localStorage.clear('set_pomidors');
+        return
 
-      $scope.db.pomidors.timer = $interval ()->
-        $scope.db.pomidors.procent += 10;
-        if $scope.db.pomidors.procent >= 100 
-          $interval.cancel($scope.db.pomidors.timer);
-      , 1000
+
+      $scope.db.pomidors.how_long = 25 if [1,3,5,7].indexOf($scope.db.pomidors.now) != -1
+      $scope.db.pomidors.how_long = 5 if [2,4,6].indexOf($scope.db.pomidors.now) != -1
+      $scope.db.pomidors.how_long = 15 if [8].indexOf($scope.db.pomidors.now) != -1
+
+      $scope.db.pomidors.finish_time = (new Date()).getTime() + $scope.db.pomidors.how_long * 60 * 1000;
+
+      localStorage.setItem( 'set_pomidors', JSON.stringify($scope.db.pomidors) );
+
+      #функция проверки статуса каждую секунду
+      $interval.cancel($scope.db.pomidors.timer);
+      $scope.fn.jsStartPomidorInterval();
   }
 
   $scope.scrollModel = {};
@@ -88,6 +141,9 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     pomidors: {
       active: false,
       procent: 100,
+      finish_time: 0,
+      how_long: 25,
+      btn_text: "25:00",
       now: 0,
       timer: 0,
       list: [
@@ -125,6 +181,13 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   $scope.fn.setCalendarBox();
 
   $scope.myname = "Huper..."
+
+  #инициализируем помидорку
+  if ( set_pomidors = localStorage.getItem( 'set_pomidors' ) )
+    $scope.db.pomidors = JSON.parse( set_pomidors );
+  if( $scope.db.pomidors.now != 0 )
+    $scope.fn.jsStartPomidorInterval();
+  
 
   
 ]

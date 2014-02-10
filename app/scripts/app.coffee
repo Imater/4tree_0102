@@ -23,6 +23,18 @@ angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($tra
     EDITOR: "Editor"
     PLANOFDAY: "Plan of the day"
     ADD: "Add task..."
+    POMIDOR: "Timer Pomodorro"
+    POMIDORS_TITLE: [
+      '0': 'Нажмите, чтобы начать работу 25 минут'
+      's1': 'Работайте не отвлекаясь 25 минут'
+      '2': 'Отдохните 5 минут'
+      '3': 'Работайте не отвлекаясь 25 минут'
+      '4': 'Отдохните 5 минут'
+      '5': 'Работайте не отвлекаясь 25 минут'
+      '6': 'Отдохните 5 минут'
+      '7': 'Работайте не отвлекаясь 25 минут'
+      '6': 'Отдохните 15 минут'
+    ]
     MONTH: { 
       '1': "jan"
       '2': "feb"
@@ -53,7 +65,19 @@ angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($tra
     CALENDAR: "Календарь"
     EDITOR: "Редактор"
     PLANOFDAY: "План на день"
+    POMIDOR: "Таймер Pomodorro"
     ADD: "Добавить..."
+    POMIDORS_TITLE: {
+      '0': 'Нажмите помидорку, и работайте 25 минут'
+      '1': 'Работайте не отвлекаясь 25 минут'
+      '2': 'Отлично. Отдохните 5 минут'
+      '3': 'Работайте не отвлекаясь 25 минут'
+      '4': 'Супер. Отдохните 5 минут'
+      '5': 'Работайте не отвлекаясь 25 минут'
+      '6': 'Так держать. Отдохните 5 минут'
+      '7': 'Работайте не отвлекаясь 25 минут'
+      '8': 'Вы заслужили отдых 15 минут'
+    }
     MONTH: { 
       '1': "янв"
       '2': "февр"
@@ -88,4 +112,25 @@ angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($tra
 
 
 
+]
+
+
+angular.module("4treeApp").directive "clickAnywhereButHere", [
+  "$document"
+  ($document) ->
+    return link: postLink = (scope, element, attrs) ->
+      onClick = (event) ->
+        isChild = element.has(event.target).length > 0
+        isSelf = element[0] is event.target
+        isInside = isChild or isSelf
+        scope.$apply attrs.clickAnywhereButHere  unless isInside
+        return
+
+      scope.$watch attrs.isActive, (newValue, oldValue) ->
+        if newValue isnt oldValue and newValue is true
+          $document.bind "click", onClick
+        else $document.unbind "click", onClick  if newValue isnt oldValue and newValue is false
+        return
+
+      return
 ]

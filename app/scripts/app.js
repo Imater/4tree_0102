@@ -17,6 +17,20 @@
         EDITOR: "Editor",
         PLANOFDAY: "Plan of the day",
         ADD: "Add task...",
+        POMIDOR: "Timer Pomodorro",
+        POMIDORS_TITLE: [
+          {
+            '0': 'Нажмите, чтобы начать работу 25 минут',
+            's1': 'Работайте не отвлекаясь 25 минут',
+            '2': 'Отдохните 5 минут',
+            '3': 'Работайте не отвлекаясь 25 минут',
+            '4': 'Отдохните 5 минут',
+            '5': 'Работайте не отвлекаясь 25 минут',
+            '6': 'Отдохните 5 минут',
+            '7': 'Работайте не отвлекаясь 25 минут',
+            '6': 'Отдохните 15 минут'
+          }
+        ],
         MONTH: {
           '1': "jan",
           '2': "feb",
@@ -47,7 +61,19 @@
         CALENDAR: "Календарь",
         EDITOR: "Редактор",
         PLANOFDAY: "План на день",
+        POMIDOR: "Таймер Pomodorro",
         ADD: "Добавить...",
+        POMIDORS_TITLE: {
+          '0': 'Нажмите помидорку, и работайте 25 минут',
+          '1': 'Работайте не отвлекаясь 25 минут',
+          '2': 'Отлично. Отдохните 5 минут',
+          '3': 'Работайте не отвлекаясь 25 минут',
+          '4': 'Супер. Отдохните 5 минут',
+          '5': 'Работайте не отвлекаясь 25 минут',
+          '6': 'Так держать. Отдохните 5 минут',
+          '7': 'Работайте не отвлекаясь 25 минут',
+          '8': 'Вы заслужили отдых 15 минут'
+        },
         MONTH: {
           '1': "янв",
           '2': "февр",
@@ -79,6 +105,35 @@
         lang = "ru";
       }
       return $translateProvider.preferredLanguage(lang);
+    }
+  ]);
+
+  angular.module("4treeApp").directive("clickAnywhereButHere", [
+    "$document", function($document) {
+      var postLink;
+      return {
+        link: postLink = function(scope, element, attrs) {
+          var onClick;
+          onClick = function(event) {
+            var isChild, isInside, isSelf;
+            isChild = element.has(event.target).length > 0;
+            isSelf = element[0] === event.target;
+            isInside = isChild || isSelf;
+            if (!isInside) {
+              scope.$apply(attrs.clickAnywhereButHere);
+            }
+          };
+          scope.$watch(attrs.isActive, function(newValue, oldValue) {
+            if (newValue !== oldValue && newValue === true) {
+              $document.bind("click", onClick);
+            } else {
+              if (newValue !== oldValue && newValue === false) {
+                $document.unbind("click", onClick);
+              }
+            }
+          });
+        }
+      };
     }
   ]);
 

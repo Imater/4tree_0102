@@ -37,7 +37,10 @@
                 //border-radius: 3px;
                 font-size: 1em;
                 color: $main_color;
-            }            
+            }   
+            .dropdown-toggle {
+                padding: 3px $grid/3;
+            }
         }
     }
     #w_content_main {

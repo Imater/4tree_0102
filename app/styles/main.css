@@ -172,6 +172,8 @@ body, html {
         padding: 3px 12.5px;
         font-size: 1em;
         color: #306f18; }
+      #w_main #w_header_main .w_header_top .dropdown-toggle {
+        padding: 3px 8.33333px; }
   #w_main #w_content_main {
     -webkit-transition: top 0.1s ease-out;
     -o-transition: top 0.1s ease-out;
@@ -962,73 +964,68 @@ h10.open:before {
 /* TRANSFORM  */
 /* TRANSITION */
 /* TRIPLE BORDERS */
+.allscreen {
+  background: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  z-index: 1; }
+
 .pomidor_wrap {
   display: inline-block;
-  position: relative;
   background: #FFF; }
-  .pomidor_wrap .title {
-    position: absolute;
-    top: 0;
-    right: 5px;
-    bottom: auto;
-    left: auto;
-    font-size: 2em;
-    color: #dddddd;
-    line-height: 71.25px; }
-  .pomidor_wrap .pomidor_score {
-    position: absolute;
-    top: 0;
-    right: auto;
-    bottom: auto;
-    left: 7px;
-    font-size: 2em;
-    color: #eaeaea;
-    line-height: 71.25px; }
   .pomidor_wrap .pomidor_timer {
     position: absolute;
     top: auto;
     right: 0;
     bottom: auto;
     left: auto;
-    margin-top: -8.33333px;
-    width: 325px;
-    height: 75px;
-    background: white;
+    margin-top: 12.5px;
+    width: 350px;
+    height: auto;
+    background: #FFF;
     border: 1px solid #dddddd;
     border-radius: 5px;
     -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
-    padding: 17.85714px;
     z-index: 1; }
     .pomidor_wrap .pomidor_timer .pomidor_timer_wrap {
-      text-align: center; }
+      text-align: center;
+      padding: 0px 25px; }
+      .pomidor_wrap .pomidor_timer .pomidor_timer_wrap .pomidor_title {
+        margin-bottom: 12.5px;
+        line-height: 37.5px;
+        font-size: 1.4em;
+        color: #aaaaaa;
+        letter-spacing: 1px; }
+      .pomidor_wrap .pomidor_timer .pomidor_timer_wrap .pomidor_status {
+        line-height: 37.5px;
+        color: #aaaaaa;
+        font-size: 1em;
+        letter-spacing: 0.5px; }
       .pomidor_wrap .pomidor_timer .pomidor_timer_wrap .pomidor_wrap {
         position: relative;
         display: inline-block;
         width: 37.5px;
         margin: 0px 12.5px; }
         .pomidor_wrap .pomidor_timer .pomidor_timer_wrap .pomidor_wrap .pomidor {
-          -webkit-box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.9);
-          -moz-box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.9);
-          box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.9);
           position: relative;
           left: 0px;
-          width: 37.5px;
-          height: 37.5px;
+          width: 38px;
+          height: 38px;
           border-radius: 25px;
-          background: rgba(0, 0, 0, 0.8);
+          background: #d50800;
           cursor: pointer;
+          border: 2px solid #d50800;
           overflow: hidden; }
           .pomidor_wrap .pomidor_timer .pomidor_timer_wrap .pomidor_wrap .pomidor.active {
             background-color: #FFF; }
           .pomidor_wrap .pomidor_timer .pomidor_timer_wrap .pomidor_wrap .pomidor .target {
-            position: absolute;
-            top: -4.16667px;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            margin-top: -1px; }
+            margin-top: 6.25px; }
             .pomidor_wrap .pomidor_timer .pomidor_timer_wrap .pomidor_wrap .pomidor .target i {
               -webkit-transition: opacity 0.2s ease-out;
               -o-transition: opacity 0.2s ease-out;
@@ -1036,21 +1033,20 @@ h10.open:before {
               transition: opacity 0.2s ease-out;
               opacity: 1;
               font-size: 15px;
-              color: #888; }
+              color: #FFF; }
               .pomidor_wrap .pomidor_timer .pomidor_timer_wrap .pomidor_wrap .pomidor .target i:before {
                 margin: 0px; }
           .pomidor_wrap .pomidor_timer .pomidor_timer_wrap .pomidor_wrap .pomidor.active .target i {
             opacity: 0; }
         .pomidor_wrap .pomidor_timer .pomidor_timer_wrap .pomidor_wrap .pomidor_white {
           position: absolute;
-          top: 1px;
+          top: 0px;
           right: 0;
           bottom: 0;
           left: 1px;
           display: inline-block;
           overflow: hidden;
-          margin-left: 0%;
-          border-radius: 35px;
-          width: 35.5px;
-          height: 35.5px;
+          margin-left: -5px;
+          width: 73px;
+          height: 48px;
           background: #FFF; }

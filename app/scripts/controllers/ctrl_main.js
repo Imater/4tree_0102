@@ -3,7 +3,7 @@
   "use strict";
   angular.module("4treeApp").controller("MainCtrl", [
     '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', function($translate, $scope, calendarBox, db_tree, $interval) {
-      var num;
+      var num, set_pomidors;
       $scope.awesomeThings = ["HTML5 Boilerplate", "AngularJS", "Karma", "SEXS", "LEXUS", "LEXUS2", "LEXUS333", "VALENTINA", "SAAA"];
       $scope.set = {
         header_panel_opened: false,
@@ -62,9 +62,66 @@
           $scope.set.main_parent_id = id;
           return $scope.db.tree_path = db_tree.jsGetPath(id);
         },
+        jsClosePomidor: function() {
+          if ($scope.set.show_pomidor_timer) {
+            $scope.set.show_pomidor_timer = false;
+          }
+          return console.info('close');
+        },
+        jsGetTimeRest: function(dif) {
+          var minutes, seconds;
+          minutes = parseInt(dif / (60 * 1000));
+          seconds = parseInt(dif / 1000 - minutes * 60);
+          return ('0' + minutes).slice(-2) + ":" + ('0' + seconds).slice(-2);
+        },
+        jsStartPomidorInterval: function() {
+          return $scope.db.pomidors.timer = $interval(function() {
+            var dif, how_long, timerNotification, timerNotification2;
+            dif = $scope.db.pomidors.finish_time - (new Date()).getTime();
+            $scope.db.pomidors.procent = 3 + (1 - dif / ($scope.db.pomidors.how_long * 60 * 1000)) * 100;
+            $scope.db.pomidors.btn_text = $scope.fn.jsGetTimeRest(dif);
+            if ($scope.db.pomidors.procent >= 100) {
+              $scope.db.pomidors.finish_time = 0;
+              $interval.cancel($scope.db.pomidors.timer);
+              if ([2, 4, 6].indexOf($scope.db.pomidors.now) !== -1) {
+                timerNotification2 = new Notification("Таймер Pomodorro", {
+                  tag: "notify-pomidor" + $scope.db.pomidors.now + new Date(),
+                  body: "Отдохнули? Чтобы начать следующую помидорку на 25 минут, нажмите сюда.",
+                  icon: "images/pomidor.png"
+                });
+                timerNotification2.onclick = function() {
+                  $scope.fn.jsStartPomidor({
+                    id: 1
+                  });
+                  return this.cancel();
+                };
+              }
+              if ([1, 3, 5, 7].indexOf($scope.db.pomidors.now) !== -1) {
+                $scope.fn.jsStartPomidor({
+                  id: 1
+                });
+                how_long = '5 минут...';
+                if ($scope.db.pomidors.now === 7) {
+                  how_long = '15 минут...';
+                }
+                timerNotification = new Notification("Таймер Pomodorro", {
+                  tag: "notify-pomidor" + $scope.db.pomidors.now + new Date(),
+                  body: "Отлично поработали, теперь отдохните " + how_long,
+                  icon: "images/pomidor.png"
+                });
+                setTimeout(function() {
+                  return timerNotification.cancel();
+                }, 10000);
+                return timerNotification.onclick = function() {
+                  window.focus();
+                  return this.cancel();
+                };
+              }
+            }
+          }, 1000);
+        },
         jsStartPomidor: function(pomidor) {
           _.each($scope.db.pomidors.list, function(el) {
-            console.info(el);
             if (el.id === pomidor.id) {
               return el.active = true;
             } else {
@@ -76,13 +133,24 @@
             $scope.db.pomidors.now += 1;
           } else {
             $scope.db.pomidors.now = 0;
+            $interval.cancel($scope.db.pomidors.timer);
+            $scope.db.pomidors.btn_text = "25:00";
+            localStorage.clear('set_pomidors');
+            return;
           }
-          return $scope.db.pomidors.timer = $interval(function() {
-            $scope.db.pomidors.procent += 10;
-            if ($scope.db.pomidors.procent >= 100) {
-              return $interval.cancel($scope.db.pomidors.timer);
-            }
-          }, 1000);
+          if ([1, 3, 5, 7].indexOf($scope.db.pomidors.now) !== -1) {
+            $scope.db.pomidors.how_long = 25;
+          }
+          if ([2, 4, 6].indexOf($scope.db.pomidors.now) !== -1) {
+            $scope.db.pomidors.how_long = 5;
+          }
+          if ([8].indexOf($scope.db.pomidors.now) !== -1) {
+            $scope.db.pomidors.how_long = 15;
+          }
+          $scope.db.pomidors.finish_time = (new Date()).getTime() + $scope.db.pomidors.how_long * 60 * 1000;
+          localStorage.setItem('set_pomidors', JSON.stringify($scope.db.pomidors));
+          $interval.cancel($scope.db.pomidors.timer);
+          return $scope.fn.jsStartPomidorInterval();
         }
       };
       $scope.scrollModel = {};
@@ -93,6 +161,9 @@
         pomidors: {
           active: false,
           procent: 100,
+          finish_time: 0,
+          how_long: 25,
+          btn_text: "25:00",
           now: 0,
           timer: 0,
           list: [
@@ -181,7 +252,13 @@
         return _results;
       })();
       $scope.fn.setCalendarBox();
-      return $scope.myname = "Huper...";
+      $scope.myname = "Huper...";
+      if ((set_pomidors = localStorage.getItem('set_pomidors'))) {
+        $scope.db.pomidors = JSON.parse(set_pomidors);
+      }
+      if ($scope.db.pomidors.now !== 0) {
+        return $scope.fn.jsStartPomidorInterval();
+      }
     }
   ]);
 

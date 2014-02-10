@@ -1,3 +1,5 @@
+<div class="allscreen" ng-if="set.show_pomidor_timer" ng-click="set.show_pomidor_timer=false"></div>
+
 <div id="w_main" ng-class="{
         header_panel_opened: set.header_panel_opened,
         p_left_side_open: set.p_left_side_open,
@@ -25,15 +27,46 @@
             </div>
             <div class="w_header_right">
 
-                <div class="pomidor_wrap">
-                <a class="btn" ng-click="set.show_pomidor_timer=!set.show_pomidor_timer" ng-class="{active:set.show_pomidor_timer}"><i class="icon-record"></i> 25:00</a>
-                <div class="pomidor_timer" ng-if="set.show_pomidor_timer">
-                    <div ng-include="set.pomidor_template"></div>
-                </div>
+                <div class="btn-group">
+
+                    <button type="button" class="btn btn-default" ng-click="set.show_pomidor_timer=!set.show_pomidor_timer" ng-class="{active:set.show_pomidor_timer}"><i class="icon-record"></i> {{db.pomidors.btn_text}}
+                    <div class="pomidor_wrap" ng-if="set.show_pomidor_timer">
+                        <div class="pomidor_timer">
+                            <div ng-include="set.pomidor_template" is-active=""></div>
+                        </div>
+                    </div>
+
+                    </button>
+
+
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu pull-right" role="menu">
+                    <li><a href="#">Стоп</a></li>
+                    <li class="divider"></li>
+                    <li><a >01:00</a></li>
+                    <li><a >02:00</a></li>
+                    <li><a >03:00</a></li>
+                    <li><a >05:00</a></li>
+                    <li><a >10:00</a></li>
+                    <li><a ><b>15:00</b></a></li>
+                    <li><a >20:00</a></li>
+                    <li><a >25:00</a></li>
+                    <li><a ><b>30:00</b></a></li>
+                    <li><a >35:00</a></li>
+                    <li><a >40:00</a></li>
+                    <li><a >45:00</a></li>
+                    <li><a >50:00</a></li>
+                    <li><a >55:00</a></li>
+                    <li><a ><b>60:00</b></a></li>
+                    <li><a >90:00</a></li>
+                    <li><a >95:00</a></li>
+                  </ul>
                 </div>
 
 
-                <a class="btn" ng-click="">пн 23 февр</a>
 
                 <div class="btn-group">
                   <button type="button" class="btn btn-default" ng-click="fn.addNote('Привет!!!')">+ Добавить</button>

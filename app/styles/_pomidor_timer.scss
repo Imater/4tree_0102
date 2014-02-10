@@ -4,62 +4,69 @@
 @import 'settings';
 @import 'mymixins';
 
+.allscreen {
+	background: rgba(0,0,0,0.3);
+	@include absolute_me(0,0,0,0);
+	position: fixed;
+	z-index: 1;
+}
+
 .pomidor_wrap {
 	display: inline-block;
-	position: relative;
 	background: #FFF;
-	.title {
-		@include absolute_me(0,5px,auto,auto);
-		font-size: 2em;
-		color: $gray;
-		line-height: 2.85*$grid;
-	}
-	.pomidor_score {
-		@include absolute_me(0,auto,auto,7px);
-		font-size: 2em;		
-		color: lighten($gray,5%);
-		line-height: 2.85*$grid;
-	}
 	.pomidor_timer {
 		@include absolute_me(auto,0,auto,auto);
-		margin-top: -$grid/3;
-		width: 13*$grid;
-		height: 3*$grid;
-		background: white;
+		margin-top: $grid/2;
+		width: 14*$grid;
+		height: auto;
+		background: #FFF;
 		border: 1px solid $gray;
 		border-radius: 5px;
 		@include box-shadow();
-		padding: $grid/1.4;
+		//padding: $grid/1.4;
 		z-index: 1;
 
 		.pomidor_timer_wrap {
 			text-align: center;
+			padding: 0px $grid;
+			.pomidor_title {
+				margin-bottom: $grid/2;
+				line-height: $grid*1.5;
+				font-size: 1.4em;
+				color: darken($gray,20%);
+				letter-spacing: 1px;
+			}
+			.pomidor_status {
+				line-height: $grid*1.5;
+				color: darken($gray,20%);
+				font-size: 1em;
+				letter-spacing: 0.5px;
+			}
 			.pomidor_wrap {
 				position: relative;
 				display: inline-block;
 				width: $grid*1.5;
 				margin: 0px $grid/2;				
 				.pomidor {
-					@include box-shadow(1px, 1px, 2px, rgba(0,0,0,0.9), inset);
 					position: relative;
 					left: 0px;
-					width: $grid*1.5;
-					height: $grid*1.5;
+					width: round($grid*1.5);
+					height: round($grid*1.5);
 					border-radius: $grid;
-					background: rgba(0,0,0,0.8);
+					background: $pomidor_color;
 					cursor: pointer;
+					border: 2px solid $pomidor_color;
 					overflow: hidden;
 					&.active {
 						background-color: #FFF;
 					}
 					.target {
-						@include absolute_me(-$grid/6,0,0,0);
-						margin-top: -1px;
+						margin-top: $grid/4;
 						i {
 							@include animate_me(opacity, 0.2s);
 							opacity: 1;
 							font-size: $grid*0.6;
-							color: #888;
+							color: #FFF;
 							&:before {
 								margin: 0px;
 							}
@@ -72,13 +79,14 @@
 					}
 				}
 				.pomidor_white {
-					@include absolute_me(1px,0,0,1px);
+					@include absolute_me(0px,0,0,1px);
 					display: inline-block;
 					overflow: hidden;
-					margin-left: 0%;
-					border-radius: $grid * 1.4;
-					width: $grid*1.5 - 2px;
-					height: $grid*1.5 - 2px;
+					margin-left: -5px;
+					//border-radius: $grid * 1.4;
+					width: $grid*3 - 2px;
+					height: $grid*2 - 2px;
+					//border: 1px solid red;
 					background: #FFF;					
 				}
 			}
