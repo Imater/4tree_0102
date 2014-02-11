@@ -24,17 +24,17 @@ angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($tra
     PLANOFDAY: "Plan of the day"
     ADD: "Add task..."
     POMIDOR: "Timer Pomodorro"
-    POMIDORS_TITLE: [
-      '0': 'Нажмите, чтобы начать работу 25 минут'
-      's1': 'Работайте не отвлекаясь 25 минут'
-      '2': 'Отдохните 5 минут'
-      '3': 'Работайте не отвлекаясь 25 минут'
-      '4': 'Отдохните 5 минут'
-      '5': 'Работайте не отвлекаясь 25 минут'
-      '6': 'Отдохните 5 минут'
-      '7': 'Работайте не отвлекаясь 25 минут'
-      '6': 'Отдохните 15 минут'
-    ]
+    POMIDORS_TITLE: {
+      '0': 'Click and work for 25 minutes'
+      '1': 'Work for 25 minutes'
+      '2': 'Ok. Take a rest for 5 minutes'
+      '3': 'Work for 25 minutes'
+      '4': 'Ok. Take a rest for 5 minutes'
+      '5': 'Work for 25 minutes'
+      '6': 'Ok. Take a rest for 5 minutes'
+      '7': 'Work for 25 minutes'
+      '8': 'Good. Take a rest for 15 minutes'
+    }
     MONTH: { 
       '1': "jan"
       '2': "feb"
@@ -68,7 +68,7 @@ angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($tra
     POMIDOR: "Таймер Pomodorro"
     ADD: "Добавить..."
     POMIDORS_TITLE: {
-      '0': 'Нажмите помидорку, и работайте 25 минут'
+      '0': 'Нажмите, и работайте 25 минут'
       '1': 'Работайте не отвлекаясь 25 минут'
       '2': 'Отлично. Отдохните 5 минут'
       '3': 'Работайте не отвлекаясь 25 минут'
@@ -134,3 +134,84 @@ angular.module("4treeApp").directive "clickAnywhereButHere", [
 
       return
 ]
+
+
+
+# Recursive underscore methods
+
+# fn(value,keyChain)
+
+# Default value for maxDepth
+
+# Kick off recursive function
+
+# If the key is null, this is the root item, so skip this step
+# Descend
+
+# If the current item is a collection
+
+# Leaf items land here and execute the iterator
+
+# fn(original,newOne,anotherNewOne,...)
+
+# TODO: make this work for more than one newObj
+# var newObjects = _.toArray(arguments).shift();
+
+# If the new value is a non-object or array, 
+# or the old value is a non-object or array, use it
+
+# Otherwise, we have to descend recursively
+
+# fn(original,newOne,anotherNewOne,...)
+
+# TODO: make this work for more than one newObj
+# var newObjects = _.toArray(arguments).shift();
+
+# If the new value is a non-object or array, 
+# or the old value is a non-object or array, use it
+
+# Otherwise, we have to descend recursively
+
+# ### _.objMap
+# _.map for objects, keeps key/value associations
+objMap = (input, mapper, context) ->
+  _.reduce input, ((obj, v, k) ->
+    obj[k] = mapper.call(context, v, k, input)
+    obj
+  ), {}, context
+_.recursive =
+  all: (collection, fn, maxDepth) ->
+    _all = (item, key, keyChain, fn, depth) ->
+      lengthenedKeyChain = []
+      throw new Error("Depth of object being parsed exceeds maxDepth ().  Maybe it links to itself?")  if depth > maxDepth
+      if key isnt null and keyChain
+        lengthenedKeyChain = keyChain.slice(0)
+        lengthenedKeyChain.push key
+      if _.isObject(item)
+        _.all item, (subval, subkey) ->
+          _all subval, subkey, lengthenedKeyChain, fn, depth + 1
+
+      else
+        fn item, lengthenedKeyChain
+    return true  unless _.isObject(collection)
+    maxDepth = maxDepth or 50
+    return _all(collection, null, [], fn, 0)
+    return
+
+  extend: (original, newObj) ->
+    _.extend original, objMap(newObj, (newVal, key) ->
+      oldVal = original[key]
+      if _.isArray(newVal) or not _.isObject(newVal) or _.isArray(oldVal) or not _.isObject(oldVal)
+        newVal or oldVal
+      else
+        _.recursive.extend oldVal, newVal
+    )
+
+  defaults: (original, newObj) ->
+    _.extend original, objMap(newObj, (newVal, key) ->
+      oldVal = original[key]
+      if _.isArray(newVal) or not _.isObject(newVal) or _.isArray(oldVal) or not _.isObject(oldVal)
+        oldVal or newVal
+      else
+        _.recursive.extend oldVal, newVal
+    )

@@ -174,9 +174,9 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
 
   db_tree.constructor();
   $scope.db.db_tree = db_tree.getTree();
-  $scope.db.tree_path = db_tree.jsGetPath(1);
 
-  $scope.text_example1 += (num+"<br>" for num in [1000..1]);
+
+  $scope.db.tree_path = db_tree.jsGetPath(1);
 
   $scope.fn.setCalendarBox();
 
@@ -192,6 +192,37 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   
 ]
 
+angular.module("4treeApp").controller "save_tree_db", ($scope)->
+  $scope.$watch "tree", (new_value, old_value)->
+    console.info 'changes = ', new_value, old_value
+  , true
+
+
+
+
+
 angular.module("4treeApp").value "fooConfig",
   config1: true
   config2: "Default config2 but it can changes"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

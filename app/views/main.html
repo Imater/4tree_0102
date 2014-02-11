@@ -1,7 +1,7 @@
-<div class="allscreen" ng-if="set.show_pomidor_timer" ng-click="set.show_pomidor_timer=false"></div>
+<!-- <div class="allscreen" ng-if="set.show_pomidor_timer" ng-click="set.show_pomidor_timer=false"></div> -->
 
 <div id="w_main" ng-class="{
-        header_panel_opened: set.header_panel_opened,
+        header_panel_opened: set.header_panel_opened||set.show_pomidor_timer,
         p_left_side_open: set.p_left_side_open,
         p_right_side_open: set.p_right_side_open,
         p_plan_of_day_closed: !set.p_plan_of_day_open
@@ -30,12 +30,12 @@
                 <div class="btn-group">
 
                     <button type="button" class="btn btn-default" ng-click="set.show_pomidor_timer=!set.show_pomidor_timer" ng-class="{active:set.show_pomidor_timer}"><i class="icon-record"></i> {{db.pomidors.btn_text}}
-                    <div class="pomidor_wrap" ng-if="set.show_pomidor_timer">
+                    <!-- <div class="pomidor_wrap" ng-if="set.show_pomidor_timer">
                         <div class="pomidor_timer">
                             <div ng-include="set.pomidor_template" is-active=""></div>
                         </div>
                     </div>
-
+ -->
                     </button>
 
 
@@ -84,6 +84,15 @@
                 </div>
 
             </div>
+        </div>
+        <div class="w_header_bottom">
+
+            <div class="pomidor_wrap noselectable" ng-if="set.show_pomidor_timer">
+                <div class="pomidor_timer">
+                    <div ng-include="set.pomidor_template" is-active=""></div>
+                </div>
+            </div>
+
         </div>
     </div>
 

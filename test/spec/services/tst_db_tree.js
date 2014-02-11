@@ -29,7 +29,6 @@
       return expect(srv_db_tree.jsFind(500000)).toBeUndefined();
     });
     return it("Test jsGetPath function", function() {
-      console.info(srv_db_tree.jsGetPath(11));
       return expect(srv_db_tree.jsGetPath(11).length).toBeGreaterThan(2);
     });
   });

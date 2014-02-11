@@ -32,7 +32,7 @@ describe "Service db_tree test", ->
 		expect( srv_db_tree.jsFind(500000) ).toBeUndefined()
 
 	it "Test jsGetPath function", ->
-		console.info srv_db_tree.jsGetPath(11)
+		#console.info srv_db_tree.jsGetPath(11)
 		expect( srv_db_tree.jsGetPath(11).length ).toBeGreaterThan 2
 
 

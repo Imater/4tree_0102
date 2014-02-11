@@ -27,7 +27,18 @@
                 title: "Рабочие дела",
                 icon: 'icon-wrench-1',
                 open: true,
-                childs: 1
+                childs: 1,
+                share: [
+                  {
+                    link: 'sex1'
+                  }, {
+                    link: 'sex2'
+                  }, {
+                    link: 'sex3'
+                  }, {
+                    link: 'sex4'
+                  }
+                ]
               }, {
                 id: 9,
                 parent: 1,

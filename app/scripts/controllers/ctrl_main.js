@@ -3,7 +3,7 @@
   "use strict";
   angular.module("4treeApp").controller("MainCtrl", [
     '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', function($translate, $scope, calendarBox, db_tree, $interval) {
-      var num, set_pomidors;
+      var set_pomidors;
       $scope.awesomeThings = ["HTML5 Boilerplate", "AngularJS", "Karma", "SEXS", "LEXUS", "LEXUS2", "LEXUS333", "VALENTINA", "SAAA"];
       $scope.set = {
         header_panel_opened: false,
@@ -243,14 +243,6 @@
       db_tree.constructor();
       $scope.db.db_tree = db_tree.getTree();
       $scope.db.tree_path = db_tree.jsGetPath(1);
-      $scope.text_example1 += (function() {
-        var _i, _results;
-        _results = [];
-        for (num = _i = 1000; _i >= 1; num = --_i) {
-          _results.push(num + "<br>");
-        }
-        return _results;
-      })();
       $scope.fn.setCalendarBox();
       $scope.myname = "Huper...";
       if ((set_pomidors = localStorage.getItem('set_pomidors'))) {
@@ -261,6 +253,12 @@
       }
     }
   ]);
+
+  angular.module("4treeApp").controller("save_tree_db", function($scope) {
+    return $scope.$watch("tree", function(new_value, old_value) {
+      return console.info('changes = ', new_value, old_value);
+    }, true);
+  });
 
   angular.module("4treeApp").value("fooConfig", {
     config1: true,
