@@ -170,7 +170,6 @@
     very_new_tree_db = jQuery.extend(true, {}, new_tree_db);
     el200 = very_new_tree_db['n200'];
     el200.title = 'VERY New title for id = 200';
-    el200.sex[0].myid = "FUCK!!!";
     sync_journal = jsAddToSyncJournal(sync_journal, new_tree_db['n200'], very_new_tree_db['n200']);
     if (log_show) {
       console.info("JOURNAL = ", JSON.stringify(sync_journal));
