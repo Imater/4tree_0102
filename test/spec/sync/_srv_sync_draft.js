@@ -2,7 +2,7 @@
 (function() {
   "use strict";
   describe("Sync_test", function() {
-    var el123, el200, jsAddToSyncJournal, jsDryObjectBySyncJournal, jsEach, jsGetByPoints, last_sync_time, log_show, new_tree_db, path, sync_journal, sync_journal_TO_SERVER, sync_timer, tree_db, tree_db_TO_SERVER;
+    var el123, el200, jsAddToSyncJournal, jsDryObjectBySyncJournal, jsEach, jsGetByPoints, last_sync_time, log_show, new_tree_db, path, sync_journal, sync_journal_TO_SERVER, sync_journal_old, sync_timer, tree_db, tree_db_TO_SERVER, very_new_tree_db;
     path = {};
     jsEach = function(elements, fn, name) {
       if (name == null) {
@@ -57,7 +57,7 @@
         }
         element = {
           id: jr.id,
-          _tm: 'jr.tm'
+          _tm: jr.tm
         };
         _.each(jr.changes, function(change_field_name) {
           var e, last_field_name, points;
@@ -71,24 +71,36 @@
       return answer;
     };
     jsAddToSyncJournal = function(journal, new_element, old_element) {
-      var answer;
-      journal = [];
+      var answer, journal_exist, journal_exist_last;
       answer = {
-        type: 'update',
-        tm: new Date(2014, 1, 11, 11, 30),
-        changes: [],
-        id: 200,
-        table: '4tree'
+        changes: []
       };
-      console.info("compare new = ", new_element);
-      console.info("compare old = ", old_element);
       jsEach(new_element, function(el, key) {
-        console.info("el = ", key, el, new_element.id);
-        return answer.changes.push(key);
+        var last_key, spl;
+        spl = key.split(".");
+        last_key = spl[spl.length - 1];
+        if (el !== jsGetByPoints(old_element, key)[last_key]) {
+          answer.tm = new Date();
+          answer.type = 'update';
+          answer.id = new_element.id;
+          answer.table = '4tree';
+          return answer.changes.push(key);
+        }
       });
-      console.info('FIND', new_element['sex']['0']['myid'], jsGetByPoints(new_element, 'sex.0.myid').myid);
-      journal.push(answer);
-      console.info("NEW JOUR = ", JSON.stringify(journal));
+      journal_exist = _.filter(journal, function(el) {
+        return el.id === answer.id;
+      });
+      journal_exist_last = _.max(journal_exist, function(el) {
+        return el.tm;
+      });
+      if (journal_exist[0]) {
+        journal_exist_last.changes = _.union(journal_exist_last.changes, answer.changes);
+      } else {
+        journal.push(answer);
+      }
+      if (journal_exist[0]) {
+        console.info('journal_exist = ', journal_exist_last.changes);
+      }
       return journal;
     };
     log_show = true;
@@ -135,8 +147,10 @@
     el123.parent_id = 2;
     el123.share.link = "http://4tree.ru/sx7";
     el200 = new_tree_db['n200'];
-    el200.title = 'New title for id = 200';
-    sync_journal = [
+    el200.parent_id = 188;
+    el200.share.link = 'upd//dd';
+    sync_journal = [];
+    sync_journal_old = [
       {
         type: 'update',
         tm: new Date(2014, 1, 11, 11, 30),
@@ -152,6 +166,12 @@
       }
     ];
     sync_journal = jsAddToSyncJournal(sync_journal, tree_db['n200'], new_tree_db['n200']);
+    sync_journal = jsAddToSyncJournal(sync_journal, tree_db['n123'], new_tree_db['n123']);
+    very_new_tree_db = jQuery.extend(true, {}, new_tree_db);
+    el200 = very_new_tree_db['n200'];
+    el200.title = 'VERY New title for id = 200';
+    el200.sex[0].myid = "FUCK!!!";
+    sync_journal = jsAddToSyncJournal(sync_journal, new_tree_db['n200'], very_new_tree_db['n200']);
     if (log_show) {
       console.info("JOURNAL = ", JSON.stringify(sync_journal));
     }
@@ -162,7 +182,7 @@
     sync_journal_TO_SERVER = _.filter(sync_journal, function(el) {
       return el.tm > last_sync_time;
     });
-    tree_db_TO_SERVER = jsDryObjectBySyncJournal(new_tree_db, sync_journal_TO_SERVER);
+    tree_db_TO_SERVER = jsDryObjectBySyncJournal(very_new_tree_db, sync_journal_TO_SERVER);
     _.each(sync_journal_TO_SERVER, function(el) {
       if (log_show) {
         return console.info("sync_journal_TO_SERVER", JSON.stringify(el));

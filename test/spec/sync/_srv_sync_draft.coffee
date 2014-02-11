@@ -34,7 +34,7 @@ describe "Sync_test", ->
     _.each journal, (jr)->
       tree_by_id = tree[ 'n'+jr.id ]
       return 0 if !tree_by_id #если элемент не найден, то не надо его сушить
-      element = { id: jr.id, _tm: 'jr.tm' };
+      element = { id: jr.id, _tm: jr.tm };
       _.each jr.changes, (change_field_name)->
         points = change_field_name.split('.');
         e = jsGetByPoints(element, change_field_name, 'create_if_not_finded')
@@ -48,25 +48,34 @@ describe "Sync_test", ->
 
 
   jsAddToSyncJournal = (journal, new_element, old_element)->
-    journal = []
+
     answer = {
-      type: 'update' # update, add, delete
-      tm: new Date(2014,1,11, 11,30)
       changes: []
-      id: 200
-      table: '4tree'
     }
 
-    console.info "compare new = ", new_element
-    console.info "compare old = ", old_element
-
     jsEach new_element, (el, key)->
-      console.info "el = ", key, el, new_element.id
-      answer.changes.push key
-    console.info 'FIND', new_element['sex']['0']['myid'], jsGetByPoints(new_element, 'sex.0.myid').myid;
+      spl = key.split(".")
+      last_key = spl[spl.length-1]
+      #console.info "el = ", key, el, jsGetByPoints(old_element, key)[last_key]
+      if el != jsGetByPoints(old_element, key)[last_key]
+        answer.tm = new Date()
+        answer.type = 'update'
+        answer.id = new_element.id;
+        answer.table = '4tree'
+        answer.changes.push key
 
-    journal.push answer
-    console.info "NEW JOUR = ", JSON.stringify journal
+    journal_exist = _.filter journal, (el)->
+      el.id == answer.id
+
+    journal_exist_last = _.max journal_exist, (el)->
+      el.tm
+
+    if journal_exist[0]
+      journal_exist_last.changes = _.union(journal_exist_last.changes, answer.changes);
+    else 
+      journal.push answer
+
+    console.info 'journal_exist = ', journal_exist_last.changes if journal_exist[0]
     journal
 
 
@@ -93,12 +102,14 @@ describe "Sync_test", ->
   el123.share.link = "http://4tree.ru/sx7"
 
   el200 = new_tree_db['n200']
-  el200.title = 'New title for id = 200'
+  el200.parent_id = 188
+  el200.share.link = 'upd//dd'
 
   #process.hrtime()
 
   #Клиент ведёт журнал изменений:
-  sync_journal = [
+  sync_journal = [];
+  sync_journal_old = [
     { 
     	type: 'update' # update, add, delete
     	tm: new Date(2014,1,11, 11,30)
@@ -116,6 +127,16 @@ describe "Sync_test", ->
   ]
 
   sync_journal = jsAddToSyncJournal(sync_journal, tree_db['n200'], new_tree_db['n200']);
+  
+  sync_journal = jsAddToSyncJournal(sync_journal, tree_db['n123'], new_tree_db['n123']);
+
+  very_new_tree_db = jQuery.extend(true, {}, new_tree_db);
+  el200 = very_new_tree_db['n200']
+  el200.title = 'VERY New title for id = 200'
+  el200.sex[0].myid = "FUCK!!!"
+
+  sync_journal = jsAddToSyncJournal(sync_journal, new_tree_db['n200'], very_new_tree_db['n200']);
+
   console.info "JOURNAL = ", JSON.stringify sync_journal if log_show;
 
   #Отсортировать журнал по времени изменения
@@ -133,7 +154,7 @@ describe "Sync_test", ->
 
 
   #Подбираем все изменившиеся объекты (сушим, чтобы не отправлять лишнее)
-  tree_db_TO_SERVER = jsDryObjectBySyncJournal(new_tree_db, sync_journal_TO_SERVER);
+  tree_db_TO_SERVER = jsDryObjectBySyncJournal(very_new_tree_db, sync_journal_TO_SERVER);
 
 
 
