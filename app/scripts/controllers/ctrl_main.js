@@ -4,7 +4,6 @@
   angular.module("4treeApp").controller("MainCtrl", [
     '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', function($translate, $scope, calendarBox, db_tree, $interval, syncApi) {
       var set_pomidors;
-      syncApi.constructor();
       $scope.awesomeThings = ["HTML5 Boilerplate", "AngularJS", "Karma", "SEXS", "LEXUS", "LEXUS2", "LEXUS333", "VALENTINA", "SAAA"];
       $scope.set = {
         header_panel_opened: false,
@@ -245,6 +244,9 @@
       $scope.db.db_tree = db_tree.getTree();
       $scope.db.tree_path = db_tree.jsGetPath(1);
       $scope.fn.setCalendarBox();
+      syncApi.constructor();
+      $scope.db.sync_journal = syncApi.sync_journal;
+      $scope.db.sync_to_send = syncApi.jsDryObjectBySyncJournal();
       $scope.myname = "Huper...";
       if ((set_pomidors = localStorage.getItem('set_pomidors'))) {
         $scope.db.pomidors = JSON.parse(set_pomidors);
@@ -258,8 +260,8 @@
   angular.module("4treeApp").controller("save_tree_db", function($scope, syncApi) {
     return $scope.$watch("tree", function(new_value, old_value) {
       if (new_value !== old_value) {
-        console.info('changes = ', new_value, old_value);
-        return console.info(syncApi.jsAddToSyncJournal(new_value, old_value));
+        console.info(JSON.stringify(syncApi.jsAddToSyncJournal(new_value, old_value)));
+        return $scope.db.sync_to_send = syncApi.jsDryObjectBySyncJournal();
       }
     }, true);
   });

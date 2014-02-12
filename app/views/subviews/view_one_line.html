@@ -1,46 +1,46 @@
 <div class="tree_line" ng-controller="save_tree_db">
 	<div class="h_line">
-		<div class="is_folder" ng-class="{open:tree.open, folder:tree.childs}" ng-click="tree.open=!tree.open">
+		<div class="is_folder" ng-class="{open:tree._open, folder:tree._childs}" ng-click="tree._open=!tree._open">
 		</div><div class="box" ng-click="fn.jsTreeFocus(tree.id)">
-			<div class="childs">{{tree.childs}}</div>
+			<div class="_childs">{{tree._childs}}</div>
 			<i class="{{tree.icon}}"></i>
 		</div>
-		<div class="title" ng-click="tree.open=!tree.open"><input ng-model="tree.title"></div>
+		<div class="title" ng-click="tree._open=!tree._open"><input ng-model="tree.title"></div>
 		<div class="note_line">{{tree.note}}</div>
-		<div class="btn_menu" ng-click="tree.settings=!tree.settings"></div>
+		<div class="btn_menu" ng-click="tree._settings=!tree._settings"></div>
 	</div>
 
-	<div class="settings"  jq-show-effect="tree.settings" jq-options="{type:'slide', duration:300, delay:0, hideImmediately: false}">
-		<div class="left_set_line" ng-click="tree.settings=false"></div>
+	<div class="settings"  jq-show-effect="tree._settings" jq-options="{type:'slide', duration:300, delay:0, hideImmediately: false}">
+		<div class="left__set_line" ng-click="tree._settings=false"></div>
 		<div class="settings_content">
-			<h10 ng-class="{open:tree.set_part0}" ng-click="tree.set_part0=!tree.set_part0">Поделиться</h10>
-			<div class="settings_part" jq-show-effect="tree.set_part0" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
+			<h10 ng-class="{open:tree._set_part0}" ng-click="tree._set_part0=!tree._set_part0">Поделиться</h10>
+			<div class="settings_part" jq-show-effect="tree._set_part0" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
 				<a href="http://4tree.ru/sx4d">http://4tree.ru/sx4d</a><br>
 				<input ng-repeat="share in tree.share" ng-model="share.link">
 			</div>
 
-			<h10 ng-class="{open:tree.set_part1}" ng-click="tree.set_part1=!tree.set_part1">Поручить</h10>
-			<div class="settings_part" jq-show-effect="tree.set_part1" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
+			<h10 ng-class="{open:tree._set_part1}" ng-click="tree._set_part1=!tree._set_part1">Поручить</h10>
+			<div class="settings_part" jq-show-effect="tree._set_part1" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
 				Поручения
 			</div>
 
-			<h10 ng-class="{open:tree.set_part2}" ng-click="tree.set_part2=!tree.set_part2">Заметка</h10>
-			<div class="settings_part" jq-show-effect="tree.set_part2" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
+			<h10 ng-class="{open:tree._set_part2}" ng-click="tree._set_part2=!tree._set_part2">Заметка</h10>
+			<div class="settings_part" jq-show-effect="tree._set_part2" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
 				<div ng-include="set.text_template" contenteditable="true"></div>
 			</div>
 
-			<h10 ng-class="{open:tree.set_part3}" ng-click="tree.set_part3=!tree.set_part3">Комментарии</h10>
-			<div class="settings_part" jq-show-effect="tree.set_part3" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
+			<h10 ng-class="{open:tree._set_part3}" ng-click="tree._set_part3=!tree._set_part3">Комментарии</h10>
+			<div class="settings_part" jq-show-effect="tree._set_part3" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
 				Комментарии
 			</div>
 						
-			<h10 ng-class="{open:tree.set_part4}" ng-click="tree.set_part4=!tree.set_part4">Дела</h10>
-			<div class="settings_part" jq-show-effect="tree.set_part4" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
+			<h10 ng-class="{open:tree._set_part4}" ng-click="tree._set_part4=!tree._set_part4">Дела</h10>
+			<div class="settings_part" jq-show-effect="tree._set_part4" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
 				Дела
 			</div>
 						
-			<h10 ng-class="{open:tree.set_part5}" ng-click="tree.set_part5=!tree.set_part5">Настройки</h10>
-			<div class="settings_part" jq-show-effect="tree.set_part5" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
+			<h10 ng-class="{open:tree._set_part5}" ng-click="tree._set_part5=!tree._set_part5">Настройки</h10>
+			<div class="settings_part" jq-show-effect="tree._set_part5" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
 				Настройки
 			</div>
 						
@@ -49,6 +49,6 @@
 
 </div>
 
-<ul jq-show-effect="tree.open" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
+<ul jq-show-effect="tree._open" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
 	<li class="tree" ng-repeat="tree in fn.jsFindByParent(tree.id)" ng-include="set.tree_one_line_template"></li>
 </ul>

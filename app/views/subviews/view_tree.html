@@ -2,4 +2,12 @@
 	<ul>
 		<li class="tree" ng-repeat="tree in fn.jsFindByParent(set.main_parent_id)" ng-include="set.tree_one_line_template"></li>
 	</ul>
+	<hr>
+    <ul>
+        <li ng-repeat="sync in db.sync_journal">{{sync}}</li>
+    </ul>
+    <ul>
+        <li ng-repeat="to_send in db.sync_to_send">{{to_send}}</li>
+    </ul>
+
 </div>

@@ -1,7 +1,6 @@
 "use strict"
 angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', ($translate, $scope, calendarBox, db_tree, $interval, syncApi) ->
 
-  syncApi.constructor();
 
   $scope.awesomeThings = [
     "HTML5 Boilerplate"
@@ -180,6 +179,9 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   $scope.db.tree_path = db_tree.jsGetPath(1);
 
   $scope.fn.setCalendarBox();
+  syncApi.constructor();
+  $scope.db.sync_journal = syncApi.sync_journal
+  $scope.db.sync_to_send = syncApi.jsDryObjectBySyncJournal();
 
   $scope.myname = "Huper..."
 
@@ -196,8 +198,8 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
 angular.module("4treeApp").controller "save_tree_db", ($scope, syncApi)->
   $scope.$watch "tree", (new_value, old_value)->
     if new_value != old_value
-      console.info 'changes = ', new_value, old_value
-      console.info syncApi.jsAddToSyncJournal(new_value, old_value)
+      console.info JSON.stringify syncApi.jsAddToSyncJournal(new_value, old_value)
+      $scope.db.sync_to_send = syncApi.jsDryObjectBySyncJournal();
     #syncApi.getTry();
   , true
 

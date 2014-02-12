@@ -1,7 +1,7 @@
+###
 "use strict"
 describe "Sync_test", ->
 
-  path = {};
   jsEach = (elements, fn, name='')->
     _.each elements, (el, key)->
       if(!_.isObject(el)) 
@@ -175,3 +175,4 @@ describe "Sync_test", ->
 
   it "Get 8 mart object fron date", ->    
     expect( true ).toEqual true 
+###
