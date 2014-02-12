@@ -2,8 +2,9 @@
 (function() {
   "use strict";
   angular.module("4treeApp").controller("MainCtrl", [
-    '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', function($translate, $scope, calendarBox, db_tree, $interval) {
+    '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', function($translate, $scope, calendarBox, db_tree, $interval, syncApi) {
       var set_pomidors;
+      syncApi.constructor();
       $scope.awesomeThings = ["HTML5 Boilerplate", "AngularJS", "Karma", "SEXS", "LEXUS", "LEXUS2", "LEXUS333", "VALENTINA", "SAAA"];
       $scope.set = {
         header_panel_opened: false,
@@ -254,9 +255,12 @@
     }
   ]);
 
-  angular.module("4treeApp").controller("save_tree_db", function($scope) {
+  angular.module("4treeApp").controller("save_tree_db", function($scope, syncApi) {
     return $scope.$watch("tree", function(new_value, old_value) {
-      return console.info('changes = ', new_value, old_value);
+      if (new_value !== old_value) {
+        console.info('changes = ', new_value, old_value);
+        return console.info(syncApi.jsAddToSyncJournal(new_value, old_value));
+      }
     }, true);
   });
 
