@@ -196,6 +196,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
 ]
 
 angular.module("4treeApp").controller "save_tree_db", ($scope, syncApi)->
+
   $scope.$watch "tree", (new_value, old_value)->
     if new_value != old_value
       console.info JSON.stringify syncApi.jsAddToSyncJournal(new_value, old_value)

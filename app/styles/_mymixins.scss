@@ -224,7 +224,7 @@ $easing: ease-out;
        url($ttfFileSrc)  format('truetype');
 }
 
-/* OPACITY */
+/* OPACITY 
 @mixin opacity($opacity: 0.5) {
     filter:         alpha(opacity=($opacity * 100));
     -ms-filter:     "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ($opacity * 100) + ")";
@@ -232,7 +232,7 @@ $easing: ease-out;
     -khtml-opacity: $opacity;
     opacity:        $opacity;
 }
-
+*/
 
 /* OUTLINE RADIUS */
 @mixin outline-radius($radius: 5px) {

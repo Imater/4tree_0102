@@ -61,7 +61,15 @@ body, html {
 /* FLEX */
 /* FLIP */
 /* FONT FACE */
-/* OPACITY */
+/* OPACITY 
+@mixin opacity($opacity: 0.5) {
+    filter:         alpha(opacity=($opacity * 100));
+    -ms-filter:     "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ($opacity * 100) + ")";
+    -moz-opacity:   $opacity;
+    -khtml-opacity: $opacity;
+    opacity:        $opacity;
+}
+*/
 /* OUTLINE RADIUS */
 /* RESIZE */
 /* ROTATE*/
@@ -118,7 +126,15 @@ body, html {
 /* FLEX */
 /* FLIP */
 /* FONT FACE */
-/* OPACITY */
+/* OPACITY 
+@mixin opacity($opacity: 0.5) {
+    filter:         alpha(opacity=($opacity * 100));
+    -ms-filter:     "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ($opacity * 100) + ")";
+    -moz-opacity:   $opacity;
+    -khtml-opacity: $opacity;
+    opacity:        $opacity;
+}
+*/
 /* OUTLINE RADIUS */
 /* RESIZE */
 /* ROTATE*/
@@ -426,7 +442,15 @@ body, html {
 /* FLEX */
 /* FLIP */
 /* FONT FACE */
-/* OPACITY */
+/* OPACITY 
+@mixin opacity($opacity: 0.5) {
+    filter:         alpha(opacity=($opacity * 100));
+    -ms-filter:     "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ($opacity * 100) + ")";
+    -moz-opacity:   $opacity;
+    -khtml-opacity: $opacity;
+    opacity:        $opacity;
+}
+*/
 /* OUTLINE RADIUS */
 /* RESIZE */
 /* ROTATE*/
@@ -575,7 +599,15 @@ body, html {
 /* FLEX */
 /* FLIP */
 /* FONT FACE */
-/* OPACITY */
+/* OPACITY 
+@mixin opacity($opacity: 0.5) {
+    filter:         alpha(opacity=($opacity * 100));
+    -ms-filter:     "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ($opacity * 100) + ")";
+    -moz-opacity:   $opacity;
+    -khtml-opacity: $opacity;
+    opacity:        $opacity;
+}
+*/
 /* OUTLINE RADIUS */
 /* RESIZE */
 /* ROTATE*/
@@ -685,7 +717,15 @@ h10.open:before {
 /* FLEX */
 /* FLIP */
 /* FONT FACE */
-/* OPACITY */
+/* OPACITY 
+@mixin opacity($opacity: 0.5) {
+    filter:         alpha(opacity=($opacity * 100));
+    -ms-filter:     "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ($opacity * 100) + ")";
+    -moz-opacity:   $opacity;
+    -khtml-opacity: $opacity;
+    opacity:        $opacity;
+}
+*/
 /* OUTLINE RADIUS */
 /* RESIZE */
 /* ROTATE*/
@@ -884,7 +924,15 @@ h10.open:before {
 /* FLEX */
 /* FLIP */
 /* FONT FACE */
-/* OPACITY */
+/* OPACITY 
+@mixin opacity($opacity: 0.5) {
+    filter:         alpha(opacity=($opacity * 100));
+    -ms-filter:     "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ($opacity * 100) + ")";
+    -moz-opacity:   $opacity;
+    -khtml-opacity: $opacity;
+    opacity:        $opacity;
+}
+*/
 /* OUTLINE RADIUS */
 /* RESIZE */
 /* ROTATE*/
@@ -956,7 +1004,15 @@ h10.open:before {
 /* FLEX */
 /* FLIP */
 /* FONT FACE */
-/* OPACITY */
+/* OPACITY 
+@mixin opacity($opacity: 0.5) {
+    filter:         alpha(opacity=($opacity * 100));
+    -ms-filter:     "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ($opacity * 100) + ")";
+    -moz-opacity:   $opacity;
+    -khtml-opacity: $opacity;
+    opacity:        $opacity;
+}
+*/
 /* OUTLINE RADIUS */
 /* RESIZE */
 /* ROTATE*/

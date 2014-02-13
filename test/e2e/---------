@@ -201,10 +201,63 @@ app.factory "urlifyService", () ->
 
 
 
+webapp = require('server')
+http = require('http')
+
+describe 'First Test', ->
+  it 'test №1', ->
+
+    options =
+      host: 'ya.ru'
+      port: 80
+      path: '/'
+
+    request = http.get options, (response) ->
+      #console.log("Got response: " + response.statusCode)
+      #console.dir(response)  
+      response.on 'data', (chunk) -> 
+        console.log('body: ' + chunk)
+        asyncSpecDone()
+    expect(true).toEqual true
+    asyncSpecWait()
+    request.on 'error', (error) ->
+      #console.log("Got error: " + error.message)
+
+
+
+  $rootScope.$on 'pub', (msg)->
+    alert msg
+
+
+  pub: (msg)->
+    $scope.$emit(msg)
 
 
 
 
+  async.waterfall [
+    (callback) ->
+      callback null, "one", "two"
+    (arg1, arg2, callback) ->
+      callback null, "three"
+    (arg1, callback) ->
+      
+      # arg1 now equals 'three'
+      callback null, "done2"
+  ], (err, result) ->
+    console.info result
+
+
+  count = 0
+  async.whilst (->
+    count < 5
+  ), ((callback) ->
+    count++
+    console.info count
+    setTimeout callback, 1000
+    return
+  ), (err) ->
+    console.info '5 seconds'
 
 
 
