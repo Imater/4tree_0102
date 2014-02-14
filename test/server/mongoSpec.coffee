@@ -1,4 +1,5 @@
 MongoClient = require('mongodb').MongoClient
+mongo = MongoClient = require('mongodb')
 async = require('async')
 _ = require('underscore')
 
@@ -67,16 +68,16 @@ describe 'MondoDB - проверка работы разных функций', 
 			done()
 
 
-	it 'Вставка тысячи элементов в базу', (done)->
+	it 'Вставка 100 элементов в базу', (done)->
 		
 		insert_one = (val, callback)->
-			tree_note = new Tree_note({id: val, title: 'Я элемент №'+val, time: new Date()});
+			tag = if val%2 and val > 50 then 'новости' else 'рыба'
+			tree_note = new Tree_note({id: val, title: 'Я элемент №'+val, time: new Date(), tags: ['мысли', tag]});
 			collection.insert tree_note, (err, count)->
 				callback err
 
 		insert_many = (callback)->
-			async.eachLimit [1..10000], 100, insert_one, (err)->	
-				console.info 'done!'
+			async.eachLimit [1..100], 50, insert_one, (err)->	
 				callback null
 
 		async.series [
@@ -85,11 +86,250 @@ describe 'MondoDB - проверка работы разных функций', 
 			(callback)->
 				#считаем кол-во элементов в коллекции
 				collection.count (err, count)->
-					expect( count ).toEqual 10002
+					expect( count ).toEqual 102
 					callback err
 		], (err, result)->
 			expect( 1 ).toEqual 1
 			mymongo.disconnect()
 			done()
 	  
-  
+
+	it 'Отбор элементов из базы, содержащих оба тега', (done)->
+		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				#считаем кол-во элементов в коллекции
+				collection.find({tags:['мысли','новости']}).toArray (err, results)->
+					expect( results.length ).toEqual 25
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
+
+
+	it 'Отбор элементов из базы, содержащих один тег', (done)->
+		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				#считаем кол-во элементов в коллекции
+				collection.find({tags:'рыба'}).toArray (err, results)->
+					expect( results.length ).toEqual 75
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
+    
+	it 'Отбор элементов из базы, содержащих один тег', (done)->
+		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				collection.findOne {id:28}, (err, results)->
+					expect( results.title ).toEqual 'Я элемент №28'
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
+
+	it 'Работа с курсором', (done)->
+		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				cursor = collection.find {}
+				cursor.nextObject (err, doc)->
+					expect(doc.timenow).toBeDefined()
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
+
+	it 'Explain - помогает понять, используются ли индексы', (done)->		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				cursor = collection.find {tags:'новости'}
+				cursor.limit(1).explain (err, doc)->
+					expect( JSON.stringify(doc.indexBounds) ).toMatch /tags/
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
+
+
+	it 'Insert - вставка нескольких элементов', (done)->		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				elements = [];
+				_.each [1..50], (el)->
+					one_element = new Tree_note({title: 'Ещё элемент №'+el});
+					one_element.labels = {
+						label1: el
+					}
+					elements.push( one_element )
+				collection.insert elements, (err, result)->
+					expect(result.length).toBe 50
+					done();
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
+
+
+	it 'Update - изменение элемента $set', (done)->		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				collection.update {id: 18}, {$set: {note: 'ss', title: 'LOOP', tags: [1,2,3,4]}}, (err, result)->
+					expect(result).toBe 1
+					done();
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
+
+
+	it 'Update - изменение элемента $push', (done)->		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				collection.update {id: 18}, {$push: {tags: 122}}, {multi:true}, (err, result)->
+					expect(result).toBe 1
+					done();
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
+
+
+	it 'Update - изменение элемента $inc - инкремент', (done)->		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				collection.update {id: 18}, {$inc: {count: 1}}, {multi:true}, (err, result)->
+					expect(result).toBe 1
+					done();
+					callback err
+			(callback)->
+				collection.update {id: 18}, {$inc: {count: 1}}, {multi:true}, (err, result)->
+					expect(result).toBe 1
+					done();
+					callback err
+			(callback)->
+				collection.findOne {id:18}, (err, result)->
+					expect( result.count ).toBe 2
+
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
+
+	it 'Update - изменение элемента Upsert', (done)->		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				collection.update {id: -18}, {$set: {note: 'ss', title: 'LOOP', tags: [1,2,3,4]}}, {upsert:true},(err, result)->
+					expect(result).toBe 1
+					done();
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
+
+
+	it 'Создание индекса по полю note', (done)->		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				console.info "ds"
+				collection.ensureIndex {note: 1}, {unique: false, safe: true}, (err, result)->
+					console.info result
+					expect( result ).toBe 'note_1'
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
+
+
+	it 'Отбор элементов из базы, Больше 10 ($gt)', (done)->
+		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				#считаем кол-во элементов в коллекции
+				collection.find({id: {$gt: 10}}).toArray (err, results)->
+					expect( results.length ).toEqual 90
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
+
+
+	it 'Отбор элементов из базы, Меньше 10 ($lt)', (done)->
+		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				#считаем кол-во элементов в коллекции
+				collection.find({id: {$lt: 10}}).toArray (err, results)->
+					expect( results.length ).toEqual 10
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
+
+
+	it 'Отбор элементов из базы, не равно 10 ($ne)', (done)->
+		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				#считаем кол-во элементов в коллекции
+				collection.find({id: {$ne: 10}}).toArray (err, results)->
+					expect( results.length ).toEqual 152
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
+
+
+	it 'Отбор элементов из базы, не равно 10 ($ne)', (done)->
+		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				#считаем кол-во элементов в коллекции
+				collection.find({tags: {$in: [1]}}).toArray (err, results)->
+					expect( results.length ).toEqual 3
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
+
+
+
+
+
+
+
+
+
+
