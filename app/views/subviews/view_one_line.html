@@ -5,7 +5,7 @@
 			<div class="_childs">{{tree._childs}}</div>
 			<i class="{{tree.icon}}"></i>
 		</div>
-		<div class="title" ng-click="tree._open=!tree._open"><input ng-model="tree.title"></div>
+		<div class="title" contenteditable="true" ng-model="tree.title" ng-click="tree._open=!tree._open"></div>
 		<div class="note_line">{{tree.note}}</div>
 		<div class="btn_menu" ng-click="tree._settings=!tree._settings"></div>
 	</div>

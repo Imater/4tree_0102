@@ -19,8 +19,8 @@ $grid_box: $grid*1.2;
 
 		.h_line {
 			position: relative;
-			@include nowrap_me();
-			height: $grid_box;
+			//@include nowrap_me();
+			min-height: $grid_box;
 			line-height: $grid_box;
 			.is_folder {
 				vertical-align: top;
@@ -81,10 +81,10 @@ $grid_box: $grid*1.2;
 				}
 			}
 			.title {
-				@include nowrap_me();
+				//@include nowrap_me();
 				margin-left: $grid_box - 3px;
 				vertical-align: top;
-				height: $grid_box;
+				min-height: $grid_box;
 				display: inline-block;
 				font-weight: bold;
 			}	

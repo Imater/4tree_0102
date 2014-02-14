@@ -254,9 +254,7 @@ describe 'MondoDB - проверка работы разных функций', 
 		async.series [
 			async.apply mymongo.connect, 'test_insert'
 			(callback)->
-				console.info "ds"
 				collection.ensureIndex {note: 1}, {unique: false, safe: true}, (err, result)->
-					console.info result
 					expect( result ).toBe 'note_1'
 					callback err
 		], (err, result)->
@@ -310,7 +308,7 @@ describe 'MondoDB - проверка работы разных функций', 
 			done()
 
 
-	it 'Отбор элементов из базы, не равно 10 ($ne)', (done)->
+	it 'Отбор элементов из базы, содержат 1 в тегах ($in)', (done)->
 		
 		async.series [
 			async.apply mymongo.connect, 'test_insert'
@@ -325,7 +323,35 @@ describe 'MondoDB - проверка работы разных функций', 
 			done()
 
 
+	it 'Отбор элементов из базы, содержат 1 в тегах ($all)', (done)->
+		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				#считаем кол-во элементов в коллекции
+				collection.find({$or:[{id: 18}, {id: 19}]}).toArray (err, results)->
+					expect( results.length ).toEqual 2
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
 
+	it 'Отбор сегодняшних элементов из базы', (done)->
+		
+		async.series [
+			async.apply mymongo.connect, 'test_insert'
+			(callback)->
+				#считаем кол-во элементов в коллекции
+				d = new Date();
+				collection.find( {time: {$gte: new Date(d.getFullYear(),d.getMonth(),d.getDate()), $lt: new Date(d.getFullYear(),d.getMonth(),d.getDate()+1) } } ).toArray (err, results)->
+					expect( results.length ).toEqual 100
+					done();
+					callback err
+		], (err, result)->
+			expect( 1 ).toEqual 1
+			mymongo.disconnect()
+			done()
 
 
 

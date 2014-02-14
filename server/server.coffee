@@ -86,16 +86,6 @@ else
 		redisClient: redis.createClient()
 	}))
 
-	count = 0
-	async.whilst (->
-	  count < 5
-	), ((callback) ->
-	  count++
-	  console.info count
-	  setTimeout callback, 1000
-	  return
-	), (err) ->
-		console.info '5 seconds'
 
 	app.configure ->
 		app.use express.compress()

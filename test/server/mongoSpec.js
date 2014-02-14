@@ -364,14 +364,12 @@
     it('Создание индекса по полю note', function(done) {
       return async.series([
         async.apply(mymongo.connect, 'test_insert'), function(callback) {
-          console.info("ds");
           return collection.ensureIndex({
             note: 1
           }, {
             unique: false,
             safe: true
           }, function(err, result) {
-            console.info(result);
             expect(result).toBe('note_1');
             return callback(err);
           });
@@ -436,7 +434,7 @@
         return done();
       });
     });
-    return it('Отбор элементов из базы, не равно 10 ($ne)', function(done) {
+    it('Отбор элементов из базы, содержат 1 в тегах ($in)', function(done) {
       return async.series([
         async.apply(mymongo.connect, 'test_insert'), function(callback) {
           return collection.find({
@@ -445,6 +443,50 @@
             }
           }).toArray(function(err, results) {
             expect(results.length).toEqual(3);
+            return callback(err);
+          });
+        }
+      ], function(err, result) {
+        expect(1).toEqual(1);
+        mymongo.disconnect();
+        return done();
+      });
+    });
+    it('Отбор элементов из базы, содержат 1 в тегах ($all)', function(done) {
+      return async.series([
+        async.apply(mymongo.connect, 'test_insert'), function(callback) {
+          return collection.find({
+            $or: [
+              {
+                id: 18
+              }, {
+                id: 19
+              }
+            ]
+          }).toArray(function(err, results) {
+            expect(results.length).toEqual(2);
+            return callback(err);
+          });
+        }
+      ], function(err, result) {
+        expect(1).toEqual(1);
+        mymongo.disconnect();
+        return done();
+      });
+    });
+    return it('Отбор сегодняшних элементов из базы', function(done) {
+      return async.series([
+        async.apply(mymongo.connect, 'test_insert'), function(callback) {
+          var d;
+          d = new Date();
+          return collection.find({
+            time: {
+              $gte: new Date(d.getFullYear(), d.getMonth(), d.getDate()),
+              $lt: new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1)
+            }
+          }).toArray(function(err, results) {
+            expect(results.length).toEqual(100);
+            done();
             return callback(err);
           });
         }
