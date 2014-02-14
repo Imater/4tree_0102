@@ -1,0 +1,1 @@
+jasmine-node ../test/server/ --autotest --watch .
