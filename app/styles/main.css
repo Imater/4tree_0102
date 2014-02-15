@@ -787,12 +787,18 @@ h10.open:before {
       right: 2px;
       bottom: 3px;
       line-height: 8px; }
-  .main_tree .tree_line .h_line .title {
-    margin-left: 27px;
-    vertical-align: top;
-    min-height: 30px;
-    display: inline-block;
-    font-weight: bold; }
+  .main_tree .tree_line .h_line .tree_icon {
+    display: inline;
+    color: #dddddd;
+    margin-left: 7.5px; }
+  .main_tree .tree_line .h_line .title_wrap {
+    display: inline-block; }
+    .main_tree .tree_line .h_line .title_wrap .title {
+      margin-left: 5px;
+      vertical-align: top;
+      min-height: 30px;
+      display: inline;
+      font-weight: bold; }
   .main_tree .tree_line .h_line .note_line {
     display: inline-block;
     display: none;
@@ -1096,3 +1102,32 @@ h10.open:before {
           width: 40px;
           height: 40px;
           background: rgba(255, 255, 255, 0.95); }
+
+.wrapper_line {
+  position: relative;
+  white-space: nowrap; }
+  .wrapper_line .box {
+    display: inline-block;
+    width: 30px;
+    min-height: 30px; }
+  .wrapper_line .box:before {
+    content: '';
+    position: absolute;
+    min-height: 30px;
+    left: 0px;
+    width: 30px;
+    bottom: 0px;
+    top: 0px;
+    background: green; }
+  .wrapper_line .title_wrap {
+    vertical-align: top;
+    display: inline-block;
+    line-height: 15px; }
+    .wrapper_line .title_wrap .title {
+      content: "";
+      min-width: 60px;
+      min-height: 30px;
+      background: red;
+      vertical-align: baseline;
+      display: inline;
+      white-space: normal; }

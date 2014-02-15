@@ -3,6 +3,118 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', ($transla
 		@color = 'grey'
 		@log_show = false;
 		@sync_journal = [];
+
+	setChangeTimes: (new_element, old_element)->
+		console.info new_element, old_element
+		mythis = @;
+		@myEach new_element, (new_el, key_array)->
+			old_el = mythis.getElementByKeysArray( old_element, _.initial(key_array) )
+			if old_el.v and (new_el != old_el.v)
+				console.info 'changed = ', new_el, key_array
+				new_el_toset = mythis.getElementByKeysArray( new_element, _.initial(key_array) )
+				new_el_toset._t = new Date() #время изменения конкретного поля, которое изменилось
+				new_element._t = new Date()  #время изменения всего элемента - чтобы заметка попала в синхронизацию
+				new_element._synced = false
+			
+	# getElementByKeysArray( obj, ['title', 'help', 2, 'ups'])
+	note: {
+		title: {
+			help: [
+				{ups:undefined}
+			]
+		}
+	}
+
+	getElementByKeysArray: (element, keys_array)->
+		answer = element;
+		prev_answer = {};
+		prev_key = "";
+		_.each keys_array, (key, i)->
+			console.info "============", i, key, _.isArray(prev_answer[prev_key]), _.isArray(answer), answer[key]
+			if !_.isUndefined( answer[key] )
+				prev_answer = answer;
+				prev_key = key;
+				answer = answer[key]
+			else if _.isNumber(key)
+				if _.isArray(prev_answer[prev_key])
+					#console.info 'key ??????????????', key, prev_answer, prev_key
+					new_el = {};
+					new_el[key] = {};
+					prev_answer[prev_key].push( new_el ) 
+					#answer = prev_answer;
+				else
+					prev_answer[prev_key] = [] if !_.isArray(prev_answer[prev_key])
+					answer = prev_answer;
+			else if _.isString(key)
+				if _.isArray(prev_answer[prev_key])
+					#console.info 'key !!!!!!!!!!!!!!', key, prev_answer, prev_key
+					new_el = {};
+					new_el[key] = {};
+					prev_answer[prev_key].push( new_el ) 
+					#answer = prev_answer;
+				else
+					answer[key] = {}
+					prev_answer = answer;
+					prev_key = key;
+					answer = answer[key]
+
+		answer
+
+	deepOmit: (sourceObj, callback, thisArg) ->
+	  mythis = @;
+	  destObj = undefined
+	  i = undefined
+	  shouldOmit = undefined
+	  newValue = undefined
+	  return `undefined`  if _.isUndefined(sourceObj)
+	  callback = (if thisArg then _.bind(callback, thisArg) else callback)
+	  if _.isPlainObject(sourceObj)
+	    destObj = {}
+	    _.forOwn sourceObj, (value, key) ->
+	      newValue = mythis.deepOmit(value, callback)
+	      shouldOmit = callback(newValue, key)
+	      destObj[key] = newValue  unless shouldOmit
+	      return
+
+	  else if _.isArray(sourceObj)
+	    destObj = []
+	    i = 0
+	    while i < sourceObj.length
+	      newValue = mythis.deepOmit(sourceObj[i], callback)
+	      shouldOmit = callback(newValue, i)
+	      destObj.push newValue  unless shouldOmit
+	      i++
+	  else
+	    return sourceObj
+	  destObj
+
+
+	#рекурсивный обход элементов
+	myEach: (elements, fn, name=[])->
+	  mythis = @;		
+	  _.each elements, (el, key)->
+	    if(!_.isObject(el)) 
+	      name1 = name.slice(0) #так делаю копию массива
+	      name1.push(key)
+	      fn.call(this, el, name1) if !( key[0] in ['$','_'])
+	    else 
+	      name1 = name.slice(0)
+	      name1.push(key)
+	      mythis.myEach(el, fn, name1)
+
+	getChangedSinceTime: (last_sync_time)->
+		changed = []
+		_.each db_tree.db_tree, (el, key)->
+			if el._t >= last_sync_time
+				changed.push el
+		this.getElementByKeysArray({}, ['title', 'help']);
+		changed
+
+	getChanged: (last_sync_time)->
+		@myEach db_tree.db_tree, (el, key)->
+			console.info key
+
+
 	#рекурсивный обход элементов
 	jsEach: (elements, fn, name='')->
 	  mythis = @;		
@@ -95,3 +207,7 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', ($transla
 
 
 ]
+
+
+
+

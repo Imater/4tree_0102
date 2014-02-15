@@ -25,7 +25,7 @@
       expect(db_tree.length).toBeGreaterThan(1);
     });
     it("Test jsFind function", function() {
-      expect(srv_db_tree.jsFind(1).title).toBe('Рабочие дела');
+      expect(srv_db_tree.jsFind(1).title.v).toBe('Рабочие дела');
       return expect(srv_db_tree.jsFind(500000)).toBeUndefined();
     });
     return it("Test jsGetPath function", function() {

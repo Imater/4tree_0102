@@ -67,20 +67,7 @@
       console.info(syncApi.jsDryObjectBySyncJournal());
       return expect(true).toBe(true);
     });
-    it("jsAddToSyncJournal - добавление изменившегося элемента в журнал синхронизаций", function() {
-      var old_tree, tree;
-      tree = db_tree.getTree();
-      old_tree = jQuery.extend(true, {}, tree[0]['n0']);
-      tree[0]['n0'].title = "8tree";
-      tree[0]['n0'].note = "Sex";
-      tree[0]['n0'].lexus = {
-        ilike: "Testing..."
-      };
-      syncApi.jsAddToSyncJournal(tree[0]['n0'], old_tree);
-      expect(syncApi.sync_journal[0].changes.length).toBe(3);
-      return expect(syncApi.jsDryObjectBySyncJournal()[0].lexus.ilike).toBe('Testing...');
-    });
-    return it("jsUnion - добавляет или заменяет время в списке изменившихся полей", function() {
+    it("jsUnion - добавляет или заменяет время в списке изменившихся полей", function() {
       var new_value, old_value, union1;
       old_value = [
         {
@@ -105,6 +92,29 @@
       union1 = syncApi.jsUnion(old_value, new_value);
       expect(union1.length).toEqual(2);
       return expect(+union1[1].tm === +new_value[0].tm).toBeTruthy();
+    });
+    xit("getElementByKeysArray - Создание вложенного объекта", function() {
+      var el;
+      el = {};
+      syncApi.getElementByKeysArray(el, ['first', 'second', 'third', 0, 'das']);
+      console.info("ANSWER = ", JSON.stringify(el));
+      syncApi.getElementByKeysArray(el, ['first', 'second', 'third', 0, 'das', 'sex']);
+      return console.info("ANSWER = ", JSON.stringify(el));
+    });
+    return it("getElementByKeysArray - Создание вложенного объекта", function() {
+      var changed;
+      db_tree.db_tree[2]._t = new Date();
+      db_tree.db_tree[2].title._t = new Date();
+      db_tree.db_tree[2].share[0].link._t = new Date();
+      changed = syncApi.getChangedSinceTime(new Date());
+      console.info(JSON.stringify(changed));
+      return _.each(changed, function(one_el) {
+        return console.info(JSON.stringify(syncApi.deepOmit(one_el, function(el, i) {
+          console.info(el, i);
+          el._t;
+          return i === '_t';
+        })));
+      });
     });
   });
 

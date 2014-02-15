@@ -19,7 +19,7 @@ $grid_box: $grid*1.2;
 
 		.h_line {
 			position: relative;
-			//@include nowrap_me();
+			//white-space: nowrap;
 			min-height: $grid_box;
 			line-height: $grid_box;
 			.is_folder {
@@ -80,14 +80,23 @@ $grid_box: $grid*1.2;
 					line-height: 8px;
 				}
 			}
-			.title {
-				//@include nowrap_me();
-				margin-left: $grid_box - 3px;
-				vertical-align: top;
-				min-height: $grid_box;
+			.tree_icon {
+				display: inline;
+				color: $gray;
+				margin-left: $grid_box/4;
+			}
+			.title_wrap {
 				display: inline-block;
-				font-weight: bold;
-			}	
+				.title {
+					//@include nowrap_me();
+					margin-left: $grid_box/6;
+					vertical-align: top;
+					min-height: $grid_box;
+					display: inline;
+					font-weight: bold;
+				}	
+
+			}
 			.note_line {
 				display: inline-block;
 				display: none;

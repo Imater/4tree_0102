@@ -259,9 +259,11 @@
 
   angular.module("4treeApp").controller("save_tree_db", function($scope, syncApi) {
     return $scope.$watch("tree", function(new_value, old_value) {
+      var last_sync_time;
+      last_sync_time = new Date(2012, 11, 11);
       if (new_value !== old_value) {
-        console.info(JSON.stringify(syncApi.jsAddToSyncJournal(new_value, old_value)));
-        return $scope.db.sync_to_send = syncApi.jsDryObjectBySyncJournal();
+        syncApi.setChangeTimes(new_value, old_value);
+        return $scope.db.sync_to_send = syncApi.getChangedSinceTime(last_sync_time);
       }
     }, true);
   });

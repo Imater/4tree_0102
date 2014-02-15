@@ -36,3 +36,47 @@ body, html {
 @import 'path_line';
 
 @import 'pomidor_timer';
+
+.wrapper_line {
+    position: relative;
+    white-space: nowrap;
+    .box {
+        display: inline-block;
+        width: 30px;
+        min-height: 30px;
+    }
+    .box:before {
+        content: '';
+        position: absolute;
+        min-height: 30px;
+        left: 0px;
+        width: 30px;
+        bottom: 0px;
+        top: 0px;
+        background: green;
+    }
+    .title_wrap {
+        vertical-align: top;
+        display: inline-block;
+        line-height: 15px;
+        .title {
+            content: "";
+            min-width: 60px;
+            min-height: 30px;
+            background: red;
+            vertical-align: baseline;
+            display: inline;
+            white-space: normal;
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
+

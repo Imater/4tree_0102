@@ -1,0 +1,53 @@
+#Алгоритм синхронизации
+
+#------Клиент------
+
+time1 = new Date();
+time2 = new Date(2011,1,1);
+
+send_to_server = {
+	'current_time'		: time1 				#Текущее время
+	'last_sync_time'	: time2 				#Время последней синхронизации
+	'sync_journal'		: sync_journal 			#Журнал синхронизации за прошедшее время
+	'sync_data'			: sync_data				#Данные и высушиваем их по журналу, включаем сюда элементы с отрицательным id
+}
+
+
+#-----Сервер------
+server_tree1 = [
+	{
+		id: 8
+
+		title: 'hello'
+		_title: new Date()
+
+		note: 'Thanks'
+		_note: new Date()
+	}
+]
+
+server_tree2 = [
+	{
+		id: 8
+
+		title: {val:'hello', tm: new Date()}
+		note:  {val:'hello', tm: new Date()}
+		tags: {val: ['срочно', 'завтра'], tm: new Date()}
+
+		_change_time: new Date()
+	}
+]
+
+
+diff_time = sync.calcDiffTime( send_to_server.current_time )	#вычисляем разницу во времени между клиентом и сервером
+#находим в базе все элементы, которые заявлены в журнале синхронизации
+
+
+
+
+
+#Серверная функция
+sync = {
+	calcDiffTime: (current_time)->
+		current_time.getTime() - new Date().getTime()
+}

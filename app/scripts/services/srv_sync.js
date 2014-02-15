@@ -8,6 +8,142 @@
           this.log_show = false;
           return this.sync_journal = [];
         },
+        setChangeTimes: function(new_element, old_element) {
+          var mythis;
+          console.info(new_element, old_element);
+          mythis = this;
+          return this.myEach(new_element, function(new_el, key_array) {
+            var new_el_toset, old_el;
+            old_el = mythis.getElementByKeysArray(old_element, _.initial(key_array));
+            if (old_el.v && (new_el !== old_el.v)) {
+              console.info('changed = ', new_el, key_array);
+              new_el_toset = mythis.getElementByKeysArray(new_element, _.initial(key_array));
+              new_el_toset._t = new Date();
+              new_element._t = new Date();
+              return new_element._synced = false;
+            }
+          });
+        },
+        note: {
+          title: {
+            help: [
+              {
+                ups: void 0
+              }
+            ]
+          }
+        },
+        getElementByKeysArray: function(element, keys_array) {
+          var answer, prev_answer, prev_key;
+          answer = element;
+          prev_answer = {};
+          prev_key = "";
+          _.each(keys_array, function(key, i) {
+            var new_el;
+            console.info("============", i, key, _.isArray(prev_answer[prev_key]), _.isArray(answer), answer[key]);
+            if (!_.isUndefined(answer[key])) {
+              prev_answer = answer;
+              prev_key = key;
+              return answer = answer[key];
+            } else if (_.isNumber(key)) {
+              if (_.isArray(prev_answer[prev_key])) {
+                new_el = {};
+                new_el[key] = {};
+                return prev_answer[prev_key].push(new_el);
+              } else {
+                if (!_.isArray(prev_answer[prev_key])) {
+                  prev_answer[prev_key] = [];
+                }
+                return answer = prev_answer;
+              }
+            } else if (_.isString(key)) {
+              if (_.isArray(prev_answer[prev_key])) {
+                new_el = {};
+                new_el[key] = {};
+                return prev_answer[prev_key].push(new_el);
+              } else {
+                answer[key] = {};
+                prev_answer = answer;
+                prev_key = key;
+                return answer = answer[key];
+              }
+            }
+          });
+          return answer;
+        },
+        deepOmit: function(sourceObj, callback, thisArg) {
+          var destObj, i, mythis, newValue, shouldOmit;
+          mythis = this;
+          destObj = void 0;
+          i = void 0;
+          shouldOmit = void 0;
+          newValue = void 0;
+          if (_.isUndefined(sourceObj)) {
+            return undefined;
+          }
+          callback = (thisArg ? _.bind(callback, thisArg) : callback);
+          if (_.isPlainObject(sourceObj)) {
+            destObj = {};
+            _.forOwn(sourceObj, function(value, key) {
+              newValue = mythis.deepOmit(value, callback);
+              shouldOmit = callback(newValue, key);
+              if (!shouldOmit) {
+                destObj[key] = newValue;
+              }
+            });
+          } else if (_.isArray(sourceObj)) {
+            destObj = [];
+            i = 0;
+            while (i < sourceObj.length) {
+              newValue = mythis.deepOmit(sourceObj[i], callback);
+              shouldOmit = callback(newValue, i);
+              if (!shouldOmit) {
+                destObj.push(newValue);
+              }
+              i++;
+            }
+          } else {
+            return sourceObj;
+          }
+          return destObj;
+        },
+        myEach: function(elements, fn, name) {
+          var mythis;
+          if (name == null) {
+            name = [];
+          }
+          mythis = this;
+          return _.each(elements, function(el, key) {
+            var name1, _ref;
+            if (!_.isObject(el)) {
+              name1 = name.slice(0);
+              name1.push(key);
+              if (!((_ref = key[0]) === '$' || _ref === '_')) {
+                return fn.call(this, el, name1);
+              }
+            } else {
+              name1 = name.slice(0);
+              name1.push(key);
+              return mythis.myEach(el, fn, name1);
+            }
+          });
+        },
+        getChangedSinceTime: function(last_sync_time) {
+          var changed;
+          changed = [];
+          _.each(db_tree.db_tree, function(el, key) {
+            if (el._t >= last_sync_time) {
+              return changed.push(el);
+            }
+          });
+          this.getElementByKeysArray({}, ['title', 'help']);
+          return changed;
+        },
+        getChanged: function(last_sync_time) {
+          return this.myEach(db_tree.db_tree, function(el, key) {
+            return console.info(key);
+          });
+        },
         jsEach: function(elements, fn, name) {
           var mythis;
           if (name == null) {

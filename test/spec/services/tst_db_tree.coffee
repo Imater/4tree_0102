@@ -28,7 +28,7 @@ describe "Service db_tree test", ->
 		return
 
 	it "Test jsFind function", ->
-		expect( srv_db_tree.jsFind(1).title ).toBe 'Рабочие дела'
+		expect( srv_db_tree.jsFind(1).title.v ).toBe 'Рабочие дела'
 		expect( srv_db_tree.jsFind(500000) ).toBeUndefined()
 
 	it "Test jsGetPath function", ->

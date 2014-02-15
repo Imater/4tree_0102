@@ -52,15 +52,6 @@ describe "Service syncApi test", ->
 		console.info syncApi.jsDryObjectBySyncJournal()
 		expect( true ).toBe true
 
-	it "jsAddToSyncJournal - добавление изменившегося элемента в журнал синхронизаций", ->
-		tree = db_tree.getTree()
-		old_tree = jQuery.extend(true, {}, tree[0]['n0'])
-		tree[0]['n0'].title = "8tree"
-		tree[0]['n0'].note = "Sex"
-		tree[0]['n0'].lexus = { ilike: "Testing..." }
-		syncApi.jsAddToSyncJournal(tree[0]['n0'], old_tree)
-		expect( syncApi.sync_journal[0].changes.length ).toBe 3
-		expect( syncApi.jsDryObjectBySyncJournal()[0].lexus.ilike ).toBe 'Testing...'
 
 	it "jsUnion - добавляет или заменяет время в списке изменившихся полей", ->
 		old_value = [{key: 'title', tm: new Date(2012,11,1)}] #первый аргумент давнишние изменения
@@ -73,12 +64,27 @@ describe "Service syncApi test", ->
 		expect( union1.length ).toEqual 2
 		expect( +union1[1].tm == +new_value[0].tm ).toBeTruthy()
 
+	xit "getElementByKeysArray - Создание вложенного объекта", ->
+		el = {};
+		syncApi.getElementByKeysArray(el, ['first', 'second', 'third', 0, 'das']);
+		console.info "ANSWER = ", JSON.stringify( el )
+		syncApi.getElementByKeysArray(el, ['first', 'second', 'third', 0, 'das', 'sex']);
+		console.info "ANSWER = ", JSON.stringify( el )
 
 
+	it "getElementByKeysArray - Создание вложенного объекта", ->
+		#console.info JSON.stringify( syncApi.getChanged(0) );
+		db_tree.db_tree[2]._t = new Date();
+		db_tree.db_tree[2].title._t = new Date();
+		db_tree.db_tree[2].share[0].link._t = new Date();
+		changed = syncApi.getChangedSinceTime( new Date() )
+		console.info JSON.stringify changed;
 
-
-
-
+		_.each changed, (one_el)->
+			console.info JSON.stringify syncApi.deepOmit one_el, (el, i)->
+				console.info el, i
+				el._t
+				i=='_t'
 
 
 
