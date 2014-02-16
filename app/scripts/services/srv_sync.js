@@ -115,10 +115,10 @@
           mythis = this;
           return _.each(elements, function(el, key) {
             var name1, _ref;
-            if (!_.isObject(el)) {
+            if (!_.isObject(el) || !_.isArray(el)) {
               name1 = name.slice(0);
               name1.push(key);
-              if (!((_ref = key[0]) === '$' || _ref === '_')) {
+              if (!((_ref = key[0]) === '$')) {
                 return fn.call(this, el, name1);
               }
             } else {

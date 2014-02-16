@@ -93,10 +93,10 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', ($transla
 	myEach: (elements, fn, name=[])->
 	  mythis = @;		
 	  _.each elements, (el, key)->
-	    if(!_.isObject(el)) 
+	    if(!_.isObject(el) || !_.isArray(el)) 
 	      name1 = name.slice(0) #так делаю копию массива
 	      name1.push(key)
-	      fn.call(this, el, name1) if !( key[0] in ['$','_'])
+	      fn.call(this, el, name1) if !( key[0] in ['$'])
 	    else 
 	      name1 = name.slice(0)
 	      name1.push(key)

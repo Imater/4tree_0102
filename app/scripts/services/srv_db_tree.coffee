@@ -26,6 +26,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', ($translate) ->
 				{id:8, parent: 7, title: {v: "7 февраля 2014", _t: new Date() }, icon: 'icon-calendar', _open: false, _childs: 0}				 
 			]
 			@refreshParentsIndex();
+			console.info new ObjectId().toString();
 	refreshParentsIndex: ()->
 		mythis = @;
 		_.each @db_tree, (el)->

@@ -195,7 +195,8 @@
                 _childs: 0
               }
             ];
-            return this.refreshParentsIndex();
+            this.refreshParentsIndex();
+            return console.info(new ObjectId().toString());
           }
         },
         refreshParentsIndex: function() {

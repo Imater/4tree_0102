@@ -82,13 +82,25 @@ describe "Service syncApi test", ->
 
 		_.each changed, (one_el)->
 			console.info JSON.stringify syncApi.deepOmit one_el, (el, i)->
-				console.info el, i
-				el._t
-				i=='_t'
+				#console.info "el = ", el, i
+				#console.info "so = ", i, el
+				need = false;
+				syncApi.myEach [el], (obj, kk)->
+					console.info "OBJ = ", obj, kk.lengths
+					need = true if obj._t
+				console.info need
+				false
 
+	it "Создание нового ObjectId", ->
+		myobjectid = new ObjectId();
+		console.info "Obj = ", myobjectid;
+		console.info "string", myobjectid.toString();
+		console.info "timestamp"
+		tree = [
+			{_id: myobjectid.toString(), title: 'hello'}
+		]
 
-
-
+		console.info JSON.stringify tree
 
 
 

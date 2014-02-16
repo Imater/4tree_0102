@@ -264,7 +264,38 @@ describe 'First Test', ->
 
 
 
+The common pattern for nodejs modules is to create a file (e.g. mymodule.js) so:
 
+var myFunc = function() {
+   ...
+};
+
+exports.myFunc = myFunc;
+If you store this in the directory node_modules it can be imported thus:
+
+var mymodule = require('mymodule');
+
+mymodule.myFunc(args...);
+So, in your case, your module server.js could look like this:
+
+// server.js
+var http = require("http");
+
+var listen = function(port) {
+    var server = http.createServer(function(request, response) {
+        response.writeHead(200, {"Content-Type" : "text/html"});
+        response.write("Hello World");
+        response.end();
+    });
+    server.listen(port);
+};
+
+exports.listen = listen;
+which would be invoked:
+
+// client.js
+var server = require('server');
+server.listen(8000);
 
 
 

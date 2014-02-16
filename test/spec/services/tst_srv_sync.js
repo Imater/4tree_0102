@@ -101,7 +101,7 @@
       syncApi.getElementByKeysArray(el, ['first', 'second', 'third', 0, 'das', 'sex']);
       return console.info("ANSWER = ", JSON.stringify(el));
     });
-    return it("getElementByKeysArray - Создание вложенного объекта", function() {
+    it("getElementByKeysArray - Создание вложенного объекта", function() {
       var changed;
       db_tree.db_tree[2]._t = new Date();
       db_tree.db_tree[2].title._t = new Date();
@@ -110,11 +110,32 @@
       console.info(JSON.stringify(changed));
       return _.each(changed, function(one_el) {
         return console.info(JSON.stringify(syncApi.deepOmit(one_el, function(el, i) {
-          console.info(el, i);
-          el._t;
-          return i === '_t';
+          var need;
+          need = false;
+          syncApi.myEach([el], function(obj, kk) {
+            console.info("OBJ = ", obj, kk.lengths);
+            if (obj._t) {
+              return need = true;
+            }
+          });
+          console.info(need);
+          return false;
         })));
       });
+    });
+    return it("Создание нового ObjectId", function() {
+      var myobjectid, tree;
+      myobjectid = new ObjectId();
+      console.info("Obj = ", myobjectid);
+      console.info("string", myobjectid.toString());
+      console.info("timestamp");
+      tree = [
+        {
+          _id: myobjectid.toString(),
+          title: 'hello'
+        }
+      ];
+      return console.info(JSON.stringify(tree));
     });
   });
 

@@ -22,6 +22,7 @@ module.exports = function(config) {
       'app/bower_components/nanoscroller/bin/javascripts/jquery.nanoscroller.js',
       'app/bower_components/angular-nanoscroller/scrollable.js',
       //'app/bower_components/underscore/underscore.js',
+      'others/mongo-objectid.js',
       'app/bower_components/angular-virtual-scroll/angular-virtual-scroll.js',
       "app/others/lodash.underscore.js",
       'app/scripts/*.js',

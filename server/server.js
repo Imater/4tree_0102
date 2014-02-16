@@ -124,6 +124,7 @@
       });
     };
     app.get('/api/v1/message', exports.newMessage);
+    app.get('/api/import_from_mysql', require('./get/server_import_from_mysql').get);
     server.listen(8888);
   }
 
