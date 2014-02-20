@@ -20,7 +20,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     p_left_side_open: false
     p_right_side_open: true
     p_plan_of_day_open: false
-    main_parent_id: 0
+    main_parent_id: 1
     show_pomidor_timer: true
     calendar_box_template: "views/subviews/view_calendar_box.html"
     plan_of_day_template: "views/subviews/view_plan_of_day.html"
@@ -135,6 +135,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
 
   #база данных
   $scope.db = {
+    main_text: "Текст"
     calendar_boxes: []
     mystate: undefined
     tree_path: []
@@ -172,9 +173,13 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     ]
   }
 
+  #$scope.db.db_tree = db_tree.getTree();
   db_tree.constructor();
-  $scope.db.db_tree = db_tree.getTree();
+  db_tree.getTreeFromNet().then ()->
+    $scope.set.main_parent = db_tree.jsFindByParent(1);
 
+  #$scope.set.main_parent = [{id:1, title: {v:"4tree"}, _childs:100, _open: true}];
+  
 
   $scope.db.tree_path = db_tree.jsGetPath(1);
 
@@ -190,6 +195,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     $scope.db.pomidors = JSON.parse( set_pomidors );
   if( $scope.db.pomidors.now != 0 )
     $scope.fn.jsStartPomidorInterval();
+
   
 
   

@@ -2,7 +2,7 @@
 (function() {
   "use strict";
   describe("Service syncApi test", function() {
-    var MainCtrl, db_tree, scope, syncApi, translate;
+    var MainCtrl, db_tree, have_child_changed, no_need, scope, syncApi, translate;
     beforeEach(module("4treeApp"));
     MainCtrl = void 0;
     scope = void 0;
@@ -64,7 +64,6 @@
       return expect(answer).toBe(100);
     });
     it("jsDryObjectBySyncJournal - выбирает из дерева только те элементы, которые есть в журнале синхронизаций", function() {
-      console.info(syncApi.jsDryObjectBySyncJournal());
       return expect(true).toBe(true);
     });
     it("jsUnion - добавляет или заменяет время в списке изменившихся полей", function() {
@@ -97,45 +96,117 @@
       var el;
       el = {};
       syncApi.getElementByKeysArray(el, ['first', 'second', 'third', 0, 'das']);
-      console.info("ANSWER = ", JSON.stringify(el));
-      syncApi.getElementByKeysArray(el, ['first', 'second', 'third', 0, 'das', 'sex']);
-      return console.info("ANSWER = ", JSON.stringify(el));
+      return syncApi.getElementByKeysArray(el, ['first', 'second', 'third', 0, 'das', 'sex']);
     });
-    it("getElementByKeysArray - Создание вложенного объекта", function() {
-      var changed;
-      db_tree.db_tree[2]._t = new Date();
-      db_tree.db_tree[2].title._t = new Date();
-      db_tree.db_tree[2].share[0].link._t = new Date();
-      changed = syncApi.getChangedSinceTime(new Date());
-      console.info(JSON.stringify(changed));
-      return _.each(changed, function(one_el) {
-        return console.info(JSON.stringify(syncApi.deepOmit(one_el, function(el, i) {
-          var need;
-          need = false;
-          syncApi.myEach([el], function(obj, kk) {
-            console.info("OBJ = ", obj, kk.lengths);
-            if (obj._t) {
-              return need = true;
-            }
-          });
-          console.info(need);
-          return false;
-        })));
-      });
-    });
-    return it("Создание нового ObjectId", function() {
-      var myobjectid, tree;
-      myobjectid = new ObjectId();
-      console.info("Obj = ", myobjectid);
-      console.info("string", myobjectid.toString());
-      console.info("timestamp");
-      tree = [
-        {
-          _id: myobjectid.toString(),
-          title: 'hello'
+    have_child_changed = function(parent, now_time) {
+      var answer;
+      answer = false;
+      _.each(parent, function(el, key) {
+        if (key === '_t' && el > now_time) {
+          return answer = true;
+        } else if (_.isObject(el) || _.isArray(el)) {
+          return answer = answer || have_child_changed(el, now_time);
         }
-      ];
-      return console.info(JSON.stringify(tree));
+      });
+      return answer;
+    };
+    no_need = function(now_time, el, key, parent, path) {
+      var have_time;
+      have_time = false;
+      have_time = have_child_changed(parent[key], now_time);
+      _.each(path, function(p) {
+        if (p._t > now_time) {
+          return have_time = true;
+        }
+      });
+      return !have_time;
+    };
+    return it("getElementByKeysArray - Создание вложенного объекта", function() {
+      var marked, now_time, obj_new, obj_old, sync_time;
+      obj_old = {
+        id: 1,
+        title: {
+          v: 'hello',
+          _t: ""
+        },
+        tags: {
+          v: ['label', 'tags', 'new_tag', 'hi']
+        },
+        objects: {
+          v: [
+            {
+              0: 'first',
+              1: 'second',
+              3: 'thirs1'
+            }
+          ]
+        },
+        one: {
+          two: {
+            three: {
+              v: 2,
+              _t: ""
+            }
+          }
+        },
+        lexus: {
+          v: '1'
+        },
+        comments: [
+          {
+            v: 'sex'
+          }, {
+            v: 'sex'
+          }
+        ],
+        texts: [
+          {
+            v: 'fdka'
+          }
+        ]
+      };
+      obj_new = {
+        id: 1,
+        title: {
+          v: 'hello',
+          _t: ""
+        },
+        tags: {
+          v: ['label', 'tags', 'new_tag', 'hi']
+        },
+        objects: {
+          v: [
+            {
+              0: 'first',
+              1: 'second',
+              3: 'thirs1'
+            }
+          ]
+        },
+        one: {
+          two: {
+            three: {
+              v: 2,
+              _t: ""
+            }
+          }
+        },
+        lexus: {
+          v: '1'
+        },
+        texts: {
+          v: [
+            {
+              v: 'fdka'
+            }, {
+              v: 'fdka2'
+            }
+          ]
+        }
+      };
+      sync_time = new Date(2015, 1, 15);
+      marked = syncApi.asyncMarkChanges(obj_new, obj_old, sync_time);
+      return now_time = new Date();
     });
   });
 

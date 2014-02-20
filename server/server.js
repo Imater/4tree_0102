@@ -55,7 +55,8 @@
     MongoClient = require('mongodb').MongoClient;
     db = void 0;
     MongoClient.connect("mongodb://127.0.0.1:27017/4tree", function(err, mydb) {
-      return db = mydb;
+      db = mydb;
+      return global.db = db;
     });
     global.pool = new Pool(100, {
       host: '127.0.0.1',
@@ -124,7 +125,12 @@
       });
     };
     app.get('/api/v1/message', exports.newMessage);
-    app.get('/api/import_from_mysql', require('./get/server_import_from_mysql').get);
+    app.get('/api/import_from_mysql', function(req, res) {
+      return (require('./get/server_import_from_mysql')).get(req, res);
+    });
+    app.get('/api/v2/tree', function(req, res) {
+      return (require('./get/server_get_all_tree')).get(req, res);
+    });
     server.listen(8888);
   }
 

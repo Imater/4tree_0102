@@ -1,9 +1,8 @@
-тут будет редактор
-
-<div class="wrapper_line">
+<div class="wrapper_line" ng-if="false">
 	<div class="box">
 	</div><div class="title_wrap">
 		<div contenteditable="true" class="title">		
 		Тут мы пишем заголовок и он всегда не влезает, но нас это совсем не беспокоит, просто при этом квадрат перестает быть квадратом и это ничего такого страшного, хотя и не очень красиво)))</div>
 	</div>
 </div>
+<textarea class="main_editor" redactor ng-model="db.main_node.text"></textarea>

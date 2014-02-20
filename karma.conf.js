@@ -21,6 +21,12 @@ module.exports = function(config) {
       'app/bower_components/angular-translate/angular-translate.js',
       'app/bower_components/nanoscroller/bin/javascripts/jquery.nanoscroller.js',
       'app/bower_components/angular-nanoscroller/scrollable.js',
+      'app/bower_components/angular-redactor/angular-redactor.js',
+      'app/bower_components/CryptoJS-v3.1.2-2/rollups/sha3.js',
+      'app/bower_components/CryptoJS-v3.1.2-2/rollups/aes.js',      
+      'app/bower_components/CryptoJS-v3.1.2-2/rollups/rabbit.js',      
+      'app/bower_components/CryptoJS-v3.1.2-2/rollups/rc4.js',      
+      'app/bower_components/CryptoJS-v3.1.2-2/rollups/tripledes.js',      
       //'app/bower_components/underscore/underscore.js',
       'others/mongo-objectid.js',
       'app/bower_components/angular-virtual-scroll/angular-virtual-scroll.js',
@@ -56,7 +62,7 @@ module.exports = function(config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
 
 
     // Continuous Integration mode

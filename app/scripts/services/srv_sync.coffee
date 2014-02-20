@@ -4,14 +4,43 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', ($transla
 		@log_show = false;
 		@sync_journal = [];
 
+	asyncEach: (obj, obj_old, fn)->
+		mythis = @
+		async.forEach Object.keys(obj), (key, callback)->
+			if _.isArray(obj[key])
+				fn(obj, obj_old, key)
+				obj_old[key] = "" if(!obj_old[key]) 
+				mythis.asyncEach obj[key], obj_old[key], fn
+			else if _.isObject(obj[key])
+				fn(obj, obj_old, key)
+				obj_old[key] = "" if(!obj_old[key]) 
+				mythis.asyncEach obj[key], obj_old[key], fn
+			else
+				fn(obj, obj_old, key)
+			callback null
+
+	asyncMarkChanges: (obj_new, obj_old, sync_time)->
+		need_update_element_time = false;
+		@.asyncEach obj_new, obj_old, (el, el_old, key)->
+			if key == 'v' and (!el_old or !_.isEqual( el[key] , el_old[key]))
+				el['_t'] = sync_time
+				need_update_element_time = true
+		obj_new['_changetime'] = sync_time if need_update_element_time;				
+		obj_new
+
+	jsDeepCopy: (obj)->
+		obj_copy = {};
+		_.each obj, 
+
+
 	setChangeTimes: (new_element, old_element)->
-		console.info new_element, old_element
 		mythis = @;
 		@myEach new_element, (new_el, key_array)->
 			old_el = mythis.getElementByKeysArray( old_element, _.initial(key_array) )
 			if old_el.v and (new_el != old_el.v)
 				console.info 'changed = ', new_el, key_array
 				new_el_toset = mythis.getElementByKeysArray( new_element, _.initial(key_array) )
+				console.info 'new_element_to_set', new_el_toset
 				new_el_toset._t = new Date() #время изменения конкретного поля, которое изменилось
 				new_element._t = new Date()  #время изменения всего элемента - чтобы заметка попала в синхронизацию
 				new_element._synced = false
@@ -30,7 +59,6 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', ($transla
 		prev_answer = {};
 		prev_key = "";
 		_.each keys_array, (key, i)->
-			console.info "============", i, key, _.isArray(prev_answer[prev_key]), _.isArray(answer), answer[key]
 			if !_.isUndefined( answer[key] )
 				prev_answer = answer;
 				prev_key = key;
@@ -72,7 +100,7 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', ($transla
 	    destObj = {}
 	    _.forOwn sourceObj, (value, key) ->
 	      newValue = mythis.deepOmit(value, callback)
-	      shouldOmit = callback(newValue, key)
+	      shouldOmit = callback(newValue, key, sourceObj)
 	      destObj[key] = newValue  unless shouldOmit
 	      return
 
@@ -81,13 +109,43 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', ($transla
 	    i = 0
 	    while i < sourceObj.length
 	      newValue = mythis.deepOmit(sourceObj[i], callback)
-	      shouldOmit = callback(newValue, i)
+	      shouldOmit = callback(newValue, i, sourceObj)
 	      destObj.push newValue  unless shouldOmit
 	      i++
 	  else
 	    return sourceObj
 	  destObj
 
+	deepOmit2: (sourceObj, callback, path = []) ->
+	  mythis = @;
+	  destObj = undefined
+	  i = undefined
+	  shouldOmit = undefined
+	  newValue = undefined
+	  return `undefined`  if _.isUndefined(sourceObj)
+	  if _.isPlainObject(sourceObj)
+	    destObj = {}
+	    _.forOwn sourceObj, (value, key) ->
+	      path2 = path.slice(0);
+	      path2.push(value);
+	      newValue = mythis.deepOmit2(value, callback, path2)
+	      shouldOmit = callback(newValue, key, sourceObj, path2)
+	      destObj[key] = newValue  unless shouldOmit
+	      return
+
+	  else if _.isArray(sourceObj)
+	    destObj = []
+	    i = 0
+	    while i < sourceObj.length
+	      path2 = path.slice(0);
+	      path2.push(sourceObj[i])
+	      newValue = mythis.deepOmit2(sourceObj[i], callback, path2)
+	      shouldOmit = callback(newValue, i, sourceObj, path2)
+	      destObj.push newValue  unless shouldOmit
+	      i++
+	  else
+	    return sourceObj
+	  destObj
 
 	#рекурсивный обход элементов
 	myEach: (elements, fn, name=[])->
@@ -96,7 +154,7 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', ($transla
 	    if(!_.isObject(el) || !_.isArray(el)) 
 	      name1 = name.slice(0) #так делаю копию массива
 	      name1.push(key)
-	      fn.call(this, el, name1) if !( key[0] in ['$'])
+	      fn.call(this, el, name1) if !( key[0] in ['$','_'])
 	    else 
 	      name1 = name.slice(0)
 	      name1.push(key)

@@ -1,7 +1,10 @@
-<div class="path_line" ng-if="db.tree_path.length>1">
+<div class="path_line">
 	<ul>
+		<li>
+			<div class="path_title" ng-click="fn.jsTreeFocus(1)">4tree</div>
+		</li>
 		<li ng-repeat="path in db.tree_path">
-			<div class="path_title" ng-bind="path.title" ng-click="fn.jsTreeFocus(path.id)"></div>
+			<div class="path_title" ng-bind="path.title.v" ng-click="fn.jsTreeFocus(path.id)"></div>
 		</li>
 	</ul>
 </div>

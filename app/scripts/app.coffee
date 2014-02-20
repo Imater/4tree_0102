@@ -1,13 +1,14 @@
 angular.module("4treeApp", [
   "ngCookies"
   "ngResource"
-  "ngSanitize"
+  #"ngSanitize"
   "ngRoute"
   "pasvaz.bindonce"
   "pascalprecht.translate"
   "ngTouch"
   "sun.scrollable"
   "sf.virtualScroll"  
+  "angular-redactor"
 ])
 
 angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($translateProvider, $routeProvider) ->
@@ -24,6 +25,10 @@ angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($tra
     PLANOFDAY: "Plan of the day"
     ADD: "Add task..."
     POMIDOR: "Timer Pomodorro"
+    ENCRYPT: {
+      JSON_ERROR: "Error in JSON parse of encrypted data"
+      PASS_ERROR: "Wrong password"
+    }
     POMIDORS_TITLE: {
       '0': 'Click and work for 25 minutes'
       '1': 'Work for 25 minutes'
@@ -67,6 +72,10 @@ angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($tra
     PLANOFDAY: "План на день"
     POMIDOR: "Таймер Pomodorro"
     ADD: "Добавить..."
+    ENCRYPT: {
+      JSON_ERROR: "Ошибка расшифровки, так как данные не в формате JSON"
+      PASS_ERROR: "Неверный пароль"
+    }
     POMIDORS_TITLE: {
       '0': 'Нажмите, и работайте 25 минут'
       '1': 'Работайте не отвлекаясь 25 минут'

@@ -8,9 +8,49 @@
           this.log_show = false;
           return this.sync_journal = [];
         },
+        asyncEach: function(obj, obj_old, fn) {
+          var mythis;
+          mythis = this;
+          return async.forEach(Object.keys(obj), function(key, callback) {
+            if (_.isArray(obj[key])) {
+              fn(obj, obj_old, key);
+              if (!obj_old[key]) {
+                obj_old[key] = "";
+              }
+              mythis.asyncEach(obj[key], obj_old[key], fn);
+            } else if (_.isObject(obj[key])) {
+              fn(obj, obj_old, key);
+              if (!obj_old[key]) {
+                obj_old[key] = "";
+              }
+              mythis.asyncEach(obj[key], obj_old[key], fn);
+            } else {
+              fn(obj, obj_old, key);
+            }
+            return callback(null);
+          });
+        },
+        asyncMarkChanges: function(obj_new, obj_old, sync_time) {
+          var need_update_element_time;
+          need_update_element_time = false;
+          this.asyncEach(obj_new, obj_old, function(el, el_old, key) {
+            if (key === 'v' && (!el_old || !_.isEqual(el[key], el_old[key]))) {
+              el['_t'] = sync_time;
+              return need_update_element_time = true;
+            }
+          });
+          if (need_update_element_time) {
+            obj_new['_changetime'] = sync_time;
+          }
+          return obj_new;
+        },
+        jsDeepCopy: function(obj) {
+          var obj_copy;
+          obj_copy = {};
+          return _.each(obj);
+        },
         setChangeTimes: function(new_element, old_element) {
           var mythis;
-          console.info(new_element, old_element);
           mythis = this;
           return this.myEach(new_element, function(new_el, key_array) {
             var new_el_toset, old_el;
@@ -18,6 +58,7 @@
             if (old_el.v && (new_el !== old_el.v)) {
               console.info('changed = ', new_el, key_array);
               new_el_toset = mythis.getElementByKeysArray(new_element, _.initial(key_array));
+              console.info('new_element_to_set', new_el_toset);
               new_el_toset._t = new Date();
               new_element._t = new Date();
               return new_element._synced = false;
@@ -40,7 +81,6 @@
           prev_key = "";
           _.each(keys_array, function(key, i) {
             var new_el;
-            console.info("============", i, key, _.isArray(prev_answer[prev_key]), _.isArray(answer), answer[key]);
             if (!_.isUndefined(answer[key])) {
               prev_answer = answer;
               prev_key = key;
@@ -86,7 +126,7 @@
             destObj = {};
             _.forOwn(sourceObj, function(value, key) {
               newValue = mythis.deepOmit(value, callback);
-              shouldOmit = callback(newValue, key);
+              shouldOmit = callback(newValue, key, sourceObj);
               if (!shouldOmit) {
                 destObj[key] = newValue;
               }
@@ -96,7 +136,50 @@
             i = 0;
             while (i < sourceObj.length) {
               newValue = mythis.deepOmit(sourceObj[i], callback);
-              shouldOmit = callback(newValue, i);
+              shouldOmit = callback(newValue, i, sourceObj);
+              if (!shouldOmit) {
+                destObj.push(newValue);
+              }
+              i++;
+            }
+          } else {
+            return sourceObj;
+          }
+          return destObj;
+        },
+        deepOmit2: function(sourceObj, callback, path) {
+          var destObj, i, mythis, newValue, path2, shouldOmit;
+          if (path == null) {
+            path = [];
+          }
+          mythis = this;
+          destObj = void 0;
+          i = void 0;
+          shouldOmit = void 0;
+          newValue = void 0;
+          if (_.isUndefined(sourceObj)) {
+            return undefined;
+          }
+          if (_.isPlainObject(sourceObj)) {
+            destObj = {};
+            _.forOwn(sourceObj, function(value, key) {
+              var path2;
+              path2 = path.slice(0);
+              path2.push(value);
+              newValue = mythis.deepOmit2(value, callback, path2);
+              shouldOmit = callback(newValue, key, sourceObj, path2);
+              if (!shouldOmit) {
+                destObj[key] = newValue;
+              }
+            });
+          } else if (_.isArray(sourceObj)) {
+            destObj = [];
+            i = 0;
+            while (i < sourceObj.length) {
+              path2 = path.slice(0);
+              path2.push(sourceObj[i]);
+              newValue = mythis.deepOmit2(sourceObj[i], callback, path2);
+              shouldOmit = callback(newValue, i, sourceObj, path2);
               if (!shouldOmit) {
                 destObj.push(newValue);
               }
@@ -118,7 +201,7 @@
             if (!_.isObject(el) || !_.isArray(el)) {
               name1 = name.slice(0);
               name1.push(key);
-              if (!((_ref = key[0]) === '$')) {
+              if (!((_ref = key[0]) === '$' || _ref === '_')) {
                 return fn.call(this, el, name1);
               }
             } else {

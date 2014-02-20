@@ -10,7 +10,7 @@
         p_left_side_open: false,
         p_right_side_open: true,
         p_plan_of_day_open: false,
-        main_parent_id: 0,
+        main_parent_id: 1,
         show_pomidor_timer: true,
         calendar_box_template: "views/subviews/view_calendar_box.html",
         plan_of_day_template: "views/subviews/view_plan_of_day.html",
@@ -155,6 +155,7 @@
       };
       $scope.scrollModel = {};
       $scope.db = {
+        main_text: "Текст",
         calendar_boxes: [],
         mystate: void 0,
         tree_path: [],
@@ -241,7 +242,9 @@
         ]
       };
       db_tree.constructor();
-      $scope.db.db_tree = db_tree.getTree();
+      db_tree.getTreeFromNet().then(function() {
+        return $scope.set.main_parent = db_tree.jsFindByParent(1);
+      });
       $scope.db.tree_path = db_tree.jsGetPath(1);
       $scope.fn.setCalendarBox();
       syncApi.constructor();

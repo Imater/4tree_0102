@@ -1,11 +1,15 @@
-angular.module("4treeApp").service 'db_tree', ['$translate', ($translate) ->
+angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', ($translate, $http, $q) ->
+	salt: ()->
+		'Salt is a mineral substance composed'
+	pepper: ()->
+		' primarily of sodium chloride (NaCl)'
 	constructor: (@$timeout) -> 
 		if(!@db_tree)
 			@db_parents = []
 			@db_tree = [
 				{id:0, parent: -1, title: {v: "4tree", _t: new Date()}, icon: 'icon-record', _open: false, _childs: 5}
 				{id:-2, parent: 0, title: {v: "Новое", _t: new Date()}, icon: 'icon-download', _open: false, _childs: 5}
-				{id:1, parent: 0, title: {v: "Рабочие дела", _t: new Date()}, icon: 'icon-wrench-1', _open: true, _childs: 1, share: [
+				{id:1, parent: 0, title: "Рабочие дела", icon: 'icon-wrench-1', _open: true, _childs: 1, share: [
 					{link: {v:'sex1', _t: new Date() }}
 					{link: {v:'sex2'}}
 					{link: {v:'sex3'}}
@@ -26,21 +30,39 @@ angular.module("4treeApp").service 'db_tree', ['$translate', ($translate) ->
 				{id:8, parent: 7, title: {v: "7 февраля 2014", _t: new Date() }, icon: 'icon-calendar', _open: false, _childs: 0}				 
 			]
 			@refreshParentsIndex();
-			console.info new ObjectId().toString();
+	getTreeFromNet: ()->
+		dfd = $q.defer();
+		mythis = @;
+		$http({
+			url: '/api/v2/tree',
+			method: "GET",
+			params: {
+				user_id: 12
+			}
+		}).then (result)->
+			mythis.db_tree = result.data;
+			mythis.refreshParentsIndex();
+			dfd.resolve(result.data);
 	refreshParentsIndex: ()->
 		mythis = @;
+		mythis.db_parents = {};
 		_.each @db_tree, (el)->
 			parent = 'n' + el.parent
 			mythis.db_parents[parent] = [] if !mythis.db_parents[parent];
-			mythis.db_parents[parent].push( el );		
+			mythis.db_parents[parent].push( el );	
+		_.each @db_parents, (el, key)->
+			found = _.find mythis.db_tree, (e)->
+				key == 'n'+e.id
+			found._childs = el.length if found
+			found.childs = el if found
 	getTree: (args) ->
 		@db_tree
 	jsFindByParent: (args) ->
 		@db_parents['n'+args]
 	jsFind: (id) ->
-	    tree_by_id = _.find @db_tree, (el)->
-	    	el.id == id
-	    tree_by_id if tree_by_id
+		tree_by_id = _.find @db_tree, (el)->
+			el.id == id
+		tree_by_id if tree_by_id
 	jsGetPath: (id) ->
 		path = [];
 		prevent_recursive = 5000;

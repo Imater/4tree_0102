@@ -49,7 +49,6 @@ describe "Service syncApi test", ->
 		expect( answer ).toBe 100
 
 	it "jsDryObjectBySyncJournal - выбирает из дерева только те элементы, которые есть в журнале синхронизаций", ->
-		console.info syncApi.jsDryObjectBySyncJournal()
 		expect( true ).toBe true
 
 
@@ -67,40 +66,69 @@ describe "Service syncApi test", ->
 	xit "getElementByKeysArray - Создание вложенного объекта", ->
 		el = {};
 		syncApi.getElementByKeysArray(el, ['first', 'second', 'third', 0, 'das']);
-		console.info "ANSWER = ", JSON.stringify( el )
 		syncApi.getElementByKeysArray(el, ['first', 'second', 'third', 0, 'das', 'sex']);
-		console.info "ANSWER = ", JSON.stringify( el )
+
+	have_child_changed = (parent, now_time)->
+		answer = false;
+		_.each parent, (el, key)->
+			if key=='_t' and el > now_time
+				answer = true;
+			else if _.isObject(el) or _.isArray(el)
+				answer = answer or have_child_changed(el, now_time)
+		answer
+		#true
+
+	no_need = (now_time, el, key, parent, path)->
+		have_time = false;
+		have_time = have_child_changed(parent[key], now_time)
+		_.each path, (p)->
+			if p._t > now_time
+				have_time = true;
+		!have_time
 
 
 	it "getElementByKeysArray - Создание вложенного объекта", ->
-		#console.info JSON.stringify( syncApi.getChanged(0) );
-		db_tree.db_tree[2]._t = new Date();
-		db_tree.db_tree[2].title._t = new Date();
-		db_tree.db_tree[2].share[0].link._t = new Date();
-		changed = syncApi.getChangedSinceTime( new Date() )
-		console.info JSON.stringify changed;
+		obj_old = {
+			id:1
+			title: {v:'hello', _t: "" }
+			tags: {v:['label', 'tags', 'new_tag', 'hi']}
+			objects: {v: [0: 'first', 1: 'second', 3: 'thirs1']}
+			one: { two: { three: {v:2, _t:""} } }
+			lexus: {v: '1'}
+			comments: [
+				{v:'sex'}
+				{v:'sex'}
+			]
+			texts: [
+				{v: 'fdka'}
+			]
+		}
+		obj_new = {
+			id:1
+			title: {v:'hello', _t: "" }
+			tags: {v:['label', 'tags', 'new_tag', 'hi']}
+			objects: {v: [0: 'first', 1: 'second', 3: 'thirs1']}
+			one: { two: { three: {v:2, _t:""} } }
+			lexus: {v: '1'}
+			texts: {v: [
+				{v: 'fdka'}
+				{v: 'fdka2'}
+			]}
+		}
+		sync_time = new Date(2015,1,15);
+		marked = syncApi.asyncMarkChanges(obj_new, obj_old, sync_time);
+		#console.info JSON.stringify marked
+		now_time = new Date();
+		#console.info JSON.stringify syncApi.deepOmit2 marked, (el, key, parent, path)->
+		#	no_need(now_time, el, key, parent, path);
 
-		_.each changed, (one_el)->
-			console.info JSON.stringify syncApi.deepOmit one_el, (el, i)->
-				#console.info "el = ", el, i
-				#console.info "so = ", i, el
-				need = false;
-				syncApi.myEach [el], (obj, kk)->
-					console.info "OBJ = ", obj, kk.lengths
-					need = true if obj._t
-				console.info need
-				false
 
-	it "Создание нового ObjectId", ->
-		myobjectid = new ObjectId();
-		console.info "Obj = ", myobjectid;
-		console.info "string", myobjectid.toString();
-		console.info "timestamp"
-		tree = [
-			{_id: myobjectid.toString(), title: 'hello'}
-		]
 
-		console.info JSON.stringify tree
+
+
+
+
+
 
 
 
