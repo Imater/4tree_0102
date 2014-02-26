@@ -1,14 +1,38 @@
-{{db.db_tree}}
-<div class="main_tree notselectable">
-	<ul>
-		<li class="tree" ng-repeat="tree in set.main_parent" ng-include="set.tree_one_line_template"></li>
-	</ul>
-	<hr>
-    <ul>
-        <li ng-repeat="sync in db.sync_journal">{{sync}}</li>
-    </ul>
-    <ul>
-        <li ng-repeat="to_send in db.sync_to_send">{{to_send}}</li>
-    </ul>
+<div class="p_inside_header">
+    <span class="title drop" bindonce>{{'TREE' | translate}}</span>
+</div>
+
+<div class="p_inside_header2">
+    <div class="left_main_line">                         
+    </div>
+    <div ng-include="set.tree_header_template"></div>
 
 </div>
+
+<div class="p_inside_content vertical_scroll has_header" scrollable="{alwaysVisible:'true'}">
+    <div class="editor">
+        <div class="left_main_line" ng-click="
+set.p_left_side_open=!set.p_left_side_open">
+        </div>
+        <div class="editor_content">
+
+
+            <div class="main_tree notselectable">
+                <ul>
+                    <li class="tree" ng-repeat="tree in fn.jsFindByParent(set.main_parent_id)" ng-include="set.tree_one_line_template"></li>
+                </ul>
+                <hr>
+                <ul>
+                    <li ng-repeat="sync in db.sync_journal">{{sync}}</li>
+                </ul>
+                <ul>
+                    <li ng-repeat="to_send in db.sync_to_send">{{to_send}}</li>
+                </ul>
+
+            </div>
+                                
+        </div>
+    </div>
+</div>
+
+

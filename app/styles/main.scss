@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 //параметры
-@import 'settings'; 
+//@import 'settings'; 
 
 /* Space out content a bit */
 body, html {
@@ -36,6 +36,8 @@ body, html {
 @import 'path_line';
 
 @import 'pomidor_timer';
+
+@import 'view_mini_settings';
 
 .wrapper_line {
     position: relative;

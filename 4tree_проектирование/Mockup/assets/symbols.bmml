@@ -1,0 +1,50 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="1078" measuredH="86" mockupW="1030" mockupH="66">
+  <controls>
+    <control controlID="0" controlTypeID="__group__" x="48" y="20" w="1030" h="66" measuredW="1030" measuredH="66" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <controlName>%u0428%u0430%u043F%u043A%u0430%20%u0441%u0430%u0439%u0442%u0430</controlName>
+      </controlProperties>
+      <groupChildrenDescriptors>
+        <control controlID="0" controlTypeID="com.balsamiq.mockups::MenuBar" x="0" y="0" w="-1" h="-1" measuredW="395" measuredH="29" zOrder="0" locked="false" isInGroup="0">
+          <controlProperties>
+            <borderStyle>none</borderStyle>
+            <text>4tree.ru%2C%20%u0418%u0437%u043C%u0435%u043D%u0438%u0442%u044C%2C%20%u0412%u0438%u0434%2C%20%u0417%u0430%u043A%u043B%u0430%u0434%u043A%u0438%2C%20%u0421%u043F%u0440%u0430%u0432%u043A%u0430%2C%2025%3A00</text>
+          </controlProperties>
+        </control>
+        <control controlID="1" controlTypeID="com.balsamiq.mockups::Icon" x="1006" y="2" w="-1" h="-1" measuredW="24" measuredH="24" zOrder="1" locked="false" isInGroup="0">
+          <controlProperties>
+            <icon>EmoticonIcon%7Csmall</icon>
+          </controlProperties>
+        </control>
+        <control controlID="2" controlTypeID="com.balsamiq.mockups::Label" x="898" y="4" w="-1" h="-1" measuredW="92" measuredH="21" zOrder="2" locked="false" isInGroup="0">
+          <controlProperties>
+            <text>%u0412%u0435%u0446%u0435%u043B%u044C%20%u0415%u0432%u0433%u0435%u043D%u0438%u0439</text>
+          </controlProperties>
+        </control>
+        <control controlID="4" controlTypeID="com.balsamiq.mockups::TextInput" x="19" y="37" w="159" h="-1" measuredW="63" measuredH="27" zOrder="3" locked="false" isInGroup="0">
+          <controlProperties>
+            <backgroundAlpha>0.25</backgroundAlpha>
+            <text>%u0418%u0441%u043A%u0430%u0442%u044C...</text>
+          </controlProperties>
+        </control>
+        <control controlID="8" controlTypeID="com.balsamiq.mockups::ComboBox" x="427" y="38" w="150" h="-1" measuredW="86" measuredH="24" zOrder="4" locked="false" isInGroup="0">
+          <controlProperties>
+            <text>%u0414%u043E%u0431%u0430%u0432%u0438%u0442%u044C</text>
+          </controlProperties>
+        </control>
+        <control controlID="9" controlTypeID="com.balsamiq.mockups::Icon" x="966" y="42" w="-1" h="-1" measuredW="24" measuredH="24" zOrder="5" locked="false" isInGroup="0">
+          <controlProperties>
+            <color>14540253</color>
+            <icon>ReloadIcon%7Csmall</icon>
+          </controlProperties>
+        </control>
+        <control controlID="10" controlTypeID="com.balsamiq.mockups::Icon" x="1006" y="42" w="-1" h="-1" measuredW="24" measuredH="24" zOrder="6" locked="false" isInGroup="0">
+          <controlProperties>
+            <color>14540253</color>
+            <icon>WirelessIcon%7Csmall</icon>
+          </controlProperties>
+        </control>
+      </groupChildrenDescriptors>
+    </control>
+  </controls>
+</mockup>

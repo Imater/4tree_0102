@@ -1,3 +1,31 @@
+<div class="p_inside_header left_line">
+    <span class="title drop" bindonce>{{'EDITOR' | translate}}</span>
+</div>
+
+
+<div class="p_inside_content make_gray vertical_scroll" scrollable="{alwaysVisible:'true'}">
+    <div class="editor">
+        <div class="right_main_line" ng-click="
+set.p_right_side_open=!set.p_right_side_open">
+        </div>
+        <div class="editor_content margin_left">
+
+
+            <div ng-include="set.mini_settings"></div>
+
+			<textarea class="main_editor" redactor="{air:false, toolbarExternal1: '#toolbar'}" ng-model="db.main_node.text"></textarea>
+
+        
+        </div>
+        
+    </div>
+</div>
+
+
+
+
+
+
 <div class="wrapper_line" ng-if="false">
 	<div class="box">
 	</div><div class="title_wrap">
@@ -5,4 +33,4 @@
 		Тут мы пишем заголовок и он всегда не влезает, но нас это совсем не беспокоит, просто при этом квадрат перестает быть квадратом и это ничего такого страшного, хотя и не очень красиво)))</div>
 	</div>
 </div>
-<textarea class="main_editor" redactor ng-model="db.main_node.text"></textarea>
+

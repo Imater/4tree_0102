@@ -29,6 +29,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     pomidor_template: "views/subviews/view_pomidor_timer.html"
     tree_header_template: "views/subviews/view_tree_header.html"
     tree_one_line_template: "views/subviews/view_one_line.html"
+    mini_settings: "views/subviews/view_mini_settings.html"
     refresh: 0
   }
 

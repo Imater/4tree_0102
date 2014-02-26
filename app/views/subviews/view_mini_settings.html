@@ -1,0 +1,48 @@
+<h4><input type="checkbox"> <span class="settings_title">Тут будет заголовок</span><i class="glyphicon glyphicon-star pull-right"></i></h4>
+<div class="note_mini_settings">
+	<button class="btn btn-xs" ng-class="{active:set.open_p1}" ng-click="set.open_p1=!set.open_p1;set.open_p2=undefined;"><i class="glyphicon glyphicon-calendar"></i> 23.02 8:30 <i class="glyphicon glyphicon-bell"></i></button>
+	<button class="btn btn-xs" ng-class="{active:set.open_p2}" ng-click="set.open_p2=!set.open_p2;set.open_p1=false;"><i class="glyphicon glyphicon-ok"></i> {{'TASKS' | translate}}: 8/5</button>
+	<button class="btn btn-xs"><i class="icon-volume"></i>5&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-share"></i>&nbsp;&nbsp;&nbsp;<i class="icon-key"></i></button>
+
+<div class="btn-group pull-right">
+  <button type="button" class="btn btn-xs">В архив</button>
+  <button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown">
+    <span class="caret"></span>
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <li><a href="#">Шифровать</a></li>
+    <li><a href="#">В архив</a></li>
+    <li><a href="#">Поделиться</a></li>
+    <li class="divider"></li>
+    <li><a href="#">Удалить</a></li>
+  </ul>
+</div>
+
+
+</div>
+
+<div class="note_mini_settings_panel" ng-if="set.open_p1">
+	<div class="dates_interval">
+		<input class="date1" value="21.02.2014"> <input class="time1" value="08:30"> — <input class="time2" value="11:25"> <input class="date2" value="21.02.2014">
+	</div>
+	<div class="checkbox">
+	    <label>
+	      <input type="checkbox"> Весь день
+	    </label>
+	</div>
+	<div class="checkbox">
+	    <label>
+	      <input type="checkbox"> Повторить...
+	    </label>
+	</div>
+</div>
+
+<div class="note_mini_settings_panel" ng-if="set.open_p2">
+	<ul>
+		<li ng-repeat="the_do in db.nodate_do" class="{{the_do.myclass}}">
+			<input type="checkbox">
+			<span class="title">{{the_do.title}}</span>
+		</li>
+	</ul>
+</div>

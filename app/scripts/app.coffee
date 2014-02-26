@@ -24,6 +24,7 @@ angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($tra
     EDITOR: "Editor"
     PLANOFDAY: "Plan of the day"
     ADD: "Add task..."
+    TASKS: "Tasks"    
     POMIDOR: "Timer Pomodorro"
     ENCRYPT: {
       JSON_ERROR: "Error in JSON parse of encrypted data"
@@ -72,6 +73,7 @@ angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($tra
     PLANOFDAY: "План на день"
     POMIDOR: "Таймер Pomodorro"
     ADD: "Добавить..."
+    TASKS: "Дела"    
     ENCRYPT: {
       JSON_ERROR: "Ошибка расшифровки, так как данные не в формате JSON"
       PASS_ERROR: "Неверный пароль"

@@ -122,6 +122,8 @@ else
 	app.get '/api/v2/tree', (req, res)->
 		(require('./get/server_get_all_tree')).get(req, res)
 
+	app.get '/api/v2/fake_names', (req, res)->
+		(require('./get/server_fake_fpk_names')).get(req, res)
 
 
 	server.listen( 8888 );

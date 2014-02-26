@@ -131,6 +131,9 @@
     app.get('/api/v2/tree', function(req, res) {
       return (require('./get/server_get_all_tree')).get(req, res);
     });
+    app.get('/api/v2/fake_names', function(req, res) {
+      return (require('./get/server_fake_fpk_names')).get(req, res);
+    });
     server.listen(8888);
   }
 
