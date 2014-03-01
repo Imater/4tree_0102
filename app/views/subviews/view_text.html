@@ -3,18 +3,17 @@
 </div>
 
 
-<div class="p_inside_content make_gray vertical_scroll" scrollable="{alwaysVisible:'true'}">
-    <div class="editor">
-        <div class="right_main_line" ng-click="
+    <div class="right_main_line" ng-click="
 set.p_right_side_open=!set.p_right_side_open">
-        </div>
-        <div class="editor_content margin_left">
-
+    </div>
+<div class="p_inside_content vertical_scroll" scrollable="{alwaysVisible:'true'}">
+    <div class="editor_wrap">
+        <div class="editor_content">
 
             <div ng-include="set.mini_settings"></div>
 
-			<textarea class="main_editor" redactor="{air:false, toolbarExternal1: '#toolbar'}" ng-model="db.main_node.text"></textarea>
-
+            <div id="toolbar"></div>
+			<div class="main_editor" redactor="{toolbarFixed: true, toolbarOverflow: true, toolbarFixedBox: true, toolbarFixedTarget: '#p_right_wrap .content', toolbarFixedTopOffset: 1, air:false, toolbarExternal: '#toolbar', cleanup: true}" ng-model="db.main_node.text"></div>
         
         </div>
         

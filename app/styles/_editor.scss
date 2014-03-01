@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+.redactor_box {
+	border: none;
+}
+
+$border-color: darken($gray, 15%);
+
+#toolbar {
+	//position: absolute;
+	//z-index: 1;
+	min-height: 32px;
+}
+
+.redactor_toolbar {
+	width: 100%;
+	background: none;
+	background: rgba(250,250,250,0.98);
+	border: none !important;
+	border-bottom: 1px solid $gray !important;
+	border-top: 1px solid $gray !important;
+	padding-left: 0px !important;
+	li {
+		//padding-top: 3px !important;
+	}
+	.redactor_separator {
+		height: 31px !important;
+		border-right: none !important;
+	}
+	&.redactor_fixed_box {
+		border-top: none !important;
+	}
+}
+
+.editor_wrap {
+    padding: 0 $grid/2 0px 0;
+    font-family: $font_family;
+    img {
+        max-width: 90%;
+    }
+
+}

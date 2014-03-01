@@ -139,6 +139,12 @@
 
 #p_left_wrap {
     @include absolute_me(0, $p_center_procent, 0, 0);
+    .p_inside_header2 {
+        position: relative;
+        .right_menu_button_w {
+            right: 1px;
+        }
+    }
 }
 
 #p_right_wrap {
@@ -224,26 +230,33 @@
     background: $main_color;
     width: $grid/2;
     cursor: pointer;
+    z-index: 1;
 }
 
 
-.vertical_scroll {
-    -webkit-overflow-scrolling: touch;
-}
-
-.editor {
-    position: relative;
-    padding: 0px $grid/2 0px $grid/2;
-    font-family: $font_family;
-    img {
-        max-width: 90%;
-    }
-}
 
 
-.make_gray {
-    background: $light_gray;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

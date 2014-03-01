@@ -21,7 +21,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     p_right_side_open: true
     p_plan_of_day_open: false
     main_parent_id: 1
-    show_pomidor_timer: true
+    show_pomidor_timer: false
     calendar_box_template: "views/subviews/view_calendar_box.html"
     plan_of_day_template: "views/subviews/view_plan_of_day.html"
     text_template: "views/subviews/view_text.html"
@@ -31,6 +31,14 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     tree_one_line_template: "views/subviews/view_one_line.html"
     mini_settings: "views/subviews/view_mini_settings.html"
     refresh: 0
+    mini_settings_btn_active: 0;
+    mini_settings_btn: [
+      {id:0, title: 'Оформление', icon: 'icon-brush'}
+      {id:1, title: 'Проект', icon: 'icon-target'}
+      {id:2, title: 'Обзор', icon: 'icon-eye'}
+      {id:3, title: 'Счётчики', icon: 'icon-chart-area'}
+      {id:4, title: 'Поделиться', icon: 'icon-export-1'}
+    ]
   }
 
 

@@ -3,7 +3,7 @@
 body, html {
   padding: 0px;
   margin: 0px;
-  font-size: 12.5px; }
+  font-size: 13px; }
 
 /* Responsive: Portrait tablets and up 
 @media screen and (min-width: 768px) {
@@ -77,6 +77,66 @@ body, html {
 /* TRANSFORM  */
 /* TRANSITION */
 /* TRIPLE BORDERS */
+.vertical_scroll {
+  -webkit-overflow-scrolling: touch; }
+
+.make_gray {
+  background: #dedede; }
+
+.right_menu_button_w {
+  font-size: 19px;
+  position: absolute;
+  right: 14px;
+  top: 2px; }
+  .right_menu_button_w i:before {
+    margin: 0; }
+  .right_menu_button_w .r_menu_button {
+    display: inline-block;
+    padding: 0 6.25px;
+    cursor: pointer; }
+    .right_menu_button_w .r_menu_button:hover {
+      background: #dedede; }
+
+.hor_line {
+  height: 1px;
+  margin-top: 12.5px;
+  background: #000;
+  background: -moz-linear-gradient(left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 20%, rgba(0, 0, 0, 0.65) 78%, rgba(0, 0, 0, 0.62) 79%, rgba(0, 0, 0, 0) 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(20%, rgba(0, 0, 0, 0.65)), color-stop(78%, rgba(0, 0, 0, 0.65)), color-stop(79%, rgba(0, 0, 0, 0.62)), color-stop(100%, rgba(0, 0, 0, 0)));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 20%, rgba(0, 0, 0, 0.65) 78%, rgba(0, 0, 0, 0.62) 79%, rgba(0, 0, 0, 0) 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 20%, rgba(0, 0, 0, 0.65) 78%, rgba(0, 0, 0, 0.62) 79%, rgba(0, 0, 0, 0) 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 20%, rgba(0, 0, 0, 0.65) 78%, rgba(0, 0, 0, 0.62) 79%, rgba(0, 0, 0, 0) 100%);
+  /* IE10+ */
+  background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 20%, rgba(0, 0, 0, 0.65) 78%, rgba(0, 0, 0, 0.62) 79%, rgba(0, 0, 0, 0) 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#00000000',GradientType=1 );
+  /* IE6-9 */ }
+
+h10 {
+  display: block;
+  color: #8590ff;
+  font-size: 1em;
+  letter-spacing: 0px;
+  cursor: pointer;
+  margin-top: 12.5px; }
+
+h10:first-child {
+  margin-top: 0px; }
+
+h10:before {
+  content: '\25b8';
+  position: absolute;
+  margin-left: -15.5px;
+  font-family: 'fontello';
+  vertical-align: top; }
+
+h10.open:before {
+  content: '\25be'; }
+
 /* -------------------------------------------------------------
   Sass CSS3 Mixins! The Cross-Browser CSS3 Sass Library
   By: Matthieu Aussaguel, http://www.mynameismatthieu.com, @matthieu_tweets
@@ -282,6 +342,10 @@ body, html {
   right: 50%;
   bottom: 0;
   left: 0; }
+  #p_left_wrap .p_inside_header2 {
+    position: relative; }
+    #p_left_wrap .p_inside_header2 .right_menu_button_w {
+      right: 1px; }
 
 #p_right_wrap {
   position: absolute;
@@ -383,20 +447,8 @@ body, html {
   left: auto;
   background: #4858ff;
   width: 12.5px;
-  cursor: pointer; }
-
-.vertical_scroll {
-  -webkit-overflow-scrolling: touch; }
-
-.editor {
-  position: relative;
-  padding: 0px 12.5px 0px 12.5px;
-  font-family: "Ubuntu", Verdana; }
-  .editor img {
-    max-width: 90%; }
-
-.make_gray {
-  background: #dedede; }
+  cursor: pointer;
+  z-index: 1; }
 
 /* -------------------------------------------------------------
   Sass CSS3 Mixins! The Cross-Browser CSS3 Sass Library
@@ -620,28 +672,6 @@ body, html {
 /* TRANSFORM  */
 /* TRANSITION */
 /* TRIPLE BORDERS */
-h10 {
-  display: block;
-  color: #8590ff;
-  font-size: 1em;
-  font-weight: normal;
-  letter-spacing: 0px;
-  font-weight: normal;
-  cursor: pointer;
-  margin-top: 12.5px; }
-
-h10:first-child {
-  margin-top: 0px; }
-
-h10:before {
-  content: '\25b8';
-  position: absolute;
-  margin-left: -15.5px;
-  font-family: 'fontello'; }
-
-h10.open:before {
-  content: '\25be'; }
-
 .plan_of_day {
   margin: 0px 25px; }
   .plan_of_day ul {
@@ -964,20 +994,35 @@ h10.open:before {
 /* TRANSFORM  */
 /* TRANSITION */
 /* TRIPLE BORDERS */
-.path_line ul {
-  list-style: none; }
-  .path_line ul li {
-    display: inline-block; }
-    .path_line ul li .path_title {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      cursor: pointer; }
-      .path_line ul li .path_title:hover {
-        text-decoration: underline; }
-      .path_line ul li .path_title:after {
-        content: '->';
-        display: inline-block;
-        margin: 0px 5px; }
+.path_line {
+  padding: 8px; }
+  .path_line ul {
+    list-style: none;
+    white-space: nowrap;
+    /* Запрещаем перенос строк */
+    overflow: hidden;
+    /* Обрезаем все, что не помещается в область */
+    text-overflow: ellipsis;
+    margin-right: 25px; }
+    .path_line ul li {
+      display: inline-block; }
+      .path_line ul li .path_title {
+        max-width: 10em;
+        white-space: nowrap;
+        /* Запрещаем перенос строк */
+        overflow: hidden;
+        /* Обрезаем все, что не помещается в область */
+        text-overflow: ellipsis;
+        cursor: pointer; }
+        .path_line ul li .path_title:hover {
+          text-decoration: underline; }
+        .path_line ul li .path_title:before {
+          content: '\e75e';
+          font-family: 'fontello';
+          display: inline-block;
+          margin: 0px 5px; }
+      .path_line ul li:first-child .path_title:before {
+        content: none; }
 
 /* -------------------------------------------------------------
   Sass CSS3 Mixins! The Cross-Browser CSS3 Sass Library
@@ -1196,48 +1241,66 @@ h10.open:before {
 /* TRANSFORM  */
 /* TRANSITION */
 /* TRIPLE BORDERS */
-.settings_title {
-  margin-left: 12px; }
+.make_favorit_button {
+  color: #cccccc;
+  cursor: pointer; }
+  .make_favorit_button:hover {
+    color: #b3b3b3; }
 
-.note_mini_settings .btn {
-  margin: 10px 0px;
-  padding: 3px 15px;
-  background: #dedede;
-  color: #333333;
-  border: 1px solid #b3b3b3;
-  outline: none; }
-  .note_mini_settings .btn.active {
-    background: #FFF;
-    color: #000; }
+.mini_settings {
+  padding: 8px; }
+  .mini_settings .ms_title .settings_title {
+    margin-left: 8.33333px;
+    margin-top: 8.33333px;
+    font-weight: bold; }
+  .mini_settings .ms_inside {
+    padding: 12.5px 25px; }
+    .mini_settings .ms_inside .nm_settings_buttons {
+      text-align: center; }
+      .mini_settings .ms_inside .nm_settings_buttons .nm_btn {
+        display: inline-block;
+        width: 63px;
+        color: #cccccc;
+        cursor: pointer; }
+        .mini_settings .ms_inside .nm_settings_buttons .nm_btn i {
+          font-size: 30px; }
+          .mini_settings .ms_inside .nm_settings_buttons .nm_btn i:before {
+            margin: 0; }
+        .mini_settings .ms_inside .nm_settings_buttons .nm_btn.active {
+          color: #000; }
+        .mini_settings .ms_inside .nm_settings_buttons .nm_btn .nm_title {
+          font-size: 8px;
+          text-align: center;
+          font-weight: bold; }
+  .mini_settings .note_mini_settings_panel {
+    padding: 8px 0;
+    min-height: 10em; }
 
-.note_mini_settings_panel {
-  background: #FFF;
-  padding: 15px;
-  margin: 0px 0px 25px 0px;
-  border: 1px solid #b3b3b3;
-  -webkit-box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.4);
-  -moz-box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.4);
-  box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.4);
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px; }
-  .note_mini_settings_panel ul {
-    list-style: none;
-    padding-left: 10px; }
-    .note_mini_settings_panel ul input[type=checkbox] {
-      margin-right: 5px; }
-  .note_mini_settings_panel .dates_interval {
-    margin-top: 3px; }
-    .note_mini_settings_panel .dates_interval .date1, .note_mini_settings_panel .dates_interval .date2 {
-      width: 10em; }
-    .note_mini_settings_panel .dates_interval .date1, .note_mini_settings_panel .dates_interval .time1 {
-      text-align: right; }
-    .note_mini_settings_panel .dates_interval .time1, .note_mini_settings_panel .dates_interval .time2 {
-      width: 5em; }
-  .note_mini_settings_panel .checkbox {
-    display: inline-block;
-    vertical-align: top;
-    margin: 15px 15px 15px 0px; }
+.redactor_box {
+  border: none; }
+
+#toolbar {
+  min-height: 32px; }
+
+.redactor_toolbar {
+  width: 100%;
+  background: none;
+  background: rgba(250, 250, 250, 0.98);
+  border: none !important;
+  border-bottom: 1px solid #cccccc !important;
+  border-top: 1px solid #cccccc !important;
+  padding-left: 0px !important; }
+  .redactor_toolbar .redactor_separator {
+    height: 31px !important;
+    border-right: none !important; }
+  .redactor_toolbar.redactor_fixed_box {
+    border-top: none !important; }
+
+.editor_wrap {
+  padding: 0 12.5px 0px 0;
+  font-family: "Ubuntu", Verdana; }
+  .editor_wrap img {
+    max-width: 90%; }
 
 .wrapper_line {
   position: relative;

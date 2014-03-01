@@ -1,5 +1,3 @@
-<!-- <div class="allscreen" ng-if="set.show_pomidor_timer" ng-click="set.show_pomidor_timer=false"></div> -->
-
 <div id="w_main" ng-class="{
         header_panel_opened: set.header_panel_opened||set.show_pomidor_timer,
         p_left_side_open: set.p_left_side_open,
@@ -8,100 +6,14 @@
         }">
 
 
+    <!-- HEADER -->
     <div id="w_header_main">
-
-
-
-        <div class="w_header_top">
-            <div class="w_header_left">
-              <div class="btn-group">
-                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">4tree.ru</button>
-                <ul class="dropdown-menu">
-                  <li><a  ng-click="fn.changeLanguage('en');set.refresh=1;">English language</a></li>
-                  <li><a  ng-click="fn.changeLanguage('ru');set.refresh=1;">Russian language</a></li>
-                </ul>                    
-              </div>
-                <a class="btn"  ng-click="
-                    set.header_panel_opened=!set.header_panel_opened"><i class="icon-star"></i></a>
-                <a class="btn" ng-click="fn.changeLanguage('ru');set.refresh=1;">Ru</a>
-                <a class="btn" ng-click="fn.pub('pub')">PUB</a>
-            </div>
-            <div class="w_header_center">
-                <input placeholder="Искать...">
-            </div>
-            <div class="w_header_right">
-
-                <div class="btn-group">
-
-                    <button type="button" class="btn btn-default" ng-click="set.show_pomidor_timer=!set.show_pomidor_timer" ng-class="{active:set.show_pomidor_timer}"><i class="icon-record"></i> {{db.pomidors.btn_text}}
-                    <!-- <div class="pomidor_wrap" ng-if="set.show_pomidor_timer">
-                        <div class="pomidor_timer">
-                            <div ng-include="set.pomidor_template" is-active=""></div>
-                        </div>
-                    </div>
- -->
-                    </button>
-
-
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-                  <ul class="dropdown-menu pull-right" role="menu">
-                    <li><a href="#">Стоп</a></li>
-                    <li class="divider"></li>
-                    <li><a >01:00</a></li>
-                    <li><a >02:00</a></li>
-                    <li><a >03:00</a></li>
-                    <li><a >05:00</a></li>
-                    <li><a >10:00</a></li>
-                    <li><a ><b>15:00</b></a></li>
-                    <li><a >20:00</a></li>
-                    <li><a >25:00</a></li>
-                    <li><a ><b>30:00</b></a></li>
-                    <li><a >35:00</a></li>
-                    <li><a >40:00</a></li>
-                    <li><a >45:00</a></li>
-                    <li><a >50:00</a></li>
-                    <li><a >55:00</a></li>
-                    <li><a ><b>60:00</b></a></li>
-                    <li><a >90:00</a></li>
-                    <li><a >95:00</a></li>
-                  </ul>
-                </div>
-
-
-
-                <div class="btn-group">
-                  <button type="button" class="btn btn-default" ng-click="fn.addNote('Привет!!!')">+ Добавить</button>
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-                  <ul class="dropdown-menu pull-right" role="menu">
-                    <li><a href="#">Дело</a></li>
-                    <li><a href="#">Заметку</a></li>
-                    <li><a href="#">Помидорку</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Дневник на сегодня</a></li>
-                  </ul>
-                </div>
-
-            </div>
-        </div>
-        <div class="w_header_bottom">
-
-            <div class="pomidor_wrap noselectable" ng-if="set.show_pomidor_timer">
-                <div class="pomidor_timer">
-                    <div ng-include="set.pomidor_template" is-active=""></div>
-                </div>
-            </div>
-
-        </div>
+        <div ng-include="'views/main_header.html'"></div>
     </div>
 
     <div id="w_content_main">
-
+        
+        <!-- LEFT PANEL -->
         <div id="p_left_side_wrap">
             <div class="p_inside_wrap">
                 <div class="p_inside_header">
@@ -116,6 +28,7 @@
             </div>
         </div>
 
+        <!-- CENTER PANEL -->
         <div id="p_center_wrap">
 
             <div id="p_left_wrap">
@@ -132,6 +45,7 @@
 
         </div>
 
+        <!-- RIGHT PANEL -->
         <div id="p_right_side_wrap" ng-if="set.p_plan_of_day_open">
             <div class="p_inside_wrap">
                 <div class="p_inside_header">
