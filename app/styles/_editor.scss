@@ -4,12 +4,18 @@
 	border: none;
 }
 
+.redactor_editor {
+	border: none;
+	border-bottom: 1px dashed $light_gray;
+	min-height: 10em;
+}
+
 $border-color: darken($gray, 15%);
 
 #toolbar {
 	//position: absolute;
 	//z-index: 1;
-	min-height: 32px;
+	min-height: 26px;
 }
 
 .redactor_toolbar {
@@ -21,6 +27,10 @@ $border-color: darken($gray, 15%);
 	border-top: 1px solid $gray !important;
 	padding-left: 0px !important;
 	li {
+		font-size: 14px;
+		a {
+			padding: 5px 5px !important;
+		}
 		//padding-top: 3px !important;
 	}
 	.redactor_separator {
@@ -33,7 +43,7 @@ $border-color: darken($gray, 15%);
 }
 
 .editor_wrap {
-    padding: 0 $grid/2 0px 0;
+    padding: 0 3px 0px 0;
     font-family: $font_family;
     img {
         max-width: 90%;

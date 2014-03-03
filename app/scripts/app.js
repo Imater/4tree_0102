@@ -2,7 +2,7 @@
 (function() {
   var objMap;
 
-  angular.module("4treeApp", ["ngCookies", "ngResource", "ngRoute", "pasvaz.bindonce", "pascalprecht.translate", "ngTouch", "sun.scrollable", "sf.virtualScroll", "angular-redactor"]);
+  angular.module("4treeApp", ["ngCookies", "ngResource", "ngRoute", "pasvaz.bindonce", "pascalprecht.translate", "ngTouch", "sun.scrollable", "sf.virtualScroll", "angular-redactor", "ngAnimate"]);
 
   angular.module("4treeApp").config([
     "$translateProvider", "$routeProvider", function($translateProvider, $routeProvider) {

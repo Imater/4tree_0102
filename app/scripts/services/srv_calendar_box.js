@@ -10,10 +10,57 @@
         getDate: function(args) {
           return 1;
         },
+        jsDateDiff: function(date2) {
+          var answer, days, dif_sec, hours, minutes, pr2;
+          answer = {
+            text: "∞",
+            "class": "nodate",
+            image: ""
+          };
+          if (!date2) {
+            return answer;
+          }
+          if (date2 === "0000-00-00 00:00:00") {
+            return answer;
+          }
+          answer["class"] = "";
+          dif_sec = date2.getTime() - new Date().getTime();
+          days = parseInt(dif_sec / (60 * 1000 * 60 * 24), 10);
+          console.info(days);
+          minutes = parseInt(dif_sec / (60 * 1000), 10);
+          if (days === 0) {
+            if ((minutes > 59) || (minutes < -59)) {
+              hours = parseInt(dif_sec / (60 * 1000 * 60) * 10, 10) / 10;
+              answer.text = (minutes > 0 ? "+ " : "") + hours + " ч.";
+            } else {
+              answer.text = (minutes > 0 ? "+ " : "") + minutes + " мин.";
+            }
+          } else {
+            answer.text = (days > 0 ? "+ " : "") + days + " дн.";
+          }
+          if (days === 0) {
+            if (minutes < 0) {
+              answer["class"] = "datetoday past";
+              pr2 = (-minutes / 480) * 100;
+              if (pr2 > 80) {
+                pr2 = 80;
+              }
+              answer.image = "background-image: -webkit-gradient(linear, left top, right top, color-stop(" + pr2 + "%, #fcbec2), color-stop(" + (pr2 + 10) + "%, #feaa0c)) !important;";
+            }
+            if (minutes >= 0) {
+              answer["class"] = "datetoday";
+            }
+          } else {
+            if (minutes < 0) {
+              answer["class"] = "datepast";
+            }
+          }
+          return answer;
+        },
         getDates: function(args) {
           return this.getDate(args.today);
         },
-        getDateBox: function(date) {
+        getDateBox: _.memoize(function(date) {
           var add, answer, day, month, month1, myclass, week_day;
           if (!this.current_month) {
             this.current_month = (new Date()).getMonth();
@@ -41,7 +88,12 @@
             week_day: week_day,
             myclass: myclass
           };
-        }
+        }),
+        getDays: _.memoize(function(date) {
+          return this.jsDateDiff(date);
+        }, function(date) {
+          return date + parseInt(new Date().getTime() / 1000 / 120);
+        })
       };
     }
   ]);

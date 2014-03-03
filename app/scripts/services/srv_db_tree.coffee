@@ -30,6 +30,9 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', ($tr
 				{id:8, parent: 7, title: {v: "7 февраля 2014", _t: new Date() }, icon: 'icon-calendar', _open: false, _childs: 0}				 
 			]
 			@refreshParentsIndex();
+	clearCache: ()->
+		_.each @, (fn)->
+			fn.cache = {} if fn
 	getTreeFromNet: ()->
 		dfd = $q.defer();
 		mythis = @;
@@ -59,16 +62,15 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', ($tr
 		@db_tree
 	jsFindByParent: (args) ->
 		@db_parents['n'+args]
-	jsFind: (id) ->
+	jsFind: _.memoize (id)->
 		tree_by_id = _.find @db_tree, (el)->
 			el.id == id
 		tree_by_id if tree_by_id
-	jsGetPath: (id) ->
+	jsGetPath: _.memoize (id) ->
 		path = [];
 		prevent_recursive = 5000;
 		while (el = @jsFind(id)) and (prevent_recursive--)
 			id = el.parent
 			path.push(el);
 		path.reverse();
-
 ]

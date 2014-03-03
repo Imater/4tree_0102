@@ -27,13 +27,14 @@
 		//кнопки мини параметров
 		.nm_settings_buttons {
 			text-align: center;
+			padding-top: $padding;
 			.nm_btn {
 				display: inline-block;
 				width: round( $grid*2.5 );
 				color: $gray;
 				cursor: pointer;
 				i {
-					font-size: $grid*1.2;
+					font-size: $grid*1;
 					&:before {
 						margin: 0;
 					}
@@ -47,6 +48,46 @@
 					font-weight: bold;
 				}		
 			}
+		}
+
+		.ms_icon {
+			font-size: 1.2em;
+			display: inline-block;
+			width: $grid*1.2;
+			height: $grid*1.2;
+			text-align: center;
+			display: inline-block;
+			cursor: pointer;
+			color: #000;
+			&:hover {
+				color: $main_color;
+			}
+		}
+
+		.ms_colors {
+			margin-top: $padding;
+			.ms_color_label {
+				display: inline-block;
+				width: $grid;
+				height: $grid;
+				margin-right: 0px;
+				cursor: pointer;
+				&:nth-child(odd) {
+					margin-right: $padding;
+				}
+				&.main {
+					margin-right: $padding;
+					&:after {
+						content: '\e825';
+						font-family: 'fontello';
+						color: #FFF;
+						width: $grid;
+						text-align: center;
+						line-height: $grid;
+						position: absolute;
+					}
+				}
+			}			
 		}
 	}
 

@@ -201,6 +201,13 @@
             return this.refreshParentsIndex();
           }
         },
+        clearCache: function() {
+          return _.each(this, function(fn) {
+            if (fn) {
+              return fn.cache = {};
+            }
+          });
+        },
         getTreeFromNet: function() {
           var dfd, mythis;
           dfd = $q.defer();
@@ -248,7 +255,7 @@
         jsFindByParent: function(args) {
           return this.db_parents['n' + args];
         },
-        jsFind: function(id) {
+        jsFind: _.memoize(function(id) {
           var tree_by_id;
           tree_by_id = _.find(this.db_tree, function(el) {
             return el.id === id;
@@ -256,8 +263,8 @@
           if (tree_by_id) {
             return tree_by_id;
           }
-        },
-        jsGetPath: function(id) {
+        }),
+        jsGetPath: _.memoize(function(id) {
           var el, path, prevent_recursive;
           path = [];
           prevent_recursive = 5000;
@@ -266,7 +273,7 @@
             path.push(el);
           }
           return path.reverse();
-        }
+        })
       };
     }
   ]);

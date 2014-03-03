@@ -9,6 +9,7 @@ angular.module("4treeApp", [
   "sun.scrollable"
   "sf.virtualScroll"  
   "angular-redactor"
+  "ngAnimate"
 ])
 
 angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($translateProvider, $routeProvider) ->

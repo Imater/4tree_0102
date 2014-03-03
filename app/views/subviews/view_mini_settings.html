@@ -10,52 +10,48 @@
 	</div>
 
 	<div class="ms_inside">
-		<h10 ng-class="set.mini_settings_show" ng-click="set.mini_settings_show = !set.mini_settings_show">Параметры</h10>
+		<h10 ng-click="set.mini_settings_show = !set.mini_settings_show" ng-class="{open:set.mini_settings_show}">Параметры</h10>
 
-		<div class="note_mini_settings" ng-if="set.mini_settings_show">
+		<div class="note_mini_settings" ng-show="set.mini_settings_show">
 			<div class="nm_settings_buttons">
-				<div class="nm_btn" ng-repeat="btn in set.mini_settings_btn" ng-class="{active:btn.id == set.mini_settings_btn_active}" ng-click="set.mini_settings_btn_active = btn.id;"> 
+				<div class="nm_btn" ng-repeat="btn in set.mini_settings_btn" ng-class="{active:btn.id == set.mini_settings_btn_active}" ng-click="set.mini_settings_btn_active_old = set.mini_settings_btn_active; set.mini_settings_btn_active = btn.id;"> 
 					<i class="{{btn.icon}}"></i>
 					<div class="nm_title">{{btn.title}}</div>
 				</div>
 			</div>
 			<div class="hor_line"></div>
-			<div class="note_mini_settings_panel" ng-if="set.mini_settings_btn_active==0">
-				Куча иконок<br>
-				Куча цветов<br>
-			</div>
 
-			<div class="note_mini_settings_panel" ng-if="set.mini_settings_btn_active==1">
-				Важность (75%): -----------------o-------------<br>
-				Статус проекта: Выполнен на 25%<br>
-				<input type="checkbox"> Не показывать в To-do<br>
-				<input type="checkbox"> [] Даты: [ 27.02.2014 ] — [ 29.02.2014 ]<br>
-				Теги: <input style="width:20em" value="@Срочно, @Важно, @Цель месяца"><br>
-			</div>
+			<!-- /////////////////////////////////////////// -->
 
-			<div class="note_mini_settings_panel" ng-if="set.mini_settings_btn_active==2">
-				Обзор<br>
-			</div>
+			<div style="position:relative" ng-init="set.mini_settings_btn_active_old=0">
+				<div class="note_mini_settings_panel" ng-if="set.mini_settings_btn_active==0" ng-class="{'slide_left':set.mini_settings_btn_active_old>set.mini_settings_btn_active,'slide_right':set.mini_settings_btn_active_old<=set.mini_settings_btn_active}">
+					<div ng-include="'views/subviews/ms/view_ms_0.html'"></div>
+				</div>
 
-			<div class="note_mini_settings_panel" ng-if="set.mini_settings_btn_active==3">
-				Счётчики:<br>
-				Счётчики1:<br>
-				Счётчики2:<br>
-				Счётчики3:<br>
-				Счётчики4:<br>
-			</div>
+				<div class="note_mini_settings_panel slideit" ng-if="set.mini_settings_btn_active==1"  ng-class="{'slide_left':set.mini_settings_btn_active_old>=set.mini_settings_btn_active,'slide_right':set.mini_settings_btn_active_old<set.mini_settings_btn_active}">
+					<div ng-include="'views/subviews/ms/view_ms_1.html'"></div>
+				</div>
 
-			<div class="note_mini_settings_panel" ng-if="set.mini_settings_btn_active==4">
-				Ссылка <a href="http:4tree.ru">http://4tree.ru/sx2a</a><br>
+				<div class="note_mini_settings_panel" ng-if="set.mini_settings_btn_active==2"  ng-class="{'slide_left':set.mini_settings_btn_active_old>=set.mini_settings_btn_active,'slide_right':set.mini_settings_btn_active_old<set.mini_settings_btn_active}">
+					<div ng-include="'views/subviews/ms/view_ms_2.html'"></div>
+				</div>
+
+				<div class="note_mini_settings_panel" ng-if="set.mini_settings_btn_active==3" ng-class="{'slide_left':set.mini_settings_btn_active_old>=set.mini_settings_btn_active,'slide_right':set.mini_settings_btn_active_old<set.mini_settings_btn_active}">
+					<div ng-include="'views/subviews/ms/view_ms_3.html'"></div>
+				</div>
+
+				<div class="note_mini_settings_panel" ng-if="set.mini_settings_btn_active==4" ng-class="{'slide_left':set.mini_settings_btn_active_old>=set.mini_settings_btn_active,'slide_right':set.mini_settings_btn_active_old<set.mini_settings_btn_active}">
+					<div ng-include="'views/subviews/ms/view_ms_4.html'"></div>
+				</div>
 			</div>
 
 		</div>
 
 
 
-		<h10 ng-class="set.mini_tasks_show" ng-click="set.mini_tasks_show = !set.mini_tasks_show">Дела</h10>
-		<div class="note_mini_settings" ng-if="set.mini_tasks_show">
-			тут у нас куча дел:))
+		<h10 ng-click="set.mini_tasks_show = !set.mini_tasks_show" ng-class="{open:set.mini_tasks_show}">Дела ({{(tasks = fn.service.db_tasks.getTasksByTreeId(db.main_node.id)).length}})</h10>
+		<div class="note_mini_settings" ng-show="set.mini_tasks_show">
+			<div ng-include="'views/subviews/ms/ms_tasks.html'"></div>
 		</div>
 	</div>
 

@@ -3,9 +3,45 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', ($translate) ->
 		@color = 'grey'
 	getDate: (args) ->
 		1
+	jsDateDiff: (date2) ->
+	  answer =
+	    text: "∞"
+	    class: "nodate"
+	    image: ""
+
+	  return answer unless date2
+	  return answer if date2 is "0000-00-00 00:00:00"
+
+	  answer.class = "";
+
+	  dif_sec = date2.getTime()-new Date().getTime();
+
+	  days = parseInt(dif_sec / (60 * 1000 * 60 * 24), 10)
+	  console.info days
+	  minutes = parseInt(dif_sec / (60 * 1000), 10)
+	  if days is 0
+	    if (minutes > 59) or (minutes < -59)
+	      hours = parseInt(dif_sec / (60 * 1000 * 60) * 10, 10) / 10
+	      answer.text = ((if (minutes > 0) then "+ " else "")) + hours + " ч."
+	    else
+	      answer.text = ((if (minutes > 0) then "+ " else "")) + minutes + " мин."
+	  else
+	    answer.text = ((if (days > 0) then "+ " else "")) + days + " дн."
+	  if days is 0
+	    if minutes < 0
+	      answer.class = "datetoday past"
+	      pr2 = (-minutes / 480) * 100
+	      pr2 = 80  if pr2 > 80
+	      answer.image = "background-image: -webkit-gradient(linear, left top, right top, color-stop(" + pr2 + "%, #fcbec2), color-stop(" + (pr2 + 10) + "%, #feaa0c)) !important;"
+	    
+	    #"-webkit-gradient(linear, right top, left top, color-stop("+pr+", #da5700), color-stop("+(pr+0.1)+", #990000));";
+	    #"-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #333), color-stop(100%, #222))"
+	    answer.class = "datetoday"  if minutes >= 0
+	  else answer.class = "datepast"  if minutes < 0
+	  answer
 	getDates: (args) ->
 		@getDate(args.today)
-	getDateBox: (date) ->
+	getDateBox: _.memoize (date) ->
 		@current_month = (new Date()).getMonth() if (!@current_month);
 		day = date.getDate().toString();
 		month1 = date.getMonth();
@@ -17,4 +53,9 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', ($translate) ->
 		myclass += " odd_month" if ((month1 + add)%2) 
 		myclass += " this_month" if month1 == @current_month;
 		answer = {day: day, month: month, week_day: week_day, myclass: myclass}
+	getDays: 
+		_.memoize (date)->
+			@jsDateDiff(date)
+		, (date) -> 
+			(date + parseInt( new Date().getTime()/1000/120 ) )
 ]

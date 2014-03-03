@@ -92,8 +92,9 @@
 }
 
 #p_center_wrap {
-    @include absolute_me(0, 0, 0, 0);
+    @include absolute_me(0, $grid/2, 0, $grid/2);
 }
+
 
 
 //левая панель открыта
@@ -107,6 +108,10 @@
         @include animate_me(left, 0.1s);
     }
 
+    .left_main_line {
+        left: $p_left_side_width - $grid/2;
+    }
+
 }
 //правая панель открыта
 #w_main.p_right_side_open {
@@ -115,7 +120,7 @@
     }
 
     #p_center_wrap {
-        right: $p_right_side_width;
+        right: $p_right_side_width + $grid/2;
         @include animate_me(right, 0.1s);
     }
 
@@ -123,13 +128,20 @@
         display: block;
     }
 
+    .right_main_line {
+        right: $p_right_side_width;
+    }
+
 
 }
 
 #w_main.p_plan_of_day_closed.p_right_side_open {
     #p_center_wrap {
-        right: $grid * 2;
+        right: $grid * 2 + $grid/2;
         @include animate_me(right, 0.1s);
+    }
+    .right_main_line {
+        right: $grid * 2;
     }
 }
 
