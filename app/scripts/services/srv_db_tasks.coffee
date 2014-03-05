@@ -15,6 +15,7 @@ angular.module("4treeApp").service 'db_tasks', ['$translate', '$http', '$q', ($t
 			date1: new Date(2014,2,3), 
 			date2: new Date(2014,2,3), 
 			title: 'Начало сериала на ТНТ про дружбу народов' 
+			did: new Date();
 			}
 
 			{ 
@@ -23,6 +24,7 @@ angular.module("4treeApp").service 'db_tasks', ['$translate', '$http', '$q', ($t
 			date1: new Date(2013,2,3), 
 			date2: new Date(2014,2,3), 
 			title: 'Как жизнь? написать письмо' 
+			did: new Date();
 			}
 
 			{ 
@@ -31,6 +33,7 @@ angular.module("4treeApp").service 'db_tasks', ['$translate', '$http', '$q', ($t
 			date1: new Date(2014,2,2), 
 			date2: new Date(2014,2,2), 
 			title: 'Урал край голубых озёр - написать статью' 
+			did: new Date();
 			}
 
 			{ 
@@ -47,6 +50,13 @@ angular.module("4treeApp").service 'db_tasks', ['$translate', '$http', '$q', ($t
 			date1: '', 
 			date2: new Date(2014,2,3), 
 			title: 'Как жизнь? написать письмо' 
+			}
+			{ 
+			id: 8, 
+			tree_id: 1034, 
+			date1: '', 
+			date2: new Date(2014,2,3), 
+			title: 'Нужно купить Мартини' 
 			}
 
 			{ 
@@ -70,9 +80,51 @@ angular.module("4treeApp").service 'db_tasks', ['$translate', '$http', '$q', ($t
 			fn.cache = {} if fn
 	getTasks: ()->
 		@db_tasks;
-	getTasksByTreeId: _.memoize (tree_id)->
+	getTasksByTreeId: (tree_id, only_next)->
 		answer = _.filter @db_tasks, (el)->
 			el.tree_id == tree_id 
-		answer = _.sortBy answer, (el)->
-			-el.date1
+		answer = _.sortBy answer, (el)-> el.date1
+
+		if only_next == true 
+			answer1 = _.find answer, (el)-> el.date1 && !el.did;
+			if !answer1
+				answer1 = _.find answer, (el)-> !el.did
+			if answer1
+				answer = [ answer1 ];
+			else
+				answer = undefined;
+		else
+			answer = _.sortBy answer, (el)-> 
+				if el.date1
+					res = -el.date1.getTime();
+					res = res + 100000000000000 
+				else
+					res = new Date().getTime();
+					res = res + 200000000000000 
+
+				if el.did
+					res = res + 500000000000000 
+
+				console.info res
+				res
+
+		answer
+	#, (tree_id, only_next)->
+	#	tree_id+only_next
 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

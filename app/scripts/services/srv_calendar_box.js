@@ -26,7 +26,6 @@
           answer["class"] = "";
           dif_sec = date2.getTime() - new Date().getTime();
           days = parseInt(dif_sec / (60 * 1000 * 60 * 24), 10);
-          console.info(days);
           minutes = parseInt(dif_sec / (60 * 1000), 10);
           if (days === 0) {
             if ((minutes > 59) || (minutes < -59)) {
@@ -45,7 +44,7 @@
               if (pr2 > 80) {
                 pr2 = 80;
               }
-              answer.image = "background-image: -webkit-gradient(linear, left top, right top, color-stop(" + pr2 + "%, #fcbec2), color-stop(" + (pr2 + 10) + "%, #feaa0c)) !important;";
+              answer.image = "background-image: -webkit-gradient(linear, left top, right top, color-stop(" + pr2 + "%, #fcbec2), color-stop(" + (pr2 + 10) + "%, #feaa0c));";
             }
             if (minutes >= 0) {
               answer["class"] = "datetoday";

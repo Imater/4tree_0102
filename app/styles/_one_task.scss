@@ -1,14 +1,50 @@
 @charset "UTF-8";
 
 .note_tasks {
-	margin-top: $padding;
+	margin-top: $padding*2;
 }
 
 $date_opacity: 0.2;
 
+.datepast {
+    background: rgba(#f8000d, $date_opacity) !important;
+	border: 2px solid #f5a1aa !important;
+}
+
+.datetoday {
+    background: #feaa0c !important;
+	border: 2px solid #feaa0c !important;
+}
+
+.datetoday.past {
+    background-image: -webkit-gradient(linear, right top, left top, color-stop(0.85, #ffd5b5), color-stop(0.95, rgba(#f8000d, $date_opacity) )) !important;
+	border: 2px solid #feaa0c !important;    
+}
+
+.nodate {
+	background: #FFF !important;
+	border: 2px solid #fc9a0e !important;   
+	color: #fc9a0e !important; 
+	font-weight: bold !important;
+}
+
+
 .one_task {
 	white-space: nowrap;
 	margin-bottom: $padding*2;
+	&.did {
+		.title {
+			text-decoration: line-through;
+			color: $gray;
+		}
+
+		.task_date {
+			background: #FFF !important;
+			border: 2px solid $gray !important;
+			color: $gray !important;
+			background-image: none !important;
+		}
+	}
 	.left_part {
 		display: inline-block;
 		vertical-align: top;
@@ -41,24 +77,6 @@ $date_opacity: 0.2;
 }
 
 
-.datepast {
-    background: rgba(#f8000d, $date_opacity) !important;
-	border: 2px solid #f5a1aa !important;
-}
 
-.datetoday {
-    background: #feaa0c !important;
-	border: 2px solid #feaa0c !important;
-}
 
-.datetoday.past {
-    background-image: -webkit-gradient(linear, right top, left top, color-stop(0.85, #ffd5b5), color-stop(0.95, rgba(#f8000d, $date_opacity) )) !important;
-	border: 2px solid #feaa0c !important;    
-}
-
-.nodate {
-	background: #eaeaea !important;
-	border: 2px solid rgba(#cccccc,1) !important;   
-	color: rgba(#cccccc,1) !important; 
-}
 

@@ -1,3 +1,4 @@
 <div class="note_tasks">
+	{{(tasks = fn.service.db_tasks.getTasksByTreeId(db.main_node.id, !set.mini_tasks_show)).t}}
 	<div ng-repeat="task in tasks" ng-include="'views/subviews/task_one_line.html'"></div>
 </div

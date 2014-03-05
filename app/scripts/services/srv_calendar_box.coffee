@@ -17,7 +17,6 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', ($translate) ->
 	  dif_sec = date2.getTime()-new Date().getTime();
 
 	  days = parseInt(dif_sec / (60 * 1000 * 60 * 24), 10)
-	  console.info days
 	  minutes = parseInt(dif_sec / (60 * 1000), 10)
 	  if days is 0
 	    if (minutes > 59) or (minutes < -59)
@@ -32,7 +31,7 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', ($translate) ->
 	      answer.class = "datetoday past"
 	      pr2 = (-minutes / 480) * 100
 	      pr2 = 80  if pr2 > 80
-	      answer.image = "background-image: -webkit-gradient(linear, left top, right top, color-stop(" + pr2 + "%, #fcbec2), color-stop(" + (pr2 + 10) + "%, #feaa0c)) !important;"
+	      answer.image = "background-image: -webkit-gradient(linear, left top, right top, color-stop(" + pr2 + "%, #fcbec2), color-stop(" + (pr2 + 10) + "%, #feaa0c));"
 	    
 	    #"-webkit-gradient(linear, right top, left top, color-stop("+pr+", #da5700), color-stop("+(pr+0.1)+", #990000));";
 	    #"-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #333), color-stop(100%, #222))"

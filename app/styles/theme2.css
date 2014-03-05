@@ -132,7 +132,7 @@ h10 {
   color: #8590ff;
   font-size: 1em;
   font-weight: normal;
-  letter-spacing: 1px;
+  letter-spacing: 0px;
   cursor: pointer;
   margin-top: 12.5px; }
 
@@ -143,7 +143,7 @@ h10:before {
   content: '\25b8';
   font-size: 1.5em;
   position: absolute;
-  margin-left: -21px;
+  margin-left: -22px;
   margin-top: -0.2em;
   font-family: 'fontello';
   vertical-align: top; }
@@ -151,7 +151,7 @@ h10:before {
 h10.open:before {
   content: '\25be';
   margin-left: -23px;
-  margin-top: -0.18em; }
+  margin-top: -0.19em; }
 
 .slide_right.ng-enter {
   animation-play-state: initial;
@@ -267,7 +267,95 @@ h10.open:before {
     right: 0;
     bottom: auto;
     left: 0;
-    height: 50px; }
+    height: 66px; }
+    #w_main #w_header_main .header_menu .link {
+      display: inline-block;
+      padding: 4px 8px;
+      padding-left: 13px;
+      cursor: pointer; }
+      #w_main #w_header_main .header_menu .link:hover {
+        background: #dedede; }
+    #w_main #w_header_main .header_menu .user_info {
+      display: inline-block;
+      position: absolute;
+      right: 12.5px;
+      top: 4px;
+      color: #cccccc;
+      -webkit-transition: all 0.5s ease-out;
+      -o-transition: all 0.5s ease-out;
+      -moz-transition: all 0.5s ease-out;
+      transition: all 0.5s ease-out; }
+      #w_main #w_header_main .header_menu .user_info:hover {
+        color: #000; }
+        #w_main #w_header_main .header_menu .user_info:hover .photo {
+          opacity: 1; }
+      #w_main #w_header_main .header_menu .user_info .surname {
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 25px;
+        height: 25px;
+        margin-right: 8px; }
+      #w_main #w_header_main .header_menu .user_info .photo {
+        -webkit-transition: all 0.5s ease-out;
+        -o-transition: all 0.5s ease-out;
+        -moz-transition: all 0.5s ease-out;
+        transition: all 0.5s ease-out;
+        display: inline-block;
+        vertical-align: middle;
+        border-radius: 2px;
+        opacity: 0.4;
+        width: 25px;
+        height: 25px; }
+    #w_main #w_header_main .header_second_line {
+      margin-top: 8px; }
+      #w_main #w_header_main .header_second_line .search {
+        border: 1px solid #dedede;
+        margin-left: 13px;
+        padding: 2px 8px;
+        height: 24px;
+        padding-right: 1.6em;
+        width: 136px;
+        outline: none;
+        -webkit-transition: width 1s ease-out;
+        -o-transition: width 1s ease-out;
+        -moz-transition: width 1s ease-out;
+        transition: width 1s ease-out; }
+        #w_main #w_header_main .header_second_line .search:focus {
+          width: 230px;
+          -webkit-transition: width 0.3s ease-out;
+          -o-transition: width 0.3s ease-out;
+          -moz-transition: width 0.3s ease-out;
+          transition: width 0.3s ease-out; }
+      #w_main #w_header_main .header_second_line .clear {
+        display: inline-block;
+        position: absolute;
+        margin-left: -1.2em;
+        font-size: 1.3em;
+        color: #cccccc;
+        cursor: pointer; }
+      #w_main #w_header_main .header_second_line .header_center {
+        position: absolute;
+        right: 13px;
+        display: inline-block; }
+        #w_main #w_header_main .header_second_line .header_center .btn {
+          height: 24px;
+          padding-top: 2px;
+          padding-bottom: 2px;
+          background: #FFF;
+          color: gray; }
+          #w_main #w_header_main .header_second_line .header_center .btn .caret {
+            border-top-color: gray; }
+          #w_main #w_header_main .header_second_line .header_center .btn.wide {
+            padding-left: 20px;
+            padding-right: 20px; }
+            #w_main #w_header_main .header_second_line .header_center .btn.wide:hover {
+              background: #4858ff;
+              color: #FFF;
+              border-color: #4858ff;
+              -webkit-transition: all 0.5s ease-out;
+              -o-transition: all 0.5s ease-out;
+              -moz-transition: all 0.5s ease-out;
+              transition: all 0.5s ease-out; }
     #w_main #w_header_main .w_header_top {
       line-height: 50px;
       vertical-align: middle; }
@@ -305,7 +393,7 @@ h10.open:before {
     -moz-transition: top 0.1s ease-out;
     transition: top 0.1s ease-out;
     position: absolute;
-    top: 50px;
+    top: 66px;
     right: 0;
     bottom: 0;
     left: 0; }
@@ -501,7 +589,7 @@ h10.open:before {
   bottom: 0;
   left: auto;
   background: #4858ff;
-  width: 12.5px;
+  width: 13px;
   cursor: pointer;
   z-index: 1; }
 
@@ -1399,11 +1487,37 @@ h10.open:before {
     max-width: 90%; }
 
 .note_tasks {
-  margin-top: 8px; }
+  margin-top: 16px; }
+
+.datepast {
+  background: rgba(248, 0, 13, 0.2) !important;
+  border: 2px solid #f5a1aa !important; }
+
+.datetoday {
+  background: #feaa0c !important;
+  border: 2px solid #feaa0c !important; }
+
+.datetoday.past {
+  background-image: -webkit-gradient(linear, right top, left top, color-stop(0.85, #ffd5b5), color-stop(0.95, rgba(248, 0, 13, 0.2))) !important;
+  border: 2px solid #feaa0c !important; }
+
+.nodate {
+  background: #FFF !important;
+  border: 2px solid #fc9a0e !important;
+  color: #fc9a0e !important;
+  font-weight: bold !important; }
 
 .one_task {
   white-space: nowrap;
   margin-bottom: 16px; }
+  .one_task.did .title {
+    text-decoration: line-through;
+    color: #cccccc; }
+  .one_task.did .task_date {
+    background: #FFF !important;
+    border: 2px solid #cccccc !important;
+    color: #cccccc !important;
+    background-image: none !important; }
   .one_task .left_part {
     display: inline-block;
     vertical-align: top; }
@@ -1428,23 +1542,6 @@ h10.open:before {
     .one_task .right_part .title {
       display: inline;
       white-space: normal; }
-
-.datepast {
-  background: rgba(248, 0, 13, 0.2) !important;
-  border: 2px solid #f5a1aa !important; }
-
-.datetoday {
-  background: #feaa0c !important;
-  border: 2px solid #feaa0c !important; }
-
-.datetoday.past {
-  background-image: -webkit-gradient(linear, right top, left top, color-stop(0.85, #ffd5b5), color-stop(0.95, rgba(248, 0, 13, 0.2))) !important;
-  border: 2px solid #feaa0c !important; }
-
-.nodate {
-  background: #eaeaea !important;
-  border: 2px solid #cccccc !important;
-  color: #cccccc !important; }
 
 .wrapper_line {
   position: relative;

@@ -1,6 +1,6 @@
-<div class="one_task">
+<div class="one_task" ng-class="{did:task.did}">
 	<div class="left_part">
-		<input type="checkbox">
+		<input type="checkbox" ng-model="task.did" ng-checked="task.did">
 	</div>
 	<div class="right_part">
 		<a ng-if="dt = fn.service.calendarBox.getDays(task.date1)"></a>

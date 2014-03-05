@@ -10,6 +10,102 @@
         @include animate_me(height, 0.1s);
         @include absolute_me(0, 0, auto, 0);
         height: $header_height_closed;
+        .header_menu {
+            .link {
+                display: inline-block;
+                padding: round($padding/2) $padding;
+                padding-left: round($grid/2);
+                cursor: pointer;
+                &:hover {
+                    background: $light_gray;
+                }
+            }
+            .user_info {
+                display: inline-block;
+                position: absolute;
+                right: $grid/2;
+                top: $padding/2;
+                color: $gray;
+                @include animate_me(all, 0.5s);
+                &:hover {
+                    color: #000;
+                    .photo {
+                        opacity: 1;
+                    }
+                }
+                .surname {
+                    display: inline-block;
+                    vertical-align: middle;
+                    line-height: $grid;
+                    height: $grid;
+                    margin-right: $padding;
+                }
+                .photo {
+                    @include animate_me(all, 0.5s);
+                    display: inline-block;
+                    vertical-align: middle;
+                    border-radius: 2px;
+                    opacity: 0.4;
+                    width: $grid;
+                    height: $grid;
+                }
+            }
+        }
+        .header_second_line {
+            margin-top: $padding;
+            .search {
+                border: 1px solid $light_gray;
+                margin-left: round($grid/2);
+                padding: 2px $padding;
+                height: 24px;
+                padding-right: 1.6em;
+                width: 136px;
+                outline: none;
+                @include animate_me(width, 1s);
+                &:focus {
+                    width: 230px;
+                    @include animate_me(width, 0.3s);
+                }
+            }
+            .clear {
+                display: inline-block;
+                position: absolute;
+                margin-left: -1.2em;
+                font-size: 1.3em;
+                color: $gray;
+                cursor: pointer;
+            }
+            .header_center {
+                position: absolute;
+                right: round($grid/2);
+                display: inline-block;
+                .btn {
+                    height: 24px;
+                    padding-top: 2px;
+                    padding-bottom: 2px;
+                    background: #FFF;
+                    color: $dark_gray;
+                    //border: none;
+                    //border-left: 1px solid #FFF;
+                    .caret {
+                        border-top-color: $dark_gray;
+                    }
+                    &.wide {
+                        //border: none;
+                        padding-left: 20px;
+                        padding-right: 20px;
+                        &:hover {
+                            background: $main_color;
+                            color: #FFF;
+                            border-color: $main_color;
+                            @include animate_me(all, 0.5s)
+                        }
+                    }
+                }
+            }
+        }
+
+
         .w_header_top {
             line-height: $grid*2;
             vertical-align: middle;
@@ -240,7 +336,7 @@
 .right_main_line {
     @include absolute_me(0,0,0,auto);
     background: $main_color;
-    width: $grid/2;
+    width: round($grid/2);
     cursor: pointer;
     z-index: 1;
 }

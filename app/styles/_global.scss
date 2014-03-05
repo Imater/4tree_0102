@@ -63,7 +63,7 @@ h10 {
     color: lighten($main_color,12%);
     font-size: 1em;
     font-weight: normal;
-    letter-spacing: 1px;
+    letter-spacing: 0px;
     cursor: pointer;
     margin-top: $grid/2;
 }
@@ -75,7 +75,7 @@ h10:before {
     content: '\25b8';
     font-size: 1.5em;
     position: absolute;
-    margin-left: -($padding*2) - 5px;
+    margin-left: -($padding*2) - 6px;
     margin-top: -0.2em;
     font-family: 'fontello';
     vertical-align: top;
@@ -83,7 +83,7 @@ h10:before {
 h10.open:before {
     content: '\25be';
     margin-left: -($padding*2) - 7px;
-    margin-top: -0.18em;    
+    margin-top: -0.19em;    
 }
 
 @mixin anim($type: slideInDown, $sec: 0.5s) {

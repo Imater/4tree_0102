@@ -2,18 +2,6 @@
 angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', ($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks) ->
 
 
-  $scope.awesomeThings = [
-    "HTML5 Boilerplate"
-    "AngularJS"
-    "Karma"
-    "SEXS"
-    "LEXUS"
-    "LEXUS2"
-    "LEXUS333"
-    "VALENTINA"
-    "SAAA"
-  ]
-
   #параметры
   $scope.set = {
     header_panel_opened: false

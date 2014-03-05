@@ -8,6 +8,7 @@ $gray: #CCC;
 $pomidor_color: #d50800;
 
 $light_gray: lighten($gray, 7%);
+$dark_gray: darken($gray, 30%);
 $title_lighten: 40%;
 
 $font_family: "Ubuntu", Verdana;
@@ -19,7 +20,7 @@ $grid_label: 20px;
 $padding: 8px;
 
 //шапка приложения - высота
-$header_height_closed: $grid * 2;
+$header_height_closed: $grid * 2 + $padding*2;
 $header_height_opened: $grid * 2 //панель
 					 + $grid * 2; //место для кнопок календаря
 
