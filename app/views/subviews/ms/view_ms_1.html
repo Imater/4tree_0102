@@ -1,1 +1,47 @@
-Проект
+<table class="table_settings">
+	<tr>
+		<th class="left_label">Важность&nbsp;{{db.main_node.importance}}%:</th>
+		<td class="right_content" ng-init="db.main_node.importance = db.main_node.importance?db.main_node.importance:0">
+			<div range-slider min="0" max="100" model-max="db.main_node.importance" pin-handle="min" show-values="false"></div>				
+		</td>
+	</tr>
+	<tr>
+		<th>Статус:</th>
+		<td>
+			  <div class="btn-group">
+			    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+			      Выполнен на 25%
+			      <span class="caret"></span>
+			    </button>
+			    <ul class="dropdown-menu">
+			      <li class="dropdown-header">Процент выполнения:</li>
+			      <li><a>Выполнен на 5%</a></li>
+			      <li><a>Выполнен на 25%</a></li>
+			      <li><a>Выполнен на 50%</a></li>
+			      <li><a>Выполнен на 75%</a></li>
+			      <li><a>Выполнен на 100%</a></li>
+			      <li class="divider"></li>
+			      <li class="dropdown-header">Статус проекта:</li>
+			      <li><a>Заметка</a></li>
+			      <li><a>Запланирован</a></li>
+			      <li><a>Пауза</a></li>
+			    </ul>
+			  </div>
+		</td>
+	</tr>
+	<tr>
+		<th>
+		</th>
+		<td>
+			<input type="checkbox" id="show_in_todo"> <label for="show_in_todo">Скрыть в «To-do»</label>
+		</td>
+	</tr>
+	<tr>
+		<th>
+		Даты:
+		</th>
+		<td>
+		<input> — <input>
+		</td>
+	</tr>
+</table>

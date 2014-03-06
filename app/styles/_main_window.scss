@@ -10,21 +10,100 @@
         @include animate_me(height, 0.1s);
         @include absolute_me(0, 0, auto, 0);
         height: $header_height_closed;
+        .navbar {
+            z-index: 2;
+            margin: 0px;
+            background: #FFF !important;
+            border-color: $main_color !important;
+            min-height: 0px;
+            min-height: $header_height_closed;
+            .navbar-toggle {
+                padding: 4px 3px;
+            }
+        }
         .header_menu {
+            .dropdown, .dropdown-menu {
+                text-align: left;
+                margin-top: round($grid/2) - 1px;
+                border-top-left-radius: 0px;
+                border-top-right-radius: 0px;
+            }
+            .pull-right.dropdown-menu{
+                margin-top: 2px;
+            }
+            .navbar-collapse {
+                .navbar-nav {
+                    text-align: center;
+                }
+                .form-group {
+                    text-align: center;
+                }
+                .form-control {
+                    background: none !important;
+                    box-shadow: none;
+                    -webkit-box-shadow: none;
+                    font-size: inherit;
+                    width: 100%;
+                    height: $grid;
+                    padding: 2px 10px;
+                    margin-top: 0px;
+                    border-radius: 3px;
+                }
+                &.collapse {
+                    //overflow: hidden !important;
+                }
+            }
+            .navbar-right {
+                margin-top: round($padding/2)+4px;
+                height: $grid;
+                margin-right: $padding;
+                .btn {
+                    padding: 3px 10px;
+                    .caret {
+                        border-top-color: #000 !important;
+                    }
+                }
+                .wide {
+                    padding: 3px 20px;
+                }
+            }
+            .user_photo {
+                padding-left: round($grid/2) !important;
+            }
             .link {
                 display: inline-block;
-                padding: round($padding/2) $padding;
-                padding-left: round($grid/2);
+                padding: round($padding*1.5) round($grid/4);
+                height: $header_height_closed;
+                //padding-left: round($grid/2);
                 cursor: pointer;
+                .photo {
+                    @include animate_me(all, 0.5s);
+                    display: inline-block;
+                    vertical-align: top;
+                    margin-top: -4px;
+                    border-radius: 50%;
+                    opacity: 0.9;
+                    width: $grid;
+                    height: $grid;
+                    &:hover {
+                        opacity: 1;
+                    }
+                }
                 &:hover {
                     background: $light_gray;
                 }
             }
+            .sync {
+                color: $dark_gray;
+            }
+            .search {
+                margin-left: round($grid/2)
+            }
             .user_info {
                 display: inline-block;
                 position: absolute;
-                right: $grid/2;
-                top: $padding/2;
+                right: round($grid/2);
+                top: round($padding/2);
                 color: $gray;
                 @include animate_me(all, 0.5s);
                 &:hover {
@@ -39,15 +118,6 @@
                     line-height: $grid;
                     height: $grid;
                     margin-right: $padding;
-                }
-                .photo {
-                    @include animate_me(all, 0.5s);
-                    display: inline-block;
-                    vertical-align: middle;
-                    border-radius: 2px;
-                    opacity: 0.4;
-                    width: $grid;
-                    height: $grid;
                 }
             }
         }
@@ -110,7 +180,7 @@
             line-height: $grid*2;
             vertical-align: middle;
             .w_header_left {
-                @include absolute_me(0,auto,0,$grid/2);
+                @include absolute_me(0,auto,0,round($grid/2) );
             }
             .w_header_center {
                 text-align: center;
@@ -123,12 +193,12 @@
                 }
             }
             .w_header_right {
-                @include absolute_me(0,$grid/2,0,auto);
+                @include absolute_me(0,round($grid/2),0,auto);
             }
             .btn {
                 border: 1px solid $gray;
                 background: #EEE;
-                padding: 3px $grid/2;
+                padding: 3px round($grid/2);
                 //margin: 5px;
                 //border-radius: 3px;
                 font-size: 1em;
@@ -142,6 +212,50 @@
     #w_content_main {
         @include animate_me(top, 0.1s);
         @include absolute_me($header_height_closed, 0, 0, 0);
+        .left_toggle_button {
+            z-index: 1;
+            cursor: pointer;
+            .title {
+                display: none;
+            }
+            .left_label {
+                font-family: $font_family;
+                font-size: 1em;
+                color: lighten($main_color, $title_lighten);
+                opacity: 0.5;
+                letter-spacing:1px;
+                padding-left: round($grid/2);
+                display: inline-block;
+                @include nowrap_me;
+                vertical-align: middle;
+                line-height: $p_inside_header_height;
+                border-right: 2px solid rgba(lighten($main_color, $title_lighten), 0.5);
+                border-radius: 15px;
+                padding-right: round($grid/2);;
+                i:before {
+                    margin-right: 0 !important;
+                }
+            }
+            .left_label.drop:after {
+                font-size: 0.9em;
+                color: lighten($main_color, $title_lighten);
+                content: "\e869";
+                font-family: 'fontello';
+                margin-left: 1em;
+                margin-top: 2px;
+            }
+            &.opened {
+                .title {
+                    display: none;
+                }
+                .arrow:before {
+                    content: '\e861' !important;
+                    font-family: 'fontello';
+                    display: inline-block;
+
+                }
+            }
+        }
     }
 }
 
@@ -188,7 +302,7 @@
 }
 
 #p_center_wrap {
-    @include absolute_me(0, $grid/2, 0, $grid/2);
+    @include absolute_me(0, round($grid/2), 0, round($grid/2) );
 }
 
 
@@ -205,7 +319,7 @@
     }
 
     .left_main_line {
-        left: $p_left_side_width - $grid/2;
+        left: $p_left_side_width - round($grid/2) ;
     }
 
 }
@@ -216,7 +330,7 @@
     }
 
     #p_center_wrap {
-        right: $p_right_side_width + $grid/2;
+        right: $p_right_side_width + round($grid/2);
         @include animate_me(right, 0.1s);
     }
 
@@ -233,7 +347,7 @@
 
 #w_main.p_plan_of_day_closed.p_right_side_open {
     #p_center_wrap {
-        right: $grid * 2 + $grid/2;
+        right: $grid * 2 + round($grid/2);
         @include animate_me(right, 0.1s);
     }
     .right_main_line {
@@ -322,14 +436,14 @@
 }
 
 .margin_left {
-    margin-left: $grid/2;
+    margin-left: round($grid/2);
     margin-right: $grid;
 }
 
 .left_main_line {
     @include absolute_me(0,auto,0,0);
     background: $main_color;
-    width: $grid/2;
+    width: round($grid/2);
     cursor: pointer;
 }
 

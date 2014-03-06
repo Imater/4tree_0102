@@ -50,6 +50,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', ($tr
 		mythis = @;
 		mythis.db_parents = {};
 		_.each @db_tree, (el)->
+			el.importance = if el.importance then el.importance else 0;
 			parent = 'n' + el.parent
 			mythis.db_parents[parent] = [] if !mythis.db_parents[parent];
 			mythis.db_parents[parent].push( el );	

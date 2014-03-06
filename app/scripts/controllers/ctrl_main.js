@@ -21,9 +21,9 @@
         mini_settings: "views/subviews/view_mini_settings.html",
         refresh: 0,
         ms_show_icon_limit: 36,
-        mini_settings_btn_active: 0,
-        mini_settings_show: false,
-        mini_tasks_show: true,
+        mini_settings_btn_active: 1,
+        mini_settings_show: true,
+        mini_tasks_show: false,
         mini_settings_btn: [
           {
             id: 0,

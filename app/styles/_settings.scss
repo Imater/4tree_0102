@@ -20,7 +20,7 @@ $grid_label: 20px;
 $padding: 8px;
 
 //шапка приложения - высота
-$header_height_closed: $grid * 2 + $padding*2;
+$header_height_closed: $grid + $padding*2;
 $header_height_opened: $grid * 2 //панель
 					 + $grid * 2; //место для кнопок календаря
 

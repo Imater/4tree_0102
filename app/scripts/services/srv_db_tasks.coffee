@@ -80,7 +80,7 @@ angular.module("4treeApp").service 'db_tasks', ['$translate', '$http', '$q', ($t
 			fn.cache = {} if fn
 	getTasks: ()->
 		@db_tasks;
-	getTasksByTreeId: (tree_id, only_next)->
+	getTasksByTreeId: _.memoize (tree_id, only_next)->
 		answer = _.filter @db_tasks, (el)->
 			el.tree_id == tree_id 
 		answer = _.sortBy answer, (el)-> el.date1
@@ -105,12 +105,11 @@ angular.module("4treeApp").service 'db_tasks', ['$translate', '$http', '$q', ($t
 				if el.did
 					res = res + 500000000000000 
 
-				console.info res
 				res
 
 		answer
-	#, (tree_id, only_next)->
-	#	tree_id+only_next
+	, (tree_id, only_next)->
+		tree_id+only_next
 ]
 
 

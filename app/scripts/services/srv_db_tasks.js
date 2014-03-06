@@ -76,7 +76,7 @@
         getTasks: function() {
           return this.db_tasks;
         },
-        getTasksByTreeId: function(tree_id, only_next) {
+        getTasksByTreeId: _.memoize(function(tree_id, only_next) {
           var answer, answer1;
           answer = _.filter(this.db_tasks, function(el) {
             return el.tree_id === tree_id;
@@ -111,12 +111,13 @@
               if (el.did) {
                 res = res + 500000000000000;
               }
-              console.info(res);
               return res;
             });
           }
           return answer;
-        }
+        }, function(tree_id, only_next) {
+          return tree_id + only_next;
+        })
       };
     }
   ]);
