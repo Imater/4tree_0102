@@ -2,7 +2,7 @@
 (function() {
   "use strict";
   angular.module("4treeApp").controller("MainCtrl", [
-    '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks) {
+    '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q) {
       var set_pomidors;
       $scope.set = {
         header_panel_opened: false,
@@ -21,7 +21,7 @@
         mini_settings: "views/subviews/view_mini_settings.html",
         refresh: 0,
         ms_show_icon_limit: 36,
-        mini_settings_btn_active: 1,
+        mini_settings_btn_active: 2,
         mini_settings_show: true,
         mini_tasks_show: false,
         mini_settings_btn: [
@@ -53,6 +53,24 @@
           db_tasks: db_tasks,
           db_tree: db_tree,
           calendarBox: calendarBox
+        },
+        datediff: _.memoize(function(dates) {
+          var d1, d2;
+          d1 = new moment(dates.startDate);
+          d2 = new moment(dates.endDate);
+          return d2.diff(d1, 'days') + 1;
+        }, function(dates) {
+          return dates.startDate + dates.endDate;
+        }),
+        tags: ['@gtd', '@срочно', '@завтра', '@быстро', '@на сайт', '@общее', '@Вецель', '@когда-нибудь'],
+        loadTags: function(query) {
+          var dfd;
+          dfd = $q.defer();
+          console.info(query);
+          dfd.resolve(_.filter(this.tags, function(el) {
+            return el.indexOf(query) !== -1;
+          }));
+          return dfd.promise;
         },
         changeLanguage: function(lng) {
           return $translate.uses(lng).then(function() {
@@ -307,7 +325,7 @@
         syncApi.setChangeTimes(new_value, old_value);
         return $scope.db.sync_to_send = syncApi.getChangedSinceTime(last_sync_time);
       }
-    }, true);
+    }, false);
   });
 
   angular.module("4treeApp").value("fooConfig", {

@@ -1,1 +1,85 @@
-Обзор
+<table class="table_settings">
+	<tr>
+		<th class="left_label">
+		Обзор каждые:
+		</th>
+		<td>
+			<div class="input-group every input-group-sm">
+		      <div class="input-group-btn">
+		        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+		        <ul class="dropdown-menu pull-right">
+		          <li><a>1</a></li>
+		          <li><a>2</a></li>
+		          <li><a>3</a></li>
+		          <li><a>4</a></li>
+		          <li><a>5</a></li>
+		          <li><a>6</a></li>
+		          <li><a>7</a></li>
+		          <li><a>8</a></li>
+		        </ul>
+		      </div><!-- /btn-group -->
+		      <input type="text" class="form-control" value="2">
+		      <div class="input-group-btn">
+		        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">нед.<span class="caret"></span></button>
+		        <ul class="dropdown-menu pull-right">
+		          <li><a href="#">дня</a></li>
+		          <li><a href="#">недели</a></li>
+		          <li><a href="#">месяца</a></li>
+		          <li><a href="#">года</a></li>
+		        </ul>
+		      </div><!-- /btn-group -->
+		    </div><!-- /input-group -->
+		</td>
+	</tr>
+	<tr>
+		<th>
+			Следующий:
+		</th>
+		<td>
+			<div class="daterange_diff">
+			30.08.2014 <a ng-if="dt1 = fn.service.calendarBox.getDays(db.main_node.dates.startDate._d,'days')"></a>
+				<div class="task_date right {{dt1.class}}" style="{{dt1.image}}">{{dt1.text}}</div>
+				<a class="">пропустить</a>
+			</div>
+		</td>
+	</tr>
+
+	<tr>
+		<th>
+		Отметить:
+		</th>
+		<td>
+		<a class="btn btn-default btn-sm btn-success">Обзор проведён сейчас</a>
+		</td>
+	</tr>
+
+	<tr>
+		<th>
+		Обзор был:
+		</th>
+		<td>
+		12.07.2014, 21.08.2014, 28.09.2014
+		</td>
+	</tr>
+
+	<tr>
+		<th>
+		Статистика:
+		</th>
+		<td>
+		создан: 12.08.14, изменён: 18.09.14, выполнен: 11.02.14
+		</td>
+	</tr>
+</table>
+
+
+<table class="table_settings">
+	<tr>
+		<td class="buttons_panel" width="100%" col="2">
+			<a class="btn btn-default btn-xs">Переместить</a>
+			<a class="btn btn-default btn-xs">Дублировать</a>
+			<a class="btn btn-default btn-xs">В Архив</a>
+			<a class="btn btn-default btn-xs">Удалить</a>
+		</td>
+	</tr>
+</table>

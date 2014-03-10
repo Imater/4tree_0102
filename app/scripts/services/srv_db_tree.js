@@ -230,7 +230,8 @@
           mythis.db_parents = {};
           _.each(this.db_tree, function(el) {
             var parent;
-            el.importance = el.importance ? el.importance : 0;
+            el.importance = el.importance ? el.importance : 50;
+            el.tags = el.tags ? el.tags : [];
             parent = 'n' + el.parent;
             if (!mythis.db_parents[parent]) {
               mythis.db_parents[parent] = [];

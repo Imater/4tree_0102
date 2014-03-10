@@ -1,8 +1,11 @@
 <table class="table_settings">
 	<tr>
-		<th class="left_label">Важность&nbsp;{{db.main_node.importance}}%:</th>
+		<th class="left_label">Важность:</th>
+
 		<td class="right_content" ng-init="db.main_node.importance = db.main_node.importance?db.main_node.importance:0">
 			<div range-slider min="0" max="100" model-max="db.main_node.importance" pin-handle="min" show-values="false"></div>				
+			<div class="importance">{{db.main_node.importance}}%</div>
+
 		</td>
 	</tr>
 	<tr>
@@ -33,7 +36,7 @@
 		<th>
 		</th>
 		<td>
-			<input type="checkbox" id="show_in_todo"> <label for="show_in_todo">Скрыть в «To-do»</label>
+			<input type="checkbox" id="show_in_todo" ng-model="db.main_node.hide_in_todo"> <label for="show_in_todo">Скрыть в «To-do»</label>
 		</td>
 	</tr>
 	<tr>
@@ -41,7 +44,39 @@
 		Даты:
 		</th>
 		<td>
-		<input> — <input>
+
+			<div class="daterange_diff">
+				<a ng-if="dt1 = fn.service.calendarBox.getDays(db.main_node.dates.startDate._d,'days')"></a>
+				<div class="task_date left {{dt1.class}}" style="{{dt1.image}}">{{dt1.text}}</div> <input class="daterange" type="daterange" ng-model="db.main_node.dates" format="DD.MM.YYYY" separator=" — "> 
+				<a ng-if="dt2 = fn.service.calendarBox.getDays(db.main_node.dates.endDate._d,'days')"></a>
+				 <div ng-if="dt2.text!=dt1.text" class="task_date right {{dt2.class}}" style="{{dt2.image}}">{{dt2.text}}</div>
+			</div>
+			
+
+		</td>
+	</tr>
+	<tr>
+		<th>Срок:</th>
+		<td>
+			<ng-pluralize class="ms_days" count="fn.datediff(db.main_node.dates)"
+                 when="{'0': '',
+                     'one': '1 день',
+                     'few': '{} дня',
+                     'many': '{} дней',
+                     'other': '{} дней'}">
+			</ng-pluralize>			
+		</td>
+	</tr>
+	<tr>
+		<th>
+			Теги:
+		</th>
+		<td>
+
+			<tags-input ng-model="db.main_node.tags">
+				<auto-complete debounce-delay="10" max-results-to-show="50" min-length="0" source="fn.loadTags($query)"></auto-complete>
+			</tags-input>
+
 		</td>
 	</tr>
 </table>

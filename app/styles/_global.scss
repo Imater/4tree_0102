@@ -9,6 +9,13 @@
     background: $light_gray;
 }
 
+.autocomplete {
+    z-index: 20000000;
+}
+
+.redactor_toolbar.redactor-toolbar-external {
+    z-index: 1;
+}
 //кнопка правого меню (3 полоски)
 .right_menu_button_w {
     font-size: 19px;
@@ -63,7 +70,8 @@ h10 {
     color: lighten($main_color,12%);
     font-size: 1em;
     font-weight: normal;
-    letter-spacing: 0px;
+    letter-spacing: 1px;
+    padding-left: round($padding/2);
     cursor: pointer;
     margin-top: $grid/2;
 }
@@ -75,14 +83,14 @@ h10:before {
     content: '\25b8';
     font-size: 1.5em;
     position: absolute;
-    margin-left: -($padding*2) - 6px;
+    margin-left: -($padding*2) - 5px;
     margin-top: -0.2em;
     font-family: 'fontello';
     vertical-align: top;
 }
 h10.open:before {
     content: '\25be';
-    margin-left: -($padding*2) - 7px;
+    margin-left: -($padding*2) - 5px;
     margin-top: -0.19em;    
 }
 
@@ -132,6 +140,46 @@ $how_long: 0.1s;
     }
         
 
+.daterangepicker {
+    margin-top: 5px;
+    .table-condensed > thead > tr > th, .table-condensed > thead > tr > td, .table-condensed > tbody > tr > th, .table-condensed > tbody > tr > td, .table-condensed > tfoot > tr > th, .table-condensed > tfoot > tr > td {
+        padding: 2px 7px;
+    }
+    
+    .ranges {
+        display: none;
+    }
+
+    &.opensright .calendar {
+        float: none;
+    }
+
+    .calendar-date {
+        padding: 15px;
+        border: none;
+    }
+
+    .today {
+        font-weight: bold;
+        background: yellow;
+    }
+
+    .active.today {
+        color: yellow;
+    }
+    
+
+    td, th {
+        border-radius: 0px;
+    }
+
+    .calendar th, .calendar td {
+        min-width: 20px;
+    }
+    td.in-range {
+        background: rgba($main_color, 0.3);
+    }
+}
 
 
 

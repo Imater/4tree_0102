@@ -10,8 +10,8 @@
         getDate: function(args) {
           return 1;
         },
-        jsDateDiff: function(date2) {
-          var answer, days, dif_sec, hours, minutes, pr2;
+        jsDateDiff: function(date2, only_days) {
+          var answer, days, dif_sec, hours, minutes, now, pr2;
           answer = {
             text: "∞",
             "class": "nodate",
@@ -24,15 +24,36 @@
             return answer;
           }
           answer["class"] = "";
-          dif_sec = date2.getTime() - new Date().getTime();
+          now = new Date;
+          if (only_days) {
+            now.setHours(0);
+            now.setMinutes(0);
+            now.setSeconds(0);
+            date2.setHours(0);
+            date2.setMinutes(0);
+            date2.setSeconds(0);
+          }
+          dif_sec = date2.getTime() - now;
+          if (dif_sec > 0) {
+            dif_sec += 1000;
+          }
+          if (dif_sec < 0) {
+            dif_sec -= 1000;
+          }
           days = parseInt(dif_sec / (60 * 1000 * 60 * 24), 10);
           minutes = parseInt(dif_sec / (60 * 1000), 10);
+          if (only_days && days === 0) {
+            minutes = 0;
+          }
           if (days === 0) {
             if ((minutes > 59) || (minutes < -59)) {
               hours = parseInt(dif_sec / (60 * 1000 * 60) * 10, 10) / 10;
               answer.text = (minutes > 0 ? "+ " : "") + hours + " ч.";
             } else {
               answer.text = (minutes > 0 ? "+ " : "") + minutes + " мин.";
+            }
+            if (only_days) {
+              answer.text = "сегодня";
             }
           } else {
             answer.text = (days > 0 ? "+ " : "") + days + " дн.";
@@ -88,10 +109,10 @@
             myclass: myclass
           };
         }),
-        getDays: _.memoize(function(date) {
-          return this.jsDateDiff(date);
-        }, function(date) {
-          return date + parseInt(new Date().getTime() / 1000 / 120);
+        getDays: _.memoize(function(date, only_days) {
+          return this.jsDateDiff(date, only_days);
+        }, function(date, only_days) {
+          return date + parseInt(new Date().getTime() / 1000 / 120) + only_days;
         })
       };
     }

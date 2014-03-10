@@ -1,5 +1,5 @@
 "use strict"
-angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', ($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks) ->
+angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', ($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q) ->
 
 
   #параметры
@@ -20,7 +20,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     mini_settings: "views/subviews/view_mini_settings.html"
     refresh: 0
     ms_show_icon_limit: 36
-    mini_settings_btn_active: 1
+    mini_settings_btn_active: 2
     mini_settings_show: true
     mini_tasks_show: false
     mini_settings_btn: [
@@ -40,6 +40,27 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       db_tree: db_tree
       calendarBox: calendarBox
     }
+    datediff: _.memoize (dates)->
+      d1 = new moment(dates.startDate);
+      d2 = new moment(dates.endDate);
+      d2.diff(d1, 'days')+1;
+    , (dates)->
+      dates.startDate + dates.endDate;
+    tags: [
+      '@gtd',
+      '@срочно',
+      '@завтра'
+      '@быстро'
+      '@на сайт'
+      '@общее'
+      '@Вецель'
+      '@когда-нибудь'
+    ]
+    loadTags: (query)->
+      dfd = $q.defer();
+      console.info query
+      dfd.resolve _.filter @tags, (el)-> el.indexOf(query)!=-1
+      dfd.promise;
     changeLanguage: (lng)->
       $translate.uses(lng).then ()->
         $scope.db.calendar_boxes = [];
@@ -394,7 +415,7 @@ angular.module("4treeApp").controller "save_tree_db", ($scope, syncApi)->
     if new_value != old_value
       syncApi.setChangeTimes(new_value, old_value);
       $scope.db.sync_to_send = syncApi.getChangedSinceTime(last_sync_time);
-  , true
+  , false
 
 
 

@@ -83,6 +83,12 @@ body, html {
 .make_gray {
   background: #dedede; }
 
+.autocomplete {
+  z-index: 20000000; }
+
+.redactor_toolbar.redactor-toolbar-external {
+  z-index: 1; }
+
 .right_menu_button_w {
   font-size: 19px;
   position: absolute;
@@ -132,7 +138,8 @@ h10 {
   color: #8590ff;
   font-size: 1em;
   font-weight: normal;
-  letter-spacing: 0px;
+  letter-spacing: 1px;
+  padding-left: 4px;
   cursor: pointer;
   margin-top: 12.5px; }
 
@@ -143,14 +150,14 @@ h10:before {
   content: '\25b8';
   font-size: 1.5em;
   position: absolute;
-  margin-left: -22px;
+  margin-left: -21px;
   margin-top: -0.2em;
   font-family: 'fontello';
   vertical-align: top; }
 
 h10.open:before {
   content: '\25be';
-  margin-left: -23px;
+  margin-left: -21px;
   margin-top: -0.19em; }
 
 .slide_right.ng-enter {
@@ -188,6 +195,29 @@ h10.open:before {
 
 .noise {
   background-image: url(data:image/png;base64,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); }
+
+.daterangepicker {
+  margin-top: 5px; }
+  .daterangepicker .table-condensed > thead > tr > th, .daterangepicker .table-condensed > thead > tr > td, .daterangepicker .table-condensed > tbody > tr > th, .daterangepicker .table-condensed > tbody > tr > td, .daterangepicker .table-condensed > tfoot > tr > th, .daterangepicker .table-condensed > tfoot > tr > td {
+    padding: 2px 7px; }
+  .daterangepicker .ranges {
+    display: none; }
+  .daterangepicker.opensright .calendar {
+    float: none; }
+  .daterangepicker .calendar-date {
+    padding: 15px;
+    border: none; }
+  .daterangepicker .today {
+    font-weight: bold;
+    background: yellow; }
+  .daterangepicker .active.today {
+    color: yellow; }
+  .daterangepicker td, .daterangepicker th {
+    border-radius: 0px; }
+  .daterangepicker .calendar th, .daterangepicker .calendar td {
+    min-width: 20px; }
+  .daterangepicker td.in-range {
+    background: rgba(72, 88, 255, 0.3); }
 
 /* -------------------------------------------------------------
   Sass CSS3 Mixins! The Cross-Browser CSS3 Sass Library
@@ -1482,8 +1512,11 @@ h10.open:before {
 
 .mini_settings {
   padding: 8px; }
+  .mini_settings .ms_title .note_checkbox {
+    font-size: 1.5em;
+    margin-left: 5px; }
   .mini_settings .ms_title .settings_title {
-    margin-left: 8.33333px;
+    margin-left: 6.25px;
     margin-top: 8.33333px;
     font-weight: bold; }
   .mini_settings .ms_inside {
@@ -1542,11 +1575,13 @@ h10.open:before {
       width: 100%; }
       .mini_settings .ms_inside .table_settings td {
         vertical-align: top;
-        padding: 4px; }
+        padding: 8px; }
         .mini_settings .ms_inside .table_settings td .btn {
           background: #EEE; }
       .mini_settings .ms_inside .table_settings th {
-        min-width: 10em;
+        min-width: 5em;
+        font-size: 0.8em;
+        white-space: nowrap;
         font-weight: normal;
         color: gray;
         text-align: right;
@@ -1558,7 +1593,8 @@ h10.open:before {
         cursor: pointer; }
       .mini_settings .ms_inside .table_settings .ngrs-range-slider {
         margin: 0px;
-        border-color: #dedede;
+        border-radius: 0;
+        border-color: #cccccc;
         box-shadow: none;
         -webkit-box-shadow: none; }
       .mini_settings .ms_inside .table_settings .left_label {
@@ -1567,6 +1603,66 @@ h10.open:before {
         padding-top: 0px;
         padding-right: 8px;
         color: gray; }
+      .mini_settings .ms_inside .table_settings .daterange {
+        width: 14em;
+        font-size: 12px;
+        padding: 2px 1px;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        border-radius: 0; }
+      .mini_settings .ms_inside .table_settings .importance {
+        position: absolute;
+        right: 8px;
+        color: #cccccc;
+        text-align: right; }
+      .mini_settings .ms_inside .table_settings .daterange_diff .task_date {
+        width: auto;
+        padding: 0px 3px;
+        cursor: default;
+        opacity: 0.5;
+        border-radius: 0; }
+        .mini_settings .ms_inside .table_settings .daterange_diff .task_date.left {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0; }
+        .mini_settings .ms_inside .table_settings .daterange_diff .task_date.right {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0; }
+      .mini_settings .ms_inside .table_settings .ngTagsInput .tags {
+        background: none;
+        box-shadow: none;
+        -webkit-appearance: none;
+        border: none;
+        padding: 8px 8px;
+        padding-left: 0px;
+        margin-left: -4px;
+        padding-top: 4px; }
+        .mini_settings .ms_inside .table_settings .ngTagsInput .tags .tag-input {
+          padding: 8px 4px !important;
+          height: auto; }
+        .mini_settings .ms_inside .table_settings .ngTagsInput .tags li {
+          background: #4858ff;
+          color: #FFF;
+          padding: 1px 4px;
+          padding-right: 2px;
+          height: auto;
+          border-radius: 1px;
+          border: none;
+          margin: 2px; }
+          .mini_settings .ms_inside .table_settings .ngTagsInput .tags li button {
+            margin-top: 3px;
+            color: rgba(204, 204, 204, 0.3); }
+            .mini_settings .ms_inside .table_settings .ngTagsInput .tags li button:hover {
+              color: #FFF; }
+      .mini_settings .ms_inside .table_settings .every {
+        width: 13em; }
+        .mini_settings .ms_inside .table_settings .every input {
+          text-align: right; }
+      .mini_settings .ms_inside .table_settings .buttons_panel .btn {
+        display: inline-block; }
+      .mini_settings .ms_inside .table_settings .btn-success {
+        color: #4858ff;
+        border: 2px solid #4858ff; }
   .mini_settings .note_mini_settings_panel {
     padding: 8px 0;
     min-height: 10em; }
@@ -1636,6 +1732,21 @@ h10.open:before {
   color: #fc9a0e !important;
   font-weight: bold !important; }
 
+.task_date {
+  display: inline-block;
+  background: rgba(0, 0, 255, 0.1);
+  font-size: 10px;
+  color: #000;
+  line-height: 16px;
+  vertical-align: baseline;
+  height: 20px;
+  width: 60px;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid #c9c5ff;
+  cursor: pointer;
+  margin-right: 4px; }
+
 .one_task {
   white-space: nowrap;
   margin-bottom: 16px; }
@@ -1654,20 +1765,6 @@ h10.open:before {
     display: inline-block;
     padding-left: 8px;
     margin-left: 4px; }
-    .one_task .right_part .task_date {
-      display: inline-block;
-      background: rgba(0, 0, 255, 0.1);
-      font-size: 10px;
-      color: #000;
-      line-height: 16px;
-      vertical-align: baseline;
-      height: 20px;
-      width: 60px;
-      text-align: center;
-      border-radius: 10px;
-      border: 2px solid #c9c5ff;
-      cursor: pointer;
-      margin-right: 4px; }
     .one_task .right_part .title {
       display: inline;
       white-space: normal; }

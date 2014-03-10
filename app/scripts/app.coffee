@@ -1,3 +1,5 @@
+moment.lang('ru')
+
 angular.module("4treeApp", [
   "ngCookies"
   "ngResource"
@@ -11,6 +13,9 @@ angular.module("4treeApp", [
   "angular-redactor"
   "ngAnimate"
   "ui-rangeSlider"
+  "$strap"
+  "ngBootstrap"
+  "ngTagsInput"
 ])
 
 angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($translateProvider, $routeProvider) ->
