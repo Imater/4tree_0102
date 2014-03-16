@@ -4,7 +4,7 @@
         </i><i class="icon-th-list r_menu_button"></i>
     </div>
 
-    <div ng-include="set.tree_header_template"></div>
+    <div ng-include="'views/subviews/view_tree_header.html'"></div>
 
 </div>
 
@@ -16,7 +16,7 @@
         <div class="main_tree notselectable">
             <ul>
                 <li class="tree" sly-repeat="tree in fn.jsFindByParent(set.main_parent_id)">
-                    <div ng-include="set.tree_one_line_template"></div>
+                    <div ng-include="'views/subviews/view_one_line.html'"></div>
                 </li>
             </ul>
             <hr>

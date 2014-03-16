@@ -13,8 +13,8 @@
 
     <div id="w_content_main">
         
-        <!-- LEFT PANEL -->
-        <div id="p_left_side_wrap">
+        <!-- LEFT PANEL 0 -->
+        <div id="p_left_side_wrap" ng-if="set.p_left_side_open">
             <div class="p_inside_wrap">
                 <div class="p_inside_header">
                     <span class="title"><i class="icon-star"></i></span>
@@ -24,6 +24,13 @@
                 </div>
 
                 <div class="p_inside_content vertical_scroll"  scrollable="{alwaysVisible:'true'}">
+                    <ul class="side_menu" ng-if="set.show_right_menu">
+                        <li sly-repeat="item in set.side_views_menu" ng-class="{active:$index==set.panel[0].active}" ng-click="set.panel[0].active=$index;"><i class="{{item.icon}}"></i><b>{{item.title}}</b></li>
+                    </ul>
+                    <div class="right_menu_button_w">
+                        <i class="icon-th-list r_menu_button"></i>
+                    </div>                
+                    <div ng-include="set.side_views_menu[set.panel[0].active].template"></div>
                 </div>
             </div>
         </div>
@@ -39,37 +46,39 @@
 
 
         <!-- CENTER PANEL -->
-        <div id="p_center_wrap">
+        <div id="p_center_wrap" ng-class="{'left_hide':set.main_views_menu[set.panel[1].active].off, 'right_hide':set.main_views_menu[set.panel[2].active].off}">
 
+            <!-- PANEL 1 -->
             <div id="p_left_wrap">
                 <div class="p_inside_wrap">
                     <div class="p_inside_header">
 
                         <div class="btn-group main_menu">
-                            <span class="title drop" bindonce data-toggle="dropdown">{{set.main_views_menu[set.left_panel_active].title}}</span>
+                            <span class="title drop" bindonce data-toggle="dropdown">{{set.main_views_menu[set.panel[1].active].title}}</span>
                             <ul class="dropdown-menu" role="menu">
-                                <li sly-repeat="item in set.main_views_menu" ng-class="{divider:item.title=='divider', active:$index==set.left_panel_active}" ng-click="set.left_template = '{{item.template}}'; set.left_panel_active=$index;"><a><i class="{{item.icon}}"></i><b>{{item.title}}</b></a></li>
+                                <li sly-repeat="item in set.main_views_menu" ng-class="{divider:item.title=='divider', active:$index==set.left_panel_active}" ng-click="set.panel[1].active=$index;"><a><i class="{{item.icon}}"></i><b>{{item.title}}</b></a></li>
                             </ul>
                         </div>
 
                     </div>
-                    <div ng-include="set.left_template"></div>
+                    <div ng-include="set.main_views_menu[set.panel[1].active].template"></div>
                 </div>
             </div>
 
+            <!-- PANEL 2 -->
             <div id="p_right_wrap">
                 <div class="p_inside_wrap">
                     <div class="p_inside_header">
 
                         <div class="btn-group main_menu">
-                            <span class="title drop" bindonce data-toggle="dropdown">{{set.main_views_menu[set.right_panel_active].title}}</span>
+                            <span class="title drop" bindonce data-toggle="dropdown">{{set.main_views_menu[set.panel[2].active].title}}</span>
                             <ul class="dropdown-menu" role="menu">
-                                <li sly-repeat="item in set.main_views_menu" ng-class="{divider:item.title=='divider', active:$index==set.right_panel_active}" ng-click="set.right_template = '{{item.template}}'; set.right_panel_active=$index;"><a><i class="{{item.icon}}"></i><b>{{item.title}}</b></a></li>
+                                <li sly-repeat="item in set.main_views_menu" ng-class="{divider:item.title=='divider', active:$index==set.panel[2].active}" ng-click="set.panel[2].active=$index;"><a><i class="{{item.icon}}"></i><b>{{item.title}}</b></a></li>
                             </ul>
                         </div>
 
                     </div>
-                    <div ng-include="set.right_template"></div>
+                    <div ng-include="set.main_views_menu[set.panel[2].active].template"></div>
                 </div>
             </div>
 
@@ -80,7 +89,7 @@
         </div>
 
 
-        <!-- RIGHT PANEL -->
+        <!-- RIGHT PANEL 3 -->
         <div id="p_right_side_wrap" ng-if="set.p_plan_of_day_open">
             <div class="p_inside_wrap">
                 <div class="p_inside_header">
@@ -92,12 +101,12 @@
 
                 <div class="p_inside_content vertical_scroll" scrollable="{alwaysVisible:'true'}">
                     <ul class="side_menu" ng-if="set.show_right_menu">
-                        <li sly-repeat="item in set.side_views_menu" ng-class="{active:$index==set.right_menu_active}" ng-click="set.right_panel_template = '{{item.template}}'; set.right_menu_active=$index;"><i class="{{item.icon}}"></i><b>{{item.title}}</b></li>
+                        <li sly-repeat="item in set.side_views_menu" ng-class="{active:$index==set.panel[3].active}" ng-click="set.panel[3].active=$index;"><i class="{{item.icon}}"></i><b>{{item.title}}</b></li>
                     </ul>
                     <div class="right_menu_button_w">
                         <i class="icon-th-list r_menu_button"></i>
                     </div>                
-                    <div ng-include="set.right_panel_template"></div>
+                    <div ng-include="set.side_views_menu[set.panel[3].active].template"></div>
                 </div>
             </div>
         </div>

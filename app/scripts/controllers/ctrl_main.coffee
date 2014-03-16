@@ -12,84 +12,88 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     show_pomidor_timer: false
     show_right_menu: true
     right_menu_active: 2
-    calendar_box_template: "views/subviews/view_calendar_box.html"
-    right_panel_template: "views/subviews/view_plan_of_day.html"
-    right_template: "views/subviews/view_text.html"
-    left_template: "views/subviews/view_tree.html"
-    pomidor_template: "views/subviews/view_pomidor_timer.html"
-    tree_header_template: "views/subviews/view_tree_header.html"
-    tree_one_line_template: "views/subviews/view_one_line.html"
-    mini_settings: "views/subviews/view_mini_settings.html"
+    panel: [
+      {active: 7} #0
+      {active: 0} #1
+      {active: 5} #2
+      {active: 0} #3
+    ]
     side_views_menu: [
       {
-        icon: 'icon-calendar'
         title: 'План дня'
+        icon: 'icon-calendar'
         template: 'views/subviews/view_side/view_plan_of_day.html'
       }
       {
-        icon: 'icon-check'
         title: 'To-do'
+        icon: 'icon-check'
         template: 'views/subviews/view_side/view_side_todo.html'
       }
       {
-        icon: 'icon-rss'
         title: 'Новости'
+        icon: 'icon-rss'
         template: 'views/subviews/view_side/view_side_news.html'
       }
       {
-        icon: 'glyphicon glyphicon-globe'
         title: 'Мой сайт'
+        icon: 'glyphicon glyphicon-globe'
         template: 'views/subviews/view_side/view_side_myweb.html'
       }
       {
-        icon: 'glyphicon glyphicon-user'
         title: 'Контакты'
+        icon: 'glyphicon glyphicon-user'
         template: 'views/subviews/view_side/view_side_contacts.html'
       }
       {
-        icon: 'glyphicon glyphicon-tag'
         title: 'Теги'
+        icon: 'glyphicon glyphicon-tag'
         template: 'views/subviews/view_side/view_side_tags.html'
       }
       {
-        icon: 'icon-eye'
         title: 'Обзор'
+        icon: 'icon-eye'
         template: 'views/subviews/view_side/view_side_review.html'
       }
       {
-        icon: 'icon-search'
         title: 'Поиск'
+        icon: 'icon-search'
         template: 'views/subviews/view_side/view_side_search.html'
       }
     ]
     main_views_menu: [
       {
-        icon: 'icon-flow-cascade'
         title: 'Дерево'
+        icon: 'icon-flow-cascade'
         template: 'views/subviews/view_main/view_tree.html'
       }
       {
-        icon: 'icon-th-1'
         title: 'Карточки'
+        icon: 'icon-th-1'
         template: 'views/subviews/view_main/view_cards.html'
       }
       {
-        icon: 'glyphicon glyphicon-record'
         title: 'Mindmap'
+        icon: 'glyphicon glyphicon-record'
         template: 'views/subviews/view_main/view_mindmap.html'
       }
       {
         title: 'divider'
       }
       {
-        icon: 'icon-calendar-2'
         title: 'Календарь'
+        icon: 'icon-calendar-2'
         template: 'views/subviews/view_main/view_calendar.html'
       }
       {
-        icon: 'icon-pencil-neg'
         title: 'Редактор'
+        icon: 'icon-pencil-neg'
         template: 'views/subviews/view_main/view_text.html'
+      }
+      {
+        title: 'Скрыто'
+        off: true
+        icon: 'icon-cancel-circle'
+        template: ''        
       }
     ]
     refresh: 0

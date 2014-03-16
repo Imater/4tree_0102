@@ -411,6 +411,7 @@
                 margin-top: 0px;
                 border: none;
                 border-bottom: 3px solid lighten($main_color,10%);
+                z-index: 1006;
                 .divider {
                     background-color: rgba($main_color, 0.9);
                 }
@@ -429,7 +430,7 @@
                     font-size: 1em;
                     width: $grid;
                     font-weight: normal;
-                    opacity: 0.5;
+                    opacity: 0.8;
                 }
                 a {
                     padding: $padding;
@@ -538,6 +539,49 @@
 
 }
 
+.right_hide {
+    #p_left_wrap {
+        right: 0px;
+    }
+    #p_right_wrap {
+        left: auto;
+        width: 100px;
+        bottom: auto;
+        height: $grid;
+        z-index: 1;
+    }
+}
+
+.left_hide {
+    #p_right_wrap {
+        left: 0px;
+    }
+    #p_left_wrap {
+        right: auto;
+        width: 100px;
+        bottom: auto;
+        height: $grid;
+        z-index: 1;
+        
+    }
+}
+
+.left_hide.right_hide {
+    #p_right_wrap {
+        left: 50%;
+        width: auto;
+    }
+    #p_left_wrap {
+        right: 50%;
+        width: auto;
+        bottom: auto;
+        height: $grid;
+        z-index: 1;
+        
+    }
+}
+
+
 .margin_left {
     margin-left: round($grid/2);
     margin-right: $grid;
@@ -555,7 +599,6 @@
     background: $main_color;
     width: round($grid/2);
     cursor: pointer;
-    z-index: 1;
 }
 
 

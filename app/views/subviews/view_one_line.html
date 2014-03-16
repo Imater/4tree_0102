@@ -61,6 +61,6 @@
 
 <ul ng-if="tree._open&&tree._childs" jq-show-effect-off="tree._open" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
 	<li class="tree" sly-repeat="tree in tree.childs">
-		<div ng-include="set.tree_one_line_template"></div>
+		<div ng-include="'views/subviews/view_one_line.html'"></div>
 	</li>
 </ul>
