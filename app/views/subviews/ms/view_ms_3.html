@@ -1,1 +1,26 @@
-Счётчики
+<div class="counters_wrap">
+	
+	<div class="date_wrap">
+		<a class="rewind" ng-click="fn.jsDateRewind(set,-1)"><i class="glyphicon glyphicon-chevron-left"></i></a>
+		<input type="text" class="form-control date_counters" ng-model="set.today_date" name="date" bs-datepicker language="ru" format="dd.mm.yyyy DD" template="views/datepicker.tpl.html">
+		<a ng-if="dt1 = fn.service.calendarBox.getDays(set.today_date,'days')"></a>
+		<div class="task_date left {{dt1.class}}" style="{{dt1.image}}">{{dt1.text}}</div>
+		<a class="rewind right" ng-click="fn.jsDateRewind(set,1)"><i class="glyphicon glyphicon-chevron-right"></i></a>
+	</div>
+
+
+	
+	<ol>
+		<li ng-repeat="counter in db.main_node.counters">
+			<input class="cnt" type="number" ng-model="counter.cnt_today"><input class="title" ng-model="counter.title">
+			<i class="icon-cancel remove"></i>
+			<div class="week_stat">
+				<i>средн.:</i> <b>{{counter.cnt_today*0.85|number:1:3}}</b>
+				<i>неделя:</i> <b>{{counter.cnt_today*7|number:undefined:3}}</b>
+				<i>месяц:</i> <b>{{counter.cnt_today*30|number:undefined:3}}</b> 
+				<i>год:</i> <b>{{counter.cnt_today*365|number:undefined:3}}</b>
+			</div>
+		</li>
+	</ol>
+	<span class="btn btn-default btn-sm">Добавить новый счётчик</span>
+</div>

@@ -1,7 +1,3 @@
-<div class="p_inside_header">
-    <span class="title drop" bindonce>{{'TREE' | translate}}</span>
-</div>
-
 <div class="p_inside_header2">
 
     <div class="right_menu_button_w">
@@ -19,7 +15,9 @@
 
         <div class="main_tree notselectable">
             <ul>
-                <li class="tree" ng-repeat="tree in fn.jsFindByParent(set.main_parent_id)" ng-include="set.tree_one_line_template"></li>
+                <li class="tree" sly-repeat="tree in fn.jsFindByParent(set.main_parent_id)">
+                    <div ng-include="set.tree_one_line_template"></div>
+                </li>
             </ul>
             <hr>
             <ul>

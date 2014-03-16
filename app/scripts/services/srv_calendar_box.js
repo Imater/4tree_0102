@@ -29,6 +29,7 @@
             now.setHours(0);
             now.setMinutes(0);
             now.setSeconds(0);
+            date2 = new Date(date2);
             date2.setHours(0);
             date2.setMinutes(0);
             date2.setSeconds(0);
@@ -65,7 +66,7 @@
               if (pr2 > 80) {
                 pr2 = 80;
               }
-              answer.image = "background-image: -webkit-gradient(linear, left top, right top, color-stop(" + pr2 + "%, #fcbec2), color-stop(" + (pr2 + 10) + "%, #feaa0c));";
+              answer.image = "background-image: -webkit-gradient(linear, left top, right top, color-stop(" + (pr2 - 25) + "%, #f56571), color-stop(" + (pr2 + 25) + "%, rgba(0,0,0,0))) !important;";
             }
             if (minutes >= 0) {
               answer["class"] = "datetoday";

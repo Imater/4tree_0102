@@ -302,7 +302,11 @@ server.listen(8000);
 
 
 
+FPK - перекидывание менеджера
 
+UPDATE 1_do SET manager_id=783 WHERE manager_id=685 AND checked = '0000-00-00 00:00:00'
+
+UPDATE 1_clients SET manager_id = 783 WHERE manager_id=685 AND vd = '0000-00-00 00:00:00' AND `out` = '0000-00-00 00:00:00'
 
 
 

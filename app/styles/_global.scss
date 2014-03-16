@@ -65,6 +65,21 @@ h9:first-child {
     padding-top: 0px;
 }
 
+h10.mini {
+    letter-spacing: 0px;
+    margin-top: 0px !important;
+    padding-left: 0px;
+    &:before {
+        content: '\e75e';
+        font-size: 1em;
+        margin-top: 0;
+    }
+    &.open:before {
+        content: '\e75c';
+        margin-top: 0;
+    }
+}
+
 h10 {
     display: block;
     color: lighten($main_color,12%);
@@ -102,7 +117,8 @@ h10.open:before {
     animation: $type $sec;
 }
 
-$how_long: 0.1s;
+$how_long: 0.15s;
+
 
 .slide_right.ng-enter { 
     @include anim(fadeInDown, $how_long); //fadeInRightBig
@@ -182,10 +198,20 @@ $how_long: 0.1s;
 }
 
 
+.slide.ng-enter {
+    background: red;
+}
+
+.slide.ng-leave {
+    background: green;
+}
 
 
-
-
+.alert {
+    position: absolute;
+    z-index: 2;
+    right: 20px;
+}
 
 
 

@@ -1,0 +1,29 @@
+<div class="plan_of_day">
+	<h10 class="open">To-do с датами</h10>
+	<ul>
+		<li ng-repeat="the_do in db.today_do" class="{{the_do.myclass}}">
+			<div class="time">{{the_do.time}}</div>
+			<div class="title">{{the_do.title}}</div>
+		</li>
+		<li class="add_do">
+			<div class="time">&nbsp;</div>
+			<div class="title">{{'ADD' | translate}}</div>
+
+		</li>
+	</ul>
+
+	<h10 class="open">To-do без дат</h10>
+	<ul>
+		<li ng-repeat="the_do in db.today_do" class="{{the_do.myclass}}">
+			<div class="time">{{the_do.time}}</div>
+			<div class="title">{{the_do.title}}</div>
+		</li>
+		<li class="add_do">
+			<div class="time">&nbsp;</div>
+			<div class="title">{{'ADD' | translate}}</div>
+
+		</li>
+	</ul>
+
+
+</div>

@@ -5,20 +5,7 @@
 		</th>
 		<td>
 			<div class="input-group every input-group-sm">
-		      <div class="input-group-btn">
-		        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-		        <ul class="dropdown-menu pull-right">
-		          <li><a>1</a></li>
-		          <li><a>2</a></li>
-		          <li><a>3</a></li>
-		          <li><a>4</a></li>
-		          <li><a>5</a></li>
-		          <li><a>6</a></li>
-		          <li><a>7</a></li>
-		          <li><a>8</a></li>
-		        </ul>
-		      </div><!-- /btn-group -->
-		      <input type="text" class="form-control" value="2">
+		      <input type="number" class="form-control" value="2">
 		      <div class="input-group-btn">
 		        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">нед.<span class="caret"></span></button>
 		        <ul class="dropdown-menu pull-right">
@@ -49,11 +36,16 @@
 		Отметить:
 		</th>
 		<td>
-		<a class="btn btn-default btn-sm btn-success">Обзор проведён сейчас</a>
+		<input type="checkbox" id="show_in_todo" ng-model="db.main_node.hide_in_todo"> <label for="show_in_todo">Обзор проведён сегодня</label>
 		</td>
 	</tr>
 
 	<tr>
+		<th></th>
+		<td><h10 class="mini" ng-class="{open:set.stat_open}" ng-click="set.stat_open = !set.stat_open">Статистика</h10></td>
+	</tr>
+
+	<tr ng-if="set.stat_open">
 		<th>
 		Обзор был:
 		</th>
@@ -62,12 +54,30 @@
 		</td>
 	</tr>
 
-	<tr>
+	<tr ng-if="set.stat_open">
 		<th>
-		Статистика:
+		Изменение:
 		</th>
 		<td>
-		создан: 12.08.14, изменён: 18.09.14, выполнен: 11.02.14
+		12.08.14 <i>(8 дней назад)</i>
+		</td>
+	</tr>
+
+	<tr ng-if="set.stat_open">
+		<th>
+		Создание:
+		</th>
+		<td>
+		18.09.14 <i>(3 дня назад)</i>
+		</td>
+	</tr>
+
+	<tr ng-if="set.stat_open">
+		<th>
+		Выполнение:
+		</th>
+		<td>
+		11.02.14 <i>(2 дня назад)</i>
 		</td>
 	</tr>
 </table>

@@ -12,7 +12,7 @@
 	<div class="ms_inside">
 		<h10 ng-click="set.mini_settings_show = !set.mini_settings_show" ng-class="{open:set.mini_settings_show}">Параметры</h10>
 
-		<div class="note_mini_settings" ng-show="set.mini_settings_show">
+		<div class="note_mini_settings slide_left" ng-if="set.mini_settings_show">
 			<div class="nm_settings_buttons">
 				<div class="nm_btn" ng-repeat="btn in set.mini_settings_btn" ng-class="{active:btn.id == set.mini_settings_btn_active}" ng-click="set.mini_settings_btn_active_old = set.mini_settings_btn_active; set.mini_settings_btn_active = btn.id;"> 
 					<i class="{{btn.icon}}"></i>
@@ -28,7 +28,7 @@
 					<div ng-include="'views/subviews/ms/view_ms_0.html'"></div>
 				</div>
 
-				<div class="note_mini_settings_panel slideit" ng-if="set.mini_settings_btn_active==1"  ng-class="{'slide_left':set.mini_settings_btn_active_old>=set.mini_settings_btn_active,'slide_right':set.mini_settings_btn_active_old<set.mini_settings_btn_active}">
+				<div class="note_mini_settings_panel" ng-if="set.mini_settings_btn_active==1" ng-class="{'slide_left':set.mini_settings_btn_active_old>=set.mini_settings_btn_active,'slide_right':set.mini_settings_btn_active_old<set.mini_settings_btn_active}">
 					<div ng-include="'views/subviews/ms/view_ms_1.html'"></div>
 				</div>
 

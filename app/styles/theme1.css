@@ -3,7 +3,7 @@
 body, html {
   padding: 0px;
   margin: 0px;
-  font-size: 13px; }
+  font-size: 12px; }
 
 /* Responsive: Portrait tablets and up 
 @media screen and (min-width: 768px) {
@@ -133,6 +133,18 @@ h9 {
 h9:first-child {
   padding-top: 0px; }
 
+h10.mini {
+  letter-spacing: 0px;
+  margin-top: 0px !important;
+  padding-left: 0px; }
+  h10.mini:before {
+    content: '\e75e';
+    font-size: 1em;
+    margin-top: 0; }
+  h10.mini.open:before {
+    content: '\e75c';
+    margin-top: 0; }
+
 h10 {
   display: block;
   color: #46a123;
@@ -162,32 +174,32 @@ h10.open:before {
 
 .slide_right.ng-enter {
   animation-play-state: initial;
-  -webkit-animation: fadeInDown 0.1s;
-  -moz-animation: fadeInDown 0.1s;
-  -ms-animation: fadeInDown 0.1s;
-  animation: fadeInDown 0.1s; }
+  -webkit-animation: fadeInDown 0.15s;
+  -moz-animation: fadeInDown 0.15s;
+  -ms-animation: fadeInDown 0.15s;
+  animation: fadeInDown 0.15s; }
 
 .slide_left.ng-enter {
   animation-play-state: initial;
-  -webkit-animation: fadeInDown 0.1s;
-  -moz-animation: fadeInDown 0.1s;
-  -ms-animation: fadeInDown 0.1s;
-  animation: fadeInDown 0.1s; }
+  -webkit-animation: fadeInDown 0.15s;
+  -moz-animation: fadeInDown 0.15s;
+  -ms-animation: fadeInDown 0.15s;
+  animation: fadeInDown 0.15s; }
 
 .slide_left.ng-leave {
   animation-play-state: initial;
-  -webkit-animation: fadeInUp 0.1s;
-  -moz-animation: fadeInUp 0.1s;
-  -ms-animation: fadeInUp 0.1s;
-  animation: fadeInUp 0.1s;
+  -webkit-animation: fadeInUp 0.15s;
+  -moz-animation: fadeInUp 0.15s;
+  -ms-animation: fadeInUp 0.15s;
+  animation: fadeInUp 0.15s;
   display: none; }
 
 .slide_right.ng-leave {
   animation-play-state: initial;
-  -webkit-animation: fadeInUp 0.1s;
-  -moz-animation: fadeInUp 0.1s;
-  -ms-animation: fadeInUp 0.1s;
-  animation: fadeInUp 0.1s;
+  -webkit-animation: fadeInUp 0.15s;
+  -moz-animation: fadeInUp 0.15s;
+  -ms-animation: fadeInUp 0.15s;
+  animation: fadeInUp 0.15s;
   display: none; }
 
 .ng-enter-active {
@@ -218,6 +230,17 @@ h10.open:before {
     min-width: 20px; }
   .daterangepicker td.in-range {
     background: rgba(48, 111, 24, 0.3); }
+
+.slide.ng-enter {
+  background: red; }
+
+.slide.ng-leave {
+  background: green; }
+
+.alert {
+  position: absolute;
+  z-index: 2;
+  right: 20px; }
 
 /* -------------------------------------------------------------
   Sass CSS3 Mixins! The Cross-Browser CSS3 Sass Library
@@ -499,8 +522,7 @@ h10.open:before {
         text-overflow: ellipsis;
         vertical-align: middle;
         line-height: 25px;
-        border-right: 2px solid rgba(145, 225, 114, 0.5);
-        border-radius: 15px;
+        border-right: 1px solid rgba(145, 225, 114, 0.5);
         padding-right: 13px; }
         #w_main #w_content_main .left_toggle_button .left_label i:before {
           margin-right: 0 !important; }
@@ -548,6 +570,11 @@ h10.open:before {
   bottom: 0;
   left: auto;
   width: 250px; }
+  #p_right_side_wrap .right_menu_button_w1 {
+    position: absolute;
+    top: auto;
+    margin-top: -6px;
+    margin-right: -3px; }
 
 #p_right_calendar_line {
   display: none;
@@ -631,6 +658,48 @@ h10.open:before {
     text-align: center;
     color: white;
     cursor: pointer; }
+    .p_inside_wrap .p_inside_header .main_menu {
+      width: 100%; }
+      .p_inside_wrap .p_inside_header .main_menu .title {
+        width: 100%; }
+      .p_inside_wrap .p_inside_header .main_menu .dropdown-menu {
+        width: 100%;
+        font-size: inherit;
+        background: rgba(178, 234, 156, 0.95);
+        border-radius: 0;
+        margin-top: 0px;
+        border: none;
+        border-bottom: 3px solid #429921; }
+        .p_inside_wrap .p_inside_header .main_menu .dropdown-menu .divider {
+          background-color: rgba(48, 111, 24, 0.9); }
+        .p_inside_wrap .p_inside_header .main_menu .dropdown-menu .active a {
+          background: rgba(48, 111, 24, 0.3);
+          color: #000; }
+        .p_inside_wrap .p_inside_header .main_menu .dropdown-menu .active i {
+          opacity: 1; }
+        .p_inside_wrap .p_inside_header .main_menu .dropdown-menu i {
+          display: inline-block;
+          margin-right: 2px;
+          font-size: 1em;
+          width: 25px;
+          font-weight: normal;
+          opacity: 0.5; }
+        .p_inside_wrap .p_inside_header .main_menu .dropdown-menu a {
+          padding: 8px;
+          font-family: "Ubuntu", Verdana;
+          letter-spacing: 0px;
+          font-size: 1em;
+          text-align: center;
+          width: 100%;
+          display: inline-block; }
+          .p_inside_wrap .p_inside_header .main_menu .dropdown-menu a:hover {
+            background: #306f18;
+            color: #FFF; }
+          .p_inside_wrap .p_inside_header .main_menu .dropdown-menu a b {
+            font-weight: bold;
+            display: inline-block;
+            min-width: 97px;
+            text-align: left; }
     .p_inside_wrap .p_inside_header .title {
       font-family: "Ubuntu", Verdana;
       font-size: 1em;
@@ -647,12 +716,46 @@ h10.open:before {
       .p_inside_wrap .p_inside_header .title i:before {
         margin-right: 0 !important; }
     .p_inside_wrap .p_inside_header .title.drop:after {
-      font-size: 0.9em;
       color: #91e172;
       content: "\e869";
       font-family: 'fontello';
       margin-left: 1em;
       margin-top: 2px; }
+  .p_inside_wrap .side_menu {
+    list-style: none;
+    margin: 8px 0px;
+    margin-top: 0;
+    padding: 0px;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #EEE; }
+    .p_inside_wrap .side_menu li:nth-child(1) {
+      height: 33px;
+      padding-top: 8px; }
+    .p_inside_wrap .side_menu li {
+      letter-spacing: 1px;
+      color: #306f18;
+      cursor: pointer;
+      line-height: 25px;
+      height: 25px; }
+      .p_inside_wrap .side_menu li.active {
+        background: #dedede; }
+        .p_inside_wrap .side_menu li.active i {
+          opacity: 1; }
+      .p_inside_wrap .side_menu li i {
+        display: inline-block;
+        width: 50px;
+        padding-left: 25px;
+        padding-right: 8px;
+        font-size: 1.3em;
+        text-align: left;
+        vertical-align: middle;
+        opacity: 0.3; }
+      .p_inside_wrap .side_menu li b {
+        line-height: 25px;
+        display: inline-block;
+        vertical-align: middle;
+        padding-left: 4px; }
   .p_inside_wrap .p_inside_header2 {
     height: 25px; }
   .p_inside_wrap .p_inside_content {
@@ -936,7 +1039,8 @@ h10.open:before {
 /* TRANSITION */
 /* TRIPLE BORDERS */
 .plan_of_day {
-  margin: 0px 25px; }
+  margin: 0px 25px;
+  margin-right: 8px; }
   .plan_of_day ul {
     list-style: none;
     padding-left: 0px; }
@@ -953,9 +1057,26 @@ h10.open:before {
           text-decoration: line-through; }
   .plan_of_day .diary {
     outline: none;
-    font-style: italic;
+    padding: 16px;
+    background: rgba(255, 255, 204, 0.5);
+    border-bottom: 3px solid rgba(213, 202, 157, 0.2);
+    margin-right: 8px;
+    margin-top: 8px;
     width: 100%;
-    height: 10em; }
+    min-height: 15em;
+    margin-bottom: 25px;
+    -webkit-transition: background 1s ease-out;
+    -o-transition: background 1s ease-out;
+    -moz-transition: background 1s ease-out;
+    transition: background 1s ease-out; }
+    .plan_of_day .diary em, .plan_of_day .diary p, .plan_of_day .diary div, .plan_of_day .diary span {
+      background: none !important; }
+    .plan_of_day .diary img {
+      max-width: 80%;
+      max-height: 80%; }
+    .plan_of_day .diary:focus {
+      background: #fff797;
+      border-bottom: 3px solid #d5ca9d; }
   .plan_of_day .add_do .title {
     -webkit-transition: color 0.3s ease-out;
     -o-transition: color 0.3s ease-out;
@@ -1617,7 +1738,6 @@ h10.open:before {
         color: #cccccc;
         text-align: right; }
       .mini_settings .ms_inside .table_settings .daterange_diff .task_date {
-        width: auto;
         padding: 0px 3px;
         cursor: default;
         opacity: 0.5;
@@ -1633,10 +1753,8 @@ h10.open:before {
         box-shadow: none;
         -webkit-appearance: none;
         border: none;
-        padding: 8px 8px;
-        padding-left: 0px;
         margin-left: -4px;
-        padding-top: 4px; }
+        padding: 0px; }
         .mini_settings .ms_inside .table_settings .ngTagsInput .tags .tag-input {
           padding: 8px 4px !important;
           height: auto; }
@@ -1663,6 +1781,185 @@ h10.open:before {
       .mini_settings .ms_inside .table_settings .btn-success {
         color: #306f18;
         border: 2px solid #306f18; }
+      .mini_settings .ms_inside .table_settings i {
+        color: #cccccc;
+        font-size: 0.8em; }
+    .mini_settings .ms_inside .counters_wrap {
+      text-align: center;
+      margin-top: 8px; }
+      .mini_settings .ms_inside .counters_wrap ol {
+        list-style: none;
+        margin: 0;
+        padding: 0; }
+      .mini_settings .ms_inside .counters_wrap li {
+        margin: 8px;
+        text-align: center; }
+      .mini_settings .ms_inside .counters_wrap .cnt {
+        border: 1px solid #306f18;
+        border-right-color: rgba(48, 111, 24, 0.5);
+        outline: none;
+        background: #c7ffc7;
+        width: 40%;
+        padding: 3px 10px;
+        margin-right: 0;
+        text-align: right;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px; }
+      .mini_settings .ms_inside .counters_wrap .title {
+        margin-left: 0;
+        border: 1px solid #306f18;
+        background: #c7ffc7;
+        outline: none;
+        border-left: none;
+        width: 40%;
+        padding: 3px 10px;
+        text-align: left;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px; }
+      .mini_settings .ms_inside .counters_wrap li:nth-child(1) input {
+        background: rgba(102, 0, 255, 0.2) !important; }
+      .mini_settings .ms_inside .counters_wrap li:nth-child(1) input {
+        background: rgba(0, 82, 255, 0.2) !important; }
+      .mini_settings .ms_inside .counters_wrap li:nth-child(2) input {
+        background: rgba(0, 255, 31, 0.3) !important; }
+      .mini_settings .ms_inside .counters_wrap li:nth-child(3) input {
+        background: rgba(129, 255, 3, 0.4) !important; }
+      .mini_settings .ms_inside .counters_wrap li:nth-child(4) input {
+        background: rgba(255, 231, 0, 0.5) !important; }
+      .mini_settings .ms_inside .counters_wrap li:nth-child(5) input {
+        background: rgba(255, 193, 0, 0.5) !important; }
+      .mini_settings .ms_inside .counters_wrap li:nth-child(6) input {
+        background: rgba(255, 97, 0, 0.5) !important; }
+      .mini_settings .ms_inside .counters_wrap li:nth-child(7) input {
+        background: rgba(255, 0, 31, 0.3) !important; }
+      .mini_settings .ms_inside .counters_wrap li:nth-child(8) input {
+        background: rgba(255, 0, 82, 0.5) !important; }
+      .mini_settings .ms_inside .counters_wrap li:nth-child(9) input {
+        background: rgba(215, 0, 255, 0.5) !important; }
+      .mini_settings .ms_inside .counters_wrap li:nth-child(10) input {
+        background: rgba(199, 133, 255, 0.5) !important; }
+      .mini_settings .ms_inside .counters_wrap li:nth-child(11) input {
+        background: rgba(153, 153, 153, 0.5) !important; }
+      .mini_settings .ms_inside .counters_wrap .remove {
+        color: #dedede;
+        margin-left: 4px;
+        position: absolute;
+        line-height: 2em;
+        margin-top: 1px; }
+        .mini_settings .ms_inside .counters_wrap .remove:hover {
+          color: red;
+          cursor: pointer; }
+      .mini_settings .ms_inside .counters_wrap .week_stat {
+        color: gray;
+        padding-top: 2px;
+        padding-bottom: 8px;
+        text-align: center; }
+        .mini_settings .ms_inside .counters_wrap .week_stat i {
+          font-size: 0.8em;
+          color: #cccccc;
+          font-style: normal; }
+        .mini_settings .ms_inside .counters_wrap .week_stat b {
+          color: #cccccc;
+          padding-right: 16px;
+          font-weight: normal;
+          font-size: 1em; }
+      .mini_settings .ms_inside .counters_wrap .date_wrap {
+        text-align: center;
+        display: inline-block;
+        position: relative; }
+        .mini_settings .ms_inside .counters_wrap .date_wrap .date_counters {
+          display: block;
+          text-align: center;
+          width: 195px;
+          font-size: 1em;
+          border: 1px solid #cccccc;
+          border-radius: 0px;
+          box-shadow: none;
+          margin-top: 8px;
+          vertical-align: top;
+          border-bottom: none;
+          height: 25px; }
+        .mini_settings .ms_inside .counters_wrap .date_wrap .task_date {
+          display: block;
+          width: 195px;
+          margin-bottom: 16px;
+          margin-top: 0px;
+          border-top-right-radius: 0;
+          border-top-left-radius: 0;
+          border: 1px solid #cccccc !important; }
+      .mini_settings .ms_inside .counters_wrap .rewind {
+        position: absolute;
+        left: -50px;
+        top: 14px;
+        font-size: 1.5em;
+        color: #dedede;
+        padding: 5px 5px;
+        -webkit-transition: color 0.5s ease-out;
+        -o-transition: color 0.5s ease-out;
+        -moz-transition: color 0.5s ease-out;
+        transition: color 0.5s ease-out; }
+        .mini_settings .ms_inside .counters_wrap .rewind:hover {
+          color: #306f18; }
+        .mini_settings .ms_inside .counters_wrap .rewind.right {
+          left: auto;
+          right: -50px; }
+    .mini_settings .ms_inside .share_wrap {
+      padding: 0px 25px; }
+      .mini_settings .ms_inside .share_wrap .padding {
+        margin: 2px 2px 2px 24px; }
+      .mini_settings .ms_inside .share_wrap .share_link {
+        padding: 4px 10px;
+        border: 1px solid #cccccc;
+        width: 15em; }
+      .mini_settings .ms_inside .share_wrap .clipboard {
+        padding: 2px 2px; }
+      .mini_settings .ms_inside .share_wrap label {
+        margin-left: 8px;
+        color: #306f18; }
+      .mini_settings .ms_inside .share_wrap .can_write label {
+        font-weight: normal;
+        color: inherit; }
+      .mini_settings .ms_inside .share_wrap .part {
+        padding: 8px; }
+      .mini_settings .ms_inside .share_wrap .frends {
+        margin: 8px 0; }
+        .mini_settings .ms_inside .share_wrap .frends td, .mini_settings .ms_inside .share_wrap .frends tr {
+          padding: 5px 8px; }
+        .mini_settings .ms_inside .share_wrap .frends .title {
+          padding-right: 16px;
+          padding-left: 8px; }
+        .mini_settings .ms_inside .share_wrap .frends .face {
+          width: 25px;
+          height: 25px;
+          border-radius: 50%; }
+        .mini_settings .ms_inside .share_wrap .frends .remove {
+          color: #cccccc;
+          -webkit-transition: color 0.2s ease-out;
+          -o-transition: color 0.2s ease-out;
+          -moz-transition: color 0.2s ease-out;
+          transition: color 0.2s ease-out;
+          cursor: pointer; }
+          .mini_settings .ms_inside .share_wrap .frends .remove:hover {
+            color: red; }
+        .mini_settings .ms_inside .share_wrap .frends .can_edit {
+          font-size: 1.5em;
+          color: #cccccc;
+          opacity: 0.6;
+          cursor: pointer;
+          -webkit-transition: opacity 0.5s ease-out;
+          -o-transition: opacity 0.5s ease-out;
+          -moz-transition: opacity 0.5s ease-out;
+          transition: opacity 0.5s ease-out; }
+          .mini_settings .ms_inside .share_wrap .frends .can_edit.icon-lock-open {
+            color: #23a216;
+            opacity: 0.8; }
+          .mini_settings .ms_inside .share_wrap .frends .can_edit:hover {
+            opacity: 1; }
+      .mini_settings .ms_inside .share_wrap .add_frend {
+        padding-right: 16px;
+        padding-left: 8px;
+        color: #cccccc;
+        cursor: pointer; }
   .mini_settings .note_mini_settings_panel {
     padding: 8px 0;
     min-height: 10em; }
@@ -1715,35 +2012,33 @@ h10.open:before {
   outline: none; }
 
 .datepast {
-  background: rgba(248, 0, 13, 0.2) !important;
-  border: 2px solid #f5a1aa !important; }
+  background: #f56571 !important;
+  border: 0px solid #f5a1aa !important; }
 
 .datetoday {
   background: #feaa0c !important;
-  border: 2px solid #feaa0c !important; }
+  border: 0px solid #feaa0c !important; }
 
 .datetoday.past {
   background-image: -webkit-gradient(linear, right top, left top, color-stop(0.85, #ffd5b5), color-stop(0.95, rgba(248, 0, 13, 0.2))) !important;
-  border: 2px solid #feaa0c !important; }
+  border: 0px solid #feaa0c !important; }
 
 .nodate {
-  background: #FFF !important;
-  border: 2px solid #fc9a0e !important;
-  color: #fc9a0e !important;
-  font-weight: bold !important; }
+  background: #71b873 !important;
+  color: rgba(255, 255, 255, 0.6) !important; }
 
 .task_date {
   display: inline-block;
-  background: rgba(0, 0, 255, 0.1);
+  background: rgba(0, 0, 255, 0.2);
   font-size: 10px;
   color: #000;
-  line-height: 16px;
+  line-height: 20px;
   vertical-align: baseline;
   height: 20px;
   width: 60px;
   text-align: center;
-  border-radius: 10px;
-  border: 2px solid #c9c5ff;
+  border-radius: 3px;
+  border: 0px solid #c9c5ff;
   cursor: pointer;
   margin-right: 4px; }
 
@@ -1754,8 +2049,8 @@ h10.open:before {
     text-decoration: line-through;
     color: #cccccc; }
   .one_task.did .task_date {
-    background: #FFF !important;
-    border: 2px solid #cccccc !important;
+    background: #f0f0f0 !important;
+    border: 0px solid #fafafa !important;
     color: #cccccc !important;
     background-image: none !important; }
   .one_task .left_part {

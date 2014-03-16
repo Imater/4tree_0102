@@ -17,39 +17,39 @@ $date_opacity: 0.2;
 }
 
 .datepast {
-    background: rgba(#f8000d, $date_opacity) !important;
-	border: 2px solid #f5a1aa !important;
+    background: #f56571 !important;
+	border: 0px solid #f5a1aa !important;
+	//color: #FFF !important;
 }
 
 .datetoday {
     background: #feaa0c !important;
-	border: 2px solid #feaa0c !important;
+	border: 0px solid #feaa0c !important;
 }
 
 .datetoday.past {
     background-image: -webkit-gradient(linear, right top, left top, color-stop(0.85, #ffd5b5), color-stop(0.95, rgba(#f8000d, $date_opacity) )) !important;
-	border: 2px solid #feaa0c !important;    
+	border: 0px solid #feaa0c !important;    
 }
 
 .nodate {
-	background: #FFF !important;
-	border: 2px solid #fc9a0e !important;   
-	color: #fc9a0e !important; 
-	font-weight: bold !important;
+	background: #71b873 !important;
+	color: rgba(255,255,255,0.6) !important; 
+	//font-weight: bold !important;
 }
 
 .task_date {
 	display: inline-block;
-	background: rgba(#0000FF, $date_opacity - 0.1);
+	background: rgba(#0000FF, 0.2);
 	font-size: round($grid_label/2);
 	color: #000;
-	line-height: $grid_label - 4px;
+	line-height: $grid_label;
 	vertical-align: baseline;
 	height: $grid_label;
 	width: $grid_label*3;
 	text-align: center;
-	border-radius: round($grid_label/2);
-	border: 2px solid #c9c5ff;
+	border-radius: 3px;
+	border: 0px solid #c9c5ff;
 	cursor: pointer;
 	margin-right: $padding/2;
 }
@@ -65,8 +65,8 @@ $date_opacity: 0.2;
 		}
 
 		.task_date {
-			background: #FFF !important;
-			border: 2px solid $gray !important;
+			background: rgba(240,240,240,1) !important;
+			border: 0px solid rgba(250,250,250,1) !important;
 			color: $gray !important;
 			background-image: none !important;
 		}

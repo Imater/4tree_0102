@@ -229,8 +229,7 @@
                 @include nowrap_me;
                 vertical-align: middle;
                 line-height: $p_inside_header_height;
-                border-right: 2px solid rgba(lighten($main_color, $title_lighten), 0.5);
-                border-radius: 15px;
+                border-right: 1px solid rgba(lighten($main_color, $title_lighten), 0.5);
                 padding-right: round($grid/2);;
                 i:before {
                     margin-right: 0 !important;
@@ -292,6 +291,13 @@
     display: none;
     @include absolute_me(0, $p_right_calendar_line_width, 0, auto);
     width: $p_right_side_width - $p_right_calendar_line_width;
+    .right_menu_button_w1 {
+        position: absolute;
+        top: auto;
+        margin-top: - $padding + 2px;
+        margin-right: -3px;
+    }
+
 }
 
 #p_right_calendar_line {
@@ -376,6 +382,7 @@
     }
 }
 
+
 .left_line {
     border-left: 1px solid lighten($main_color, 5%);
 }
@@ -391,6 +398,60 @@
         text-align: center;
         color: $main_font_color;
         cursor: pointer;
+        .main_menu {
+            width: 100%;
+            .title {
+                width: 100%;
+            }
+            .dropdown-menu {
+                width: 100%;
+                font-size: inherit;
+                background: rgba(lighten($main_color, 50%) , 0.95);
+                border-radius: 0;
+                margin-top: 0px;
+                border: none;
+                border-bottom: 3px solid lighten($main_color,10%);
+                .divider {
+                    background-color: rgba($main_color, 0.9);
+                }
+                .active {
+                    a {
+                        background: rgba($main_color, 0.3);;                        
+                        color: #000;
+                    }
+                    i {
+                        opacity: 1;
+                    }
+                }
+                i {
+                    display: inline-block;
+                    margin-right: 2px;
+                    font-size: 1em;
+                    width: $grid;
+                    font-weight: normal;
+                    opacity: 0.5;
+                }
+                a {
+                    padding: $padding;
+                    font-family: $font_family;
+                    letter-spacing: 0px;
+                    font-size: 1em;
+                    text-align: center;
+                    width: 100%;
+                    display: inline-block;
+                    &:hover {
+                        background: $main_color;
+                        color: #FFF;
+                    }
+                    b {
+                        font-weight: bold;
+                        display: inline-block;
+                        min-width: 97px;
+                        text-align: left;
+                    }
+                }
+            }
+        }
         .title {
             font-family: $font_family;
             font-size: 1em;
@@ -405,12 +466,54 @@
             }
         }
         .title.drop:after {
-            font-size: 0.9em;
             color: lighten($main_color, $title_lighten);
             content: "\e869";
             font-family: 'fontello';
             margin-left: 1em;
             margin-top: 2px;
+        }
+    }
+
+    .side_menu {
+        list-style: none;
+        margin: $padding 0px;
+        margin-top: 0;
+        padding: 0px;
+        margin-bottom: $padding;
+        padding-bottom: $padding;
+        border-bottom: 1px solid #EEE;
+        li:nth-child(1) {
+            height: $padding+$grid;
+            padding-top: $padding;
+        }
+        li {
+            letter-spacing: 1px;
+            color: $main_color;
+            cursor: pointer;
+            line-height: $grid;
+            height: $grid;
+            &.active {
+                background: $light_gray;
+                i {
+                    opacity: 1;
+                }
+            }
+            i {
+                display: inline-block;
+                width: $grid*2;
+                padding-left: $grid;
+                padding-right: $padding;
+                font-size: 1.3em;
+                text-align: left;
+                vertical-align: middle;
+                opacity: 0.3;
+            }
+            b {
+                line-height: $grid;
+                display: inline-block;
+                vertical-align: middle;
+                padding-left: round($padding/2);
+            }
         }
     }
 

@@ -6,6 +6,7 @@
 
 .plan_of_day {
 	margin: 0px $grid;
+	margin-right: $padding;
 	ul {
 		list-style: none;
 		padding-left: 0px;
@@ -28,9 +29,26 @@
 	}
 	.diary {
 		outline: none;
-		font-style: italic;
+		padding: $padding*2;
+		background: rgba(#ffffcc, 0.5);
+		border-bottom: 3px solid rgba(#d5ca9d, 0.2);
+		margin-right: $padding;
+		margin-top: $padding;
 		width: 100%;
-		height: 10em;
+		min-height: 15em;
+		margin-bottom: $grid;
+		@include animate_me(background, 1s);
+		em, p, div, span {
+			background: none !important;
+		}
+		img {
+			max-width: 80%;
+			max-height: 80%;
+		}
+		&:focus {
+			background: rgba(#fff797, 1);
+			border-bottom: 3px solid rgba(#d5ca9d, 1);			
+		}
 	}
 	.add_do {
 		.title {

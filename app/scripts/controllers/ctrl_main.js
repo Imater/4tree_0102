@@ -8,20 +8,83 @@
         header_panel_opened: false,
         p_left_side_open: false,
         p_right_side_open: true,
-        p_plan_of_day_open: false,
+        p_plan_of_day_open: true,
         main_parent_id: 1,
         show_pomidor_timer: false,
+        show_right_menu: true,
+        right_menu_active: 2,
         calendar_box_template: "views/subviews/view_calendar_box.html",
-        plan_of_day_template: "views/subviews/view_plan_of_day.html",
-        text_template: "views/subviews/view_text.html",
-        tree_template: "views/subviews/view_tree.html",
+        right_panel_template: "views/subviews/view_plan_of_day.html",
+        right_template: "views/subviews/view_text.html",
+        left_template: "views/subviews/view_tree.html",
         pomidor_template: "views/subviews/view_pomidor_timer.html",
         tree_header_template: "views/subviews/view_tree_header.html",
         tree_one_line_template: "views/subviews/view_one_line.html",
         mini_settings: "views/subviews/view_mini_settings.html",
+        side_views_menu: [
+          {
+            icon: 'icon-calendar',
+            title: 'План дня',
+            template: 'views/subviews/view_side/view_plan_of_day.html'
+          }, {
+            icon: 'icon-check',
+            title: 'To-do',
+            template: 'views/subviews/view_side/view_side_todo.html'
+          }, {
+            icon: 'icon-rss',
+            title: 'Новости',
+            template: 'views/subviews/view_side/view_side_news.html'
+          }, {
+            icon: 'glyphicon glyphicon-globe',
+            title: 'Мой сайт',
+            template: 'views/subviews/view_side/view_side_myweb.html'
+          }, {
+            icon: 'glyphicon glyphicon-user',
+            title: 'Контакты',
+            template: 'views/subviews/view_side/view_side_contacts.html'
+          }, {
+            icon: 'glyphicon glyphicon-tag',
+            title: 'Теги',
+            template: 'views/subviews/view_side/view_side_tags.html'
+          }, {
+            icon: 'icon-eye',
+            title: 'Обзор',
+            template: 'views/subviews/view_side/view_side_review.html'
+          }, {
+            icon: 'icon-search',
+            title: 'Поиск',
+            template: 'views/subviews/view_side/view_side_search.html'
+          }
+        ],
+        main_views_menu: [
+          {
+            icon: 'icon-flow-cascade',
+            title: 'Дерево',
+            template: 'views/subviews/view_main/view_tree.html'
+          }, {
+            icon: 'icon-th-1',
+            title: 'Карточки',
+            template: 'views/subviews/view_main/view_cards.html'
+          }, {
+            icon: 'glyphicon glyphicon-record',
+            title: 'Mindmap',
+            template: 'views/subviews/view_main/view_mindmap.html'
+          }, {
+            title: 'divider'
+          }, {
+            icon: 'icon-calendar-2',
+            title: 'Календарь',
+            template: 'views/subviews/view_main/view_calendar.html'
+          }, {
+            icon: 'icon-pencil-neg',
+            title: 'Редактор',
+            template: 'views/subviews/view_main/view_text.html'
+          }
+        ],
         refresh: 0,
+        today_date: Date(),
         ms_show_icon_limit: 36,
-        mini_settings_btn_active: 2,
+        mini_settings_btn_active: 4,
         mini_settings_show: true,
         mini_tasks_show: false,
         mini_settings_btn: [
@@ -63,6 +126,28 @@
           return dates.startDate + dates.endDate;
         }),
         tags: ['@gtd', '@срочно', '@завтра', '@быстро', '@на сайт', '@общее', '@Вецель', '@когда-нибудь'],
+        jsCopyClipboard: function(value) {
+          return value;
+        },
+        jsCopyClipboardConfirm: function(value) {
+          var myAlert, title;
+          title = 'Ссылка: ' + value + ' в буфере обмена';
+          return myAlert = $alert({
+            title: '',
+            content: title,
+            placement: 'top',
+            type: 'info',
+            show: true,
+            template: 'views/alert.template.html',
+            duration: 3
+          });
+        },
+        jsDateRewind: function(set, add) {
+          var date2;
+          date2 = new Date();
+          date2.setDate(new Date(set.today_date).getDate() + add);
+          return set.today_date = date2;
+        },
         loadTags: function(query) {
           var dfd;
           dfd = $q.defer();

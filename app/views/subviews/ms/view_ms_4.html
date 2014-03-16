@@ -1,1 +1,50 @@
-Поделиться
+<div class="share_wrap">
+		
+	<div class="part">
+		<input type="checkbox" id="short_link_on" ng-model="db.main_node.short_link_on"> <label for="short_link_on">Включить доступ по ссылке</label>
+
+		<div class="padding" ng-if="db.main_node.short_link_on">
+			<input class="share_link" ng-init="short_link = 'http://4tree.ru/as3'" ng-model="short_link">
+			<span clip-copy="fn.jsCopyClipboard(short_link)" clip-click="fn.jsCopyClipboardConfirm(short_link)"><i class="icon-docs clipboard"></i></span>
+			<div class="can_write">
+				<input type="checkbox" id="short_link_can_write" ng-model="db.main_node.short_link_can_write"> <label for="short_link_can_write">разрешить редактирование</label>
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="part">
+		<input type="checkbox" id="web_on" ng-model="db.main_node.web_on"> <label for="web_on">Выложить на мой сайт</label>
+
+		<div class="padding" ng-if="db.main_node.web_on">
+			<input class="share_link" ng-init="web_link = 'Кулинария -> Супы'" ng-model="web_link">
+		</div>
+	</div>
+	
+
+	<div class="part">
+		<input type="checkbox" id="frends_on" ng-model="db.main_node.share_frends"> <label for="frends_on">Поделиться с друзьями</label>
+
+		<div class="padding" ng-if="db.main_node.share_frends">
+			<table class="frends">
+				<tr ng-repeat="fio in ['Вецель Евгений','Вецель Валентина','Сергеева Светлана','Панников Андрей','Лукова Валентина']">
+					<th><div class="face" style="background:url('images/tmp/photo.jpg')"></div></th>
+					<td><span class="title">{{fio}}</span></td>
+					<td>
+						<i class="icon-lock-open can_edit" ng-if="$index==1"></i>
+						<i class="icon-lock can_edit" ng-if="$index!=1"></i>
+					</td>
+					<td><i class="icon-cancel remove"></i></td>
+				</tr>
+				<tr>
+					<th></th>
+					<td><span class="add_frend">Добавить...</span></td>
+					<td></td>
+					<td></td>
+				</tr>
+
+			</table>
+		</div>
+	</div>
+
+</div>

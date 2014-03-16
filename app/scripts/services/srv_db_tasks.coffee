@@ -33,13 +33,13 @@ angular.module("4treeApp").service 'db_tasks', ['$translate', '$http', '$q', ($t
 			date1: new Date(2014,2,2), 
 			date2: new Date(2014,2,2), 
 			title: 'Урал край голубых озёр - написать статью' 
-			did: new Date();
+			#did: new Date();
 			}
 
 			{ 
 			id: 4, 
 			tree_id: 1034, 
-			date1: new Date( new Date().getTime()-1000*60*20 ), 
+			date1: new Date( new Date().getTime()-1000*60*220 ), 
 			date2: new Date(2014,2,3), 
 			title: 'Двадцать минут назад я тут был :)' 
 			}

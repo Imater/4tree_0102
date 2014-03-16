@@ -1,4 +1,4 @@
-angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', ($translate, $http, $q) ->
+angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$rootScope', ($translate, $http, $q, $rootScope) ->
 	salt: ()->
 		'Salt is a mineral substance composed'
 	pepper: ()->
@@ -45,13 +45,41 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', ($tr
 		}).then (result)->
 			mythis.db_tree = result.data;
 			mythis.refreshParentsIndex();
+			$rootScope.$$childTail.db.main_node = _.find mythis.db_tree, (el)->
+				el.id == 1034
 			dfd.resolve(result.data);
 	refreshParentsIndex: ()->
 		mythis = @;
 		mythis.db_parents = {};
 		_.each @db_tree, (el)->
+			cnt = [
+				{title:'шагов', cnt_today: 20, days: [ 
+					{d: '2013-03-01', cnt: 12}
+					{d: '2013-03-02', cnt: 10}
+					{d: '2013-03-03', cnt: 8}
+					{d: '2013-03-05', cnt: 15}
+					{d: '2013-03-12', cnt: 21}
+				]}
+				{title:'прошёл км.', cnt_today: 30,  days: [ 
+					{d: '2013-03-01', cnt: 12}
+					{d: '2013-03-02', cnt: 10}
+					{d: '2013-03-03', cnt: 8}
+					{d: '2013-03-05', cnt: 15}
+					{d: '2013-03-12', cnt: 21}
+				]}
+				{title:'отжиманий', cnt_today: 19, days: [ 
+					{d: '2013-03-01', cnt: 12}
+					{d: '2013-03-02', cnt: 10}
+					{d: '2013-03-03', cnt: 8}
+					{d: '2013-03-05', cnt: 15}
+					{d: '2013-03-12', cnt: 21}
+				]}
+			]
 			el.importance = if el.importance then el.importance else 50;
 			el.tags = if el.tags then el.tags else [];
+			el.counters = cnt;
+			el._open = false;
+
 			parent = 'n' + el.parent
 			mythis.db_parents[parent] = [] if !mythis.db_parents[parent];
 			mythis.db_parents[parent].push( el );	
@@ -60,6 +88,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', ($tr
 				key == 'n'+e.id
 			found._childs = el.length if found
 			found.childs = el if found
+			found._open = false if found and found._childs > 30
 	getTree: (args) ->
 		@db_tree
 	jsFindByParent: (args) ->
