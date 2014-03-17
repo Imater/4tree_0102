@@ -113,7 +113,11 @@
               return res;
             });
           }
-          return answer;
+          if (answer) {
+            return answer;
+          } else {
+            return [];
+          }
         }, function(tree_id, only_next) {
           return tree_id + only_next;
         })

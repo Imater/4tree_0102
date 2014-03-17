@@ -12,6 +12,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     show_pomidor_timer: false
     show_right_menu: true
     right_menu_active: 2
+    calendar_box_template: 'views/subviews/view_calendar_box.html'
     panel: [
       {active: 7} #0
       {active: 0} #1
@@ -90,7 +91,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
         template: 'views/subviews/view_main/view_text.html'
       }
       {
-        title: 'Скрыто'
+        title: '— — —'
         off: true
         icon: 'icon-cancel-circle'
         template: ''        
@@ -138,7 +139,6 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       value
     jsCopyClipboardConfirm: (value)->
       title = 'Ссылка: ' + value + ' в буфере обмена';
-      myAlert = $alert({title: '', content: title, placement: 'top', type: 'info', show: true, template: 'views/alert.template.html', duration: 3});
     jsDateRewind: (set, add)->
       date2 = new Date()
       date2.setDate( new Date(set.today_date).getDate() + add )

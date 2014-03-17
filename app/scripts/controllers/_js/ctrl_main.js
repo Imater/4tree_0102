@@ -13,6 +13,7 @@
         show_pomidor_timer: false,
         show_right_menu: true,
         right_menu_active: 2,
+        calendar_box_template: 'views/subviews/view_calendar_box.html',
         panel: [
           {
             active: 7
@@ -83,7 +84,7 @@
             icon: 'icon-pencil-neg',
             template: 'views/subviews/view_main/view_text.html'
           }, {
-            title: 'Скрыто',
+            title: '— — —',
             off: true,
             icon: 'icon-cancel-circle',
             template: ''
@@ -138,17 +139,8 @@
           return value;
         },
         jsCopyClipboardConfirm: function(value) {
-          var myAlert, title;
-          title = 'Ссылка: ' + value + ' в буфере обмена';
-          return myAlert = $alert({
-            title: '',
-            content: title,
-            placement: 'top',
-            type: 'info',
-            show: true,
-            template: 'views/alert.template.html',
-            duration: 3
-          });
+          var title;
+          return title = 'Ссылка: ' + value + ' в буфере обмена';
         },
         jsDateRewind: function(set, add) {
           var date2;

@@ -107,7 +107,7 @@ angular.module("4treeApp").service 'db_tasks', ['$translate', '$http', '$q', ($t
 
 				res
 
-		answer
+		if answer then answer else []
 	, (tree_id, only_next)->
 		tree_id+only_next
 ]

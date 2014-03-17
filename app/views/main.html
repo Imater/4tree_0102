@@ -17,14 +17,14 @@
         <div id="p_left_side_wrap" ng-if="set.p_left_side_open">
             <div class="p_inside_wrap">
                 <div class="p_inside_header">
-                    <span class="title"><i class="icon-star"></i></span>
+                    <span ng-click="set.show_left_menu = !set.show_left_menu" class="title drop margin_left">{{set.side_views_menu[set.panel[0].active].title}}</span>
                 </div>
 
                 <div class="p_inside_header2">
                 </div>
 
                 <div class="p_inside_content vertical_scroll"  scrollable="{alwaysVisible:'true'}">
-                    <ul class="side_menu" ng-if="set.show_right_menu">
+                    <ul class="side_menu slide_left" ng-if="set.show_left_menu">
                         <li sly-repeat="item in set.side_views_menu" ng-class="{active:$index==set.panel[0].active}" ng-click="set.panel[0].active=$index;"><i class="{{item.icon}}"></i><b>{{item.title}}</b></li>
                     </ul>
                     <div class="right_menu_button_w">
@@ -93,14 +93,14 @@
         <div id="p_right_side_wrap" ng-if="set.p_plan_of_day_open">
             <div class="p_inside_wrap">
                 <div class="p_inside_header">
-                    <span ng-click="set.show_right_menu = !set.show_right_menu" class="title drop margin_left" bindonce>{{'PLANOFDAY' | translate}}</span>
+                    <span ng-click="set.show_right_menu = !set.show_right_menu" class="title drop margin_left">{{set.side_views_menu[set.panel[3].active].title}}</span>
                 </div>
 
                 <div class="p_inside_header2">
                 </div>
 
                 <div class="p_inside_content vertical_scroll" scrollable="{alwaysVisible:'true'}">
-                    <ul class="side_menu" ng-if="set.show_right_menu">
+                    <ul class="side_menu slide_left" ng-if="set.show_right_menu">
                         <li sly-repeat="item in set.side_views_menu" ng-class="{active:$index==set.panel[3].active}" ng-click="set.panel[3].active=$index;"><i class="{{item.icon}}"></i><b>{{item.title}}</b></li>
                     </ul>
                     <div class="right_menu_button_w">

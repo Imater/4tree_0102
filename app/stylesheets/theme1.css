@@ -892,11 +892,11 @@ h10.open:before {
 .p_inside_wrap .p_inside_header .main_menu .dropdown-menu {
   width: 100%;
   font-size: inherit;
-  background: rgba(174, 235, 144, 0.95);
+  background: rgba(217, 245, 207, 0.95);
   border-radius: 0;
   margin-top: 0px;
   border: none;
-  border-bottom: 3px solid #42941b;
+  border-bottom: 3px solid #469d1c;
   z-index: 1006;
 }
 /* line 415, ../sass/_main_window.scss */
@@ -919,7 +919,7 @@ h10.open:before {
   font-size: 1em;
   width: 25px;
   font-weight: normal;
-  opacity: 0.8;
+  opacity: 1;
 }
 /* line 435, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .main_menu .dropdown-menu a {
@@ -930,20 +930,21 @@ h10.open:before {
   text-align: center;
   width: 100%;
   display: inline-block;
+  color: #2f6913;
 }
-/* line 443, ../sass/_main_window.scss */
+/* line 444, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .main_menu .dropdown-menu a:hover {
   background: #2f6913;
   color: #FFF;
 }
-/* line 447, ../sass/_main_window.scss */
+/* line 448, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .main_menu .dropdown-menu a b {
   font-weight: bold;
   display: inline-block;
   min-width: 97px;
   text-align: left;
 }
-/* line 456, ../sass/_main_window.scss */
+/* line 457, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .title {
   font-family: "Ubuntu", Verdana;
   font-size: 1em;
@@ -958,11 +959,11 @@ h10.open:before {
   vertical-align: middle;
   line-height: 25px;
 }
-/* line 465, ../sass/_main_window.scss */
+/* line 466, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .title i:before {
   margin-right: 0 !important;
 }
-/* line 469, ../sass/_main_window.scss */
+/* line 470, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .title.drop:after {
   color: #8ee365;
   content: "\e869";
@@ -970,22 +971,27 @@ h10.open:before {
   margin-left: 1em;
   margin-top: 2px;
 }
-/* line 478, ../sass/_main_window.scss */
+/* line 479, ../sass/_main_window.scss */
 .p_inside_wrap .side_menu {
   list-style: none;
   margin: 8px 0px;
   margin-top: 0;
   padding: 0px;
-  margin-bottom: 8px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #EEE;
+  margin-bottom: 16px;
+  background: rgba(217, 245, 207, 0.95);
+  border-bottom: 3px solid #469d1c;
 }
-/* line 486, ../sass/_main_window.scss */
+/* line 488, ../sass/_main_window.scss */
 .p_inside_wrap .side_menu li:nth-child(1) {
   height: 33px;
   padding-top: 8px;
 }
-/* line 490, ../sass/_main_window.scss */
+/* line 492, ../sass/_main_window.scss */
+.p_inside_wrap .side_menu li:last-child {
+  height: 33px;
+  padding-bottom: 8px;
+}
+/* line 496, ../sass/_main_window.scss */
 .p_inside_wrap .side_menu li {
   letter-spacing: 1px;
   color: #2f6913;
@@ -993,15 +999,16 @@ h10.open:before {
   line-height: 25px;
   height: 25px;
 }
-/* line 496, ../sass/_main_window.scss */
+/* line 502, ../sass/_main_window.scss */
 .p_inside_wrap .side_menu li.active {
-  background: #dedede;
+  background: rgba(47, 105, 19, 0.3);
+  color: #000;
 }
-/* line 498, ../sass/_main_window.scss */
+/* line 505, ../sass/_main_window.scss */
 .p_inside_wrap .side_menu li.active i {
   opacity: 1;
 }
-/* line 502, ../sass/_main_window.scss */
+/* line 509, ../sass/_main_window.scss */
 .p_inside_wrap .side_menu li i {
   display: inline-block;
   width: 50px;
@@ -1010,20 +1017,20 @@ h10.open:before {
   font-size: 1.3em;
   text-align: left;
   vertical-align: middle;
-  opacity: 0.3;
+  opacity: 0.8;
 }
-/* line 512, ../sass/_main_window.scss */
+/* line 519, ../sass/_main_window.scss */
 .p_inside_wrap .side_menu li b {
   line-height: 25px;
   display: inline-block;
   vertical-align: middle;
   padding-left: 4px;
 }
-/* line 521, ../sass/_main_window.scss */
+/* line 528, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header2 {
   height: 25px;
 }
-/* line 524, ../sass/_main_window.scss */
+/* line 531, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_content {
   position: absolute;
   top: 25px;
@@ -1031,11 +1038,11 @@ h10.open:before {
   bottom: 0;
   left: 0;
 }
-/* line 527, ../sass/_main_window.scss */
+/* line 534, ../sass/_main_window.scss */
 .p_inside_wrap .has_header {
   top: 50px;
 }
-/* line 530, ../sass/_main_window.scss */
+/* line 537, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_sidebar {
   background: #2f6913;
   position: absolute;
@@ -1045,7 +1052,7 @@ h10.open:before {
   left: 0;
   width: 25px;
 }
-/* line 534, ../sass/_main_window.scss */
+/* line 541, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_sidebar .p_inside_sidebar_gradient {
   background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 200, 0.5) 100%);
   /* FF3.6+ */
@@ -1064,53 +1071,79 @@ h10.open:before {
   height: 100%;
 }
 
-/* line 543, ../sass/_main_window.scss */
+/* line 550, ../sass/_main_window.scss */
 .right_hide #p_left_wrap {
   right: 0px;
 }
-/* line 546, ../sass/_main_window.scss */
+/* line 552, ../sass/_main_window.scss */
+.right_hide #p_left_wrap .p_inside_header {
+  width: 50%;
+}
+/* line 556, ../sass/_main_window.scss */
 .right_hide #p_right_wrap {
   left: auto;
-  width: 100px;
+  width: 50%;
   bottom: auto;
   height: 25px;
   z-index: 1;
 }
+/* line 563, ../sass/_main_window.scss */
+.right_hide #p_right_wrap .p_inside_header .title {
+  opacity: 0.4;
+}
 
-/* line 556, ../sass/_main_window.scss */
+/* line 571, ../sass/_main_window.scss */
 .left_hide #p_right_wrap {
   left: 0px;
 }
-/* line 559, ../sass/_main_window.scss */
+/* line 573, ../sass/_main_window.scss */
+.left_hide #p_right_wrap .p_inside_header {
+  margin-left: 50%;
+  width: 50%;
+}
+/* line 578, ../sass/_main_window.scss */
 .left_hide #p_left_wrap {
   right: auto;
-  width: 100px;
+  width: 50%;
   bottom: auto;
   height: 25px;
   z-index: 1;
 }
+/* line 585, ../sass/_main_window.scss */
+.left_hide #p_left_wrap .p_inside_header .title {
+  opacity: 0.4;
+}
 
-/* line 570, ../sass/_main_window.scss */
+/* line 594, ../sass/_main_window.scss */
 .left_hide.right_hide #p_right_wrap {
   left: 50%;
-  width: auto;
+  width: 50%;
 }
-/* line 574, ../sass/_main_window.scss */
+/* line 597, ../sass/_main_window.scss */
+.left_hide.right_hide #p_right_wrap .p_inside_header {
+  margin-left: 0;
+  width: 100%;
+}
+/* line 602, ../sass/_main_window.scss */
 .left_hide.right_hide #p_left_wrap {
   right: 50%;
-  width: auto;
+  width: 50%;
   bottom: auto;
   height: 25px;
   z-index: 1;
 }
+/* line 608, ../sass/_main_window.scss */
+.left_hide.right_hide #p_left_wrap .p_inside_header {
+  width: 100%;
+}
 
-/* line 585, ../sass/_main_window.scss */
+/* line 615, ../sass/_main_window.scss */
 .margin_left {
   margin-left: 13px;
   margin-right: 25px;
 }
 
-/* line 590, ../sass/_main_window.scss */
+/* line 620, ../sass/_main_window.scss */
 .left_main_line {
   position: absolute;
   top: 0;
@@ -1122,7 +1155,7 @@ h10.open:before {
   cursor: pointer;
 }
 
-/* line 597, ../sass/_main_window.scss */
+/* line 627, ../sass/_main_window.scss */
 .right_main_line {
   position: absolute;
   top: 0;
@@ -1402,7 +1435,7 @@ h10.open:before {
 /* TRIPLE BORDERS */
 /* line 7, ../sass/_plan_of_day.scss */
 .plan_of_day {
-  margin: 0px 25px;
+  margin: 8px 25px;
   margin-right: 8px;
 }
 /* line 10, ../sass/_plan_of_day.scss */
@@ -2548,37 +2581,38 @@ h10.open:before {
 /* line 382, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap label {
   margin-left: 8px;
+  font-weight: normal;
   color: #2f6913;
 }
-/* line 387, ../sass/_view_mini_settings.scss */
+/* line 388, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .can_write label {
   font-weight: normal;
   color: inherit;
 }
-/* line 392, ../sass/_view_mini_settings.scss */
+/* line 393, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .part {
   padding: 8px;
 }
-/* line 395, ../sass/_view_mini_settings.scss */
+/* line 396, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends {
   margin: 8px 0;
 }
-/* line 397, ../sass/_view_mini_settings.scss */
+/* line 398, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends td, .mini_settings .ms_inside .share_wrap .frends tr {
   padding: 5px 8px;
 }
-/* line 400, ../sass/_view_mini_settings.scss */
+/* line 401, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends .title {
   padding-right: 16px;
   padding-left: 8px;
 }
-/* line 404, ../sass/_view_mini_settings.scss */
+/* line 405, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends .face {
   width: 25px;
   height: 25px;
   border-radius: 50%;
 }
-/* line 409, ../sass/_view_mini_settings.scss */
+/* line 410, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends .remove {
   color: #cccccc;
   -webkit-transition: color 0.2s ease-out;
@@ -2587,11 +2621,11 @@ h10.open:before {
   transition: color 0.2s ease-out;
   cursor: pointer;
 }
-/* line 413, ../sass/_view_mini_settings.scss */
+/* line 414, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends .remove:hover {
   color: red;
 }
-/* line 417, ../sass/_view_mini_settings.scss */
+/* line 418, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends .can_edit {
   font-size: 1.5em;
   color: #cccccc;
@@ -2602,23 +2636,23 @@ h10.open:before {
   -moz-transition: opacity 0.5s ease-out;
   transition: opacity 0.5s ease-out;
 }
-/* line 423, ../sass/_view_mini_settings.scss */
+/* line 424, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends .can_edit.icon-lock-open {
   color: #23a216;
   opacity: 0.8;
 }
-/* line 427, ../sass/_view_mini_settings.scss */
+/* line 428, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends .can_edit:hover {
   opacity: 1;
 }
-/* line 432, ../sass/_view_mini_settings.scss */
+/* line 433, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .add_frend {
   padding-right: 16px;
   padding-left: 8px;
   color: #cccccc;
   cursor: pointer;
 }
-/* line 444, ../sass/_view_mini_settings.scss */
+/* line 445, ../sass/_view_mini_settings.scss */
 .mini_settings .note_mini_settings_panel {
   padding: 8px 0;
   min-height: 10em;
