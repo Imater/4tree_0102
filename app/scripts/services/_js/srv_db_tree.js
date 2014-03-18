@@ -331,6 +331,84 @@
         jsFindByParent: function(args) {
           return this.db_parents['n' + args];
         },
+        web_tags: [
+          {
+            id: 1,
+            parent: 0,
+            title: "Кулинария",
+            cnt: 1
+          }, {
+            id: 5,
+            parent: 1,
+            title: "Супы",
+            cnt: 6
+          }, {
+            id: 7,
+            parent: 5,
+            title: "Диетические",
+            cnt: 1
+          }, {
+            id: 8,
+            parent: 5,
+            title: "Фруктовые",
+            cnt: 3
+          }, {
+            id: 6,
+            parent: 1,
+            title: "Каши",
+            cnt: 3
+          }, {
+            id: 2,
+            parent: 0,
+            title: "Рукоделие",
+            cnt: 1
+          }, {
+            id: 9,
+            parent: 2,
+            title: "Холодный фарфор",
+            cnt: 2
+          }, {
+            id: 10,
+            parent: 2,
+            title: "Тильда",
+            cnt: 0
+          }, {
+            id: 10,
+            parent: 2,
+            title: "Скрапбукинг",
+            cnt: 1
+          }, {
+            id: 10,
+            parent: 2,
+            title: "Канзаши",
+            cnt: 3
+          }, {
+            id: 10,
+            parent: 2,
+            title: "Бисероплетение",
+            cnt: 211
+          }, {
+            id: 10,
+            parent: 2,
+            title: "Вязание",
+            cnt: 1
+          }, {
+            id: 3,
+            parent: 0,
+            title: "Мои новости",
+            cnt: 8
+          }, {
+            id: 4,
+            parent: 0,
+            title: "Я в лицах",
+            cnt: 11
+          }
+        ],
+        jsFindByParentWeb: function(args) {
+          return _.filter(this.web_tags, function(el) {
+            return el.parent === args;
+          });
+        },
         jsFind: _.memoize(function(id) {
           var tree_by_id;
           tree_by_id = _.find(this.db_tree, function(el) {

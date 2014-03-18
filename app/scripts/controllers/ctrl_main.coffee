@@ -17,7 +17,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       {active: 7} #0
       {active: 0} #1
       {active: 5} #2
-      {active: 0} #3
+      {active: 3} #3
     ]
     side_views_menu: [
       {
@@ -282,11 +282,24 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       {title: "Прогуляться на улице", myclass: "future", time: ""}
       {title: "Заехать к родителям", myclass: "future", time: ""}
     ]
+    news_changes: [
+      {title: "Изменил заметку 'АС_ЭТД'", myclass: "done", time: ""}
+      {title: "Добавил комментарий в 'Дневник': 'Ты когда собираешься домой, всегда проверяй — взял ли ты ключи с собой'", myclass: "done", time: ""}
+      {title: "Удалил заметку 'Контроль кол-ва показателей в спорте'", myclass: "future", time: ""}
+      {title: "Выложил в интернет 'Интересная статья об оптимизации Angulare'", myclass: "future", time: ""}
+    ]
+    news_comments:  [
+      {title: "Отличный фильм, нужно пересмотреть его на английском языке (Курьер)", myclass: "done", time: ""}
+      {title: "Валь, не забудь пожалуйста взять с собой очиститель ржавчины. Пора уже залить в замок, а то мы его потеряем. (Починить дверь)", myclass: "done", time: ""}
+      {title: "Сегодня отжался 20 раз (Отжимания)", myclass: "future", time: ""}
+      {title: "Есть отличный плагин LiveReload (Инструменты программирования)", myclass: "future", time: ""}
+    ]
     reward_do: [
       {title: "Помидорок: 6", myclass: "done", time: ""}
       {title: "Добавлено дел: 18", myclass: "done", time: ""}
       {title: "Дел лягушек: 4", myclass: "future", time: ""}
     ]
+
     icons_collection: [
       'icon-progress-0'      
       'icon-progress-1'      

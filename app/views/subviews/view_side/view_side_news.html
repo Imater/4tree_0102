@@ -1,1 +1,26 @@
-Новости
+<div class="plan_of_day">
+	<h10 class="open">Изменения</h10>
+	<table class="news_changes">
+		<tr ng-repeat="the_do in db.news_changes" class="{{the_do.myclass}}">
+			<td><div class="face" style="background:url('images/tmp/photo.jpg')"></div></td>
+			<td><div class="title">{{the_do.title}}</div></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td class="add_do"><span class="title">ещё...</span></td>
+		</tr>
+	</table>
+
+	<h10 class="open">Комментарии</h10>
+	<table class="news_changes">
+		<tr ng-repeat="the_do in db.news_comments" class="{{the_do.myclass}}">
+			<td><div class="face" style="background:url('images/tmp/photo.jpg')"></div></td>
+			<td><div class="title">{{the_do.title}}</div></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td class="add_do"><span class="title">ещё...</span></td>
+		</tr>
+	</table>
+
+</div>

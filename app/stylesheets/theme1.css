@@ -1507,6 +1507,44 @@ h10.open:before {
 .plan_of_day .add_do .title:hover {
   color: #469d1c;
 }
+/* line 63, ../sass/_plan_of_day.scss */
+.plan_of_day .news_changes {
+  list-style: none;
+}
+/* line 66, ../sass/_plan_of_day.scss */
+.plan_of_day .news_changes tr td {
+  padding: 8px 0;
+  vertical-align: top;
+}
+/* line 69, ../sass/_plan_of_day.scss */
+.plan_of_day .news_changes tr td .face {
+  width: 25px;
+  height: 25px;
+  margin-right: 8px;
+  border-radius: 50%;
+}
+/* line 75, ../sass/_plan_of_day.scss */
+.plan_of_day .news_changes tr td .title {
+  margin-top: 5px;
+}
+/* line 83, ../sass/_plan_of_day.scss */
+.plan_of_day .myweb_ul .title {
+  padding: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+/* line 88, ../sass/_plan_of_day.scss */
+.plan_of_day .myweb_ul .cnt {
+  color: #cccccc;
+}
+/* line 91, ../sass/_plan_of_day.scss */
+.plan_of_day .myweb_ul .myweb_ul {
+  margin-left: 25px;
+}
+/* line 93, ../sass/_plan_of_day.scss */
+.plan_of_day .myweb_ul .myweb_ul .title {
+  font-weight: normal;
+}
 
 /* -------------------------------------------------------------
   Sass CSS3 Mixins! The Cross-Browser CSS3 Sass Library

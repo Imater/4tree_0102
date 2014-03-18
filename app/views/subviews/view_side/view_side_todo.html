@@ -14,8 +14,8 @@
 
 	<h10 class="open">To-do без дат</h10>
 	<ul>
-		<li ng-repeat="the_do in db.today_do" class="{{the_do.myclass}}">
-			<div class="time">{{the_do.time}}</div>
+		<li ng-repeat="the_do in db.nodate_do" class="{{the_do.myclass}}">
+			<input type="checkbox">
 			<div class="title">{{the_do.title}}</div>
 		</li>
 		<li class="add_do">

@@ -60,4 +60,39 @@
 			}
 		}
 	}
+	.news_changes {
+		list-style: none;
+		tr {
+			td {
+				padding: $padding 0;
+				vertical-align: top;
+				.face {
+					width: $grid;
+					height: $grid;
+					margin-right: $padding;
+					border-radius: 50%;
+				}
+				.title {
+					margin-top: round($grid/4) - 1px;
+				}
+
+			}			
+		}
+	}
+	.myweb_ul {
+		.title {
+			padding: round($padding/2);
+			font-weight: bold;
+			cursor: pointer;
+		}
+		.cnt {
+			color: $gray;
+		}
+		.myweb_ul {
+			margin-left: $grid;
+			.title {
+				font-weight: normal;
+			}
+		}
+	}
 }
