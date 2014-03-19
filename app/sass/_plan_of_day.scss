@@ -66,12 +66,6 @@
 			td {
 				padding: $padding 0;
 				vertical-align: top;
-				.face {
-					width: $grid;
-					height: $grid;
-					margin-right: $padding;
-					border-radius: 50%;
-				}
 				.title {
 					margin-top: round($grid/4) - 1px;
 				}
@@ -80,6 +74,10 @@
 		}
 	}
 	.myweb_ul {
+		b {
+			//color: $gray;
+			font-weight: normal;
+		}
 		.title {
 			padding: round($padding/2);
 			font-weight: bold;
@@ -87,6 +85,7 @@
 		}
 		.cnt {
 			color: $gray;
+			font-weight: normal;
 		}
 		.myweb_ul {
 			margin-left: $grid;
@@ -95,4 +94,62 @@
 			}
 		}
 	}
+}
+
+
+.face {
+	display: inline-block;
+	vertical-align: middle;
+	width: $grid;
+	height: $grid;
+	margin-right: $padding;
+	border-radius: 50%;
+}
+
+.side_search {
+	margin: 0 $padding;
+	margin-top: -5px;
+	input {
+		box-shadow: none;
+		border: 1px solid $light_gray;
+		font-size: 1em;
+		padding: 2px $padding;
+		height: $grid;
+		border-radius: 3px;		
+	}
+}
+
+.myweb_link_header {
+	display: inline-block;
+	text-align: center;
+	width: 100%;
+	font-weight: bold;
+	font-size: 1.2em;
+	padding-bottom: round($padding/2);
+}
+
+.frends_wrap {
+	padding-top: $padding;
+	.frends_list {
+		background: rgba($dropdown_menu,0.5);
+		list-style: none;
+		padding: 0 0 0 $grid;
+		border-bottom: 3px solid $main_color;
+		li {
+			padding: round($padding/2) 0;
+			cursor: pointer;
+		}
+	}
+
+	.select_frend {
+		font-weight: bold;
+		padding: 0 0 $padding $grid;
+		cursor: pointer;
+		&:hover {
+			.face {
+				opacity: 1;
+			}
+		}
+	}
+
 }

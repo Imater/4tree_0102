@@ -1,0 +1,6 @@
+<div class="title"><b>@</b>{{tree.title}} <span class="cnt">({{tree.cnt}})</span></div>
+<ul class="myweb_ul">
+    <li class="tree" sly-repeat="tree in fn.service.db_tree.jsFindByParentTags( tree.id )">
+        <div ng-include="'views/subviews/one_line_tree_tags.html'"></div>
+    </li>
+</ul>

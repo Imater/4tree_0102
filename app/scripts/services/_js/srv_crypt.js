@@ -8,7 +8,6 @@
           this.pass_salt = this.sha3(db_tree.salt() + db_tree.pepper());
           this.password = "990990";
           this.pass = this.sha3(this.password + this.pass_salt + this.password + this.pass_salt);
-          console.info(this.pass);
           this.reminder = 'ФИО';
           this.methods = {
             0: 'AES',

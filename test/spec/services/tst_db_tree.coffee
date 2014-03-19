@@ -35,6 +35,7 @@ describe "Service db_tree test", ->
 		#console.info srv_db_tree.jsGetPath(11)
 		expect( srv_db_tree.jsGetPath(11).length ).toBeGreaterThan 0
 
-
+	it "MapReduce", ->
+		expect( 2 ).toBe 2
 
 

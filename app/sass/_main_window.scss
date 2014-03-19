@@ -418,7 +418,6 @@
                 .active {
                     a {
                         background: rgba($main_color, 0.3);;                        
-                        color: #000;
                     }
                     i {
                         opacity: 1;
@@ -501,7 +500,6 @@
             height: $grid;
             &.active {
                     background: rgba($main_color, 0.3);
-                    color: #000;                        
                 i {
                     opacity: 1;
                 }

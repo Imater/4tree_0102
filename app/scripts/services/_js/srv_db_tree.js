@@ -404,8 +404,81 @@
             cnt: 11
           }
         ],
+        tree_tags: [
+          {
+            id: 1,
+            parent: 0,
+            title: "GTD",
+            cnt: 0
+          }, {
+            id: 4,
+            parent: 1,
+            title: "Входящие",
+            cnt: 12
+          }, {
+            id: 2,
+            parent: 1,
+            title: "Следующие действия",
+            cnt: 4
+          }, {
+            id: 3,
+            parent: 1,
+            title: "Когда-нибудь",
+            cnt: 24
+          }, {
+            id: 5,
+            parent: 1,
+            title: "Календарь",
+            cnt: 120
+          }, {
+            id: 6,
+            parent: 1,
+            title: "Ожидание",
+            cnt: 8
+          }, {
+            id: 7,
+            parent: 1,
+            title: "Проект",
+            cnt: 3
+          }, {
+            id: 8,
+            parent: 0,
+            title: "Рабочие дела",
+            cnt: 4
+          }, {
+            id: 9,
+            parent: 0,
+            title: "Домашние дела",
+            cnt: 8
+          }, {
+            id: 10,
+            parent: 0,
+            title: "Мой сайт",
+            cnt: 18
+          }, {
+            id: 11,
+            parent: 0,
+            title: "Чтение",
+            cnt: 0
+          }, {
+            id: 12,
+            parent: 11,
+            title: "Почитать",
+            cnt: 2
+          }, {
+            id: 13,
+            parent: 11,
+            title: "Прочитано",
+            cnt: 243
+          }
+        ],
         jsFindByParentWeb: function(args) {
           return _.filter(this.web_tags, function(el) {
+            return el.parent === args;
+          });
+        },
+        jsFindByParentTags: function(args) {
+          return _.filter(this.tree_tags, function(el) {
             return el.parent === args;
           });
         },

@@ -30,10 +30,10 @@ describe "Service db_tree test", ->
 
 			decrypted = cryptApi.decrypt( crypted ).text;
 
-			console.info text.length, crypted.length, crypted, cryptApi.decrypt( crypted ).err
+			#console.info text.length, crypted.length, crypted, cryptApi.decrypt( crypted ).err
 
 			expect( decrypted ).toBe text
-		console.info 'errors = ', cryptApi.decrypt( '{"memo":"ФИО","data":"Чувак ты где?","method":"AES","salt":"38777"}' )
-		console.info sha = cryptApi.sha3('sex');
+		#console.info 'errors = ', cryptApi.decrypt( '{"memo":"ФИО","data":"Чувак ты где?","method":"AES","salt":"38777"}' )
+		sha = cryptApi.sha3('sex');
 		expect( sha.length ).toBeGreaterThan 5 
 		return

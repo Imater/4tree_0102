@@ -26,11 +26,9 @@
         var crypted, decrypted;
         crypted = cryptApi.encrypt(text, key);
         decrypted = cryptApi.decrypt(crypted).text;
-        console.info(text.length, crypted.length, crypted, cryptApi.decrypt(crypted).err);
         return expect(decrypted).toBe(text);
       });
-      console.info('errors = ', cryptApi.decrypt('{"memo":"ФИО","data":"Чувак ты где?","method":"AES","salt":"38777"}'));
-      console.info(sha = cryptApi.sha3('sex'));
+      sha = cryptApi.sha3('sex');
       expect(sha.length).toBeGreaterThan(5);
     });
   });

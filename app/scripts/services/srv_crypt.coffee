@@ -4,7 +4,7 @@ angular.module("4treeApp").service 'cryptApi', ['$translate','db_tree', '$rootSc
 		@pass_salt = @sha3(db_tree.salt() + db_tree.pepper())
 		@password = "990990";
 		@pass = @sha3( @password + @pass_salt + @password + @pass_salt );
-		console.info @pass
+		#console.info @pass
 		@reminder = 'ФИО'
 		@methods = {
 			0: 'AES'

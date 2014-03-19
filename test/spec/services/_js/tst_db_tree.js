@@ -28,8 +28,11 @@
       expect(srv_db_tree.jsFind(1).title).toBe('Рабочие дела');
       return expect(srv_db_tree.jsFind(500000)).toBeUndefined();
     });
-    return it("Test jsGetPath function", function() {
+    it("Test jsGetPath function", function() {
       return expect(srv_db_tree.jsGetPath(11).length).toBeGreaterThan(0);
+    });
+    return it("MapReduce", function() {
+      return expect(2).toBe(2);
     });
   });
 

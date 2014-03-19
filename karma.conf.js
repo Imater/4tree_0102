@@ -11,7 +11,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'app/bower_components/jquery/jquery.js',
+      'app/bower_components/jquery/dist/jquery.js',
       'app/bower_components/angular/angular.js',
       'app/bower_components/angular-mocks/angular-mocks.js',
       'app/bower_components/angular-resource/angular-resource.js',
@@ -21,19 +21,28 @@ module.exports = function(config) {
       'app/bower_components/angular-translate/angular-translate.js',
       'app/bower_components/nanoscroller/bin/javascripts/jquery.nanoscroller.js',
       'app/bower_components/angular-nanoscroller/scrollable.js',
+      'app/bower_components/angular-animate/angular-animate.js',
       'app/bower_components/angular-redactor/angular-redactor.js',
       'app/bower_components/CryptoJS-v3.1.2-2/rollups/sha3.js',
       'app/bower_components/CryptoJS-v3.1.2-2/rollups/aes.js',      
       'app/bower_components/CryptoJS-v3.1.2-2/rollups/rabbit.js',      
       'app/bower_components/CryptoJS-v3.1.2-2/rollups/rc4.js',      
       'app/bower_components/CryptoJS-v3.1.2-2/rollups/tripledes.js',      
+      'app/bower_components/momentjs/moment.js',
+      "app/bower_components/angular-strap/dist/angular-strap.js",
+      "app/bower_components/sass-bootstrap/dist/js/bootstrap.js",
+      "app/bower_components/ng-bs-daterangepicker/src/ng-bs-daterangepicker.js",
+      "app/bower_components/ng-tags-input/ng-tags-input.js",
+      "app/bower_components/ng-clip-master/dest/ng-clip.js",
+      "app/bower_components/zeroclipboard/ZeroClipboard.js",
       //'app/bower_components/underscore/underscore.js',
       'others/mongo-objectid.js',
       'app/bower_components/angular-virtual-scroll/angular-virtual-scroll.js',
+      "app/bower_components/angular-range-slider/angular.rangeSlider.js",
       "app/others/lodash.underscore.js",
       'app/scripts/*.js',
       'app/scripts/**/*.js',
-      'app/scripts/services/*.js',
+      'app/scripts/services/_js/*.js',
       'app/others/**/*.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'
@@ -62,7 +71,7 @@ module.exports = function(config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
 
 
     // Continuous Integration mode
