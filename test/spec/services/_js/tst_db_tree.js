@@ -2,12 +2,116 @@
 (function() {
   "use strict";
   describe("Service db_tree test", function() {
-    var MainCtrl, scope, srv_db_tree, translate;
+    var MainCtrl, db, generateView, getView, newView, refreshView, scope, srv_db_tree, translate, views_refresh;
     beforeEach(module("4treeApp"));
     MainCtrl = void 0;
     scope = void 0;
     srv_db_tree = void 0;
     translate = void 0;
+    db = {
+      'tree': {
+        'rows': [
+          {
+            id: '1',
+            title: 'first!!!',
+            parent: '4'
+          }, {
+            id: '2',
+            title: 'second',
+            parent: '5'
+          }, {
+            id: '3',
+            title: 'third',
+            parent: '5'
+          }, {
+            id: '4',
+            title: 'fours',
+            parent: '4'
+          }, {
+            id: '5',
+            title: 'fives',
+            parent: '5'
+          }, {
+            id: '6',
+            title: 'six',
+            parent: '5'
+          }
+        ]
+      },
+      'tasks': {
+        'rows': [
+          {
+            id: '1',
+            title: 'first',
+            parent: 5
+          }, {
+            id: 2,
+            title: 'second',
+            parent: 5
+          }, {
+            id: 3,
+            title: 'third',
+            parent: 5
+          }, {
+            id: 4,
+            title: 'fours',
+            parent: 5
+          }, {
+            id: 5,
+            title: 'fives',
+            parent: 4
+          }, {
+            id: 6,
+            title: 'six',
+            parent: 5
+          }
+        ]
+      },
+      'words': {
+        rows: [
+          {
+            id: 1,
+            text: "привет как дела у тебя мой друг"
+          }, {
+            id: 2,
+            text: "другой мыслитель хочет быть тут"
+          }, {
+            id: 3,
+            text: "что мы тут делаем и хотим"
+          }, {
+            id: 4,
+            text: "ласковый мерзавец тут у нас привет"
+          }
+        ]
+      }
+    };
+    views_refresh = function(db) {
+      return _.each(db, function(db_base, db_name) {
+        console.info('Analyse Base = ', db_name);
+        return _.each(db_base.views, function(view, view_name) {
+          var emit;
+          emit = function(key, value) {
+            if (!view.rows) {
+              view.rows = [];
+            }
+            return view.rows.push({
+              key: key,
+              value: value
+            });
+          };
+          console.info('view = ', view_name);
+          _.each(db_base.rows, function(doc, key) {
+            return view['map'](doc, emit);
+          });
+          if (view['reduce']) {
+            view.result = view['reduce'](null, view.rows);
+          }
+          return view.rows = _.sortBy(view.rows, function(el) {
+            return el.key;
+          });
+        });
+      });
+    };
     beforeEach(inject(function($controller, $rootScope, $translate) {
       var $injector;
       scope = $rootScope.$new();
@@ -31,9 +135,151 @@
     it("Test jsGetPath function", function() {
       return expect(srv_db_tree.jsGetPath(11).length).toBeGreaterThan(0);
     });
-    return it("MapReduce", function() {
-      return expect(2).toBe(2);
+    xit("MapReduce", function() {
+      views_refresh(db);
+      console.info(JSON.stringify(db.tree.views.by_day));
+      console.info(JSON.stringify(db.tree.views.by_title));
+      console.info(JSON.stringify(db.tasks.views.by_parent));
+      console.info(JSON.stringify(db.tasks.views.by_id));
+      return expect(srv_db_tree.jsView()).toBe('hi!');
+    });
+    newView = function(db_name, view_name, mymap, myreduce) {
+      var _ref, _ref1;
+      if (!db[db_name]['views']) {
+        db[db_name]['views'] = {};
+      }
+      if (!(db != null ? (_ref = db[db_name]) != null ? _ref['views'][view_name] : void 0 : void 0)) {
+        return db != null ? (_ref1 = db[db_name]) != null ? _ref1['views'][view_name] = {
+          rows: [],
+          invalid: [],
+          'map': mymap,
+          'reduce': myreduce
+        } : void 0 : void 0;
+      }
+    };
+    generateView = function(db_name, view_name, view_invalid) {
+      var emit, memo, myrows, view;
+      view = db[db_name]['views'][view_name];
+      if (view_invalid) {
+        myrows = _.filter(db[db_name].rows, function(el) {
+          return view_invalid.indexOf(el.id) !== -1;
+        });
+      } else {
+        myrows = db[db_name].rows;
+      }
+      memo = {};
+      emit = function(key, value) {
+        if (!view.rows) {
+          view.rows = [];
+        }
+        view.rows.push({
+          key: key,
+          value: value
+        });
+        return view['reduce'](memo, {
+          key: key,
+          value: value
+        });
+      };
+      _.each(myrows, function(doc, key) {
+        var result;
+        return result = view['map'](doc, emit);
+      });
+      view.rows = _.sortBy(view.rows, function(el) {
+        return el.key;
+      });
+      view.invalid = [];
+      return view.result = memo;
+    };
+    getView = function(db_name, view_name) {
+      var view, _ref;
+      view = db != null ? (_ref = db[db_name]) != null ? _ref['views'][view_name] : void 0 : void 0;
+      if (view.rows.length && view.invalid.length === 0) {
+        return view;
+      } else if (view.invalid.length > 0 && view.rows.length > 0) {
+        generateView(db_name, view_name, view.invalid);
+        return view;
+      } else {
+        generateView(db_name, view_name);
+        return view;
+      }
+    };
+    refreshView = function(db_name, ids) {
+      return _.each(ids, function(id) {
+        return _.each(db[db_name].views, function(view) {
+          view.invalid.push(id);
+          return console.info("REFRESH", id, view.invalid);
+        });
+      });
+    };
+    xit("new MapReduce", function() {
+      var found, mymap, myreduce;
+      mymap = function(doc, emit) {
+        if (doc.parent === '4') {
+          return emit(doc.parent, doc.title);
+        }
+      };
+      myreduce = function(keys, values, rereduce) {
+        return values.length;
+      };
+      newView('tree', 'by_day_new', mymap, myreduce);
+      console.info(JSON.stringify(db['tree']));
+      console.info('VIEW1 = ', JSON.stringify(getView('tree', 'by_day_new')));
+      found = _.find(db['tree'].rows, function(el) {
+        return el.id === '4';
+      });
+      found.title = 'NEW!!!!!!!!!!!!!!!!';
+      found.parent = '12';
+      refreshView('tree', ['4']);
+      console.info('VIEW2 = ', JSON.stringify(getView('tree', 'by_day_new')));
+      return expect(true).toBe(true);
+    });
+    return it("new new MapReduce", function() {
+      var mymap, myreduce, words;
+      mymap = function(doc, emit) {
+        var words;
+        words = doc.text.split(" ");
+        return _.each(words, function(word) {
+          return emit(word, 1);
+        });
+      };
+      myreduce = function(memo, values) {
+        var key;
+        key = 0;
+        if (!memo[key]) {
+          memo[key] = 0;
+        }
+        if (values.value) {
+          memo[key] += values.value;
+        }
+        console.info("MEMO = ", memo, values);
+        return memo;
+      };
+      newView('words', 'by_word', mymap, myreduce);
+      words = getView('words', 'by_word');
+      _.each(words.rows, function(word) {});
+      console.info("Result = ", words.result);
+      return expect(true).toBe(true);
     });
   });
+
+  /*
+  	newView('tree', 'by_day', map, reduce);
+  	Создаёт схему для нового вида
+  
+  	getView('tree', 'by_day');
+  	возвращает вид по плану:
+  	1. Если вид пустой, генерирует его полностью
+  	2. Если вид полный, но есть инвалидные данные, генерирует только их:
+  		1. Пропускает невалидные данные через map
+  		2. Результат пропускает через Reduce
+  		3. Результат пропускает через ReReduce
+  		4. Помечает данные валидными
+  
+  
+  	refreshId('tree', _id);
+  	инвалидирует _id в виде, чтобы обновить его при следующем запросе
+  */
+
 
 }).call(this);

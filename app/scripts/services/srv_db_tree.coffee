@@ -142,4 +142,6 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 			id = el.parent
 			path.push(el);
 		path.reverse();
+	jsView: ()->
+		'hi!'
 ]

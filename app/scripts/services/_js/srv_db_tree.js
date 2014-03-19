@@ -500,7 +500,10 @@
             path.push(el);
           }
           return path.reverse();
-        })
+        }),
+        jsView: function() {
+          return 'hi!';
+        }
       };
     }
   ]);
