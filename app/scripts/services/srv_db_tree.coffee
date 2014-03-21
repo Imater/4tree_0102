@@ -131,11 +131,11 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 	jsFindByParentTags: (args) ->
 		_.filter @tree_tags, (el)->
 			el.parent == args
-	jsFind: _.memoize (id)->
+	'jsFind': _.memoize (id)->
 		tree_by_id = _.find @db_tree, (el)->
 			el.id == id
 		tree_by_id if tree_by_id
-	jsGetPath: _.memoize (id) ->
+	'jsGetPath': _.memoize (id) ->
 		path = [];
 		prevent_recursive = 5000;
 		while (el = @jsFind(id)) and (prevent_recursive--)
@@ -146,7 +146,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 		'hi!'
 
 
-	'db_fn': {
+	'fn': {
 		newView: (db_name, view_name, mymap, myreduce )->
 			db[db_name]['views'] = {} if !db[db_name]['views']
 			if !db?[db_name]?['views'][view_name]

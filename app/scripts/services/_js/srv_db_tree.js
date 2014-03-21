@@ -482,7 +482,7 @@
             return el.parent === args;
           });
         },
-        jsFind: _.memoize(function(id) {
+        'jsFind': _.memoize(function(id) {
           var tree_by_id;
           tree_by_id = _.find(this.db_tree, function(el) {
             return el.id === id;
@@ -491,7 +491,7 @@
             return tree_by_id;
           }
         }),
-        jsGetPath: _.memoize(function(id) {
+        'jsGetPath': _.memoize(function(id) {
           var el, path, prevent_recursive;
           path = [];
           prevent_recursive = 5000;
@@ -504,7 +504,7 @@
         jsView: function() {
           return 'hi!';
         },
-        'db_fn': {
+        'fn': {
           newView: function(db_name, view_name, mymap, myreduce) {
             var _ref, _ref1;
             if (!db[db_name]['views']) {
