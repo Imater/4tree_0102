@@ -69,6 +69,7 @@
             }
             .user_photo {
                 padding-left: round($grid/2) !important;
+                vertical-align: middle;
             }
             .link {
                 display: inline-block;
@@ -480,7 +481,7 @@
         margin: $padding 0px;
         margin-top: 0;
         padding: 0px;
-        margin-bottom: $padding*2;
+        margin-bottom: $padding;
         background: $dropdown_menu;
         border-bottom: 3px solid lighten($main_color,12%);
         //padding-bottom: $padding;

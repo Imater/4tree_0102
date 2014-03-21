@@ -2,7 +2,7 @@
 (function() {
   "use strict";
   describe("Service db_tree test", function() {
-    var MainCtrl, db, generateView, getView, newView, refreshView, scope, srv_db_tree, translate, views_refresh;
+    var MainCtrl, db, generateView, getView, iterate, newView, refreshView, scope, srv_db_tree, translate, views_refresh;
     beforeEach(module("4treeApp"));
     MainCtrl = void 0;
     scope = void 0;
@@ -74,13 +74,13 @@
             text: "привет как дела у тебя мой друг"
           }, {
             id: 2,
-            text: "другой мыслитель хочет быть тут"
+            text: "привет как дела у тебя мой друг"
           }, {
             id: 3,
-            text: "что мы тут делаем и хотим"
+            text: "привет как дела у тебя наш чувак"
           }, {
             id: 4,
-            text: "ласковый мерзавец тут у нас привет"
+            text: "привет как дела у тебя мой друган"
           }
         ]
       }
@@ -135,14 +135,6 @@
     it("Test jsGetPath function", function() {
       return expect(srv_db_tree.jsGetPath(11).length).toBeGreaterThan(0);
     });
-    xit("MapReduce", function() {
-      views_refresh(db);
-      console.info(JSON.stringify(db.tree.views.by_day));
-      console.info(JSON.stringify(db.tree.views.by_title));
-      console.info(JSON.stringify(db.tasks.views.by_parent));
-      console.info(JSON.stringify(db.tasks.views.by_id));
-      return expect(srv_db_tree.jsView()).toBe('hi!');
-    });
     newView = function(db_name, view_name, mymap, myreduce) {
       var _ref, _ref1;
       if (!db[db_name]['views']) {
@@ -157,34 +149,54 @@
         } : void 0 : void 0;
       }
     };
+    iterate = 0;
     generateView = function(db_name, view_name, view_invalid) {
       var emit, memo, myrows, view;
       view = db[db_name]['views'][view_name];
+      if ((view_invalid != null ? view_invalid[0] : void 0) === 0) {
+        view_invalid = false;
+      }
       if (view_invalid) {
-        myrows = _.filter(db[db_name].rows, function(el) {
-          return view_invalid.indexOf(el.id) !== -1;
+        myrows = [
+          _.find(db[db_name].rows, function(el) {
+            return view_invalid.indexOf(el.id) !== -1;
+          })
+        ];
+        view.rows = _.filter(view.rows, function(el) {
+          return view_invalid.indexOf(el.id) === -1;
         });
       } else {
         myrows = db[db_name].rows;
       }
       memo = {};
-      emit = function(key, value) {
+      emit = function(key, value, doc) {
         if (!view.rows) {
           view.rows = [];
         }
         view.rows.push({
+          id: doc.id,
           key: key,
           value: value
         });
-        return view['reduce'](memo, {
-          key: key,
-          value: value
-        });
+        if (!view_invalid && view['reduce']) {
+          return view['reduce'](memo, {
+            key: key,
+            value: value
+          });
+        }
       };
       _.each(myrows, function(doc, key) {
         var result;
         return result = view['map'](doc, emit);
       });
+      if (view_invalid && view['reduce']) {
+        _.each(view.rows, function(doc) {
+          return view['reduce'](memo, {
+            key: doc.key,
+            value: doc.value
+          });
+        });
+      }
       view.rows = _.sortBy(view.rows, function(el) {
         return el.key;
       });
@@ -207,57 +219,39 @@
     refreshView = function(db_name, ids) {
       return _.each(ids, function(id) {
         return _.each(db[db_name].views, function(view) {
-          view.invalid.push(id);
-          return console.info("REFRESH", id, view.invalid);
+          return view.invalid.push(id);
         });
       });
     };
-    xit("new MapReduce", function() {
-      var found, mymap, myreduce;
-      mymap = function(doc, emit) {
-        if (doc.parent === '4') {
-          return emit(doc.parent, doc.title);
-        }
-      };
-      myreduce = function(keys, values, rereduce) {
-        return values.length;
-      };
-      newView('tree', 'by_day_new', mymap, myreduce);
-      console.info(JSON.stringify(db['tree']));
-      console.info('VIEW1 = ', JSON.stringify(getView('tree', 'by_day_new')));
-      found = _.find(db['tree'].rows, function(el) {
-        return el.id === '4';
-      });
-      found.title = 'NEW!!!!!!!!!!!!!!!!';
-      found.parent = '12';
-      refreshView('tree', ['4']);
-      console.info('VIEW2 = ', JSON.stringify(getView('tree', 'by_day_new')));
-      return expect(true).toBe(true);
-    });
     return it("new new MapReduce", function() {
-      var mymap, myreduce, words;
+      var found, mymap, myreduce, words;
       mymap = function(doc, emit) {
         var words;
         words = doc.text.split(" ");
         return _.each(words, function(word) {
-          return emit(word, 1);
+          return emit(word, 1, doc);
         });
       };
       myreduce = function(memo, values) {
         var key;
-        key = 0;
+        key = values.key;
         if (!memo[key]) {
           memo[key] = 0;
         }
         if (values.value) {
-          memo[key] += values.value;
+          return memo[key] += values.value;
         }
-        console.info("MEMO = ", memo, values);
-        return memo;
       };
       newView('words', 'by_word', mymap, myreduce);
       words = getView('words', 'by_word');
-      _.each(words.rows, function(word) {});
+      console.info("Result = ", words.result);
+      found = _.find(db.words.rows, function(el) {
+        return el.id = 1;
+      });
+      found.text = "ЖОПА тебя дела";
+      iterate = 0;
+      refreshView('words', [0]);
+      words = getView('words', 'by_word');
       console.info("Result = ", words.result);
       return expect(true).toBe(true);
     });

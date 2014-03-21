@@ -33,9 +33,9 @@ describe "Service db_tree test", ->
 		'words': {
 			rows: [
 				{id:1, text: "привет как дела у тебя мой друг"}
-				{id:2, text: "другой мыслитель хочет быть тут"}
-				{id:3, text: "что мы тут делаем и хотим"}
-				{id:4, text: "ласковый мерзавец тут у нас привет"}
+				{id:2, text: "привет как дела у тебя мой друг"}
+				{id:3, text: "привет как дела у тебя наш чувак"}
+				{id:4, text: "привет как дела у тебя мой друган"}
 			]
 		}
 	}
@@ -84,15 +84,6 @@ describe "Service db_tree test", ->
 		#console.info srv_db_tree.jsGetPath(11)
 		expect( srv_db_tree.jsGetPath(11).length ).toBeGreaterThan 0
 
-	xit "MapReduce", ->
-		views_refresh db
-		console.info JSON.stringify db.tree.views.by_day
-		console.info JSON.stringify db.tree.views.by_title
-		console.info JSON.stringify db.tasks.views.by_parent
-		console.info JSON.stringify db.tasks.views.by_id
-		expect( srv_db_tree.jsView() ).toBe 'hi!'
-
-
 	newView = (db_name, view_name, mymap, myreduce )->
 		db[db_name]['views'] = {} if !db[db_name]['views']
 		if !db?[db_name]?['views'][view_name]
@@ -103,24 +94,36 @@ describe "Service db_tree test", ->
 				'reduce': myreduce
 			}
 
+	iterate = 0;
+
 	generateView = (db_name, view_name, view_invalid)->
 		view = db[db_name]['views'][view_name];
 
+		if view_invalid?[0] == 0
+			view_invalid = false;
+
 		if view_invalid
-			myrows = _.filter db[db_name].rows, (el)->
+			myrows = [ _.find db[db_name].rows, (el)->
 				view_invalid.indexOf(el.id) != -1
+			]
+			view.rows = _.filter view.rows, (el)->
+				view_invalid.indexOf(el.id) == -1
 		else 
 			myrows = db[db_name].rows
 
 		memo = {};
 
-		emit = (key, value)->
+		emit = (key, value, doc)->
 			view.rows = [] if !view.rows
-			view.rows.push( {key, value} )
-			view['reduce'](memo, {key, value})
+			view.rows.push( {id:doc.id, key, value} )
+			view['reduce'](memo, {key, value}) if !view_invalid and view['reduce']
 
 		_.each myrows, (doc, key)->
 			result = view['map'](doc, emit);
+
+		if view_invalid and view['reduce']
+			_.each view.rows, (doc)->
+				view['reduce'](memo, {key:doc.key, value:doc.value})
 
 		view.rows = _.sortBy view.rows, (el)->
 			el.key
@@ -146,54 +149,34 @@ describe "Service db_tree test", ->
 		_.each ids, (id)->
 			_.each db[db_name].views, (view)->
 				view.invalid.push( id )
-				console.info "REFRESH", id, view.invalid
-
-
-	xit "new MapReduce", ->
-
-		mymap = (doc, emit)->
-			if doc.parent == '4'
-				emit(doc.parent, doc.title);
-
-		myreduce = (keys, values, rereduce)->
-			values.length
-
-		newView('tree', 'by_day_new', mymap, myreduce);
-		console.info JSON.stringify db['tree']
-
-		console.info 'VIEW1 = ', JSON.stringify getView('tree','by_day_new');
-
-		found = _.find db['tree'].rows, (el)->
-			el.id == '4'
-		found.title = 'NEW!!!!!!!!!!!!!!!!' 
-		found.parent = '12' 
-
-		refreshView('tree', ['4']);
-
-		console.info 'VIEW2 = ', JSON.stringify getView('tree','by_day_new');
-
-		expect(true).toBe true
 
 	it "new new MapReduce", ->
 
 		mymap = (doc, emit)->
 			words = doc.text.split(" ");
 			_.each words, (word)->
-				emit(word, 1);
+				emit(word, 1, doc);
 
 		myreduce = (memo, values)->
-			key = 0 #values.key; 
+			key = values.key; 
 			memo[key] = 0 if !memo[key]
 			memo[key] += values.value if values.value
-			console.info "MEMO = ", memo, values
-			memo
+			#console.info "MEMO = ", memo, values
 
 		newView('words', 'by_word', mymap, myreduce)
 
 		words = getView('words', 'by_word')
 
-		_.each words.rows, (word)->
-			#console.info word
+#		_.each words.rows, (word)->
+#			console.info word
+		console.info "Result = ", words.result
+
+		found = _.find db.words.rows, (el)->
+			el.id = 1;
+		found.text = "ЖОПА тебя дела"
+		iterate = 0;
+		refreshView('words', [0])
+		words = getView('words', 'by_word')
 		console.info "Result = ", words.result
 
 		expect(true).toBe true

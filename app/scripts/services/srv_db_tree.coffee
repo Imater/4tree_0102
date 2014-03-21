@@ -144,4 +144,43 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 		path.reverse();
 	jsView: ()->
 		'hi!'
+
+
+	'db_fn': {
+		newView: (db_name, view_name, mymap, myreduce )->
+			db[db_name]['views'] = {} if !db[db_name]['views']
+			if !db?[db_name]?['views'][view_name]
+				db?[db_name]?['views'][view_name] = {
+					rows: []
+					invalid: [] 
+					'map': mymap
+					'reduce': myreduce
+				}
+	}
+
 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

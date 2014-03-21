@@ -3,7 +3,7 @@
 	<h10 class="open">Разделы сайта</h10>
     <ul class="myweb_ul">
         <li class="tree" sly-repeat="tree in fn.service.db_tree.jsFindByParentWeb(0)">
-            <div ng-include="'views/subviews/one_line_myweb.html'"></div>
+            <div ng-include="'views/subviews/one_line_myweb1.html'"></div>
         </li>
     </ul>
 
@@ -18,3 +18,18 @@
     </ul>
 
 </div>
+
+
+
+<!-- Begin Templates -->
+<script type="text/ng-template" id="views/subviews/one_line_myweb1.html">
+
+    <div class="title">{{tree.title}} <span class="cnt">({{tree.cnt}})</span></div>
+    <ul class="myweb_ul">
+        <li class="tree" sly-repeat="tree in fn.service.db_tree.jsFindByParentWeb( tree.id )">
+            <div ng-include="'views/subviews/one_line_myweb1.html'"></div>
+        </li>
+    </ul>
+
+</script>
+<!-- End Templates -->

@@ -2,7 +2,7 @@
 	<h10 class="open">Теги (ярлыки)</h10>
     <ul class="myweb_ul">
         <li class="tree" sly-repeat="tree in fn.service.db_tree.jsFindByParentTags(0)">
-            <div ng-include="'views/subviews/one_line_tree_tags.html'"></div>
+            <div ng-include="'views/subviews/one_line_tree_tags1.html'"></div>
         </li>
     </ul>
 
@@ -18,3 +18,18 @@
     </ul>
 
 </div>
+
+
+
+<!-- Begin Templates -->
+<script type="text/ng-template" id="views/subviews/one_line_tree_tags1.html">
+
+    <div class="title"><b>@</b>{{tree.title}} <span class="cnt">({{tree.cnt}})</span></div>
+    <ul class="myweb_ul">
+        <li class="tree" sly-repeat="tree in fn.service.db_tree.jsFindByParentTags( tree.id )">
+            <div ng-include="'views/subviews/one_line_tree_tags1.html'"></div>
+        </li>
+    </ul>
+
+</script>
+<!-- End Templates -->

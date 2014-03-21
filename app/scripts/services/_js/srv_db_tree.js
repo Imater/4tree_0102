@@ -503,6 +503,22 @@
         }),
         jsView: function() {
           return 'hi!';
+        },
+        'db_fn': {
+          newView: function(db_name, view_name, mymap, myreduce) {
+            var _ref, _ref1;
+            if (!db[db_name]['views']) {
+              db[db_name]['views'] = {};
+            }
+            if (!(typeof db !== "undefined" && db !== null ? (_ref = db[db_name]) != null ? _ref['views'][view_name] : void 0 : void 0)) {
+              return typeof db !== "undefined" && db !== null ? (_ref1 = db[db_name]) != null ? _ref1['views'][view_name] = {
+                rows: [],
+                invalid: [],
+                'map': mymap,
+                'reduce': myreduce
+              } : void 0 : void 0;
+            }
+          }
         }
       };
     }
