@@ -15,11 +15,12 @@
 
         <div class="main_tree notselectable">
             <ul>
-                <li class="tree" sly-repeat="tree in fn.jsFindByParent(set.main_parent_id)">
+                <li class="tree" ng-repeat="tree in fn.jsFindByParent(set.main_parent_id)">
                     <div ng-include="'views/subviews/view_one_line1.html'"></div>
                 </li>
             </ul>
             <hr>
+            {{fn.service.db_tree.getView('tree', 'by_date')}}
             <ul>
                 <li ng-repeat="sync in db.sync_journal">{{sync}}</li>
             </ul>
@@ -100,7 +101,7 @@
     </div>
 
     <ul ng-if="tree._open&&tree._childs" jq-show-effect-off="tree._open" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
-        <li class="tree" sly-repeat="tree in tree.childs">
+        <li class="tree" ng-repeat="tree in fn.jsFindByParent(tree.id)">
             <div ng-include="'views/subviews/view_one_line1.html'"></div>
         </li>
     </ul>

@@ -195,6 +195,7 @@
         },
         jsTreeFocus: function(id) {
           $scope.set.main_parent_id = id;
+          console.info('focus ', id);
           return $scope.db.tree_path = db_tree.jsGetPath(id);
         },
         jsClosePomidor: function() {
@@ -441,15 +442,17 @@
     }
   ]);
 
-  angular.module("4treeApp").controller("save_tree_db", function($scope, syncApi) {
+  angular.module("4treeApp").controller("save_tree_db", function($scope, syncApi, db_tree) {
     return $scope.$watch("tree", function(new_value, old_value) {
       var last_sync_time;
+      console.info("CHANGED = ", new_value.id);
       last_sync_time = new Date(2012, 11, 11);
       if (new_value !== old_value) {
+        db_tree.refreshView('tree', [old_value.id]);
         syncApi.setChangeTimes(new_value, old_value);
         return $scope.db.sync_to_send = syncApi.getChangedSinceTime(last_sync_time);
       }
-    }, false);
+    }, true);
   });
 
   angular.module("4treeApp").value("fooConfig", {

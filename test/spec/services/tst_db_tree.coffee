@@ -84,73 +84,8 @@ describe "Service db_tree test", ->
 		#console.info srv_db_tree.jsGetPath(11)
 		expect( srv_db_tree.jsGetPath(11).length ).toBeGreaterThan 0
 
-	newView = (db_name, view_name, mymap, myreduce )->
-		db[db_name]['views'] = {} if !db[db_name]['views']
-		if !db?[db_name]?['views'][view_name]
-			db?[db_name]?['views'][view_name] = {
-				rows: []
-				invalid: [] 
-				'map': mymap
-				'reduce': myreduce
-			}
 
-	iterate = 0;
-
-	generateView = (db_name, view_name, view_invalid)->
-		view = db[db_name]['views'][view_name];
-
-		if view_invalid?[0] == 0
-			view_invalid = false;
-
-		if view_invalid
-			myrows = [ _.find db[db_name].rows, (el)->
-				view_invalid.indexOf(el.id) != -1
-			]
-			view.rows = _.filter view.rows, (el)->
-				view_invalid.indexOf(el.id) == -1
-		else 
-			myrows = db[db_name].rows
-
-		memo = {};
-
-		emit = (key, value, doc)->
-			view.rows = [] if !view.rows
-			view.rows.push( {id:doc.id, key, value} )
-			view['reduce'](memo, {key, value}) if !view_invalid and view['reduce']
-
-		_.each myrows, (doc, key)->
-			result = view['map'](doc, emit);
-
-		if view_invalid and view['reduce']
-			_.each view.rows, (doc)->
-				view['reduce'](memo, {key:doc.key, value:doc.value})
-
-		view.rows = _.sortBy view.rows, (el)->
-			el.key
-
-		view.invalid = [];
-
-		view.result = memo;
-
-		
-
-	getView = (db_name, view_name)->
-		view = db?[db_name]?['views'][view_name];
-		if( view.rows.length && view.invalid.length == 0 )
-			return view;
-		else if (view.invalid.length > 0 and view.rows.length>0) 
-			generateView(db_name, view_name, view.invalid);
-			return view;
-		else
-			generateView(db_name, view_name);
-			return view;
-
-	refreshView = (db_name, ids)->
-		_.each ids, (id)->
-			_.each db[db_name].views, (view)->
-				view.invalid.push( id )
-
-	it "new new MapReduce", ->
+	xit "new new MapReduce", ->
 
 		mymap = (doc, emit)->
 			words = doc.text.split(" ");
@@ -180,6 +115,17 @@ describe "Service db_tree test", ->
 		console.info "Result = ", words.result
 
 		expect(true).toBe true
+
+	it "Test of fn", ->
+		mymap = (doc, emit)->
+			emit(doc.id, doc, doc) if doc.id == 8;
+
+		srv_db_tree.newView('tree', 'by_word', mymap);
+		words = srv_db_tree.getView('tree', 'by_word')
+		console.info JSON.stringify srv_db_tree.jsView();
+
+		expect(true).toBe(true)
+
 
 
 

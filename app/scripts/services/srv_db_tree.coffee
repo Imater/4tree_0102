@@ -1,12 +1,15 @@
 angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$rootScope', ($translate, $http, $q, $rootScope) ->
+	_db: {}
+	_cache: {}
 	salt: ()->
 		'Salt is a mineral substance composed'
 	pepper: ()->
 		' primarily of sodium chloride (NaCl)'
 	constructor: (@$timeout) -> 
-		if(!@db_tree)
-			@db_parents = []
-			@db_tree = [
+		if(!@_cache)
+			@_cache = {}
+		if(!@_db.tree)
+			@_db.tree = [
 				{id:0, parent: -1, title: {v: "4tree", _t: new Date()}, icon: 'icon-record', _open: false, _childs: 5}
 				{id:-2, parent: 0, title: {v: "Новое", _t: new Date()}, icon: 'icon-download', _open: false, _childs: 5}
 				{id:1, parent: 0, title: "Рабочие дела", icon: 'icon-wrench-1', _open: true, _childs: 1, share: [
@@ -43,15 +46,15 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 				user_id: 12
 			}
 		}).then (result)->
-			mythis.db_tree = result.data;
+			mythis._db.tree = result.data;
 			mythis.refreshParentsIndex();
-			$rootScope.$$childTail.db.main_node = _.find mythis.db_tree, (el)->
+			$rootScope.$$childTail.db.main_node = _.find mythis._db.tree, (el)->
 				el.id == 1034
 			dfd.resolve(result.data);
 	refreshParentsIndex: ()->
 		mythis = @;
 		mythis.db_parents = {};
-		_.each @db_tree, (el)->
+		_.each @_db.tree, (el)->
 			cnt = [
 				{title:'шагов', cnt_today: 20, days: [ 
 					{d: '2013-03-01', cnt: 12}
@@ -84,13 +87,18 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 			mythis.db_parents[parent] = [] if !mythis.db_parents[parent];
 			mythis.db_parents[parent].push( el );	
 		_.each @db_parents, (el, key)->
-			found = _.find mythis.db_tree, (e)->
+			found = _.find mythis._db.tree, (e)->
 				key == 'n'+e.id
 			found._childs = el.length if found
-			found.childs = el if found
 			found._open = false if found and found._childs > 30
+
+		mymap = (doc, emit)->
+			emit(doc.date, doc.title, doc) if doc.text and doc.text.indexOf('жопа')!=-1;
+
+		@newView('tree', 'by_date', mymap);
+
 	getTree: (args) ->
-		@db_tree
+		@_db.tree
 	jsFindByParent: (args) ->
 		@db_parents['n'+args]
 	web_tags: [
@@ -132,7 +140,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 		_.filter @tree_tags, (el)->
 			el.parent == args
 	'jsFind': _.memoize (id)->
-		tree_by_id = _.find @db_tree, (el)->
+		tree_by_id = _.find @_db.tree, (el)->
 			el.id == id
 		tree_by_id if tree_by_id
 	'jsGetPath': _.memoize (id) ->
@@ -140,23 +148,83 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 		prevent_recursive = 5000;
 		while (el = @jsFind(id)) and (prevent_recursive--)
 			id = el.parent
-			path.push(el);
+			path.push(el) if el?.parent >= 0;
 		path.reverse();
 	jsView: ()->
-		'hi!'
+		@_cache
 
 
-	'fn': {
-		newView: (db_name, view_name, mymap, myreduce )->
-			db[db_name]['views'] = {} if !db[db_name]['views']
-			if !db?[db_name]?['views'][view_name]
-				db?[db_name]?['views'][view_name] = {
-					rows: []
-					invalid: [] 
-					'map': mymap
-					'reduce': myreduce
-				}
-	}
+	newView: (db_name, view_name, mymap, myreduce )->
+		console.info "-new_view", db_name, view_name
+		mythis = @;
+		mythis._cache[db_name] = {}
+		# if !mythis._cache[db_name]
+		mythis._cache[db_name]['views'] = {} if !mythis._cache[db_name]['views']
+
+		if !mythis._cache[db_name]['views'][view_name]
+			mythis._cache[db_name]['views'][view_name] = {
+				rows: []
+				invalid: [] 
+				'map': mymap
+				'reduce': myreduce
+			}
+	getView: (db_name, view_name)->
+		view = @_cache[db_name]['views'][view_name];
+		console.info "getView", view.invalid
+		if( view.rows.length && view.invalid.length == 0 )
+			return view;
+		else if (view.invalid.length > 0 and view.rows.length>0) 
+			@generateView(db_name, view_name, view.invalid);
+			return view;
+		else
+			@generateView(db_name, view_name);
+			return view;
+
+
+	generateView: (db_name, view_name, view_invalid)->
+		view = @_cache[db_name]['views'][view_name];
+
+		if view_invalid?[0] == 0
+			view_invalid = false;
+
+		if view_invalid
+			myrows = [ _.find @_db[db_name], (el)->
+				view_invalid.indexOf(el.id) != -1
+			]
+			view.rows = _.filter view.rows, (el)->
+				view_invalid.indexOf(el.id) == -1
+		else 
+			myrows = @_db[db_name]
+
+		memo = {};
+
+		emit = (key, value, doc)->
+			view.rows = [] if !view.rows
+			view.rows.push( {id:doc.id, key, value} )
+			view['reduce'](memo, {key, value}) if !view_invalid and view['reduce']
+
+		_.each myrows, (doc, key)->
+			result = view['map'](doc, emit);
+
+		if view_invalid and view['reduce']
+			_.each view.rows, (doc)->
+				view['reduce'](memo, {key:doc.key, value:doc.value})
+
+		view.rows = _.sortBy view.rows, (el)->
+			el.key
+
+		view.invalid = [];
+
+		view.result = memo;
+
+	refreshView: (db_name, ids)->
+		console.info "refreshView", ids
+		mythis = @;
+		_.each ids, (id)->
+			_.each mythis._cache[db_name].views, (view)->
+				view.invalid.push( id )
+				console.info "invalid = ", id
+
 
 ]
 

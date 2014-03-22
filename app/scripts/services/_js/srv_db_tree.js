@@ -3,6 +3,8 @@
   angular.module("4treeApp").service('db_tree', [
     '$translate', '$http', '$q', '$rootScope', function($translate, $http, $q, $rootScope) {
       return {
+        _db: {},
+        _cache: {},
         salt: function() {
           return 'Salt is a mineral substance composed';
         },
@@ -11,9 +13,11 @@
         },
         constructor: function($timeout) {
           this.$timeout = $timeout;
-          if (!this.db_tree) {
-            this.db_parents = [];
-            this.db_tree = [
+          if (!this._cache) {
+            this._cache = {};
+          }
+          if (!this._db.tree) {
+            this._db.tree = [
               {
                 id: 0,
                 parent: -1,
@@ -219,19 +223,19 @@
               user_id: 12
             }
           }).then(function(result) {
-            mythis.db_tree = result.data;
+            mythis._db.tree = result.data;
             mythis.refreshParentsIndex();
-            $rootScope.$$childTail.db.main_node = _.find(mythis.db_tree, function(el) {
+            $rootScope.$$childTail.db.main_node = _.find(mythis._db.tree, function(el) {
               return el.id === 1034;
             });
             return dfd.resolve(result.data);
           });
         },
         refreshParentsIndex: function() {
-          var mythis;
+          var mymap, mythis;
           mythis = this;
           mythis.db_parents = {};
-          _.each(this.db_tree, function(el) {
+          _.each(this._db.tree, function(el) {
             var cnt, parent;
             cnt = [
               {
@@ -309,24 +313,27 @@
             }
             return mythis.db_parents[parent].push(el);
           });
-          return _.each(this.db_parents, function(el, key) {
+          _.each(this.db_parents, function(el, key) {
             var found;
-            found = _.find(mythis.db_tree, function(e) {
+            found = _.find(mythis._db.tree, function(e) {
               return key === 'n' + e.id;
             });
             if (found) {
               found._childs = el.length;
             }
-            if (found) {
-              found.childs = el;
-            }
             if (found && found._childs > 30) {
               return found._open = false;
             }
           });
+          mymap = function(doc, emit) {
+            if (doc.text && doc.text.indexOf('жопа') !== -1) {
+              return emit(doc.date, doc.title, doc);
+            }
+          };
+          return this.newView('tree', 'by_date', mymap);
         },
         getTree: function(args) {
-          return this.db_tree;
+          return this._db.tree;
         },
         jsFindByParent: function(args) {
           return this.db_parents['n' + args];
@@ -484,7 +491,7 @@
         },
         'jsFind': _.memoize(function(id) {
           var tree_by_id;
-          tree_by_id = _.find(this.db_tree, function(el) {
+          tree_by_id = _.find(this._db.tree, function(el) {
             return el.id === id;
           });
           if (tree_by_id) {
@@ -497,28 +504,109 @@
           prevent_recursive = 5000;
           while ((el = this.jsFind(id)) && (prevent_recursive--)) {
             id = el.parent;
-            path.push(el);
+            if ((typeof el !== "undefined" && el !== null ? el.parent : void 0) >= 0) {
+              path.push(el);
+            }
           }
           return path.reverse();
         }),
         jsView: function() {
-          return 'hi!';
+          return this._cache;
         },
-        'fn': {
-          newView: function(db_name, view_name, mymap, myreduce) {
-            var _ref, _ref1;
-            if (!db[db_name]['views']) {
-              db[db_name]['views'] = {};
-            }
-            if (!(typeof db !== "undefined" && db !== null ? (_ref = db[db_name]) != null ? _ref['views'][view_name] : void 0 : void 0)) {
-              return typeof db !== "undefined" && db !== null ? (_ref1 = db[db_name]) != null ? _ref1['views'][view_name] = {
-                rows: [],
-                invalid: [],
-                'map': mymap,
-                'reduce': myreduce
-              } : void 0 : void 0;
-            }
+        newView: function(db_name, view_name, mymap, myreduce) {
+          var mythis;
+          console.info("-new_view", db_name, view_name);
+          mythis = this;
+          mythis._cache[db_name] = {};
+          if (!mythis._cache[db_name]['views']) {
+            mythis._cache[db_name]['views'] = {};
           }
+          if (!mythis._cache[db_name]['views'][view_name]) {
+            return mythis._cache[db_name]['views'][view_name] = {
+              rows: [],
+              invalid: [],
+              'map': mymap,
+              'reduce': myreduce
+            };
+          }
+        },
+        getView: function(db_name, view_name) {
+          var view;
+          view = this._cache[db_name]['views'][view_name];
+          console.info("getView", view.invalid);
+          if (view.rows.length && view.invalid.length === 0) {
+            return view;
+          } else if (view.invalid.length > 0 && view.rows.length > 0) {
+            this.generateView(db_name, view_name, view.invalid);
+            return view;
+          } else {
+            this.generateView(db_name, view_name);
+            return view;
+          }
+        },
+        generateView: function(db_name, view_name, view_invalid) {
+          var emit, memo, myrows, view;
+          view = this._cache[db_name]['views'][view_name];
+          if ((view_invalid != null ? view_invalid[0] : void 0) === 0) {
+            view_invalid = false;
+          }
+          if (view_invalid) {
+            myrows = [
+              _.find(this._db[db_name], function(el) {
+                return view_invalid.indexOf(el.id) !== -1;
+              })
+            ];
+            view.rows = _.filter(view.rows, function(el) {
+              return view_invalid.indexOf(el.id) === -1;
+            });
+          } else {
+            myrows = this._db[db_name];
+          }
+          memo = {};
+          emit = function(key, value, doc) {
+            if (!view.rows) {
+              view.rows = [];
+            }
+            view.rows.push({
+              id: doc.id,
+              key: key,
+              value: value
+            });
+            if (!view_invalid && view['reduce']) {
+              return view['reduce'](memo, {
+                key: key,
+                value: value
+              });
+            }
+          };
+          _.each(myrows, function(doc, key) {
+            var result;
+            return result = view['map'](doc, emit);
+          });
+          if (view_invalid && view['reduce']) {
+            _.each(view.rows, function(doc) {
+              return view['reduce'](memo, {
+                key: doc.key,
+                value: doc.value
+              });
+            });
+          }
+          view.rows = _.sortBy(view.rows, function(el) {
+            return el.key;
+          });
+          view.invalid = [];
+          return view.result = memo;
+        },
+        refreshView: function(db_name, ids) {
+          var mythis;
+          console.info("refreshView", ids);
+          mythis = this;
+          return _.each(ids, function(id) {
+            return _.each(mythis._cache[db_name].views, function(view) {
+              view.invalid.push(id);
+              return console.info("invalid = ", id);
+            });
+          });
         }
       };
     }

@@ -35,6 +35,7 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', ($transla
 
 	setChangeTimes: (new_element, old_element)->
 		mythis = @;
+		console.info "CHANGED", old_element, new_element;
 		@myEach new_element, (new_el, key_array)->
 			old_el = mythis.getElementByKeysArray( old_element, _.initial(key_array) )
 			if old_el.v and (new_el != old_el.v)

@@ -169,6 +169,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       db_tree.jsFindByParent(args)
     jsTreeFocus: (id)->
       $scope.set.main_parent_id = id
+      console.info 'focus ', id
       $scope.db.tree_path = db_tree.jsGetPath(id);
     jsClosePomidor: ()->
       $scope.set.show_pomidor_timer=false if $scope.set.show_pomidor_timer
@@ -572,14 +573,16 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   
 ]
 
-angular.module("4treeApp").controller "save_tree_db", ($scope, syncApi)->
+angular.module("4treeApp").controller "save_tree_db", ($scope, syncApi, db_tree)->
 
   $scope.$watch "tree", (new_value, old_value)->
+    console.info "CHANGED = ", new_value.id
     last_sync_time = new Date(2012,11,11);
     if new_value != old_value
+      db_tree.refreshView('tree', [old_value.id]);
       syncApi.setChangeTimes(new_value, old_value);
       $scope.db.sync_to_send = syncApi.getChangedSinceTime(last_sync_time);
-  , false
+  , true
 
 
 

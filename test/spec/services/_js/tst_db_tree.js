@@ -2,7 +2,7 @@
 (function() {
   "use strict";
   describe("Service db_tree test", function() {
-    var MainCtrl, db, generateView, getView, iterate, newView, refreshView, scope, srv_db_tree, translate, views_refresh;
+    var MainCtrl, db, scope, srv_db_tree, translate, views_refresh;
     beforeEach(module("4treeApp"));
     MainCtrl = void 0;
     scope = void 0;
@@ -135,96 +135,8 @@
     it("Test jsGetPath function", function() {
       return expect(srv_db_tree.jsGetPath(11).length).toBeGreaterThan(0);
     });
-    newView = function(db_name, view_name, mymap, myreduce) {
-      var _ref, _ref1;
-      if (!db[db_name]['views']) {
-        db[db_name]['views'] = {};
-      }
-      if (!(db != null ? (_ref = db[db_name]) != null ? _ref['views'][view_name] : void 0 : void 0)) {
-        return db != null ? (_ref1 = db[db_name]) != null ? _ref1['views'][view_name] = {
-          rows: [],
-          invalid: [],
-          'map': mymap,
-          'reduce': myreduce
-        } : void 0 : void 0;
-      }
-    };
-    iterate = 0;
-    generateView = function(db_name, view_name, view_invalid) {
-      var emit, memo, myrows, view;
-      view = db[db_name]['views'][view_name];
-      if ((view_invalid != null ? view_invalid[0] : void 0) === 0) {
-        view_invalid = false;
-      }
-      if (view_invalid) {
-        myrows = [
-          _.find(db[db_name].rows, function(el) {
-            return view_invalid.indexOf(el.id) !== -1;
-          })
-        ];
-        view.rows = _.filter(view.rows, function(el) {
-          return view_invalid.indexOf(el.id) === -1;
-        });
-      } else {
-        myrows = db[db_name].rows;
-      }
-      memo = {};
-      emit = function(key, value, doc) {
-        if (!view.rows) {
-          view.rows = [];
-        }
-        view.rows.push({
-          id: doc.id,
-          key: key,
-          value: value
-        });
-        if (!view_invalid && view['reduce']) {
-          return view['reduce'](memo, {
-            key: key,
-            value: value
-          });
-        }
-      };
-      _.each(myrows, function(doc, key) {
-        var result;
-        return result = view['map'](doc, emit);
-      });
-      if (view_invalid && view['reduce']) {
-        _.each(view.rows, function(doc) {
-          return view['reduce'](memo, {
-            key: doc.key,
-            value: doc.value
-          });
-        });
-      }
-      view.rows = _.sortBy(view.rows, function(el) {
-        return el.key;
-      });
-      view.invalid = [];
-      return view.result = memo;
-    };
-    getView = function(db_name, view_name) {
-      var view, _ref;
-      view = db != null ? (_ref = db[db_name]) != null ? _ref['views'][view_name] : void 0 : void 0;
-      if (view.rows.length && view.invalid.length === 0) {
-        return view;
-      } else if (view.invalid.length > 0 && view.rows.length > 0) {
-        generateView(db_name, view_name, view.invalid);
-        return view;
-      } else {
-        generateView(db_name, view_name);
-        return view;
-      }
-    };
-    refreshView = function(db_name, ids) {
-      return _.each(ids, function(id) {
-        return _.each(db[db_name].views, function(view) {
-          return view.invalid.push(id);
-        });
-      });
-    };
-    return it("new new MapReduce", function() {
-      var found, mymap, myreduce, words;
+    xit("new new MapReduce", function() {
+      var found, iterate, mymap, myreduce, words;
       mymap = function(doc, emit) {
         var words;
         words = doc.text.split(" ");
@@ -253,6 +165,18 @@
       refreshView('words', [0]);
       words = getView('words', 'by_word');
       console.info("Result = ", words.result);
+      return expect(true).toBe(true);
+    });
+    return it("Test of fn", function() {
+      var mymap, words;
+      mymap = function(doc, emit) {
+        if (doc.id === 8) {
+          return emit(doc.id, doc, doc);
+        }
+      };
+      srv_db_tree.newView('tree', 'by_word', mymap);
+      words = srv_db_tree.getView('tree', 'by_word');
+      console.info(JSON.stringify(srv_db_tree.jsView()));
       return expect(true).toBe(true);
     });
   });

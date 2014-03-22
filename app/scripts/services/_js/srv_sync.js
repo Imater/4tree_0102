@@ -52,6 +52,7 @@
         setChangeTimes: function(new_element, old_element) {
           var mythis;
           mythis = this;
+          console.info("CHANGED", old_element, new_element);
           return this.myEach(new_element, function(new_el, key_array) {
             var new_el_toset, old_el;
             old_el = mythis.getElementByKeysArray(old_element, _.initial(key_array));
