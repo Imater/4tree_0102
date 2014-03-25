@@ -11,13 +11,12 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     main_parent_id: 1
     show_pomidor_timer: false
     show_right_menu: true
-    right_menu_active: 2
     calendar_box_template: 'views/subviews/view_calendar_box.html'
     panel: [
       {active: 7} #0
       {active: 0} #1
       {active: 5} #2
-      {active: 7} #3
+      {active: 0} #3
     ]
     side_views_menu: [
       {
@@ -100,7 +99,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     refresh: 0
     today_date: Date()
     ms_show_icon_limit: 36
-    mini_settings_btn_active: 4
+    mini_settings_btn_active: 0
     mini_settings_show: true
     mini_tasks_show: false
     mini_settings_btn: [
@@ -118,6 +117,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       db_tasks: db_tasks
       db_tree: db_tree
       calendarBox: calendarBox
+      syncApi: syncApi
     }
     datediff: _.memoize (dates)->
       d1 = new moment(dates.startDate);
@@ -550,6 +550,9 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   db_tree.getTreeFromNet().then ()->
     $scope.set.main_parent = db_tree.jsFindByParent(1);
 
+  syncApi.oAuth2.jsGetToken().then (token)->
+    console.info "token = ", token
+
   #$scope.set.main_parent = [{id:1, title: {v:"4tree"}, _childs:100, _open: true}];
   
 
@@ -557,8 +560,6 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
 
   $scope.fn.setCalendarBox();
   syncApi.constructor();
-  $scope.db.sync_journal = syncApi.sync_journal
-  $scope.db.sync_to_send = syncApi.jsDryObjectBySyncJournal();
 
   $scope.myname = "Huper..."
 
@@ -575,14 +576,10 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
 
 angular.module("4treeApp").controller "save_tree_db", ($scope, syncApi, db_tree)->
 
-  $scope.$watch "tree", (new_value, old_value)->
-    console.info "CHANGED = ", new_value.id
-    last_sync_time = new Date(2012,11,11);
-    if new_value != old_value
-      db_tree.refreshView('tree', [old_value.id]);
-      syncApi.setChangeTimes(new_value, old_value);
-      $scope.db.sync_to_send = syncApi.getChangedSinceTime(last_sync_time);
-  , true
+  $scope.$watchCollection "tree", (new_value, old_value)->
+    if !_.isEqual( new_value, old_value )
+      syncApi.jsFindChangesForSync(new_value, old_value);
+      db_tree.refreshView('tree', [old_value.id], new_value, old_value)
 
 
 

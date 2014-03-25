@@ -12,7 +12,6 @@
         main_parent_id: 1,
         show_pomidor_timer: false,
         show_right_menu: true,
-        right_menu_active: 2,
         calendar_box_template: 'views/subviews/view_calendar_box.html',
         panel: [
           {
@@ -22,7 +21,7 @@
           }, {
             active: 5
           }, {
-            active: 7
+            active: 0
           }
         ],
         side_views_menu: [
@@ -93,7 +92,7 @@
         refresh: 0,
         today_date: Date(),
         ms_show_icon_limit: 36,
-        mini_settings_btn_active: 4,
+        mini_settings_btn_active: 0,
         mini_settings_show: true,
         mini_tasks_show: false,
         mini_settings_btn: [
@@ -124,7 +123,8 @@
         service: {
           db_tasks: db_tasks,
           db_tree: db_tree,
-          calendarBox: calendarBox
+          calendarBox: calendarBox,
+          syncApi: syncApi
         },
         datediff: _.memoize(function(dates) {
           var d1, d2;
@@ -427,11 +427,12 @@
       db_tree.getTreeFromNet().then(function() {
         return $scope.set.main_parent = db_tree.jsFindByParent(1);
       });
+      syncApi.oAuth2.jsGetToken().then(function(token) {
+        return console.info("token = ", token);
+      });
       $scope.db.tree_path = db_tree.jsGetPath(1);
       $scope.fn.setCalendarBox();
       syncApi.constructor();
-      $scope.db.sync_journal = syncApi.sync_journal;
-      $scope.db.sync_to_send = syncApi.jsDryObjectBySyncJournal();
       $scope.myname = "Huper...";
       if ((set_pomidors = localStorage.getItem('set_pomidors'))) {
         $scope.db.pomidors = JSON.parse(set_pomidors);
@@ -443,16 +444,12 @@
   ]);
 
   angular.module("4treeApp").controller("save_tree_db", function($scope, syncApi, db_tree) {
-    return $scope.$watch("tree", function(new_value, old_value) {
-      var last_sync_time;
-      console.info("CHANGED = ", new_value.id);
-      last_sync_time = new Date(2012, 11, 11);
-      if (new_value !== old_value) {
-        db_tree.refreshView('tree', [old_value.id]);
-        syncApi.setChangeTimes(new_value, old_value);
-        return $scope.db.sync_to_send = syncApi.getChangedSinceTime(last_sync_time);
+    return $scope.$watchCollection("tree", function(new_value, old_value) {
+      if (!_.isEqual(new_value, old_value)) {
+        syncApi.jsFindChangesForSync(new_value, old_value);
+        return db_tree.refreshView('tree', [old_value.id], new_value, old_value);
       }
-    }, true);
+    });
   });
 
   angular.module("4treeApp").value("fooConfig", {

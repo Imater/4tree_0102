@@ -176,7 +176,6 @@
       };
       srv_db_tree.newView('tree', 'by_word', mymap);
       words = srv_db_tree.getView('tree', 'by_word');
-      console.info(JSON.stringify(srv_db_tree.jsView()));
       return expect(true).toBe(true);
     });
   });

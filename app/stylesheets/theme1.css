@@ -1796,7 +1796,7 @@ h10.open:before {
   min-height: 25px;
   display: inline;
   font-weight: bold;
-  font-size: 11.36364px;
+  font-size: 1em;
 }
 /* line 120, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .note_line {

@@ -4,34 +4,34 @@
 @import 'mymixins';
 
 .path_line {
-	padding: $padding;
-	ul {
-		list-style: none;
-		@include nowrap_me();
-		margin-right: $grid;
-		li {
-			display: inline-block;
-			.path_title {
-				max-width: 10em;
-				@include nowrap_me();
-				//overflow: hidden;
-				//text-overflow: ellipsis;				
-				cursor: pointer;
-				&:hover {
-					text-decoration: underline;
-				}
-				&:before {
-					content: '\e75e';
-					font-family: 'fontello';
-					display: inline-block;
-					margin: 0px 5px;
-				}
-			}
-			&:first-child {
-				.path_title:before {
-					content: none;
-				}
-			}
-		}
-	}
+  padding: $padding;
+  ul {
+    list-style: none;
+    @include nowrap_me();
+    margin-right: $grid;
+    li {
+      display: inline-block;
+      .path_title {
+        max-width: 10em;
+        @include nowrap_me();
+        //overflow: hidden;
+        //text-overflow: ellipsis;        
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
+        &:before {
+          content: '\e75e';
+          font-family: 'fontello';
+          display: inline-block;
+          margin: 0px 5px;
+        }
+      }
+      &:first-child {
+        .path_title:before {
+          content: none;
+        }
+      }
+    }
+  }
 }

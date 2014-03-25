@@ -122,7 +122,6 @@ describe "Service db_tree test", ->
 
 		srv_db_tree.newView('tree', 'by_word', mymap);
 		words = srv_db_tree.getView('tree', 'by_word')
-		console.info JSON.stringify srv_db_tree.jsView();
 
 		expect(true).toBe(true)
 

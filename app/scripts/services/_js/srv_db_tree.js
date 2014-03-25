@@ -307,6 +307,10 @@
             el.tags = el.tags ? el.tags : [];
             el.counters = cnt;
             el._open = false;
+            el.dates = {
+              startDate: moment(),
+              endDate: moment()
+            };
             parent = 'n' + el.parent;
             if (!mythis.db_parents[parent]) {
               mythis.db_parents[parent] = [];
@@ -515,7 +519,6 @@
         },
         newView: function(db_name, view_name, mymap, myreduce) {
           var mythis;
-          console.info("-new_view", db_name, view_name);
           mythis = this;
           mythis._cache[db_name] = {};
           if (!mythis._cache[db_name]['views']) {
@@ -533,7 +536,6 @@
         getView: function(db_name, view_name) {
           var view;
           view = this._cache[db_name]['views'][view_name];
-          console.info("getView", view.invalid);
           if (view.rows.length && view.invalid.length === 0) {
             return view;
           } else if (view.invalid.length > 0 && view.rows.length > 0) {
@@ -597,14 +599,12 @@
           view.invalid = [];
           return view.result = memo;
         },
-        refreshView: function(db_name, ids) {
+        refreshView: function(db_name, ids, new_value, old_value) {
           var mythis;
-          console.info("refreshView", ids);
           mythis = this;
           return _.each(ids, function(id) {
             return _.each(mythis._cache[db_name].views, function(view) {
-              view.invalid.push(id);
-              return console.info("invalid = ", id);
+              return view.invalid.push(id);
             });
           });
         }

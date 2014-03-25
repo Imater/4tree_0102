@@ -18,6 +18,7 @@ angular.module("4treeApp", [
   "ngTagsInput"
   "sly"
   "ngClipboard"
+  "Decorators"
 ])
 
 angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($translateProvider, $routeProvider) ->

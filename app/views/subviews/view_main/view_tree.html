@@ -20,12 +20,14 @@
                 </li>
             </ul>
             <hr>
-            {{fn.service.db_tree.getView('tree', 'by_date')}}
             <ul>
-                <li ng-repeat="sync in db.sync_journal">{{sync}}</li>
-            </ul>
-            <ul>
-                <li ng-repeat="to_send in db.sync_to_send">{{to_send}}</li>
+                {{fn.service.db_tree.getView('tree', 'by_date')}}
+                <hr>
+                <li ng-repeat="sync in fn.service.syncApi.sync_journal" style="padding:10px">
+                    {{sync}}
+                </li>
+                <br>
+                <a class="btn btn-warning btn-xs" ng-click="fn.service.syncApi.jsStartSync()">Синхронизировать</a>
             </ul>
 
         </div>
@@ -49,7 +51,7 @@
                 <div class="childs">{{tree._childs}}</div>
             </div>
             <div class="title_wrap">
-                <div title="{{tree.id}}" class="title" contenteditable="true" ng-model="tree.title" ng-click="tree._open=!tree._open"></div>
+                <div title="{{tree.id}}" class="title" contenteditable="true" ng-model="tree.title"></div>
             </div>
 
             <div class="note_line"></div>

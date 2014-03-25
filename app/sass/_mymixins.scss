@@ -13,18 +13,18 @@ $easing: ease-out;
 
 //делает абсолютным и помещает углы в координаты
 @mixin absolute_me($top, $right, $bottom, $left) {
-  	position: absolute;
-	top: $top;
-	right: $right;
-	bottom: $bottom;
-	left: $left;
+    position: absolute;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
 }
 
 //запрещаем перенос строки
 @mixin nowrap_me() {
-	white-space: nowrap; /* Запрещаем перенос строк */
-	overflow: hidden; /* Обрезаем все, что не помещается в область */
-	text-overflow: ellipsis;	
+  white-space: nowrap; /* Запрещаем перенос строк */
+  overflow: hidden; /* Обрезаем все, что не помещается в область */
+  text-overflow: ellipsis;  
 }
 
 @mixin shadow_me() {
@@ -32,13 +32,13 @@ $easing: ease-out;
 }
 
 @mixin side_gradient {
-	background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, $side_gradient_stop_color 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,$side_gradient_stop_color)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,$side_gradient_stop_color 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgba(255,255,255,0) 0%,$side_gradient_stop_color 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgba(255,255,255,0) 0%,$side_gradient_stop_color 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,$side_gradient_stop_color 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#80ffffff',GradientType=0 ); /* IE6-9 */
+  background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, $side_gradient_stop_color 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,$side_gradient_stop_color)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,$side_gradient_stop_color 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  rgba(255,255,255,0) 0%,$side_gradient_stop_color 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  rgba(255,255,255,0) 0%,$side_gradient_stop_color 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,$side_gradient_stop_color 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#80ffffff',GradientType=0 ); /* IE6-9 */
 
 }
 
@@ -208,12 +208,12 @@ $easing: ease-out;
 
 /* FLIP */
 @mixin flip($scaleX: -1) {
-	-moz-transform:    scaleX($scaleX);
-	-o-transform:      scaleX($scaleX);
-	-webkit-transform: scaleX($scaleX);
-	transform:         scaleX($scaleX);
-	filter:            FlipH;
-	-ms-filter:        "FlipH";
+  -moz-transform:    scaleX($scaleX);
+  -o-transform:      scaleX($scaleX);
+  -webkit-transform: scaleX($scaleX);
+  transform:         scaleX($scaleX);
+  filter:            FlipH;
+  -ms-filter:        "FlipH";
 }
 
 /* FONT FACE */

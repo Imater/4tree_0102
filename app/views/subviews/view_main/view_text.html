@@ -1,11 +1,12 @@
-<div class="p_inside_content vertical_scroll" scrollable="{alwaysVisible:'true'}">
+<div class="p_inside_content vertical_scroll" ng-controller="save_tree_db" scrollable="{alwaysVisible:'true'}">
+    <a ng-if="tree = db.main_node"></a>
     <div class="editor_wrap">
         <div class="editor_content">
 
             <div ng-include="'views/subviews/view_mini_settings.html'"></div>
 
             <div id="toolbar"></div>
-			<div class="main_editor" redactor="{toolbarFixed: true, toolbarOverflow: true, toolbarFixedBox: true, toolbarFixedTarget: '#p_right_wrap .content', toolbarFixedTopOffset: 1, air:false, toolbarExternal: '#toolbar', cleanup: true}" ng-model="db.main_node.text"></div>
+			<div class="main_editor" redactor="{toolbarFixed: true, toolbarOverflow: true, toolbarFixedBox: true, toolbarFixedTarget: '#p_right_wrap .content', toolbarFixedTopOffset: 1, air:false, toolbarExternal: '#toolbar', cleanup: true}" ng-model="tree.text"></div>
         
         </div>
         

@@ -4,448 +4,448 @@
 @import 'mymixins';
 
 .make_favorit_button {
-	color: $gray;
-	cursor: pointer;
-	&:hover {
-		color: darken($gray, 10%);
-	}
+  color: $gray;
+  cursor: pointer;
+  &:hover {
+    color: darken($gray, 10%);
+  }
 }
 
 .mini_settings {
-	padding: $padding;
-	.ms_title {
-		.note_checkbox {
-			font-size: 1.5em;
-			margin-left: $padding - 3px;
-		}
-		.settings_title {
-			margin-left: $grid/4;
-			margin-top: $grid/3;
-			font-weight: bold;
-		}		
-	}
+  padding: $padding;
+  .ms_title {
+    .note_checkbox {
+      font-size: 1.5em;
+      margin-left: $padding - 3px;
+    }
+    .settings_title {
+      margin-left: $grid/4;
+      margin-top: $grid/3;
+      font-weight: bold;
+    }   
+  }
 
-	.ms_inside {
-		padding: $grid/2 $grid;
-		padding-bottom: 0;
+  .ms_inside {
+    padding: $grid/2 $grid;
+    padding-bottom: 0;
 
-		//кнопки мини параметров
-		.nm_settings_buttons {
-			text-align: center;
-			padding-top: $padding;
-			.nm_btn {
-				display: inline-block;
-				width: round( $grid*2.5 );
-				color: $gray;
-				cursor: pointer;
-				i {
-					font-size: $grid*1;
-					&:before {
-						margin: 0;
-					}
-				}
-				&.active {
-					color: #000;
-				}
-				.nm_title {
-					font-size: 8px;
-					text-align: center;
-					font-weight: bold;
-				}		
-			}
-		}
+    //кнопки мини параметров
+    .nm_settings_buttons {
+      text-align: center;
+      padding-top: $padding;
+      .nm_btn {
+        display: inline-block;
+        width: round( $grid*2.5 );
+        color: $gray;
+        cursor: pointer;
+        i {
+          font-size: $grid*1;
+          &:before {
+            margin: 0;
+          }
+        }
+        &.active {
+          color: #000;
+        }
+        .nm_title {
+          font-size: 8px;
+          text-align: center;
+          font-weight: bold;
+        }   
+      }
+    }
 
-		.ms_icon {
-			font-size: 1.2em;
-			display: inline-block;
-			width: $grid*1.2;
-			height: $grid*1.2;
-			text-align: center;
-			display: inline-block;
-			cursor: pointer;
-			color: #000;
-			&:hover {
-				color: $main_color;
-			}
-		}
+    .ms_icon {
+      font-size: 1.2em;
+      display: inline-block;
+      width: $grid*1.2;
+      height: $grid*1.2;
+      text-align: center;
+      display: inline-block;
+      cursor: pointer;
+      color: #000;
+      &:hover {
+        color: $main_color;
+      }
+    }
 
-		.ms_colors {
-			margin-top: $padding;
-			.ms_color_label {
-				display: inline-block;
-				width: $grid;
-				height: $grid;
-				margin-right: 0px;
-				cursor: pointer;
-				&:nth-child(odd) {
-					margin-right: $padding;
-				}
-				&.main {
-					margin-right: $padding;
-					&:after {
-						content: '\e825';
-						font-family: 'fontello';
-						color: #FFF;
-						width: $grid;
-						text-align: center;
-						line-height: $grid;
-						position: absolute;
-					}
-				}
-			}			
-		}
-
-
-		.table_settings {
-			width: 100%;
-			td {
-				vertical-align: top;	
-				padding: round($padding);
-				.btn {
-					background: #EEE;
-				}			
-			}
-			th {
-				min-width: 5em;
-				font-size: 0.8em;
-				white-space: nowrap;
-				font-weight: normal;
-				color: $dark_gray;
-				text-align: right;
-				padding-right: $padding;
-			}
-			label {
-				font-weight: normal;
-				cursor: pointer;
-			}
-			input[type=checkbox] {
-				cursor: pointer;
-			}
-			.ngrs-range-slider {
-				margin: 0px;
-				border-radius: 0;
-				border-color: $gray;
-				box-shadow: none;
-				-webkit-box-shadow: none;
-			}
-			.left_label {
-				width: 5em;
-				text-align: right;
-				padding-top: 0px;
-				padding-right: $padding;
-				color: $dark_gray;
-			}
-			.right_content {
-			}
-			.daterange {
-				width: 14em;
-				font-size: 12px;
-				padding: 2px 1px;
-				border: none;
-				cursor: pointer;
-				//border-bottom: 1px solid $gray;
-				text-align: center;
-				border-radius: 0;
-			}
-			.ms_days {
-			}
-			.importance {
-				position: absolute;
-				right: $padding;
-				color: $gray;
-				text-align: right;
-
-			}
-			.daterange_diff {
-				.task_date {
-					//width: auto;
-					padding: 0px 3px;
-					cursor: default;
-					opacity: 0.5;
-					border-radius: 0;
-					&.left {
-						border-top-right-radius: 0;
-						border-bottom-right-radius: 0;
-					}
-					&.right {
-						border-top-left-radius: 0;
-						border-bottom-left-radius: 0;
-					}
-				}		
-			}
-			.ngTagsInput .tags {
-				background: none;
-				box-shadow: none;
-				-webkit-appearance: none;
-				border: none;
-				margin-left: - round($padding/2);
-				padding: 0px;
-				.tag-input {
-					padding: round($padding) round($padding/2) !important;
-					height: auto;
-				}
-				li {
-					background: $main_color;
-					color: #FFF;
-					padding: round($padding/8) round($padding/2);
-					padding-right: 2px;
-					height: auto;
-					border-radius: 1px;
-					border: none;
-					margin: round($padding/4);
-					button {
-						margin-top: 3px;
-						color: rgba($gray, 0.3);
-						&:hover {
-							color: #FFF;
-						}
-					}
-				}
-			}
-
-			.every {
-				width: 13em;
-				input {
-					text-align: right;
-				}
-			}
-			.buttons_panel .btn {
-				display: inline-block;
-				//background: $gray !important;
-			}
-			.btn-success {
-				color: $main_color;
-				border: 2px solid $main_color;
-			}
-			i {
-				color: $gray;
-				font-size: 0.8em;
-			}
-		}
-		.counters_wrap {
-			text-align: center;
-			margin-top: $padding;
-			ol {
-				list-style: none;
-				margin: 0;
-				padding: 0;
-			}
-			li {
-				margin: $padding;
-				text-align: center;
-			}
-			.cnt {
-				border: 1px solid $main_color;
-				border-right-color: rgba($main_color,0.5);
-				outline: none;
-				background: #c7ffc7;
-				width: 40%;
-				padding: 3px 10px;
-				margin-right: 0;
-				text-align: right;
-				border-top-left-radius: 3px;
-				border-bottom-left-radius: 3px;
-			}
-			.title {
-				margin-left: 0;
-				border: 1px solid $main_color;
-				background: #c7ffc7;
-				outline: none;
-				border-left: none;
-				width: 40%;
-				padding: 3px 10px;
-				text-align: left;
-				border-top-right-radius: 3px;
-				border-bottom-right-radius: 3px;
-			}
-			li:nth-child(1) input {
-				background: rgba(#6600ff, 0.2) !important;
-			}
-			li:nth-child(1) input {
-				background: rgba(#0052ff, 0.2) !important;
-			}
-			li:nth-child(2) input {
-				background: rgba(#00ff1f, 0.3) !important;
-			}
-			li:nth-child(3) input {
-				background: rgba(#81ff03, 0.4) !important;
-			}
-			li:nth-child(4) input {
-				background: rgba(#ffe700, 0.5) !important;
-			}
-			li:nth-child(5) input {
-				background: rgba(#ffc100, 0.5) !important;
-			}
-			li:nth-child(6) input {
-				background: rgba(#ff6100, 0.5) !important;
-			}
-			li:nth-child(7) input {
-				background: rgba(#ff001f, 0.3) !important;
-			}
-			li:nth-child(8) input {
-				background: rgba(#ff0052, 0.5) !important;
-			}
-			li:nth-child(9) input {
-				background: rgba(#d700ff, 0.5) !important;
-			}
-			li:nth-child(10) input {
-				background: rgba(#c785ff, 0.5) !important;
-			}
-			li:nth-child(11) input {
-				background: rgba(#999999, 0.5) !important;
-			}
-			.remove {
-				color: $light_gray;
-				margin-left: $padding/2;
-				position: absolute;
-				line-height: 2em;
-				margin-top: 1px;
-				&:hover {
-					color: red;
-					cursor: pointer;
-				}
-			}
-			.week_stat {
-				color: $dark_gray;
-				padding-top: 2px;
-				padding-bottom: $padding;
-				text-align: center;
-				i {
-					font-size: 0.8em;
-					color: $gray;
-					font-style: normal;
-				}
-				b {
-					color: $gray;
-					padding-right: $padding*2;
-					font-weight: normal;
-					font-size: 1em;
-				}
-			}
-			.date_wrap {
-				text-align: center;
-				display: inline-block;
-				position: relative;
-				.date_counters {
-					display: block;
-					text-align: center;
-					width: 195px;
-					font-size: 1em;
-					border: 1px solid $gray;
-					border-radius: 0px;
-					box-shadow: none;
-					margin-top: $padding;
-					vertical-align: top;
-					border-bottom: none;
-					height: $grid;
-				}				
-				.task_date {
-					display: block;
-					width: 195px;
-					margin-bottom: $padding*2;
-					margin-top: 0px;
-					border-top-right-radius: 0;
-					border-top-left-radius: 0;
-					border: 1px solid $gray !important;
-				}
-			}
-			.rewind {
-				position: absolute;
-				left: -$grid*2;
-				top: round( $grid/2 ) + 1px;
-				font-size: 1.5em;
-				color: $light_gray;
-				padding: 5px 5px;
-				@include animate_me(color, 0.5s);
-				&:hover {
-					color: $main_color;
-				}
-				&.right {
-					left: auto;
-					right: -$grid * 2;
-				}
-			}
-		}
-		.share_wrap {
-			padding: 0px;
-			.padding {
-				margin: 2px 2px 2px $padding*3;				
-			}
-			.share_link {
-				padding: 4px 10px;
-				border: 1px solid $gray;
-				width: 15em;
-			}
-			.clipboard {
-				padding: 2px 2px;
-			}
-			label {
-				margin-left: $padding;
-				font-weight: normal;
-				color: $main_color;
-			}
-			.can_write {
-				label {
-					font-weight: normal;					
-					color: inherit;
-				}
-			}
-			.part {
-				padding: $padding;
-			}
-			.frends {
-				margin: $padding 0;
-				td, tr {
-					padding: round($padding/1.5) $padding;
-				}
-				.title {
-					padding-right: $padding*2;
-					padding-left: $padding;
-				}
-				.face {
-					width: $grid;
-					height: $grid;
-					border-radius: 50%;
-				}
-				.remove {
-					color: $gray;
-					@include animate_me(color, 0.2s);
-					cursor: pointer;
-					&:hover {
-						color: red;
-					}
-				}
-				.can_edit {
-					font-size: 1.5em;
-					color: $gray;
-					opacity: 0.6;
-					cursor: pointer;
-					@include animate_me(opacity, 0.5s);
-					&.icon-lock-open {
-						color: #23a216;
-						opacity: 0.8;
-					}
-					&:hover {
-						opacity: 1;
-					}
-				}
-			}
-			.add_frend {
-				padding-right: $padding*2;
-				padding-left: $padding;
-				color: $gray;
-				cursor: pointer;
-			}
-		}
-
-	}
+    .ms_colors {
+      margin-top: $padding;
+      .ms_color_label {
+        display: inline-block;
+        width: $grid;
+        height: $grid;
+        margin-right: 0px;
+        cursor: pointer;
+        &:nth-child(odd) {
+          margin-right: $padding;
+        }
+        &.main {
+          margin-right: $padding;
+          &:after {
+            content: '\e825';
+            font-family: 'fontello';
+            color: #FFF;
+            width: $grid;
+            text-align: center;
+            line-height: $grid;
+            position: absolute;
+          }
+        }
+      }     
+    }
 
 
+    .table_settings {
+      width: 100%;
+      td {
+        vertical-align: top;  
+        padding: round($padding);
+        .btn {
+          background: #EEE;
+        }     
+      }
+      th {
+        min-width: 5em;
+        font-size: 0.8em;
+        white-space: nowrap;
+        font-weight: normal;
+        color: $dark_gray;
+        text-align: right;
+        padding-right: $padding;
+      }
+      label {
+        font-weight: normal;
+        cursor: pointer;
+      }
+      input[type=checkbox] {
+        cursor: pointer;
+      }
+      .ngrs-range-slider {
+        margin: 0px;
+        border-radius: 0;
+        border-color: $gray;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+      }
+      .left_label {
+        width: 5em;
+        text-align: right;
+        padding-top: 0px;
+        padding-right: $padding;
+        color: $dark_gray;
+      }
+      .right_content {
+      }
+      .daterange {
+        width: 14em;
+        font-size: 12px;
+        padding: 2px 1px;
+        border: none;
+        cursor: pointer;
+        //border-bottom: 1px solid $gray;
+        text-align: center;
+        border-radius: 0;
+      }
+      .ms_days {
+      }
+      .importance {
+        position: absolute;
+        right: $padding;
+        color: $gray;
+        text-align: right;
 
-	.note_mini_settings_panel {
-		padding: $padding 0;
-		min-height: 10em;
-	}
+      }
+      .daterange_diff {
+        .task_date {
+          //width: auto;
+          padding: 0px 3px;
+          cursor: default;
+          opacity: 0.5;
+          border-radius: 0;
+          &.left {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+          &.right {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
+        }   
+      }
+      .ngTagsInput .tags {
+        background: none;
+        box-shadow: none;
+        -webkit-appearance: none;
+        border: none;
+        margin-left: - round($padding/2);
+        padding: 0px;
+        .tag-input {
+          padding: round($padding) round($padding/2) !important;
+          height: auto;
+        }
+        li {
+          background: $main_color;
+          color: #FFF;
+          padding: round($padding/8) round($padding/2);
+          padding-right: 2px;
+          height: auto;
+          border-radius: 1px;
+          border: none;
+          margin: round($padding/4);
+          button {
+            margin-top: 3px;
+            color: rgba($gray, 0.3);
+            &:hover {
+              color: #FFF;
+            }
+          }
+        }
+      }
+
+      .every {
+        width: 13em;
+        input {
+          text-align: right;
+        }
+      }
+      .buttons_panel .btn {
+        display: inline-block;
+        //background: $gray !important;
+      }
+      .btn-success {
+        color: $main_color;
+        border: 2px solid $main_color;
+      }
+      i {
+        color: $gray;
+        font-size: 0.8em;
+      }
+    }
+    .counters_wrap {
+      text-align: center;
+      margin-top: $padding;
+      ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      li {
+        margin: $padding;
+        text-align: center;
+      }
+      .cnt {
+        border: 1px solid $main_color;
+        border-right-color: rgba($main_color,0.5);
+        outline: none;
+        background: #c7ffc7;
+        width: 40%;
+        padding: 3px 10px;
+        margin-right: 0;
+        text-align: right;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+      }
+      .title {
+        margin-left: 0;
+        border: 1px solid $main_color;
+        background: #c7ffc7;
+        outline: none;
+        border-left: none;
+        width: 40%;
+        padding: 3px 10px;
+        text-align: left;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+      }
+      li:nth-child(1) input {
+        background: rgba(#6600ff, 0.2) !important;
+      }
+      li:nth-child(1) input {
+        background: rgba(#0052ff, 0.2) !important;
+      }
+      li:nth-child(2) input {
+        background: rgba(#00ff1f, 0.3) !important;
+      }
+      li:nth-child(3) input {
+        background: rgba(#81ff03, 0.4) !important;
+      }
+      li:nth-child(4) input {
+        background: rgba(#ffe700, 0.5) !important;
+      }
+      li:nth-child(5) input {
+        background: rgba(#ffc100, 0.5) !important;
+      }
+      li:nth-child(6) input {
+        background: rgba(#ff6100, 0.5) !important;
+      }
+      li:nth-child(7) input {
+        background: rgba(#ff001f, 0.3) !important;
+      }
+      li:nth-child(8) input {
+        background: rgba(#ff0052, 0.5) !important;
+      }
+      li:nth-child(9) input {
+        background: rgba(#d700ff, 0.5) !important;
+      }
+      li:nth-child(10) input {
+        background: rgba(#c785ff, 0.5) !important;
+      }
+      li:nth-child(11) input {
+        background: rgba(#999999, 0.5) !important;
+      }
+      .remove {
+        color: $light_gray;
+        margin-left: $padding/2;
+        position: absolute;
+        line-height: 2em;
+        margin-top: 1px;
+        &:hover {
+          color: red;
+          cursor: pointer;
+        }
+      }
+      .week_stat {
+        color: $dark_gray;
+        padding-top: 2px;
+        padding-bottom: $padding;
+        text-align: center;
+        i {
+          font-size: 0.8em;
+          color: $gray;
+          font-style: normal;
+        }
+        b {
+          color: $gray;
+          padding-right: $padding*2;
+          font-weight: normal;
+          font-size: 1em;
+        }
+      }
+      .date_wrap {
+        text-align: center;
+        display: inline-block;
+        position: relative;
+        .date_counters {
+          display: block;
+          text-align: center;
+          width: 195px;
+          font-size: 1em;
+          border: 1px solid $gray;
+          border-radius: 0px;
+          box-shadow: none;
+          margin-top: $padding;
+          vertical-align: top;
+          border-bottom: none;
+          height: $grid;
+        }       
+        .task_date {
+          display: block;
+          width: 195px;
+          margin-bottom: $padding*2;
+          margin-top: 0px;
+          border-top-right-radius: 0;
+          border-top-left-radius: 0;
+          border: 1px solid $gray !important;
+        }
+      }
+      .rewind {
+        position: absolute;
+        left: -$grid*2;
+        top: round( $grid/2 ) + 1px;
+        font-size: 1.5em;
+        color: $light_gray;
+        padding: 5px 5px;
+        @include animate_me(color, 0.5s);
+        &:hover {
+          color: $main_color;
+        }
+        &.right {
+          left: auto;
+          right: -$grid * 2;
+        }
+      }
+    }
+    .share_wrap {
+      padding: 0px;
+      .padding {
+        margin: 2px 2px 2px $padding*3;       
+      }
+      .share_link {
+        padding: 4px 10px;
+        border: 1px solid $gray;
+        width: 15em;
+      }
+      .clipboard {
+        padding: 2px 2px;
+      }
+      label {
+        margin-left: $padding;
+        font-weight: normal;
+        color: $main_color;
+      }
+      .can_write {
+        label {
+          font-weight: normal;          
+          color: inherit;
+        }
+      }
+      .part {
+        padding: $padding;
+      }
+      .frends {
+        margin: $padding 0;
+        td, tr {
+          padding: round($padding/1.5) $padding;
+        }
+        .title {
+          padding-right: $padding*2;
+          padding-left: $padding;
+        }
+        .face {
+          width: $grid;
+          height: $grid;
+          border-radius: 50%;
+        }
+        .remove {
+          color: $gray;
+          @include animate_me(color, 0.2s);
+          cursor: pointer;
+          &:hover {
+            color: red;
+          }
+        }
+        .can_edit {
+          font-size: 1.5em;
+          color: $gray;
+          opacity: 0.6;
+          cursor: pointer;
+          @include animate_me(opacity, 0.5s);
+          &.icon-lock-open {
+            color: #23a216;
+            opacity: 0.8;
+          }
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+      .add_frend {
+        padding-right: $padding*2;
+        padding-left: $padding;
+        color: $gray;
+        cursor: pointer;
+      }
+    }
+
+  }
+
+
+
+  .note_mini_settings_panel {
+    padding: $padding 0;
+    min-height: 10em;
+  }
 
 }
 

@@ -4,98 +4,98 @@
 @import 'mymixins';
 
 .allscreen {
-	background: rgba(0,0,0,0.3);
-	@include absolute_me(0,0,0,0);
-	position: fixed;
-	z-index: 1;
+  background: rgba(0,0,0,0.3);
+  @include absolute_me(0,0,0,0);
+  position: fixed;
+  z-index: 1;
 }
 
 $pomidor_size: $grid;
 
 .pomidor_wrap {
-	display: inline-block;
-	background: #FFF;
-	text-align: right;
-	.pomidor_timer {
-		@include absolute_me($grid*2,0,auto,auto);
-		//width: 14*$grid;
-		//height: auto;
-		//background: #FFF;
-		//border: 1px solid $gray;
-		//border-radius: 5px;
-		//@include box-shadow();
-		//padding: $grid/1.4;
-		z-index: 1;
+  display: inline-block;
+  background: #FFF;
+  text-align: right;
+  .pomidor_timer {
+    @include absolute_me($grid*2,0,auto,auto);
+    //width: 14*$grid;
+    //height: auto;
+    //background: #FFF;
+    //border: 1px solid $gray;
+    //border-radius: 5px;
+    //@include box-shadow();
+    //padding: $grid/1.4;
+    z-index: 1;
 
-		.pomidor_timer_wrap {
-			text-align: right;
-			padding: 0px $pomidor_size/2;
-			.pomidor_title {
-				display: none;
-				@include absolute_me($grid*2,auto,auto,0);
-				line-height: $pomidor_size;
-				font-size: 1.4em;
-				color: darken($gray,20%);
-				letter-spacing: 1px;
-			}
-			.pomidor_status {
-				line-height: $pomidor_size/2;
-				color: darken($gray,20%);
-				font-size: 1em;
-				letter-spacing: 0.5px;
-			}
-			.pomidor_wrap {
-				position: relative;
-				display: inline-block;
-				width: $pomidor_size;
-				margin: 0px $pomidor_size/3;				
-				.pomidor {
-					position: relative;
-					left: 0px;
-					width: round($grid);
-					height: round($grid);
-					border-radius: $grid;
-					background: $pomidor_color;
-					cursor: pointer;
-					border: 2px solid $pomidor_color;
-					overflow: hidden;
-					&.active {
-						background-color: #FFF;
-					}
-					.target {
-						margin-top: 1px;
-						text-align: center;
-						i {
-							vertical-align: middle;
-							line-height: $pomidor_size/4;
-							@include animate_me(opacity, 0.2s);
-							opacity: 1;
-							font-size: $pomidor_size*0.5;
-							color: #FFF;
-							&:before {
-								margin: 0px;
-							}
-						}
-					}
-					&.active .target {
-						i {
-							opacity: 0;
-						}
-					}
-				}
-				.pomidor_white {
-					@include absolute_me(0px,0,0,1px);
-					display: inline-block;
-					overflow: hidden;
-					margin-left: -5px;
-					//border-radius: $grid * 1.4;
-					width: $grid*1.6;
-					height: $grid*1.6;
-					//border: 1px solid red;
-					background: rgba(255,255,255,0.95);					
-				}
-			}
-		}
+    .pomidor_timer_wrap {
+      text-align: right;
+      padding: 0px $pomidor_size/2;
+      .pomidor_title {
+        display: none;
+        @include absolute_me($grid*2,auto,auto,0);
+        line-height: $pomidor_size;
+        font-size: 1.4em;
+        color: darken($gray,20%);
+        letter-spacing: 1px;
+      }
+      .pomidor_status {
+        line-height: $pomidor_size/2;
+        color: darken($gray,20%);
+        font-size: 1em;
+        letter-spacing: 0.5px;
+      }
+      .pomidor_wrap {
+        position: relative;
+        display: inline-block;
+        width: $pomidor_size;
+        margin: 0px $pomidor_size/3;        
+        .pomidor {
+          position: relative;
+          left: 0px;
+          width: round($grid);
+          height: round($grid);
+          border-radius: $grid;
+          background: $pomidor_color;
+          cursor: pointer;
+          border: 2px solid $pomidor_color;
+          overflow: hidden;
+          &.active {
+            background-color: #FFF;
+          }
+          .target {
+            margin-top: 1px;
+            text-align: center;
+            i {
+              vertical-align: middle;
+              line-height: $pomidor_size/4;
+              @include animate_me(opacity, 0.2s);
+              opacity: 1;
+              font-size: $pomidor_size*0.5;
+              color: #FFF;
+              &:before {
+                margin: 0px;
+              }
+            }
+          }
+          &.active .target {
+            i {
+              opacity: 0;
+            }
+          }
+        }
+        .pomidor_white {
+          @include absolute_me(0px,0,0,1px);
+          display: inline-block;
+          overflow: hidden;
+          margin-left: -5px;
+          //border-radius: $grid * 1.4;
+          width: $grid*1.6;
+          height: $grid*1.6;
+          //border: 1px solid red;
+          background: rgba(255,255,255,0.95);         
+        }
+      }
+    }
 
-	}
+  }
 }
