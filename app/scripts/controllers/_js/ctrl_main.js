@@ -427,9 +427,6 @@
       db_tree.getTreeFromNet().then(function() {
         return $scope.set.main_parent = db_tree.jsFindByParent(1);
       });
-      syncApi.oAuth2.jsGetToken().then(function(token) {
-        return console.info("token = ", token);
-      });
       $scope.db.tree_path = db_tree.jsGetPath(1);
       $scope.fn.setCalendarBox();
       syncApi.constructor();

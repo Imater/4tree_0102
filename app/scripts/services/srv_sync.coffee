@@ -1,4 +1,4 @@
-angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$http', ($translate, db_tree, $q, $http) ->
+angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$http', 'oAuth2Api', ($translate, db_tree, $q, $http, oAuth2Api) ->
   sync_journal: {}
   gen: 1;
   jsGetGen: ()->
@@ -55,49 +55,23 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
       to_send.notes.push( found ) if found
     #console.info JSON.stringify to_send
     @jsPostSync to_send
-  oAuth2: {
-    jsGetToken: ()->
-      dfd = $q.defer();
-
-      $http({
-        url: 'oauth/token'
-        method: "POST"
-        isArray: true
-        #dataType: 'json'
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        params: {
-          #grant_type: 'password'
-        }
-        data: $.param {
-          grant_type: 'password'
-          client_id: '4tree_client'
-          client_secret: '4tree_secret'
-          username: 'imater'
-          password: '990990'
-        }
-      }).then (result)->
-        dfd.resolve result.data
-
-      dfd.resolve('there_will_be_token');
-
-      dfd.promise;
-  }
   jsPostSync: (sync_data_to_send)->
       dfd = $q.defer();
-
-      @oAuth2.jsGetToken().then (token)->
-          $http({
-            url: '/api/v1/sync',
-            method: "POST",
-            isArray: true,
-            params: {
-                token: token
-            }
-            data: {
-              sync_data_to_send: sync_data_to_send
-            }
-          }).then (result)->
-            dfd.resolve result.data
+      console.info oAuth2Api
+      oAuth2Api.jsGetToken().then (token)->
+        $http({
+          url: '/api/v1/sync',
+          method: "POST",
+          isArray: true,
+          params: {
+              access_token: token
+          }
+          data: {
+            sync_data_to_send: sync_data_to_send
+          }
+        }).then (result)->
+          console.info "SYNC_RESULT = ", result
+          dfd.resolve result.data
 
       dfd.promise;
   

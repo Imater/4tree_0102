@@ -1,4 +1,4 @@
-angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$rootScope', ($translate, $http, $q, $rootScope) ->
+angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$rootScope', 'oAuth2Api', ($translate, $http, $q, $rootScope, oAuth2Api) ->
   _db: {}
   _cache: {}
   salt: ()->
@@ -39,18 +39,21 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   getTreeFromNet: ()->
     dfd = $q.defer();
     mythis = @;
-    $http({
-      url: '/api/v2/tree',
-      method: "GET",
-      params: {
-        user_id: 12
-      }
-    }).then (result)->
-      mythis._db.tree = result.data;
-      mythis.refreshParentsIndex();
-      $rootScope.$$childTail.db.main_node = _.find mythis._db.tree, (el)->
-        el.id == 1034
-      dfd.resolve(result.data);
+
+    oAuth2Api.jsGetToken().then (access_token)->
+      $http({
+        url: '/api/v2/tree',
+        method: "GET",
+        params: {
+          user_id: 12
+          access_token: access_token
+        }
+      }).then (result)->
+        mythis._db.tree = result.data;
+        mythis.refreshParentsIndex();
+        $rootScope.$$childTail.db.main_node = _.find mythis._db.tree, (el)->
+          el.id == 1034
+        dfd.resolve(result.data);
   refreshParentsIndex: ()->
     mythis = @;
     mythis.db_parents = {};

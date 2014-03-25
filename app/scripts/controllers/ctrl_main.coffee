@@ -550,9 +550,6 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   db_tree.getTreeFromNet().then ()->
     $scope.set.main_parent = db_tree.jsFindByParent(1);
 
-  syncApi.oAuth2.jsGetToken().then (token)->
-    console.info "token = ", token
-
   #$scope.set.main_parent = [{id:1, title: {v:"4tree"}, _childs:100, _open: true}];
   
 

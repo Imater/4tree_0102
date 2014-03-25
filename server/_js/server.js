@@ -68,11 +68,12 @@
       app.oauth = oauthserver({
         model: model,
         grants: ["password", "refresh_token"],
-        debug: true
+        debug: false
       });
       app.use(express.bodyParser());
     });
     app.all("/oauth/token", app.oauth.grant());
+    app.use(app.oauth.errorHandler());
     /*app.get "/", app.oauth.authorise(), (req, res) ->
       res.send "Secret area"
       return
@@ -150,11 +151,18 @@
         return console.info(result, err);
       });
     };
+    exports.sync = function(req, res) {
+      var token;
+      token = req.query.token;
+      console.info(token);
+      return res.send(true);
+    };
+    app.post('/api/v1/sync', app.oauth.authorise(), exports.sync);
     app.get('/api/v1/message', exports.newMessage);
     app.get('/api/import_from_mysql', function(req, res) {
       return (require('../get/_js/server_import_from_mysql')).get(req, res);
     });
-    app.get('/api/v2/tree', function(req, res) {
+    app.get('/api/v2/tree', app.oauth.authorise(), function(req, res) {
       return (require('../get/_js/server_get_all_tree')).get(req, res);
     });
     app.get('/api/v2/fake_names', function(req, res) {

@@ -82,12 +82,14 @@ else
     app.oauth = oauthserver(
       model: model # See below for specification
       grants: ["password", "refresh_token"]
-      debug: true
+      debug: false
     )
     app.use express.bodyParser() # REQUIRED
     return
 
-  app.all "/oauth/token", app.oauth.grant()
+  app.all "/oauth/token", app.oauth.grant();
+  
+  app.use(app.oauth.errorHandler());
   ###app.get "/", app.oauth.authorise(), (req, res) ->
     res.send "Secret area"
     return
@@ -159,12 +161,18 @@ else
     collection = db.collection("tree")
     collection.update {id:146}, {$push: {tags: {enter_time: new Date()}}}, {multi: false, upsert:true}, (err, result)->
       console.info result, err
+  exports.sync = (req, res)->
+    token = req.query.token
+    console.info token
+    res.send true
+
+  app.post('/api/v1/sync', app.oauth.authorise(), exports.sync);
 
   app.get('/api/v1/message', exports.newMessage);
   app.get '/api/import_from_mysql', (req, res)->
     (require('../get/_js/server_import_from_mysql')).get(req, res)
 
-  app.get '/api/v2/tree', (req, res)->
+  app.get '/api/v2/tree', app.oauth.authorise(), (req, res)->
     (require('../get/_js/server_get_all_tree')).get(req, res)
 
   app.get '/api/v2/fake_names', (req, res)->
