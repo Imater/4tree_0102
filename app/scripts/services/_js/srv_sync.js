@@ -3,7 +3,9 @@
   angular.module("4treeApp").service('syncApi', [
     '$translate', 'db_tree', '$q', '$http', 'oAuth2Api', function($translate, db_tree, $q, $http, oAuth2Api) {
       return {
+        autosync_on: false,
         sync_journal: {},
+        last_sync_time: "не проводилась",
         gen: 1,
         jsGetGen: function() {
           return this.gen++;
@@ -43,7 +45,8 @@
           if (!this.sync_journal[_id].changes[json_key]) {
             this.sync_journal[_id].changes[json_key] = {};
           }
-          return this.sync_journal[_id].changes[json_key] = to_push;
+          this.sync_journal[_id].changes[json_key] = to_push;
+          return this.jsStartSyncInWhile();
         },
         jsDeepEach: function(elements, fn, name) {
           var mythis;
@@ -77,8 +80,18 @@
           });
           return prev_obj;
         },
+        'jsStartSyncInWhile': _.debounce(function() {
+          if (this.autosync_on) {
+            return this.jsStartSync();
+          }
+        }, 5000),
+        jsHideSyncIndicator: _.debounce(function() {
+          return $(".sync_indicator").removeClass('active');
+        }, 1000),
         jsStartSync: function() {
-          var to_send;
+          var mythis, to_send;
+          $(".sync_indicator").addClass('active');
+          mythis = this;
           to_send = {
             notes: [],
             sync_journal: this.sync_journal
@@ -93,7 +106,13 @@
               return to_send.notes.push(found);
             }
           });
-          return this.jsPostSync(to_send);
+          return this.jsPostSync(to_send).then(function() {
+            var now;
+            mythis.sync_journal = {};
+            now = new moment();
+            mythis.last_sync_time = now.format("HH:mm:ss");
+            return mythis.jsHideSyncIndicator();
+          });
         },
         jsPostSync: function(sync_data_to_send) {
           var dfd;
@@ -116,6 +135,9 @@
             });
           });
           return dfd.promise;
+        },
+        jsSyncJournalCount: function() {
+          return Object.keys(this.sync_journal).length;
         }
       };
     }

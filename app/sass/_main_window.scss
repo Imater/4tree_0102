@@ -27,9 +27,43 @@
                 margin-top: round($grid/2) - 1px;
                 border-top-left-radius: 0px;
                 border-top-right-radius: 0px;
+                .replace_a {
+                    padding-left: 20px;
+                    input {
+                        display: inline-block;
+                        vertical-align: top;                        
+                    }
+                    label {
+                        padding-left: 10px;
+                        font-weight: normal;
+                        cursor: pointer;
+                    }
+                }
+                li {
+                    white-space: nowrap;
+                }
+                .hotkey {
+                    display: inline-block;
+                    margin-left: $padding;
+                    color: $gray;
+                    text-align: right;
+                }
             }
             .pull-right.dropdown-menu{
                 margin-top: 2px;
+            }
+            .sync_indicator {
+                &.active {
+                    //@include animate_me(color, 0.1s);
+                    -moz-animation: spin 2s infinite linear !important;
+                    -o-animation: spin 2s infinite linear !important;
+                    -webkit-animation: spin 2s infinite linear !important;
+                    animation: spin 2s infinite linear !important;
+                    color: $main_color;
+                }
+                &.need_sync {
+                    color: $main_color;
+                }
             }
             .navbar-collapse {
                 .navbar-nav {
@@ -73,7 +107,7 @@
             }
             .link {
                 display: inline-block;
-                padding: round($padding*1.5) round($grid/4);
+                padding: round($padding*1.5) + 1px round($grid/4) round($padding*1.5) round($grid/4);
                 height: $header_height_closed;
                 //padding-left: round($grid/2);
                 cursor: pointer;
@@ -98,7 +132,10 @@
                 color: $dark_gray;
             }
             .search {
-                margin-left: round($grid/2)
+                margin-left: round($grid/2);
+            }            
+            .search_input {
+                width: 200px;
             }
             .user_info {
                 display: inline-block;
@@ -130,7 +167,7 @@
                 padding: 2px $padding;
                 height: 24px;
                 padding-right: 1.6em;
-                width: 136px;
+                width: 146px;
                 outline: none;
                 @include animate_me(width, 1s);
                 &:focus {
@@ -633,6 +670,26 @@
 
 
 
+@-ms-keyframes spin {
+    from { -ms-transform: rotate(0deg); }
+    to { -ms-transform: rotate(360deg); }
+}
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
 
 
 

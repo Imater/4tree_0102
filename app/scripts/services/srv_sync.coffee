@@ -1,5 +1,7 @@
 angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$http', 'oAuth2Api', ($translate, db_tree, $q, $http, oAuth2Api) ->
+  autosync_on: false
   sync_journal: {}
+  last_sync_time: "не проводилась"
   gen: 1;
   jsGetGen: ()->
     @gen++
@@ -26,6 +28,7 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
     to_push = { _tm: now, _gen: gen } 
     @sync_journal[ _id ].changes[json_key] = {} if !@sync_journal[ _id ].changes[json_key]
     @sync_journal[ _id ].changes[json_key] = to_push
+    @jsStartSyncInWhile()
   jsDeepEach: (elements, fn, name=[])->
     mythis = @;   
     _.each elements, (el, key)->
@@ -44,7 +47,15 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
       if (obj[point])
         obj = obj[point]
     prev_obj
+  'jsStartSyncInWhile': _.debounce ()->
+      @jsStartSync() if @autosync_on;
+    , 5000
+  jsHideSyncIndicator: _.debounce ()->
+      $(".sync_indicator").removeClass('active')
+    , 1000
   jsStartSync: ()->
+    $(".sync_indicator").addClass('active')
+    mythis = @
     to_send = {
       notes: []
       sync_journal: @sync_journal
@@ -54,7 +65,11 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
       console.info sync_one, key, found
       to_send.notes.push( found ) if found
     #console.info JSON.stringify to_send
-    @jsPostSync to_send
+    @jsPostSync(to_send).then ()->
+      mythis.sync_journal = {}
+      now = new moment()
+      mythis.last_sync_time = now.format("HH:mm:ss")
+      mythis.jsHideSyncIndicator()
   jsPostSync: (sync_data_to_send)->
       dfd = $q.defer();
       console.info oAuth2Api
@@ -74,6 +89,8 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
           dfd.resolve result.data
 
       dfd.promise;
+  jsSyncJournalCount: ()->
+    Object.keys(@sync_journal).length
   
 
 ]

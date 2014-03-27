@@ -18,6 +18,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       {active: 5} #2
       {active: 0} #3
     ]
+    autosync_on: true
     side_views_menu: [
       {
         title: 'План дня'

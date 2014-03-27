@@ -24,7 +24,7 @@ if cluster.isMaster
   workers = {}
   allWorkers = {}
 
-  numCPUs = 1;
+  numCPUs = 0;
 
   for i in [0..numCPUs]
     worker = cluster.fork();
@@ -60,6 +60,7 @@ else
   #OAUTH2
 
   mongoose = require("mongoose")
+  mongoose.set("debug", true)
   uristring = "mongodb://127.0.0.1:27017/4tree"
 
 
@@ -68,10 +69,42 @@ else
   mongoose.connect uristring, (err, res) ->
     if err
       console.log "ERROR connecting to: " + uristring + ". " + err
-    else
-      console.info "Succeeded connected to: " + uristring, res
-    return
 
+  mongoose.connection.on 'connected', ()->
+    console.log 'Mongoose default connection open to ' + uristring
+
+  mongoose.connection.on 'error', (err)->
+    console.log 'Mongoose Error: '+err
+
+  mongoose.connection.on 'disconnected', ()->
+    console.log 'Mongoose Disconnected'
+
+  require '../models/_js/model_tree.js'
+
+  Tree = mongoose.model('Tree');
+
+  test_tmp = ()->
+    require '../models/_js/model_tree.js'
+
+    Tree = mongoose.model('Tree');
+
+    if true
+      t = Tree.create {
+        Country: "England"
+        GroupName: "D"
+        CreatedOn: Date.now()
+        Tags: { title: "Hi!!!" }
+      } 
+
+    query = {Country: "England"}
+
+    tm = new Date().getTime();
+    Tree.find {}, (err, docs)->
+      async.eachLimit docs, 50, (doc, callback)->
+        doc.GroupName = "MY COUNTRY-999"+ new Date().getTime()
+        doc.save(callback)
+      , ()->
+        console.info "SPEED", new Date().getTime() - tm
 
 
 
@@ -163,8 +196,14 @@ else
       console.info result, err
   exports.sync = (req, res)->
     token = req.query.token
-    console.info token
-    res.send true
+    notes = req.body.sync_data_to_send.notes
+    async.eachLimit notes, 50, (note, callback)->
+      _id = note._id
+      delete note._id
+      Tree.update { _id }, note, (err)->
+        callback err
+    , (callback)->
+      res.send true
 
   app.post('/api/v1/sync', app.oauth.authorise(), exports.sync);
 

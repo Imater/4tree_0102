@@ -6,6 +6,9 @@
 .make_favorit_button {
   color: $gray;
   cursor: pointer;
+  position: absolute;
+  right: $padding - 2px;
+  top: $grid;
   &:hover {
     color: darken($gray, 10%);
   }
@@ -14,15 +17,24 @@
 .mini_settings {
   padding: $padding;
   .ms_title {
+    white-space: nowrap;
     .note_checkbox {
+      vertical-align: top;
       font-size: 1.5em;
       margin-left: $padding - 3px;
     }
-    .settings_title {
+    .settings_title_wrap {
       margin-left: $grid/4;
-      margin-top: $grid/3;
-      font-weight: bold;
-    }   
+      margin-top: $padding/2;
+      vertical-align: top;
+      white-space: normal;      
+      display: inline-block;
+      margin-right: 50px;
+      .settings_title {
+        font-weight: bold;
+        padding-right: $grid*2;
+      }   
+    }
   }
 
   .ms_inside {

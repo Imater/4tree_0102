@@ -7,6 +7,14 @@ body, html {
   font-size: 12px;
 }
 
+/* line 13, ../sass/_main.scss */
+body {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100% !important;
+}
+
 /* Responsive: Portrait tablets and up 
 @media screen and (min-width: 768px) {
     .container {
@@ -426,19 +434,57 @@ h10.open:before {
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
 }
-/* line 31, ../sass/_main_window.scss */
+/* line 30, ../sass/_main_window.scss */
+#w_main #w_header_main .header_menu .dropdown .replace_a, #w_main #w_header_main .header_menu .dropdown-menu .replace_a {
+  padding-left: 20px;
+}
+/* line 32, ../sass/_main_window.scss */
+#w_main #w_header_main .header_menu .dropdown .replace_a input, #w_main #w_header_main .header_menu .dropdown-menu .replace_a input {
+  display: inline-block;
+  vertical-align: top;
+}
+/* line 36, ../sass/_main_window.scss */
+#w_main #w_header_main .header_menu .dropdown .replace_a label, #w_main #w_header_main .header_menu .dropdown-menu .replace_a label {
+  padding-left: 10px;
+  font-weight: normal;
+  cursor: pointer;
+}
+/* line 42, ../sass/_main_window.scss */
+#w_main #w_header_main .header_menu .dropdown li, #w_main #w_header_main .header_menu .dropdown-menu li {
+  white-space: nowrap;
+}
+/* line 45, ../sass/_main_window.scss */
+#w_main #w_header_main .header_menu .dropdown .hotkey, #w_main #w_header_main .header_menu .dropdown-menu .hotkey {
+  display: inline-block;
+  margin-left: 8px;
+  color: #cccccc;
+  text-align: right;
+}
+/* line 52, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .pull-right.dropdown-menu {
   margin-top: 2px;
 }
-/* line 35, ../sass/_main_window.scss */
+/* line 56, ../sass/_main_window.scss */
+#w_main #w_header_main .header_menu .sync_indicator.active {
+  -moz-animation: spin 2s infinite linear !important;
+  -o-animation: spin 2s infinite linear !important;
+  -webkit-animation: spin 2s infinite linear !important;
+  animation: spin 2s infinite linear !important;
+  color: #2f6913;
+}
+/* line 64, ../sass/_main_window.scss */
+#w_main #w_header_main .header_menu .sync_indicator.need_sync {
+  color: #2f6913;
+}
+/* line 69, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .navbar-collapse .navbar-nav {
   text-align: center;
 }
-/* line 38, ../sass/_main_window.scss */
+/* line 72, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .navbar-collapse .form-group {
   text-align: center;
 }
-/* line 41, ../sass/_main_window.scss */
+/* line 75, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .navbar-collapse .form-control {
   background: none !important;
   box-shadow: none;
@@ -450,37 +496,37 @@ h10.open:before {
   margin-top: 0px;
   border-radius: 3px;
 }
-/* line 56, ../sass/_main_window.scss */
+/* line 90, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .navbar-right {
   margin-top: 8px;
   height: 25px;
   margin-right: 8px;
 }
-/* line 60, ../sass/_main_window.scss */
+/* line 94, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .navbar-right .btn {
   padding: 3px 10px;
 }
-/* line 62, ../sass/_main_window.scss */
+/* line 96, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .navbar-right .btn .caret {
   border-top-color: #000 !important;
 }
-/* line 66, ../sass/_main_window.scss */
+/* line 100, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .navbar-right .wide {
   padding: 3px 20px;
 }
-/* line 70, ../sass/_main_window.scss */
+/* line 104, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .user_photo {
   padding-left: 13px !important;
   vertical-align: middle;
 }
-/* line 74, ../sass/_main_window.scss */
+/* line 108, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .link {
   display: inline-block;
-  padding: 12px 6px;
+  padding: 13px 6px 12px 6px;
   height: 41px;
   cursor: pointer;
 }
-/* line 80, ../sass/_main_window.scss */
+/* line 114, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .link .photo {
   -webkit-transition: all 0.5s ease-out;
   -o-transition: all 0.5s ease-out;
@@ -494,23 +540,27 @@ h10.open:before {
   width: 25px;
   height: 25px;
 }
-/* line 89, ../sass/_main_window.scss */
+/* line 123, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .link .photo:hover {
   opacity: 1;
 }
-/* line 93, ../sass/_main_window.scss */
+/* line 127, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .link:hover {
   background: #dedede;
 }
-/* line 97, ../sass/_main_window.scss */
+/* line 131, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .sync {
   color: gray;
 }
-/* line 100, ../sass/_main_window.scss */
+/* line 134, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .search {
   margin-left: 13px;
 }
-/* line 103, ../sass/_main_window.scss */
+/* line 137, ../sass/_main_window.scss */
+#w_main #w_header_main .header_menu .search_input {
+  width: 200px;
+}
+/* line 140, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .user_info {
   display: inline-block;
   position: absolute;
@@ -522,15 +572,15 @@ h10.open:before {
   -moz-transition: all 0.5s ease-out;
   transition: all 0.5s ease-out;
 }
-/* line 110, ../sass/_main_window.scss */
+/* line 147, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .user_info:hover {
   color: #000;
 }
-/* line 112, ../sass/_main_window.scss */
+/* line 149, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .user_info:hover .photo {
   opacity: 1;
 }
-/* line 116, ../sass/_main_window.scss */
+/* line 153, ../sass/_main_window.scss */
 #w_main #w_header_main .header_menu .user_info .surname {
   display: inline-block;
   vertical-align: middle;
@@ -538,25 +588,25 @@ h10.open:before {
   height: 25px;
   margin-right: 8px;
 }
-/* line 125, ../sass/_main_window.scss */
+/* line 162, ../sass/_main_window.scss */
 #w_main #w_header_main .header_second_line {
   margin-top: 8px;
 }
-/* line 127, ../sass/_main_window.scss */
+/* line 164, ../sass/_main_window.scss */
 #w_main #w_header_main .header_second_line .search {
   border: 1px solid #dedede;
   margin-left: 13px;
   padding: 2px 8px;
   height: 24px;
   padding-right: 1.6em;
-  width: 136px;
+  width: 146px;
   outline: none;
   -webkit-transition: width 1s ease-out;
   -o-transition: width 1s ease-out;
   -moz-transition: width 1s ease-out;
   transition: width 1s ease-out;
 }
-/* line 136, ../sass/_main_window.scss */
+/* line 173, ../sass/_main_window.scss */
 #w_main #w_header_main .header_second_line .search:focus {
   width: 230px;
   -webkit-transition: width 0.3s ease-out;
@@ -564,7 +614,7 @@ h10.open:before {
   -moz-transition: width 0.3s ease-out;
   transition: width 0.3s ease-out;
 }
-/* line 141, ../sass/_main_window.scss */
+/* line 178, ../sass/_main_window.scss */
 #w_main #w_header_main .header_second_line .clear {
   display: inline-block;
   position: absolute;
@@ -573,13 +623,13 @@ h10.open:before {
   color: #cccccc;
   cursor: pointer;
 }
-/* line 149, ../sass/_main_window.scss */
+/* line 186, ../sass/_main_window.scss */
 #w_main #w_header_main .header_second_line .header_center {
   position: absolute;
   right: 13px;
   display: inline-block;
 }
-/* line 153, ../sass/_main_window.scss */
+/* line 190, ../sass/_main_window.scss */
 #w_main #w_header_main .header_second_line .header_center .btn {
   height: 24px;
   padding-top: 2px;
@@ -587,16 +637,16 @@ h10.open:before {
   background: #FFF;
   color: gray;
 }
-/* line 161, ../sass/_main_window.scss */
+/* line 198, ../sass/_main_window.scss */
 #w_main #w_header_main .header_second_line .header_center .btn .caret {
   border-top-color: gray;
 }
-/* line 164, ../sass/_main_window.scss */
+/* line 201, ../sass/_main_window.scss */
 #w_main #w_header_main .header_second_line .header_center .btn.wide {
   padding-left: 20px;
   padding-right: 20px;
 }
-/* line 168, ../sass/_main_window.scss */
+/* line 205, ../sass/_main_window.scss */
 #w_main #w_header_main .header_second_line .header_center .btn.wide:hover {
   background: #2f6913;
   color: #FFF;
@@ -606,12 +656,12 @@ h10.open:before {
   -moz-transition: all 0.5s ease-out;
   transition: all 0.5s ease-out;
 }
-/* line 180, ../sass/_main_window.scss */
+/* line 217, ../sass/_main_window.scss */
 #w_main #w_header_main .w_header_top {
   line-height: 50px;
   vertical-align: middle;
 }
-/* line 183, ../sass/_main_window.scss */
+/* line 220, ../sass/_main_window.scss */
 #w_main #w_header_main .w_header_top .w_header_left {
   position: absolute;
   top: 0;
@@ -619,11 +669,11 @@ h10.open:before {
   bottom: 0;
   left: 13px;
 }
-/* line 186, ../sass/_main_window.scss */
+/* line 223, ../sass/_main_window.scss */
 #w_main #w_header_main .w_header_top .w_header_center {
   text-align: center;
 }
-/* line 188, ../sass/_main_window.scss */
+/* line 225, ../sass/_main_window.scss */
 #w_main #w_header_main .w_header_top .w_header_center input {
   display: inline-block;
   line-height: 1.4em;
@@ -631,7 +681,7 @@ h10.open:before {
   width: 250px;
   border: 1px solid #cccccc;
 }
-/* line 196, ../sass/_main_window.scss */
+/* line 233, ../sass/_main_window.scss */
 #w_main #w_header_main .w_header_top .w_header_right {
   position: absolute;
   top: 0;
@@ -639,7 +689,7 @@ h10.open:before {
   bottom: 0;
   left: auto;
 }
-/* line 199, ../sass/_main_window.scss */
+/* line 236, ../sass/_main_window.scss */
 #w_main #w_header_main .w_header_top .btn {
   border: 1px solid #cccccc;
   background: #EEE;
@@ -647,11 +697,11 @@ h10.open:before {
   font-size: 1em;
   color: #2f6913;
 }
-/* line 208, ../sass/_main_window.scss */
+/* line 245, ../sass/_main_window.scss */
 #w_main #w_header_main .w_header_top .dropdown-toggle {
   padding: 3px 8.33333px;
 }
-/* line 213, ../sass/_main_window.scss */
+/* line 250, ../sass/_main_window.scss */
 #w_main #w_content_main {
   -webkit-transition: top 0.1s ease-out;
   -o-transition: top 0.1s ease-out;
@@ -663,16 +713,16 @@ h10.open:before {
   bottom: 0;
   left: 0;
 }
-/* line 216, ../sass/_main_window.scss */
+/* line 253, ../sass/_main_window.scss */
 #w_main #w_content_main .left_toggle_button {
   z-index: 1;
   cursor: pointer;
 }
-/* line 219, ../sass/_main_window.scss */
+/* line 256, ../sass/_main_window.scss */
 #w_main #w_content_main .left_toggle_button .title {
   display: none;
 }
-/* line 222, ../sass/_main_window.scss */
+/* line 259, ../sass/_main_window.scss */
 #w_main #w_content_main .left_toggle_button .left_label {
   font-family: "Ubuntu", Verdana;
   font-size: 1em;
@@ -691,11 +741,11 @@ h10.open:before {
   border-right: 1px solid rgba(142, 227, 101, 0.5);
   padding-right: 13px;
 }
-/* line 235, ../sass/_main_window.scss */
+/* line 272, ../sass/_main_window.scss */
 #w_main #w_content_main .left_toggle_button .left_label i:before {
   margin-right: 0 !important;
 }
-/* line 239, ../sass/_main_window.scss */
+/* line 276, ../sass/_main_window.scss */
 #w_main #w_content_main .left_toggle_button .left_label.drop:after {
   font-size: 0.9em;
   color: #8ee365;
@@ -704,18 +754,18 @@ h10.open:before {
   margin-left: 1em;
   margin-top: 2px;
 }
-/* line 248, ../sass/_main_window.scss */
+/* line 285, ../sass/_main_window.scss */
 #w_main #w_content_main .left_toggle_button.opened .title {
   display: none;
 }
-/* line 251, ../sass/_main_window.scss */
+/* line 288, ../sass/_main_window.scss */
 #w_main #w_content_main .left_toggle_button.opened .arrow:before {
   content: '\e861' !important;
   font-family: 'fontello';
   display: inline-block;
 }
 
-/* line 264, ../sass/_main_window.scss */
+/* line 301, ../sass/_main_window.scss */
 #w_main.header_panel_opened #w_header_main {
   -webkit-transition: height 0.1s ease-out;
   -o-transition: height 0.1s ease-out;
@@ -723,7 +773,7 @@ h10.open:before {
   transition: height 0.1s ease-out;
   height: 100px;
 }
-/* line 268, ../sass/_main_window.scss */
+/* line 305, ../sass/_main_window.scss */
 #w_main.header_panel_opened #w_content_main {
   -webkit-transition: top 0.1s ease-out;
   -o-transition: top 0.1s ease-out;
@@ -732,7 +782,7 @@ h10.open:before {
   top: 100px;
 }
 
-/* line 277, ../sass/_main_window.scss */
+/* line 314, ../sass/_main_window.scss */
 #p_left_side_wrap {
   display: none;
   position: absolute;
@@ -743,7 +793,7 @@ h10.open:before {
   width: 300px;
 }
 
-/* line 291, ../sass/_main_window.scss */
+/* line 328, ../sass/_main_window.scss */
 #p_right_side_wrap {
   display: none;
   position: absolute;
@@ -753,7 +803,7 @@ h10.open:before {
   left: auto;
   width: 250px;
 }
-/* line 295, ../sass/_main_window.scss */
+/* line 332, ../sass/_main_window.scss */
 #p_right_side_wrap .right_menu_button_w1 {
   position: absolute;
   top: auto;
@@ -761,7 +811,7 @@ h10.open:before {
   margin-right: -3px;
 }
 
-/* line 304, ../sass/_main_window.scss */
+/* line 341, ../sass/_main_window.scss */
 #p_right_calendar_line {
   display: none;
   position: absolute;
@@ -773,7 +823,7 @@ h10.open:before {
   background: #2f6913;
 }
 
-/* line 311, ../sass/_main_window.scss */
+/* line 348, ../sass/_main_window.scss */
 #p_center_wrap {
   position: absolute;
   top: 0;
@@ -782,11 +832,11 @@ h10.open:before {
   left: 13px;
 }
 
-/* line 319, ../sass/_main_window.scss */
+/* line 356, ../sass/_main_window.scss */
 #w_main.p_left_side_open #p_left_side_wrap {
   display: block;
 }
-/* line 323, ../sass/_main_window.scss */
+/* line 360, ../sass/_main_window.scss */
 #w_main.p_left_side_open #p_center_wrap {
   left: 300px;
   -webkit-transition: left 0.1s ease-out;
@@ -794,16 +844,16 @@ h10.open:before {
   -moz-transition: left 0.1s ease-out;
   transition: left 0.1s ease-out;
 }
-/* line 328, ../sass/_main_window.scss */
+/* line 365, ../sass/_main_window.scss */
 #w_main.p_left_side_open .left_main_line {
   left: 287px;
 }
 
-/* line 335, ../sass/_main_window.scss */
+/* line 372, ../sass/_main_window.scss */
 #w_main.p_right_side_open #p_right_side_wrap {
   display: block;
 }
-/* line 339, ../sass/_main_window.scss */
+/* line 376, ../sass/_main_window.scss */
 #w_main.p_right_side_open #p_center_wrap {
   right: 313px;
   -webkit-transition: right 0.1s ease-out;
@@ -811,16 +861,16 @@ h10.open:before {
   -moz-transition: right 0.1s ease-out;
   transition: right 0.1s ease-out;
 }
-/* line 344, ../sass/_main_window.scss */
+/* line 381, ../sass/_main_window.scss */
 #w_main.p_right_side_open #p_right_calendar_line {
   display: block;
 }
-/* line 348, ../sass/_main_window.scss */
+/* line 385, ../sass/_main_window.scss */
 #w_main.p_right_side_open .right_main_line {
   right: 300px;
 }
 
-/* line 356, ../sass/_main_window.scss */
+/* line 393, ../sass/_main_window.scss */
 #w_main.p_plan_of_day_closed.p_right_side_open #p_center_wrap {
   right: 63px;
   -webkit-transition: right 0.1s ease-out;
@@ -828,12 +878,12 @@ h10.open:before {
   -moz-transition: right 0.1s ease-out;
   transition: right 0.1s ease-out;
 }
-/* line 360, ../sass/_main_window.scss */
+/* line 397, ../sass/_main_window.scss */
 #w_main.p_plan_of_day_closed.p_right_side_open .right_main_line {
   right: 50px;
 }
 
-/* line 369, ../sass/_main_window.scss */
+/* line 406, ../sass/_main_window.scss */
 #p_left_wrap {
   position: absolute;
   top: 0;
@@ -841,16 +891,16 @@ h10.open:before {
   bottom: 0;
   left: 0;
 }
-/* line 371, ../sass/_main_window.scss */
+/* line 408, ../sass/_main_window.scss */
 #p_left_wrap .p_inside_header2 {
   position: relative;
 }
-/* line 373, ../sass/_main_window.scss */
+/* line 410, ../sass/_main_window.scss */
 #p_left_wrap .p_inside_header2 .right_menu_button_w {
   right: 1px;
 }
 
-/* line 379, ../sass/_main_window.scss */
+/* line 416, ../sass/_main_window.scss */
 #p_right_wrap {
   position: absolute;
   top: 0;
@@ -858,22 +908,22 @@ h10.open:before {
   bottom: 0;
   left: 50%;
 }
-/* line 381, ../sass/_main_window.scss */
+/* line 418, ../sass/_main_window.scss */
 #p_right_wrap .p_inside_content, #p_right_wrap .p_inside_header2 {
   border-left: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* line 387, ../sass/_main_window.scss */
+/* line 424, ../sass/_main_window.scss */
 .left_line {
   border-left: 1px solid #397f17;
 }
 
-/* line 391, ../sass/_main_window.scss */
+/* line 428, ../sass/_main_window.scss */
 .p_inside_wrap {
   position: relative;
   height: 100%;
 }
-/* line 396, ../sass/_main_window.scss */
+/* line 433, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header {
   height: 25px;
   background: #2f6913;
@@ -881,15 +931,15 @@ h10.open:before {
   color: white;
   cursor: pointer;
 }
-/* line 402, ../sass/_main_window.scss */
+/* line 439, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .main_menu {
   width: 100%;
 }
-/* line 404, ../sass/_main_window.scss */
+/* line 441, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .main_menu .title {
   width: 100%;
 }
-/* line 407, ../sass/_main_window.scss */
+/* line 444, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .main_menu .dropdown-menu {
   width: 100%;
   font-size: inherit;
@@ -900,19 +950,19 @@ h10.open:before {
   border-bottom: 3px solid #469d1c;
   z-index: 1006;
 }
-/* line 416, ../sass/_main_window.scss */
+/* line 453, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .main_menu .dropdown-menu .divider {
   background-color: rgba(47, 105, 19, 0.9);
 }
-/* line 420, ../sass/_main_window.scss */
+/* line 457, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .main_menu .dropdown-menu .active a {
   background: rgba(47, 105, 19, 0.3);
 }
-/* line 423, ../sass/_main_window.scss */
+/* line 460, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .main_menu .dropdown-menu .active i {
   opacity: 1;
 }
-/* line 427, ../sass/_main_window.scss */
+/* line 464, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .main_menu .dropdown-menu i {
   display: inline-block;
   margin-right: 2px;
@@ -921,7 +971,7 @@ h10.open:before {
   font-weight: normal;
   opacity: 1;
 }
-/* line 435, ../sass/_main_window.scss */
+/* line 472, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .main_menu .dropdown-menu a {
   padding: 8px;
   font-family: "Ubuntu", Verdana;
@@ -932,19 +982,19 @@ h10.open:before {
   display: inline-block;
   color: #2f6913;
 }
-/* line 444, ../sass/_main_window.scss */
+/* line 481, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .main_menu .dropdown-menu a:hover {
   background: #2f6913;
   color: #FFF;
 }
-/* line 448, ../sass/_main_window.scss */
+/* line 485, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .main_menu .dropdown-menu a b {
   font-weight: bold;
   display: inline-block;
   min-width: 97px;
   text-align: left;
 }
-/* line 457, ../sass/_main_window.scss */
+/* line 494, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .title {
   font-family: "Ubuntu", Verdana;
   font-size: 1em;
@@ -959,11 +1009,11 @@ h10.open:before {
   vertical-align: middle;
   line-height: 25px;
 }
-/* line 466, ../sass/_main_window.scss */
+/* line 503, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .title i:before {
   margin-right: 0 !important;
 }
-/* line 470, ../sass/_main_window.scss */
+/* line 507, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header .title.drop:after {
   color: #8ee365;
   content: "\e869";
@@ -971,7 +1021,7 @@ h10.open:before {
   margin-left: 1em;
   margin-top: 2px;
 }
-/* line 479, ../sass/_main_window.scss */
+/* line 516, ../sass/_main_window.scss */
 .p_inside_wrap .side_menu {
   list-style: none;
   margin: 8px 0px;
@@ -981,17 +1031,17 @@ h10.open:before {
   background: rgba(217, 245, 207, 0.95);
   border-bottom: 3px solid #469d1c;
 }
-/* line 488, ../sass/_main_window.scss */
+/* line 525, ../sass/_main_window.scss */
 .p_inside_wrap .side_menu li:nth-child(1) {
   height: 33px;
   padding-top: 8px;
 }
-/* line 492, ../sass/_main_window.scss */
+/* line 529, ../sass/_main_window.scss */
 .p_inside_wrap .side_menu li:last-child {
   height: 33px;
   padding-bottom: 8px;
 }
-/* line 496, ../sass/_main_window.scss */
+/* line 533, ../sass/_main_window.scss */
 .p_inside_wrap .side_menu li {
   letter-spacing: 1px;
   color: #2f6913;
@@ -999,15 +1049,15 @@ h10.open:before {
   line-height: 25px;
   height: 25px;
 }
-/* line 502, ../sass/_main_window.scss */
+/* line 539, ../sass/_main_window.scss */
 .p_inside_wrap .side_menu li.active {
   background: rgba(47, 105, 19, 0.3);
 }
-/* line 504, ../sass/_main_window.scss */
+/* line 541, ../sass/_main_window.scss */
 .p_inside_wrap .side_menu li.active i {
   opacity: 1;
 }
-/* line 508, ../sass/_main_window.scss */
+/* line 545, ../sass/_main_window.scss */
 .p_inside_wrap .side_menu li i {
   display: inline-block;
   width: 50px;
@@ -1018,18 +1068,18 @@ h10.open:before {
   vertical-align: middle;
   opacity: 0.8;
 }
-/* line 518, ../sass/_main_window.scss */
+/* line 555, ../sass/_main_window.scss */
 .p_inside_wrap .side_menu li b {
   line-height: 25px;
   display: inline-block;
   vertical-align: middle;
   padding-left: 4px;
 }
-/* line 527, ../sass/_main_window.scss */
+/* line 564, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_header2 {
   height: 25px;
 }
-/* line 530, ../sass/_main_window.scss */
+/* line 567, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_content {
   position: absolute;
   top: 25px;
@@ -1037,11 +1087,11 @@ h10.open:before {
   bottom: 0;
   left: 0;
 }
-/* line 533, ../sass/_main_window.scss */
+/* line 570, ../sass/_main_window.scss */
 .p_inside_wrap .has_header {
   top: 50px;
 }
-/* line 536, ../sass/_main_window.scss */
+/* line 573, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_sidebar {
   background: #2f6913;
   position: absolute;
@@ -1051,7 +1101,7 @@ h10.open:before {
   left: 0;
   width: 25px;
 }
-/* line 540, ../sass/_main_window.scss */
+/* line 577, ../sass/_main_window.scss */
 .p_inside_wrap .p_inside_sidebar .p_inside_sidebar_gradient {
   background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 200, 0.5) 100%);
   /* FF3.6+ */
@@ -1070,15 +1120,15 @@ h10.open:before {
   height: 100%;
 }
 
-/* line 549, ../sass/_main_window.scss */
+/* line 586, ../sass/_main_window.scss */
 .right_hide #p_left_wrap {
   right: 0px;
 }
-/* line 551, ../sass/_main_window.scss */
+/* line 588, ../sass/_main_window.scss */
 .right_hide #p_left_wrap .p_inside_header {
   width: 50%;
 }
-/* line 555, ../sass/_main_window.scss */
+/* line 592, ../sass/_main_window.scss */
 .right_hide #p_right_wrap {
   left: auto;
   width: 50%;
@@ -1086,21 +1136,21 @@ h10.open:before {
   height: 25px;
   z-index: 1;
 }
-/* line 562, ../sass/_main_window.scss */
+/* line 599, ../sass/_main_window.scss */
 .right_hide #p_right_wrap .p_inside_header .title {
   opacity: 0.4;
 }
 
-/* line 570, ../sass/_main_window.scss */
+/* line 607, ../sass/_main_window.scss */
 .left_hide #p_right_wrap {
   left: 0px;
 }
-/* line 572, ../sass/_main_window.scss */
+/* line 609, ../sass/_main_window.scss */
 .left_hide #p_right_wrap .p_inside_header {
   margin-left: 50%;
   width: 50%;
 }
-/* line 577, ../sass/_main_window.scss */
+/* line 614, ../sass/_main_window.scss */
 .left_hide #p_left_wrap {
   right: auto;
   width: 50%;
@@ -1108,22 +1158,22 @@ h10.open:before {
   height: 25px;
   z-index: 1;
 }
-/* line 584, ../sass/_main_window.scss */
+/* line 621, ../sass/_main_window.scss */
 .left_hide #p_left_wrap .p_inside_header .title {
   opacity: 0.4;
 }
 
-/* line 593, ../sass/_main_window.scss */
+/* line 630, ../sass/_main_window.scss */
 .left_hide.right_hide #p_right_wrap {
   left: 50%;
   width: 50%;
 }
-/* line 596, ../sass/_main_window.scss */
+/* line 633, ../sass/_main_window.scss */
 .left_hide.right_hide #p_right_wrap .p_inside_header {
   margin-left: 0;
   width: 100%;
 }
-/* line 601, ../sass/_main_window.scss */
+/* line 638, ../sass/_main_window.scss */
 .left_hide.right_hide #p_left_wrap {
   right: 50%;
   width: 50%;
@@ -1131,18 +1181,18 @@ h10.open:before {
   height: 25px;
   z-index: 1;
 }
-/* line 607, ../sass/_main_window.scss */
+/* line 644, ../sass/_main_window.scss */
 .left_hide.right_hide #p_left_wrap .p_inside_header {
   width: 100%;
 }
 
-/* line 614, ../sass/_main_window.scss */
+/* line 651, ../sass/_main_window.scss */
 .margin_left {
   margin-left: 13px;
   margin-right: 25px;
 }
 
-/* line 619, ../sass/_main_window.scss */
+/* line 656, ../sass/_main_window.scss */
 .left_main_line {
   position: absolute;
   top: 0;
@@ -1154,7 +1204,7 @@ h10.open:before {
   cursor: pointer;
 }
 
-/* line 626, ../sass/_main_window.scss */
+/* line 663, ../sass/_main_window.scss */
 .right_main_line {
   position: absolute;
   top: 0;
@@ -1164,6 +1214,54 @@ h10.open:before {
   background: #2f6913;
   width: 13px;
   cursor: pointer;
+}
+
+@-ms-keyframes spin {
+  /* line 674, ../sass/_main_window.scss */
+  from {
+    -ms-transform: rotate(0deg);
+  }
+
+  /* line 675, ../sass/_main_window.scss */
+  to {
+    -ms-transform: rotate(360deg);
+  }
+}
+
+@-moz-keyframes spin {
+  /* line 678, ../sass/_main_window.scss */
+  from {
+    -moz-transform: rotate(0deg);
+  }
+
+  /* line 679, ../sass/_main_window.scss */
+  to {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  /* line 682, ../sass/_main_window.scss */
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+
+  /* line 683, ../sass/_main_window.scss */
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  /* line 686, ../sass/_main_window.scss */
+  from {
+    transform: rotate(0deg);
+  }
+
+  /* line 689, ../sass/_main_window.scss */
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* -------------------------------------------------------------
@@ -2241,63 +2339,79 @@ h10.open:before {
 .make_favorit_button {
   color: #cccccc;
   cursor: pointer;
+  position: absolute;
+  right: 6px;
+  top: 25px;
 }
-/* line 9, ../sass/_view_mini_settings.scss */
+/* line 12, ../sass/_view_mini_settings.scss */
 .make_favorit_button:hover {
   color: #b3b3b3;
 }
 
-/* line 14, ../sass/_view_mini_settings.scss */
+/* line 17, ../sass/_view_mini_settings.scss */
 .mini_settings {
   padding: 8px;
 }
-/* line 17, ../sass/_view_mini_settings.scss */
+/* line 19, ../sass/_view_mini_settings.scss */
+.mini_settings .ms_title {
+  white-space: nowrap;
+}
+/* line 21, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_title .note_checkbox {
+  vertical-align: top;
   font-size: 1.5em;
   margin-left: 5px;
 }
-/* line 21, ../sass/_view_mini_settings.scss */
-.mini_settings .ms_title .settings_title {
+/* line 26, ../sass/_view_mini_settings.scss */
+.mini_settings .ms_title .settings_title_wrap {
   margin-left: 6.25px;
-  margin-top: 8.33333px;
-  font-weight: bold;
+  margin-top: 4px;
+  vertical-align: top;
+  white-space: normal;
+  display: inline-block;
+  margin-right: 50px;
 }
-/* line 28, ../sass/_view_mini_settings.scss */
+/* line 33, ../sass/_view_mini_settings.scss */
+.mini_settings .ms_title .settings_title_wrap .settings_title {
+  font-weight: bold;
+  padding-right: 50px;
+}
+/* line 40, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside {
   padding: 12.5px 25px;
   padding-bottom: 0;
 }
-/* line 33, ../sass/_view_mini_settings.scss */
+/* line 45, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .nm_settings_buttons {
   text-align: center;
   padding-top: 8px;
 }
-/* line 36, ../sass/_view_mini_settings.scss */
+/* line 48, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .nm_settings_buttons .nm_btn {
   display: inline-block;
   width: 63px;
   color: #cccccc;
   cursor: pointer;
 }
-/* line 41, ../sass/_view_mini_settings.scss */
+/* line 53, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .nm_settings_buttons .nm_btn i {
   font-size: 25px;
 }
-/* line 43, ../sass/_view_mini_settings.scss */
+/* line 55, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .nm_settings_buttons .nm_btn i:before {
   margin: 0;
 }
-/* line 47, ../sass/_view_mini_settings.scss */
+/* line 59, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .nm_settings_buttons .nm_btn.active {
   color: #000;
 }
-/* line 50, ../sass/_view_mini_settings.scss */
+/* line 62, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .nm_settings_buttons .nm_btn .nm_title {
   font-size: 8px;
   text-align: center;
   font-weight: bold;
 }
-/* line 58, ../sass/_view_mini_settings.scss */
+/* line 70, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .ms_icon {
   font-size: 1.2em;
   display: inline-block;
@@ -2308,15 +2422,15 @@ h10.open:before {
   cursor: pointer;
   color: #000;
 }
-/* line 67, ../sass/_view_mini_settings.scss */
+/* line 79, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .ms_icon:hover {
   color: #2f6913;
 }
-/* line 72, ../sass/_view_mini_settings.scss */
+/* line 84, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .ms_colors {
   margin-top: 8px;
 }
-/* line 74, ../sass/_view_mini_settings.scss */
+/* line 86, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .ms_colors .ms_color_label {
   display: inline-block;
   width: 25px;
@@ -2324,15 +2438,15 @@ h10.open:before {
   margin-right: 0px;
   cursor: pointer;
 }
-/* line 80, ../sass/_view_mini_settings.scss */
+/* line 92, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .ms_colors .ms_color_label:nth-child(odd) {
   margin-right: 8px;
 }
-/* line 83, ../sass/_view_mini_settings.scss */
+/* line 95, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .ms_colors .ms_color_label.main {
   margin-right: 8px;
 }
-/* line 85, ../sass/_view_mini_settings.scss */
+/* line 97, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .ms_colors .ms_color_label.main:after {
   content: '\e825';
   font-family: 'fontello';
@@ -2342,20 +2456,20 @@ h10.open:before {
   line-height: 25px;
   position: absolute;
 }
-/* line 99, ../sass/_view_mini_settings.scss */
+/* line 111, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings {
   width: 100%;
 }
-/* line 101, ../sass/_view_mini_settings.scss */
+/* line 113, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings td {
   vertical-align: top;
   padding: 8px;
 }
-/* line 104, ../sass/_view_mini_settings.scss */
+/* line 116, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings td .btn {
   background: #EEE;
 }
-/* line 108, ../sass/_view_mini_settings.scss */
+/* line 120, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings th {
   min-width: 5em;
   font-size: 0.8em;
@@ -2365,16 +2479,16 @@ h10.open:before {
   text-align: right;
   padding-right: 8px;
 }
-/* line 117, ../sass/_view_mini_settings.scss */
+/* line 129, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings label {
   font-weight: normal;
   cursor: pointer;
 }
-/* line 121, ../sass/_view_mini_settings.scss */
+/* line 133, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings input[type=checkbox] {
   cursor: pointer;
 }
-/* line 124, ../sass/_view_mini_settings.scss */
+/* line 136, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings .ngrs-range-slider {
   margin: 0px;
   border-radius: 0;
@@ -2382,7 +2496,7 @@ h10.open:before {
   box-shadow: none;
   -webkit-box-shadow: none;
 }
-/* line 131, ../sass/_view_mini_settings.scss */
+/* line 143, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings .left_label {
   width: 5em;
   text-align: right;
@@ -2390,7 +2504,7 @@ h10.open:before {
   padding-right: 8px;
   color: gray;
 }
-/* line 140, ../sass/_view_mini_settings.scss */
+/* line 152, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings .daterange {
   width: 14em;
   font-size: 12px;
@@ -2400,31 +2514,31 @@ h10.open:before {
   text-align: center;
   border-radius: 0;
 }
-/* line 152, ../sass/_view_mini_settings.scss */
+/* line 164, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings .importance {
   position: absolute;
   right: 8px;
   color: #cccccc;
   text-align: right;
 }
-/* line 160, ../sass/_view_mini_settings.scss */
+/* line 172, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings .daterange_diff .task_date {
   padding: 0px 3px;
   cursor: default;
   opacity: 0.5;
   border-radius: 0;
 }
-/* line 166, ../sass/_view_mini_settings.scss */
+/* line 178, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings .daterange_diff .task_date.left {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-/* line 170, ../sass/_view_mini_settings.scss */
+/* line 182, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings .daterange_diff .task_date.right {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
-/* line 176, ../sass/_view_mini_settings.scss */
+/* line 188, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings .ngTagsInput .tags {
   background: none;
   box-shadow: none;
@@ -2433,12 +2547,12 @@ h10.open:before {
   margin-left: -4px;
   padding: 0px;
 }
-/* line 183, ../sass/_view_mini_settings.scss */
+/* line 195, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings .ngTagsInput .tags .tag-input {
   padding: 8px 4px !important;
   height: auto;
 }
-/* line 187, ../sass/_view_mini_settings.scss */
+/* line 199, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings .ngTagsInput .tags li {
   background: #2f6913;
   color: #FFF;
@@ -2449,54 +2563,54 @@ h10.open:before {
   border: none;
   margin: 2px;
 }
-/* line 196, ../sass/_view_mini_settings.scss */
+/* line 208, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings .ngTagsInput .tags li button {
   margin-top: 3px;
   color: rgba(204, 204, 204, 0.3);
 }
-/* line 199, ../sass/_view_mini_settings.scss */
+/* line 211, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings .ngTagsInput .tags li button:hover {
   color: #FFF;
 }
-/* line 206, ../sass/_view_mini_settings.scss */
+/* line 218, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings .every {
   width: 13em;
 }
-/* line 208, ../sass/_view_mini_settings.scss */
+/* line 220, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings .every input {
   text-align: right;
 }
-/* line 212, ../sass/_view_mini_settings.scss */
+/* line 224, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings .buttons_panel .btn {
   display: inline-block;
 }
-/* line 216, ../sass/_view_mini_settings.scss */
+/* line 228, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings .btn-success {
   color: #2f6913;
   border: 2px solid #2f6913;
 }
-/* line 220, ../sass/_view_mini_settings.scss */
+/* line 232, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .table_settings i {
   color: #cccccc;
   font-size: 0.8em;
 }
-/* line 225, ../sass/_view_mini_settings.scss */
+/* line 237, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap {
   text-align: center;
   margin-top: 8px;
 }
-/* line 228, ../sass/_view_mini_settings.scss */
+/* line 240, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap ol {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-/* line 233, ../sass/_view_mini_settings.scss */
+/* line 245, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap li {
   margin: 8px;
   text-align: center;
 }
-/* line 237, ../sass/_view_mini_settings.scss */
+/* line 249, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap .cnt {
   border: 1px solid #2f6913;
   border-right-color: rgba(47, 105, 19, 0.5);
@@ -2509,7 +2623,7 @@ h10.open:before {
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
 }
-/* line 249, ../sass/_view_mini_settings.scss */
+/* line 261, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap .title {
   margin-left: 0;
   border: 1px solid #2f6913;
@@ -2522,55 +2636,55 @@ h10.open:before {
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
 }
-/* line 261, ../sass/_view_mini_settings.scss */
+/* line 273, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap li:nth-child(1) input {
   background: rgba(102, 0, 255, 0.2) !important;
 }
-/* line 264, ../sass/_view_mini_settings.scss */
+/* line 276, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap li:nth-child(1) input {
   background: rgba(0, 82, 255, 0.2) !important;
 }
-/* line 267, ../sass/_view_mini_settings.scss */
+/* line 279, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap li:nth-child(2) input {
   background: rgba(0, 255, 31, 0.3) !important;
 }
-/* line 270, ../sass/_view_mini_settings.scss */
+/* line 282, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap li:nth-child(3) input {
   background: rgba(129, 255, 3, 0.4) !important;
 }
-/* line 273, ../sass/_view_mini_settings.scss */
+/* line 285, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap li:nth-child(4) input {
   background: rgba(255, 231, 0, 0.5) !important;
 }
-/* line 276, ../sass/_view_mini_settings.scss */
+/* line 288, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap li:nth-child(5) input {
   background: rgba(255, 193, 0, 0.5) !important;
 }
-/* line 279, ../sass/_view_mini_settings.scss */
+/* line 291, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap li:nth-child(6) input {
   background: rgba(255, 97, 0, 0.5) !important;
 }
-/* line 282, ../sass/_view_mini_settings.scss */
+/* line 294, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap li:nth-child(7) input {
   background: rgba(255, 0, 31, 0.3) !important;
 }
-/* line 285, ../sass/_view_mini_settings.scss */
+/* line 297, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap li:nth-child(8) input {
   background: rgba(255, 0, 82, 0.5) !important;
 }
-/* line 288, ../sass/_view_mini_settings.scss */
+/* line 300, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap li:nth-child(9) input {
   background: rgba(215, 0, 255, 0.5) !important;
 }
-/* line 291, ../sass/_view_mini_settings.scss */
+/* line 303, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap li:nth-child(10) input {
   background: rgba(199, 133, 255, 0.5) !important;
 }
-/* line 294, ../sass/_view_mini_settings.scss */
+/* line 306, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap li:nth-child(11) input {
   background: rgba(153, 153, 153, 0.5) !important;
 }
-/* line 297, ../sass/_view_mini_settings.scss */
+/* line 309, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap .remove {
   color: #dedede;
   margin-left: 4px;
@@ -2578,38 +2692,38 @@ h10.open:before {
   line-height: 2em;
   margin-top: 1px;
 }
-/* line 303, ../sass/_view_mini_settings.scss */
+/* line 315, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap .remove:hover {
   color: red;
   cursor: pointer;
 }
-/* line 308, ../sass/_view_mini_settings.scss */
+/* line 320, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap .week_stat {
   color: gray;
   padding-top: 2px;
   padding-bottom: 8px;
   text-align: center;
 }
-/* line 313, ../sass/_view_mini_settings.scss */
+/* line 325, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap .week_stat i {
   font-size: 0.8em;
   color: #cccccc;
   font-style: normal;
 }
-/* line 318, ../sass/_view_mini_settings.scss */
+/* line 330, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap .week_stat b {
   color: #cccccc;
   padding-right: 16px;
   font-weight: normal;
   font-size: 1em;
 }
-/* line 325, ../sass/_view_mini_settings.scss */
+/* line 337, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap .date_wrap {
   text-align: center;
   display: inline-block;
   position: relative;
 }
-/* line 329, ../sass/_view_mini_settings.scss */
+/* line 341, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap .date_wrap .date_counters {
   display: block;
   text-align: center;
@@ -2623,7 +2737,7 @@ h10.open:before {
   border-bottom: none;
   height: 25px;
 }
-/* line 342, ../sass/_view_mini_settings.scss */
+/* line 354, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap .date_wrap .task_date {
   display: block;
   width: 195px;
@@ -2633,7 +2747,7 @@ h10.open:before {
   border-top-left-radius: 0;
   border: 1px solid #cccccc !important;
 }
-/* line 352, ../sass/_view_mini_settings.scss */
+/* line 364, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap .rewind {
   position: absolute;
   left: -50px;
@@ -2646,68 +2760,68 @@ h10.open:before {
   -moz-transition: color 0.5s ease-out;
   transition: color 0.5s ease-out;
 }
-/* line 360, ../sass/_view_mini_settings.scss */
+/* line 372, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap .rewind:hover {
   color: #2f6913;
 }
-/* line 363, ../sass/_view_mini_settings.scss */
+/* line 375, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .counters_wrap .rewind.right {
   left: auto;
   right: -50px;
 }
-/* line 369, ../sass/_view_mini_settings.scss */
+/* line 381, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap {
   padding: 0px;
 }
-/* line 371, ../sass/_view_mini_settings.scss */
+/* line 383, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .padding {
   margin: 2px 2px 2px 24px;
 }
-/* line 374, ../sass/_view_mini_settings.scss */
+/* line 386, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .share_link {
   padding: 4px 10px;
   border: 1px solid #cccccc;
   width: 15em;
 }
-/* line 379, ../sass/_view_mini_settings.scss */
+/* line 391, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .clipboard {
   padding: 2px 2px;
 }
-/* line 382, ../sass/_view_mini_settings.scss */
+/* line 394, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap label {
   margin-left: 8px;
   font-weight: normal;
   color: #2f6913;
 }
-/* line 388, ../sass/_view_mini_settings.scss */
+/* line 400, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .can_write label {
   font-weight: normal;
   color: inherit;
 }
-/* line 393, ../sass/_view_mini_settings.scss */
+/* line 405, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .part {
   padding: 8px;
 }
-/* line 396, ../sass/_view_mini_settings.scss */
+/* line 408, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends {
   margin: 8px 0;
 }
-/* line 398, ../sass/_view_mini_settings.scss */
+/* line 410, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends td, .mini_settings .ms_inside .share_wrap .frends tr {
   padding: 5px 8px;
 }
-/* line 401, ../sass/_view_mini_settings.scss */
+/* line 413, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends .title {
   padding-right: 16px;
   padding-left: 8px;
 }
-/* line 405, ../sass/_view_mini_settings.scss */
+/* line 417, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends .face {
   width: 25px;
   height: 25px;
   border-radius: 50%;
 }
-/* line 410, ../sass/_view_mini_settings.scss */
+/* line 422, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends .remove {
   color: #cccccc;
   -webkit-transition: color 0.2s ease-out;
@@ -2716,11 +2830,11 @@ h10.open:before {
   transition: color 0.2s ease-out;
   cursor: pointer;
 }
-/* line 414, ../sass/_view_mini_settings.scss */
+/* line 426, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends .remove:hover {
   color: red;
 }
-/* line 418, ../sass/_view_mini_settings.scss */
+/* line 430, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends .can_edit {
   font-size: 1.5em;
   color: #cccccc;
@@ -2731,23 +2845,23 @@ h10.open:before {
   -moz-transition: opacity 0.5s ease-out;
   transition: opacity 0.5s ease-out;
 }
-/* line 424, ../sass/_view_mini_settings.scss */
+/* line 436, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends .can_edit.icon-lock-open {
   color: #23a216;
   opacity: 0.8;
 }
-/* line 428, ../sass/_view_mini_settings.scss */
+/* line 440, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .frends .can_edit:hover {
   opacity: 1;
 }
-/* line 433, ../sass/_view_mini_settings.scss */
+/* line 445, ../sass/_view_mini_settings.scss */
 .mini_settings .ms_inside .share_wrap .add_frend {
   padding-right: 16px;
   padding-left: 8px;
   color: #cccccc;
   cursor: pointer;
 }
-/* line 445, ../sass/_view_mini_settings.scss */
+/* line 457, ../sass/_view_mini_settings.scss */
 .mini_settings .note_mini_settings_panel {
   padding: 8px 0;
   min-height: 10em;
@@ -2899,18 +3013,18 @@ h10.open:before {
   white-space: normal;
 }
 
-/* line 49, ../sass/_main.scss */
+/* line 56, ../sass/_main.scss */
 .wrapper_line {
   position: relative;
   white-space: nowrap;
 }
-/* line 52, ../sass/_main.scss */
+/* line 59, ../sass/_main.scss */
 .wrapper_line .box {
   display: inline-block;
   width: 30px;
   min-height: 30px;
 }
-/* line 57, ../sass/_main.scss */
+/* line 64, ../sass/_main.scss */
 .wrapper_line .box:before {
   content: '';
   position: absolute;
@@ -2921,13 +3035,13 @@ h10.open:before {
   top: 0px;
   background: green;
 }
-/* line 67, ../sass/_main.scss */
+/* line 74, ../sass/_main.scss */
 .wrapper_line .title_wrap {
   vertical-align: top;
   display: inline-block;
   line-height: 15px;
 }
-/* line 71, ../sass/_main.scss */
+/* line 78, ../sass/_main.scss */
 .wrapper_line .title_wrap .title {
   content: "";
   min-width: 60px;

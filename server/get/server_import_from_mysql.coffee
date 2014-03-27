@@ -1,7 +1,13 @@
-async = require('async');
+async = require('async')
+mongoose = require('mongoose')
+
+require '../../models/_js/model_tree.js'
+
+Tree = mongoose.model('Tree');
+
 
 removeCollection = (callback)->
-  collection = db.collection("new_tree");
+  collection = db.collection("trees");
   collection.remove {}, (err, count)->
     callback err
 
@@ -12,6 +18,7 @@ frommysql = (mysqldate, need_add_hours)->
 
 exports.get = (req, res)->
   user_id = req.query.user_id
+  console.info "start_import user = ", user_id
   async.waterfall [
     removeCollection
     (callback)->
@@ -36,11 +43,12 @@ exports.get = (req, res)->
       async.eachLimit rows, 50, (row, callback)->
         #console.info "row = ", row
 
-        one_note = {}
+        one_note = new Tree;
         
         one_note['id'] = row.id
         one_note['title'] = row.title
         one_note['text'] = row.text
+        one_note['parent_id'] = row.parent_id
         one_note['parent'] = row.parent_id
         one_note['pos'] = row.position
         one_note['user_id'] = row.user_id
@@ -50,7 +58,7 @@ exports.get = (req, res)->
 
         if row.adddate != '0000-00-00 00:00:00'
           new_date = frommysql(row.adddate, need_add_hours);
-          one_note['add_t'] = new_date 
+          one_note['add_tm'] = new_date 
 
         if row.date1 != '0000-00-00 00:00:00'
           new_date = frommysql(row.date1, need_add_hours);
@@ -64,7 +72,8 @@ exports.get = (req, res)->
           new_date = frommysql(row.did, need_add_hours);
           one_note['did'] = new_date 
 
-        collection.insert one_note, (err, result)->
+        one_note.save (err, result)->
+          console.info 'saved', err;
           callback err, rows
       , (err)->
         callback err

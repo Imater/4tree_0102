@@ -1,13 +1,17 @@
 async = require('async');
+mongoose = require('mongoose')
+
+require '../../models/_js/model_tree.js'
+
+Tree = mongoose.model('Tree');
 
 exports.get = (req, res)->
   user_id = parseInt(req.query.user_id)
   async.waterfall [
 
     (callback)->
-      collection = db.collection("new_tree");
-      collection.find({'user_id':user_id, 'del':{$exists: false}}).toArray (err, rows)->
-        async.each rows, (row, callback)->
+      Tree.find {'user_id':user_id, 'del':0}, (err, rows)->
+        async.eachLimit rows, 50, (row, callback)->
           row._open = false;
           row._settings = false;
           row.title = strip_tags(row.title) if row.title
@@ -15,7 +19,7 @@ exports.get = (req, res)->
           callback null;
         , (err)->
           callback err, rows
-          res.send(rows)
+          res.send( JSON.stringify rows )
       , (err)->
         callback err
 

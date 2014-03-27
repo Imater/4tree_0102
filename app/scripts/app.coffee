@@ -19,6 +19,7 @@ angular.module("4treeApp", [
   "sly"
   "ngClipboard"
   "Decorators"
+  "drahak.hotkeys"
 ])
 
 angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($translateProvider, $routeProvider) ->

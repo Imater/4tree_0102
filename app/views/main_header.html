@@ -11,26 +11,26 @@
           <span class="dropdown-toggle link user_photo" data-toggle="dropdown"><span class="photo" style="background:url('images/tmp/photo.jpg');"></span>
         </span>
           <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
+            <li><a>Action</a></li>
+            <li><a>Another action</a></li>
+            <li><a>Something else here</a></li>
             <li class="divider"></li>
-            <li><a href="#">Separated link</a></li>
+            <li><a>Separated link</a></li>
             <li class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
+            <li><a>One more separated link</a></li>
           </ul>
         </span>
 
         <span class="dropdown">
           <span class="dropdown-toggle link" data-toggle="dropdown">4tree.ru</span>
           <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
+            <li><a>Action</a></li>
+            <li><a>Another action</a></li>
+            <li><a>Something else here</a></li>
             <li class="divider"></li>
-            <li><a href="#">Separated link</a></li>
+            <li><a>Separated link</a></li>
             <li class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
+            <li><a>One more separated link</a></li>
           </ul>
         </span>
 
@@ -56,85 +56,101 @@
     <span class="dropdown">
       <span class="dropdown-toggle link" data-toggle="dropdown">Изменить</span>
       <ul class="dropdown-menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
+        <li><a>Action</a></li>
+        <li><a>Another action</a></li>
+        <li><a>Something else here</a></li>
         <li class="divider"></li>
-        <li><a href="#">Separated link</a></li>
+        <li><a>Separated link</a></li>
         <li class="divider"></li>
-        <li><a href="#">One more separated link</a></li>
+        <li><a>One more separated link</a></li>
       </ul>
     </span>
 
     <span class="dropdown">
       <span class="dropdown-toggle link" data-toggle="dropdown">Вид</span>
       <ul class="dropdown-menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
+        <li><a>Action</a></li>
+        <li><a>Another action</a></li>
+        <li><a>Something else here</a></li>
         <li class="divider"></li>
-        <li><a href="#">Separated link</a></li>
+        <li><a>Separated link</a></li>
         <li class="divider"></li>
-        <li><a href="#">One more separated link</a></li>
+        <li><a>One more separated link</a></li>
       </ul>
     </span>
 
     <span class="dropdown">
       <span class="dropdown-toggle link" data-toggle="dropdown">Закладки</span>
       <ul class="dropdown-menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
+        <li><a>Action</a></li>
+        <li><a>Another action</a></li>
+        <li><a>Something else here</a></li>
         <li class="divider"></li>
-        <li><a href="#">Separated link</a></li>
+        <li><a>Separated link</a></li>
         <li class="divider"></li>
-        <li><a href="#">One more separated link</a></li>
+        <li><a>One more separated link</a></li>
       </ul>
     </span>
 
     <span class="dropdown">
       <span class="dropdown-toggle link" data-toggle="dropdown">25:00</span>
       <ul class="dropdown-menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
+        <li><a>Action</a></li>
+        <li><a>Another action</a></li>
+        <li><a>Something else here</a></li>
         <li class="divider"></li>
-        <li><a href="#">Separated link</a></li>
+        <li><a>Separated link</a></li>
         <li class="divider"></li>
-        <li><a href="#">One more separated link</a></li>
-      </ul>
-    </span>
-
-    <span class="dropdown">
-      <span class="dropdown-toggle link sync" data-toggle="dropdown"><i class="glyphicon glyphicon-refresh"></i></span>
-      <ul class="dropdown-menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
-        <li class="divider"></li>
-        <li><a href="#">Separated link</a></li>
-        <li class="divider"></li>
-        <li><a href="#">One more separated link</a></li>
+        <li><a>One more separated link</a></li>
       </ul>
     </span>
 
     <span class="dropdown">
       <span class="dropdown-toggle link sync" data-toggle="dropdown"><i class="glyphicon glyphicon-bell"></i></span>
       <ul class="dropdown-menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
+        <li><a>Action</a></li>
+        <li><a>Another action</a></li>
+        <li><a>Something else here</a></li>
         <li class="divider"></li>
-        <li><a href="#">Separated link</a></li>
+        <li><a>Separated link</a></li>
         <li class="divider"></li>
-        <li><a href="#">One more separated link</a></li>
+        <li><a>One more separated link</a></li>
       </ul>
     </span>
 
 
+    <span class="dropdown">
+      <span class="dropdown-toggle link sync" data-toggle="dropdown">
+        <i class="glyphicon glyphicon-refresh sync_indicator" ng-class="{need_sync: (sync_count = fn.service.syncApi.jsSyncJournalCount())}"></i>
+      </span>
+      <ul class="dropdown-menu">
+        <hotkey bind="Alt + R" invoke="fn.service.syncApi.jsStartSync()" />
+        <li><a ng-click="$event.stopPropagation(); fn.service.syncApi.jsStartSync();">
+
+            <ng-pluralize count="sync_count"
+                       when="{'0': 'Синхронизация — {{fn.service.syncApi.last_sync_time}}',
+                           'one': 'Синхронизировать 1 объект',
+                           'few': 'Синхронизировать {} объекта',
+                           'many': 'Синхронизировать {} объектов',
+                           'other': 'Синхронизировать {} объектов'}">
+            </ng-pluralize>     
+
+          <span class="hotkey">alt + R</span></a></li>
+        <li class="divider"></li>
+        <li>
+          <span ng-click="$event.stopPropagation();" class="replace_a">
+            <input type="checkbox" id="autosync_on" ng-model="fn.service.syncApi.autosync_on" ng-change="fn.service.syncApi.jsStartSync();"> 
+            <label for="autosync_on">Автосинхронизация</label>
+          </span>
+        </li>
+      </ul>
+    </span>
+
+
+
       </ul>
       <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
+        <div class="form-group search_input">
           <input type="text" class="form-control" placeholder="Искать..." ng-model="search_box">
         </div>
       </form>
@@ -148,11 +164,11 @@
                 <span class="sr-only">Toggle Dropdown</span>
               </button>
               <ul class="dropdown-menu pull-right" role="menu">
-                <li><a href="#">Заметку</a></li>
-                <li><a href="#">Дело</a></li>
-                <li><a href="#">Дневник</a></li>
+                <li><a>Заметку</a></li>
+                <li><a>Дело</a></li>
+                <li><a>Дневник</a></li>
                 <li class="divider"></li>
-                <li><a href="#">Помидорку</a></li>
+                <li><a>Помидорку</a></li>
               </ul>
             </div>
       </ul>

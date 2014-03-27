@@ -24,6 +24,7 @@
             active: 0
           }
         ],
+        autosync_on: true,
         side_views_menu: [
           {
             title: 'План дня',
