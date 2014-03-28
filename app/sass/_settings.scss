@@ -8,17 +8,25 @@ $gray: #CCC;
 $pomidor_color: #d50800;
 $dropdown_menu: rgba(lighten($main_color, 62%) , 0.95);
 
+
+
 $light_gray: lighten($gray, 7%);
 $dark_gray: darken($gray, 30%);
 $title_lighten: 40%;
 
+
 $font_family: "Ubuntu", Verdana;
+$tree_font_size: 12px;
 
 $grid: 25px;
+$tree_grid: 22px;
 
 $grid_label: 20px;
 
 $padding: 8px;
+
+$grid_background: $dark_gray;
+$leaf_radius: round( $padding/2 );
 
 //шапка приложения - высота
 $header_height_closed: $grid + $padding*2;

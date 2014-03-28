@@ -1771,27 +1771,180 @@ h10.open:before {
   margin-left: -12.5px;
   margin-top: 12.5px;
 }
-/* line 11, ../sass/_tree_one_line.scss */
+/* line 12, ../sass/_tree_one_line.scss */
+.main_tree .sex > ul > li > .tree_tmpl > .tree_wrap.folder .col2 {
+  background: gray;
+}
+/* line 16, ../sass/_tree_one_line.scss */
+.main_tree .sex > ul > li > .tree_tmpl > ul > li > .tree_tmpl > .tree_wrap.folder .col2 {
+  background: #b3b3b3;
+}
+/* line 20, ../sass/_tree_one_line.scss */
+.main_tree .sex > ul > li > .tree_tmpl > ul > li > .tree_tmpl > ul > li > .tree_tmpl > .tree_wrap.folder .col2 {
+  background: #cccccc;
+}
+/* line 24, ../sass/_tree_one_line.scss */
+.main_tree .sex > ul > li > .tree_tmpl > ul > li > .tree_tmpl > ul > li > .tree_tmpl > ul > li > .tree_tmpl > .tree_wrap.folder .col2 {
+  background: #e6e6e6;
+}
+/* line 28, ../sass/_tree_one_line.scss */
+.main_tree .sex > ul > li > .tree_tmpl > ul > li > .tree_tmpl > ul > li > .tree_tmpl > ul > li > .tree_tmpl > ul > li > .tree_tmpl > .tree_wrap.folder .col2 {
+  background: white;
+}
+/* line 32, ../sass/_tree_one_line.scss */
+.main_tree .sex > ul > li > .tree_tmpl > ul > li > .tree_tmpl > ul > li > .tree_tmpl > ul > li > .tree_tmpl > ul > li > .tree_tmpl > ul > li > .tree_tmpl > .tree_wrap.folder .col2 {
+  background: white;
+}
+/* line 36, ../sass/_tree_one_line.scss */
+.main_tree .sex > ul > li > .tree_tmpl > ul > li > .tree_tmpl > ul > li > .tree_tmpl > ul > li > .tree_tmpl > ul > li > .tree_tmpl > ul > li > .tree_tmpl > ul > li > .tree_tmpl > .tree_wrap.folder .col2 {
+  background: white;
+}
+/* line 46, ../sass/_tree_one_line.scss */
 .main_tree ul {
   list-style: none;
-  padding: 0px 0px 0px 25px;
+  padding: 0px 0px 0px 22px;
 }
-/* line 14, ../sass/_tree_one_line.scss */
-.main_tree ul li.tree {
+/* line 49, ../sass/_tree_one_line.scss */
+.main_tree ul .tree {
   font-size: 1em;
   letter-spacing: 0px;
 }
-/* line 22, ../sass/_tree_one_line.scss */
+/* line 54, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2:first-child > .tree_tmpl > .tree_wrap .col2 {
+  border-top-right-radius: 4px;
+}
+/* line 58, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2:last-child > .tree_tmpl > .tree_wrap .col2 {
+  border-bottom-left-radius: 4px;
+}
+/* line 68, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 {
+  padding-left: 0;
+  letter-spacing: 0;
+  font-size: 0;
+  white-space: nowrap;
+}
+/* line 73, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap {
+  min-height: 22px;
+  position: relative;
+}
+/* line 76, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap .col1 {
+  position: absolute;
+  display: inline-block;
+  vertical-align: top;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 22px;
+  min-height: 22px;
+  background: #fffff8;
+  text-align: center;
+}
+/* line 88, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap .col1 .is_folder.folder {
+  font-size: 12px;
+}
+/* line 90, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap .col1 .is_folder.folder:after {
+  display: inline-block;
+  content: '\25b8';
+  color: gray;
+  font-family: 'fontello';
+  font-size: 16.92308px;
+}
+/* line 99, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap .col1 .is_folder.folder.open:after {
+  content: '\25be' !important;
+}
+/* line 108, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap.folder .is_folder {
+  font-size: 12px;
+}
+/* line 110, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap.folder .is_folder:after {
+  display: inline-block;
+  content: '\25b8';
+  color: gray;
+  font-family: 'fontello';
+  font-size: 16.92308px;
+}
+/* line 119, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap.folder .col2 {
+  background: gray;
+}
+/* line 121, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap.folder .col2 i {
+  color: #dedede;
+}
+/* line 126, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap.folder .col3 .title {
+  font-weight: bold;
+}
+/* line 131, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap.active {
+  background: rgba(217, 245, 207, 0.95);
+}
+/* line 134, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap.open > .col2 {
+  border-bottom-left-radius: 4px;
+}
+/* line 138, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap.open .is_folder:after {
+  content: '\25be' !important;
+}
+/* line 142, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap .col2 {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 22px;
+  min-height: 22px;
+  display: inline-block;
+  vertical-align: top;
+  width: 22px;
+  background: #dedede;
+  text-align: center;
+}
+/* line 153, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap .col2 i {
+  color: gray;
+  font-size: 12px;
+  margin-top: 4px;
+  display: inline-block;
+}
+/* line 159, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap .col2 i:before {
+  margin: 0 !important;
+}
+/* line 163, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap .col3 {
+  margin-left: 44px;
+  white-space: normal;
+  font-size: 12px;
+  vertical-align: top;
+  display: inline-block;
+}
+/* line 169, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap .col3 .title {
+  margin-left: 7px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-right: 8px;
+  outline: none;
+}
+/* line 184, ../sass/_tree_one_line.scss */
 .main_tree .tree_line.active .h_line {
   background: #bbeaaa;
   color: #000;
 }
-/* line 25, ../sass/_tree_one_line.scss */
+/* line 187, ../sass/_tree_one_line.scss */
 .main_tree .tree_line.active .h_line .btn_menu {
   display: block;
   color: #265e12;
 }
-/* line 32, ../sass/_tree_one_line.scss */
+/* line 194, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line {
   cursor: pointer;
   position: relative;
@@ -1799,7 +1952,7 @@ h10.open:before {
   height: 25px;
   line-height: 25px;
 }
-/* line 38, ../sass/_tree_one_line.scss */
+/* line 200, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .is_folder {
   background: #FFF;
   vertical-align: top;
@@ -1809,15 +1962,15 @@ h10.open:before {
   text-align: center;
   color: #cccccc;
 }
-/* line 49, ../sass/_tree_one_line.scss */
+/* line 211, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .is_folder.folder {
   cursor: pointer;
 }
-/* line 51, ../sass/_tree_one_line.scss */
+/* line 213, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .is_folder.folder:hover {
   color: #2f6913;
 }
-/* line 54, ../sass/_tree_one_line.scss */
+/* line 216, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .is_folder.folder:after {
   display: inline-block;
   content: '\25b8';
@@ -1827,11 +1980,11 @@ h10.open:before {
   line-height: 25px;
   vertical-align: top;
 }
-/* line 64, ../sass/_tree_one_line.scss */
+/* line 226, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .is_folder.folder.open:after {
   content: '\25be';
 }
-/* line 69, ../sass/_tree_one_line.scss */
+/* line 231, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .box {
   display: inline-block;
   position: relative;
@@ -1842,19 +1995,19 @@ h10.open:before {
   cursor: pointer;
   color: #8ee365;
 }
-/* line 78, ../sass/_tree_one_line.scss */
+/* line 240, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .box i {
   font-size: 12.5px;
 }
-/* line 80, ../sass/_tree_one_line.scss */
+/* line 242, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .box i:before, .main_tree .tree_line .h_line .box i:after {
   margin: 0px !important;
 }
-/* line 84, ../sass/_tree_one_line.scss */
+/* line 246, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .box:hover {
   color: #FFF;
 }
-/* line 87, ../sass/_tree_one_line.scss */
+/* line 249, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .box .childs {
   color: #000;
   opacity: 0.6;
@@ -1865,14 +2018,14 @@ h10.open:before {
   bottom: 3px;
   line-height: 7.14286px;
 }
-/* line 98, ../sass/_tree_one_line.scss */
+/* line 260, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .tree_icon {
   display: inline;
   color: #cccccc;
   opacity: 0.3;
   margin-left: 2.5px;
 }
-/* line 104, ../sass/_tree_one_line.scss */
+/* line 266, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .title_wrap {
   white-space: nowrap;
   /* Запрещаем перенос строк */
@@ -1881,13 +2034,8 @@ h10.open:before {
   text-overflow: ellipsis;
   display: inline;
 }
-/* line 107, ../sass/_tree_one_line.scss */
+/* line 269, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .title_wrap .title {
-  white-space: nowrap;
-  /* Запрещаем перенос строк */
-  overflow: hidden;
-  /* Обрезаем все, что не помещается в область */
-  text-overflow: ellipsis;
   display: inline;
   margin-left: 8.33333px;
   vertical-align: top;
@@ -1896,7 +2044,7 @@ h10.open:before {
   font-weight: bold;
   font-size: 1em;
 }
-/* line 120, ../sass/_tree_one_line.scss */
+/* line 281, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .note_line {
   display: inline-block;
   margin-left: 25px;
@@ -1904,7 +2052,7 @@ h10.open:before {
   font-weight: normal;
   font-family: Arial;
 }
-/* line 128, ../sass/_tree_one_line.scss */
+/* line 289, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .btn_menu {
   display: none;
   -webkit-transition: color 0.2s ease-out;
@@ -1922,20 +2070,20 @@ h10.open:before {
   cursor: pointer;
   color: #b3b3b3;
 }
-/* line 138, ../sass/_tree_one_line.scss */
+/* line 299, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .btn_menu:before {
   content: '\25aa';
   font-family: 'fontello';
   font-size: 12.5px;
   margin: 0px;
 }
-/* line 146, ../sass/_tree_one_line.scss */
+/* line 307, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .settings {
   position: relative;
   margin-left: 25px;
   background: #2f6913;
 }
-/* line 151, ../sass/_tree_one_line.scss */
+/* line 312, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .settings .left_set_line {
   background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 200, 0.5) 100%);
   /* FF3.6+ */
@@ -1958,20 +2106,20 @@ h10.open:before {
   bottom: 0;
   left: 0;
 }
-/* line 156, ../sass/_tree_one_line.scss */
+/* line 317, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .settings .settings_content {
   margin-left: 25px;
   padding: 12.5px 25px;
   background: white;
   padding-bottom: 25px;
 }
-/* line 161, ../sass/_tree_one_line.scss */
+/* line 322, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .settings .settings_content .settings_part {
   display: none;
   padding: 6.25px 0;
 }
 
-/* line 172, ../sass/_tree_one_line.scss */
+/* line 333, ../sass/_tree_one_line.scss */
 .notselectable {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -3013,18 +3161,168 @@ h10.open:before {
   white-space: normal;
 }
 
-/* line 56, ../sass/_main.scss */
+/* -------------------------------------------------------------
+  Sass CSS3 Mixins! The Cross-Browser CSS3 Sass Library
+  By: Matthieu Aussaguel, http://www.mynameismatthieu.com, @matthieu_tweets
+
+  List of CSS3 Sass Mixins File to be @imported and @included as you need
+
+  The purpose of this library is to facilitate the use of CSS3 on different browsers avoiding HARD TO READ and NEVER
+  ENDING css files
+
+  note: All CSS3 Properties are being supported by Safari 5
+  more info: http://www.findmebyip.com/litmus/#css3-properties
+
+  Mixins available:
+    -   background-gradient     - arguments: Start Color: #3C3C3C, End Color: #999999
+    -   background-size         - arguments: Width: 100%, Height: 100%
+    -   border-radius           - arguments: Radius: 5px
+    -   border-radius-separate  - arguments: Top Left: 5px, Top Left: 5px, Bottom Left: 5px, Bottom Right: 5px
+    -   box                     - arguments: Orientation: horizontal, Pack: center, Align: center
+    -   box-rgba                - arguments: R: 60, G: 3, B: 12, Opacity: 0.23, Color: #3C3C3C
+    -   box-shadow              - arguments: X: 2px, Y: 2px, Blur: 5px, Color: rgba(0,0,0,.4)
+    -   box-sizing              - arguments: Type: border-box
+    -   columns                 - arguments: Count: 3, Gap: 10
+    -   double-borders          - arguments: Color One: #3C3C3C, Color Two: #999999, Radius: 0
+    -   flex                    - arguments: Value: 1
+    -   flip                    - arguments: ScaleX: -1
+    -   font-face               - arguments: Font Family: myFont, Eot File Src: myFont.eot, Woff File Src: myFont.woff, Ttf File Src: myFont.ttf
+    -   opacity                 - arguments: Opacity: 0.5
+    -   outline radius          - arguments: Radius: 5px
+    -   resize                  - arguments: Direction: both
+    -   rotate                  - arguments: Degree: 0, M11: 0, M12: 0, M21: 0, M22: 0
+    CSS Matrix Rotation Calculator http://www.boogdesign.com/examples/transforms/matrix-calculator.html
+    -   text-shadow             - arguments: X: 2px, Y: 2px, Blur: 5px, Color: rgba(0,0,0,.4)
+    -   transform               - arguments: Parameters: null
+    -   transition              - arguments: What: all, Length: 1s, Easing: ease-in-out
+    -   triple-borders          - arguments: Color One: #3C3C3C, Color Two: #999999, Color Three: #000000, Radius: 0
+
+------------------------------------------------------------- */
+/* BACKGROUND GRADIENT */
+/* BACKGROUND SIZE */
+/* BORDER RADIUS */
+/* BOX */
+/* BOX RGBA */
+/* BOX SHADOW */
+/* BOX SIZING */
+/* COLUMNS */
+/* DOUBLE BORDERS */
+/* FLEX */
+/* FLIP */
+/* FONT FACE */
+/* OPACITY 
+@mixin opacity($opacity: 0.5) {
+    filter:         alpha(opacity=($opacity * 100));
+    -ms-filter:     "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ($opacity * 100) + ")";
+    -moz-opacity:   $opacity;
+    -khtml-opacity: $opacity;
+    opacity:        $opacity;
+}
+*/
+/* OUTLINE RADIUS */
+/* RESIZE */
+/* ROTATE*/
+/* TEXT SHADOW */
+/* TRANSFORM  */
+/* TRANSITION */
+/* TRIPLE BORDERS */
+/* line 7, ../sass/_mindmap.scss */
+.fuck {
+  background: red;
+  border: 10px solid blue;
+}
+
+/* line 12, ../sass/_mindmap.scss */
+.mindmap {
+  width: auto;
+  height: auto;
+  white-space: nowrap;
+}
+/* line 17, ../sass/_mindmap.scss */
+.mindmap .nano .content {
+  overflow-x: scroll;
+}
+/* line 21, ../sass/_mindmap.scss */
+.mindmap ul {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: middle;
+  list-style: none;
+}
+/* line 26, ../sass/_mindmap.scss */
+.mindmap ul li {
+  display: block;
+}
+/* line 28, ../sass/_mindmap.scss */
+.mindmap ul li .tree_tmpl {
+  display: inline-block;
+  vertical-align: baseline;
+  margin-right: 40px;
+  position: relative;
+  margin: 5px 0px;
+}
+/* line 34, ../sass/_mindmap.scss */
+.mindmap ul li .tree_tmpl .tree_wrap {
+  position: relative;
+  display: inline-block;
+  max-width: 200px;
+  min-width: 5em;
+  margin: 10px;
+}
+/* line 40, ../sass/_mindmap.scss */
+.mindmap ul li .tree_tmpl .tree_wrap .col1 {
+  position: absolute;
+  display: inline-block;
+  vertical-align: top;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 22px;
+  min-height: 22px;
+  text-align: center;
+}
+/* line 52, ../sass/_mindmap.scss */
+.mindmap ul li .tree_tmpl .tree_wrap.folder .is_folder {
+  background: #000;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+}
+/* line 59, ../sass/_mindmap.scss */
+.mindmap ul li .tree_tmpl .tree_wrap .col2 {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 22px;
+  min-height: 22px;
+  display: inline-block;
+  vertical-align: top;
+  width: 22px;
+  background: #dedede;
+  text-align: center;
+}
+/* line 71, ../sass/_mindmap.scss */
+.mindmap ul li .tree_tmpl .tree_wrap .col3 {
+  margin-left: 44px;
+  white-space: normal;
+  font-size: 12px;
+  vertical-align: top;
+  display: inline-block;
+  border-bottom: 1px solid #888;
+}
+
+/* line 58, ../sass/_main.scss */
 .wrapper_line {
   position: relative;
   white-space: nowrap;
 }
-/* line 59, ../sass/_main.scss */
+/* line 61, ../sass/_main.scss */
 .wrapper_line .box {
   display: inline-block;
   width: 30px;
   min-height: 30px;
 }
-/* line 64, ../sass/_main.scss */
+/* line 66, ../sass/_main.scss */
 .wrapper_line .box:before {
   content: '';
   position: absolute;
@@ -3035,13 +3333,13 @@ h10.open:before {
   top: 0px;
   background: green;
 }
-/* line 74, ../sass/_main.scss */
+/* line 76, ../sass/_main.scss */
 .wrapper_line .title_wrap {
   vertical-align: top;
   display: inline-block;
   line-height: 15px;
 }
-/* line 78, ../sass/_main.scss */
+/* line 80, ../sass/_main.scss */
 .wrapper_line .title_wrap .title {
   content: "";
   min-width: 60px;

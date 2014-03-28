@@ -7,7 +7,7 @@
 body, html {
     padding: 0px;
     margin: 0px;
-    font-size: 12px;
+    font-size: $tree_font_size;
 }
 
 body {
@@ -52,6 +52,8 @@ body {
 @import 'editor'; 
 
 @import 'one_task';
+
+@import 'mindmap';
 
 .wrapper_line {
     position: relative;

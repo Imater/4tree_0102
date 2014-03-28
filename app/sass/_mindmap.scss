@@ -1,0 +1,84 @@
+@charset "UTF-8";
+// Главное окно приложения
+
+@import 'mymixins';
+
+
+.fuck {
+  background: red;
+  border: 10px solid blue;
+}
+
+.mindmap {
+  width: auto;
+  height: auto;
+  white-space: nowrap;
+  .nano {
+    .content {
+      overflow-x: scroll;
+    }
+  }
+  ul {
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: middle;
+    list-style: none;
+    li {
+      display: block;
+      .tree_tmpl {
+        display: inline-block;
+        vertical-align: baseline;
+        margin-right: 40px;
+        position: relative;
+        margin: 5px 0px;
+        .tree_wrap {
+          position: relative;
+          display: inline-block;
+          max-width: 200px;
+          min-width: 5em;
+          margin: 10px;
+          .col1 {
+            position: absolute;
+            display: inline-block;
+            vertical-align: top;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: $tree_grid;
+            min-height: $tree_grid;
+            text-align: center;
+          }
+          &.folder {
+            .is_folder {
+              background: #000;
+              border-radius: 50%;
+              width: $tree_grid;
+              height: $tree_grid;
+            }
+          }
+          .col2 {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: $tree_grid;
+            min-height: $tree_grid;
+            display: inline-block;
+            vertical-align: top;
+            width: $tree_grid;
+            background: $light_gray;
+            text-align: center;
+          }
+          .col3 {
+            margin-left: $tree_grid * 2;
+            white-space: normal;
+            font-size: $tree_font_size;
+            vertical-align: top;
+            display: inline-block;
+            border-bottom: 1px solid #888;
+          }
+        }
+      }
+    }
+  }
+  
+}

@@ -137,7 +137,9 @@
             el.importance = el.importance ? el.importance : 50;
             el.tags = el.tags ? el.tags : [];
             el.counters = cnt;
-            el._open = false;
+            if (el.parent === '1') {
+              el._open = true;
+            }
             el.dates = {
               startDate: el.dates ? moment(el.dates.startDate) : "",
               endDate: el.dates ? moment(el.dates.endDate) : ""
@@ -156,11 +158,12 @@
             if (found) {
               found._childs = el.length;
             }
-            if (found && found._childs > 30) {
+            if (found && ((found._childs > 50 && found.parent !== '1') || found.id === '756')) {
               found._open = false;
             }
             return true;
           });
+          true;
           mymap = function(doc, emit) {
             if (doc.text && doc.text.indexOf('жопа') !== -1) {
               return emit(doc.date, doc.title, doc);

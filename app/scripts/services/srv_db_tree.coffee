@@ -64,7 +64,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       el.importance = if el.importance then el.importance else 50;
       el.tags = if el.tags then el.tags else [];
       el.counters = cnt;
-      el._open = false;
+      el._open = true if el.parent == '1';
       el.dates = {
         startDate: if el.dates then moment(el.dates.startDate) else ""
         endDate: if el.dates then moment(el.dates.endDate) else ""
@@ -76,8 +76,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       found = _.find mythis._db.tree, (e)->
         key == 'n' + e.id
       found._childs = el.length if found
-      found._open = false if found and found._childs > 30
-      return true
+      found._open = false if (found) and ((found._childs > 50 and found.parent != '1') or found.id == '756')
+      true
+    true
+        
 
     mymap = (doc, emit)->
       emit(doc.date, doc.title, doc) if doc.text and doc.text.indexOf('жопа')!=-1;
