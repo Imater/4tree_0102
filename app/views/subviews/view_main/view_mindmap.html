@@ -44,7 +44,7 @@
         <div class="col2" title="{{tree._childs}}">
           <i class="icon-heart-empty"></i>
         </div>
-        <div class="col3" ng-click="db.main_node = tree" plumb-connect="{{tree.parent}}">
+        <div class="col3" ng-click="db.main_node = tree" plumb-connect="{{tree.parent}}" id="col3_{{tree.id}}">
             <div class="title" contenteditable="true" ng-model="tree.title"></div>
         </div>
         

@@ -1,1 +1,65 @@
-Карточки
+<div class="p_inside_header2">
+
+    <div class="right_menu_button_w">
+        </i><i class="icon-th-list r_menu_button"></i>
+    </div>
+
+    <div ng-include="'views/subviews/view_tree_header.html'"></div>
+
+</div>
+
+<div class="p_inside_content cards vertical_scroll has_header" scrollable="{alwaysVisible:'true'}">
+
+    <div class="editor_content">
+
+
+        <div class="notselectable">
+            <ul>
+                <li class="tree2" ng-repeat="tree in fn.jsFindByParent(set.main_parent_id)">
+                    <div class="tree_tmpl" ng-include="'views/subviews/view_one_line_cards.html'"></div>
+                </li>
+            </ul>
+            <hr>
+            <ul>
+                {{fn.service.db_tree.getView('tree', 'by_date')}}
+                <hr>
+                <li ng-repeat="sync in fn.service.syncApi.sync_journal" style="padding:10px">
+                    {{sync}}
+                </li>
+            </ul>
+
+        </div>
+                            
+    </div>
+</div>
+
+
+
+<!-- Begin Templates -->
+<script type="text/ng-template" id="views/subviews/view_one_line_cards.html">
+    <div ng-controller="save_tree_db" class="tree_wrap" ng-class="{open:tree._open, folder:tree._childs, active:db.main_node.id==tree.id}" id="node_{{tree.id}}">
+      <div class="card_header">
+        <div class="col1">
+          <div class="is_folder" ng-click="tree._open=!tree._open"></div>
+        </div>
+        <div class="col2" title="{{tree._childs}}">
+          <i class="icon-heart-empty"></i>
+        </div>
+        <div class="col3" ng-click="db.main_node = tree" plumb-connect="{{tree.parent}}" id="col3_{{tree.id}}">
+            <div class="title" contenteditable="true" ng-model="tree.title"></div>
+        </div>
+      </div>
+      <div class="text_wrap">
+        <div class="col_text" contenteditable="true" ng-model="tree.text">
+        </div>
+      </div>
+    </div>
+
+    <ul ng-if="false&&tree._open&&tree._childs" jq-show-effect-off="tree._open" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
+        <li class="tree2" ng-repeat="tree in (all = fn.jsFindByParent(tree.id))" style="margin-left:{{margin_left}}px" ng-sex="{{margin_left = $index<(all.length/2)?$index*2:(all.length-$index)*2}}">
+            <div class="tree_tmpl" ng-include="'views/subviews/view_one_line_mindmap.html'"></div>
+        </li>
+    </ul>
+
+</script>
+<!-- End Templates -->

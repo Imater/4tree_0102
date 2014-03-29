@@ -1,0 +1,70 @@
+@charset "UTF-8";
+// Главное окно приложения
+
+@import 'mymixins';
+
+.cards {
+  background-image: url(../images/cork.jpg);
+  background-size: 200px 200px;
+  background-attachment: scroll;            
+  .tree2 {
+    display: inline-block;
+    vertical-align: top;
+    width: 300px;
+    background: #FFF;
+    margin: $grid;
+    @include box-shadow();
+    .card_header {
+      border-bottom: 1px solid $gray;
+      position: relative;
+      .col1 {
+        position: absolute;
+        display: inline-block;
+        vertical-align: top;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: $tree_grid;
+        min-height: $tree_grid;
+        text-align: center;      
+      }
+      .col2 {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: $tree_grid;
+        min-height: $tree_grid;
+        display: inline-block;
+        vertical-align: top;
+        width: $tree_grid;
+        text-align: center;      
+        i {
+          display: inline-block;
+          margin-top: 2px;
+        }
+      }  
+      .col3 {
+        margin-left: $tree_grid * 2;
+        white-space: normal;
+        font-size: $tree_font_size;
+        vertical-align: top;
+        display: inline-block;
+        .title {
+          margin-left: round($tree_grid/3);
+          padding-top: round($tree_grid/7);
+          padding-bottom: round($tree_grid/7);
+          padding-right: round($padding);
+          outline: none;
+        }        
+      }    
+    }
+    .col_text {
+      height: 150px;
+      overflow-y: auto;
+      padding: $padding;
+      img {
+        max-width: 100%;
+      }
+    }
+  }
+}

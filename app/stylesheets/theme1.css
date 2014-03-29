@@ -3239,38 +3239,43 @@ h10.open:before {
   white-space: nowrap;
   overflow: scroll;
 }
-/* line 19, ../sass/_mindmap.scss */
-.mindmap .nano .content .notselectable {
-  overflow-x: scroll;
-  background: url(../images/mindmap-cross.png);
+/* line 17, ../sass/_mindmap.scss */
+.mindmap .notselectable {
+  background-image: url(../images/mindmap-cross.png);
+  background-attachment: scroll;
 }
-/* line 26, ../sass/_mindmap.scss */
+/* line 23, ../sass/_mindmap.scss */
+.mindmap .nano .content .notselectable {
+  background: url(../images/mindmap-cross.png);
+  background-attachment: scroll;
+}
+/* line 30, ../sass/_mindmap.scss */
 .mindmap ul {
   display: inline-block;
   white-space: nowrap;
   vertical-align: middle;
   list-style: none;
 }
-/* line 31, ../sass/_mindmap.scss */
+/* line 35, ../sass/_mindmap.scss */
 .mindmap ul li {
   display: block;
+  position: relative;
 }
-/* line 33, ../sass/_mindmap.scss */
+/* line 38, ../sass/_mindmap.scss */
 .mindmap ul li .tree_tmpl {
   display: inline-block;
   vertical-align: baseline;
   margin-right: 10px;
-  position: relative;
   margin: 5px 0px;
 }
-/* line 39, ../sass/_mindmap.scss */
+/* line 44, ../sass/_mindmap.scss */
 .mindmap ul li .tree_tmpl .tree_wrap {
   position: relative;
   display: inline-block;
   max-width: 350px;
   margin: 10px;
 }
-/* line 44, ../sass/_mindmap.scss */
+/* line 49, ../sass/_mindmap.scss */
 .mindmap ul li .tree_tmpl .tree_wrap .col1 {
   position: absolute;
   display: inline-block;
@@ -3281,9 +3286,14 @@ h10.open:before {
   min-height: 22px;
   text-align: center;
 }
-/* line 55, ../sass/_mindmap.scss */
+/* line 60, ../sass/_mindmap.scss */
+.mindmap ul li .tree_tmpl .tree_wrap.folder .title {
+  font-weight: bold;
+}
+/* line 63, ../sass/_mindmap.scss */
 .mindmap ul li .tree_tmpl .tree_wrap.folder .is_folder {
-  background: #EEE;
+  background: #FFF;
+  cursor: pointer;
   border: 1px solid #888;
   border-radius: 50%;
   width: 17px;
@@ -3291,7 +3301,7 @@ h10.open:before {
   z-index: 1;
   position: relative;
 }
-/* line 63, ../sass/_mindmap.scss */
+/* line 72, ../sass/_mindmap.scss */
 .mindmap ul li .tree_tmpl .tree_wrap.folder .is_folder:before {
   position: absolute;
   right: 4px;
@@ -3300,7 +3310,7 @@ h10.open:before {
   content: "+";
   vertical-align: middle;
 }
-/* line 73, ../sass/_mindmap.scss */
+/* line 82, ../sass/_mindmap.scss */
 .mindmap ul li .tree_tmpl .tree_wrap .col2 {
   position: absolute;
   bottom: -3px;
@@ -3311,7 +3321,7 @@ h10.open:before {
   width: 22px;
   text-align: center;
 }
-/* line 84, ../sass/_mindmap.scss */
+/* line 93, ../sass/_mindmap.scss */
 .mindmap ul li .tree_tmpl .tree_wrap .col3 {
   margin-left: 52px;
   white-space: normal;
@@ -3321,24 +3331,167 @@ h10.open:before {
   border-bottom: 1px solid #888;
   margin-right: 22px;
 }
-/* line 91, ../sass/_mindmap.scss */
+/* line 100, ../sass/_mindmap.scss */
 .mindmap ul li .tree_tmpl .tree_wrap .col3 .title {
   margin: 0 24px;
   margin-left: 30px;
 }
 
-/* line 58, ../sass/_main.scss */
+/* -------------------------------------------------------------
+  Sass CSS3 Mixins! The Cross-Browser CSS3 Sass Library
+  By: Matthieu Aussaguel, http://www.mynameismatthieu.com, @matthieu_tweets
+
+  List of CSS3 Sass Mixins File to be @imported and @included as you need
+
+  The purpose of this library is to facilitate the use of CSS3 on different browsers avoiding HARD TO READ and NEVER
+  ENDING css files
+
+  note: All CSS3 Properties are being supported by Safari 5
+  more info: http://www.findmebyip.com/litmus/#css3-properties
+
+  Mixins available:
+    -   background-gradient     - arguments: Start Color: #3C3C3C, End Color: #999999
+    -   background-size         - arguments: Width: 100%, Height: 100%
+    -   border-radius           - arguments: Radius: 5px
+    -   border-radius-separate  - arguments: Top Left: 5px, Top Left: 5px, Bottom Left: 5px, Bottom Right: 5px
+    -   box                     - arguments: Orientation: horizontal, Pack: center, Align: center
+    -   box-rgba                - arguments: R: 60, G: 3, B: 12, Opacity: 0.23, Color: #3C3C3C
+    -   box-shadow              - arguments: X: 2px, Y: 2px, Blur: 5px, Color: rgba(0,0,0,.4)
+    -   box-sizing              - arguments: Type: border-box
+    -   columns                 - arguments: Count: 3, Gap: 10
+    -   double-borders          - arguments: Color One: #3C3C3C, Color Two: #999999, Radius: 0
+    -   flex                    - arguments: Value: 1
+    -   flip                    - arguments: ScaleX: -1
+    -   font-face               - arguments: Font Family: myFont, Eot File Src: myFont.eot, Woff File Src: myFont.woff, Ttf File Src: myFont.ttf
+    -   opacity                 - arguments: Opacity: 0.5
+    -   outline radius          - arguments: Radius: 5px
+    -   resize                  - arguments: Direction: both
+    -   rotate                  - arguments: Degree: 0, M11: 0, M12: 0, M21: 0, M22: 0
+    CSS Matrix Rotation Calculator http://www.boogdesign.com/examples/transforms/matrix-calculator.html
+    -   text-shadow             - arguments: X: 2px, Y: 2px, Blur: 5px, Color: rgba(0,0,0,.4)
+    -   transform               - arguments: Parameters: null
+    -   transition              - arguments: What: all, Length: 1s, Easing: ease-in-out
+    -   triple-borders          - arguments: Color One: #3C3C3C, Color Two: #999999, Color Three: #000000, Radius: 0
+
+------------------------------------------------------------- */
+/* BACKGROUND GRADIENT */
+/* BACKGROUND SIZE */
+/* BORDER RADIUS */
+/* BOX */
+/* BOX RGBA */
+/* BOX SHADOW */
+/* BOX SIZING */
+/* COLUMNS */
+/* DOUBLE BORDERS */
+/* FLEX */
+/* FLIP */
+/* FONT FACE */
+/* OPACITY 
+@mixin opacity($opacity: 0.5) {
+    filter:         alpha(opacity=($opacity * 100));
+    -ms-filter:     "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ($opacity * 100) + ")";
+    -moz-opacity:   $opacity;
+    -khtml-opacity: $opacity;
+    opacity:        $opacity;
+}
+*/
+/* OUTLINE RADIUS */
+/* RESIZE */
+/* ROTATE*/
+/* TEXT SHADOW */
+/* TRANSFORM  */
+/* TRANSITION */
+/* TRIPLE BORDERS */
+/* line 6, ../sass/_cards.scss */
+.cards {
+  background-image: url(../images/cork.jpg);
+  background-size: 200px 200px;
+  background-attachment: scroll;
+}
+/* line 10, ../sass/_cards.scss */
+.cards .tree2 {
+  display: inline-block;
+  vertical-align: top;
+  width: 300px;
+  background: #FFF;
+  margin: 25px;
+  -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+}
+/* line 17, ../sass/_cards.scss */
+.cards .tree2 .card_header {
+  border-bottom: 1px solid #cccccc;
+  position: relative;
+}
+/* line 20, ../sass/_cards.scss */
+.cards .tree2 .card_header .col1 {
+  position: absolute;
+  display: inline-block;
+  vertical-align: top;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 22px;
+  min-height: 22px;
+  text-align: center;
+}
+/* line 31, ../sass/_cards.scss */
+.cards .tree2 .card_header .col2 {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 22px;
+  min-height: 22px;
+  display: inline-block;
+  vertical-align: top;
+  width: 22px;
+  text-align: center;
+}
+/* line 41, ../sass/_cards.scss */
+.cards .tree2 .card_header .col2 i {
+  display: inline-block;
+  margin-top: 2px;
+}
+/* line 46, ../sass/_cards.scss */
+.cards .tree2 .card_header .col3 {
+  margin-left: 44px;
+  white-space: normal;
+  font-size: 12px;
+  vertical-align: top;
+  display: inline-block;
+}
+/* line 52, ../sass/_cards.scss */
+.cards .tree2 .card_header .col3 .title {
+  margin-left: 7px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-right: 8px;
+  outline: none;
+}
+/* line 61, ../sass/_cards.scss */
+.cards .tree2 .col_text {
+  height: 150px;
+  overflow-y: auto;
+  padding: 8px;
+}
+/* line 65, ../sass/_cards.scss */
+.cards .tree2 .col_text img {
+  max-width: 100%;
+}
+
+/* line 60, ../sass/_main.scss */
 .wrapper_line {
   position: relative;
   white-space: nowrap;
 }
-/* line 61, ../sass/_main.scss */
+/* line 63, ../sass/_main.scss */
 .wrapper_line .box {
   display: inline-block;
   width: 30px;
   min-height: 30px;
 }
-/* line 66, ../sass/_main.scss */
+/* line 68, ../sass/_main.scss */
 .wrapper_line .box:before {
   content: '';
   position: absolute;
@@ -3349,13 +3502,13 @@ h10.open:before {
   top: 0px;
   background: green;
 }
-/* line 76, ../sass/_main.scss */
+/* line 78, ../sass/_main.scss */
 .wrapper_line .title_wrap {
   vertical-align: top;
   display: inline-block;
   line-height: 15px;
 }
-/* line 80, ../sass/_main.scss */
+/* line 82, ../sass/_main.scss */
 .wrapper_line .title_wrap .title {
   content: "";
   min-width: 60px;

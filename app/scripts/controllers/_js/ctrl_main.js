@@ -19,7 +19,7 @@
           }, {
             active: 6
           }, {
-            active: 2
+            active: 1
           }, {
             active: 0
           }

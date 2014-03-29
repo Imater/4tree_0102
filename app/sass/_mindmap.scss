@@ -14,12 +14,16 @@
   height: auto;
   white-space: nowrap;
   overflow: scroll;
+  .notselectable {
+    background-image: url(../images/mindmap-cross.png);
+    background-attachment: scroll;            
+  }
   .nano {
     .content {
       .notselectable {
-        overflow-x: scroll;
+        //overflow-x: scroll;
         background: url(../images/mindmap-cross.png);
-        //background-attachment: scroll;        
+        background-attachment: scroll;        
       }
     }
   }
@@ -30,11 +34,12 @@
     list-style: none;
     li {
       display: block;
+      position: relative;
       .tree_tmpl {
         display: inline-block;
         vertical-align: baseline;
         margin-right: 10px;
-        position: relative;
+        //position: absolute;
         margin: 5px 0px;
         .tree_wrap {
           position: relative;
@@ -52,8 +57,12 @@
             text-align: center;
           }
           &.folder {
+            .title {
+              font-weight: bold;
+            }
             .is_folder {
-              background: #EEE;
+              background: #FFF;
+              cursor: pointer;
               border: 1px solid #888;
               border-radius: 50%;
               width: 17px;

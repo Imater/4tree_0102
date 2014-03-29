@@ -1,12 +1,28 @@
 suspend_timer_off = _.debounce ()->
   #jsPlumb.setSuspendDrawing(true, true);  
+  
+  _.each draw_functions_queue, (fn, i)->
+    fn.apply() if fn;
+    delete draw_functions_queue[i]
+  #draw_functions_queue = [];
   false
-, 3
+, 0
 
 suspend_timer_on = _.debounce ()->
-  #jsPlumb.setSuspendDrawing(false, true);  
+  #jsPlumb.setSuspendDrawing(false, true); 
   false
 , 120
+
+redraw_all_children = _.debounce (element)->
+  $(element).parents("li").each (i,el)->
+    found = $(el).find("._jsPlumb_endpoint_anchor_:first")
+    console.info "repaint = ", found[0].id
+    jsPlumb.repaint( found[0].id );
+, 2
+
+
+
+draw_functions_queue = {};
 
 angular.module("4treeApp").directive "plumbConnect", ($timeout)->
   replace: true
@@ -29,8 +45,15 @@ angular.module("4treeApp").directive "plumbConnect", ($timeout)->
     #jsPlumb.Defaults.Anchors = [[ 1, 1, 1, 0, -1, -1 ],[ 0, 1, -1, 0, 1, -1 ]]
     #jsPlumb.setSuspendDrawing(true, true);
 
+    scope.$watch 'tree.title', (new_value, old_value)->
+      if old_value != new_value
+        console.info 'title_changed'
+        redraw_all_children(element);
+        
+
     if parent_element.length and true
-      $timeout ()->
+      draw_functions_queue[attrs.id] = ()->
+        #console.info element.parent().attr("")
         jsPlumb.Defaults.Container = parent_element.parents("li:first")
         jsPlumb.connect {
           source: parent_element
@@ -41,14 +64,13 @@ angular.module("4treeApp").directive "plumbConnect", ($timeout)->
           }
           anchors: [[ 1, 1, 1, 0, -1, -1 ],[ 0, 1, -1, 0, 1, -1 ]]
         }
+        redraw_all_children(element);
         suspend_timer_on();
-      , 5
-
     
     element.on '$destroy', ()->
-      console.info 'destroy ' + attrs.id
       suspend_timer_off()
       jsPlumb.detachAllConnections(element);
+      redraw_all_children( $(element).parents("li:first").parents("li:first") );
       suspend_timer_on()
 
     return

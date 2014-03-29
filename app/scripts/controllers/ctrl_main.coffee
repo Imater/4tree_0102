@@ -15,7 +15,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     panel: [
       {active: 7} #0
       {active: 6} #1
-      {active: 2} #2
+      {active: 1} #2
       {active: 0} #3
     ]
     autosync_on: true
