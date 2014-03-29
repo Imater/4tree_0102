@@ -33,6 +33,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         mythis.refreshParentsIndex();
         $rootScope.$$childTail.db.main_node = _.find mythis._db.tree, (el)->
           el.id == 1034
+        $rootScope.$broadcast('tree_loaded');
         dfd.resolve(result.data);
   refreshParentsIndex: ()->
     mythis = @;

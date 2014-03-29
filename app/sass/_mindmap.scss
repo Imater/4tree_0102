@@ -13,9 +13,14 @@
   width: auto;
   height: auto;
   white-space: nowrap;
+  overflow: scroll;
   .nano {
     .content {
-      overflow-x: scroll;
+      .notselectable {
+        overflow-x: scroll;
+        background: url(../images/mindmap-cross.png);
+        //background-attachment: scroll;        
+      }
     }
   }
   ul {
@@ -28,53 +33,66 @@
       .tree_tmpl {
         display: inline-block;
         vertical-align: baseline;
-        margin-right: 40px;
+        margin-right: 10px;
         position: relative;
         margin: 5px 0px;
         .tree_wrap {
           position: relative;
           display: inline-block;
-          max-width: 200px;
-          min-width: 5em;
+          max-width: 350px;
           margin: 10px;
           .col1 {
             position: absolute;
             display: inline-block;
             vertical-align: top;
-            left: 0;
-            top: 0;
-            bottom: 0;
+            right: 3px;
+            bottom: -13px;
             width: $tree_grid;
             min-height: $tree_grid;
             text-align: center;
           }
           &.folder {
             .is_folder {
-              background: #000;
+              background: #EEE;
+              border: 1px solid #888;
               border-radius: 50%;
-              width: $tree_grid;
-              height: $tree_grid;
+              width: 17px;
+              height: 17px;
+              z-index: 1;
+              position: relative;
+              &:before {
+                position: absolute;
+                right: 4px;
+                top: -1px;
+                color: #888;
+                content: "+";
+                vertical-align: middle;
+              }
             }
           }
           .col2 {
             position: absolute;
-            top: 0;
-            bottom: 0;
-            left: $tree_grid;
+            bottom: -3px;
+            left: $tree_grid * 2 + $padding;
             min-height: $tree_grid;
             display: inline-block;
             vertical-align: top;
             width: $tree_grid;
-            background: $light_gray;
+            //background: $light_gray;
             text-align: center;
           }
           .col3 {
-            margin-left: $tree_grid * 2;
+            margin-left: $tree_grid * 2 + $padding;
             white-space: normal;
             font-size: $tree_font_size;
             vertical-align: top;
             display: inline-block;
             border-bottom: 1px solid #888;
+            .title {
+              margin: 0 $padding*3;
+              margin-left: $tree_grid + $padding;
+            }
+            margin-right: $tree_grid;
           }
         }
       }

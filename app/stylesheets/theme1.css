@@ -3237,78 +3237,94 @@ h10.open:before {
   width: auto;
   height: auto;
   white-space: nowrap;
+  overflow: scroll;
 }
-/* line 17, ../sass/_mindmap.scss */
-.mindmap .nano .content {
+/* line 19, ../sass/_mindmap.scss */
+.mindmap .nano .content .notselectable {
   overflow-x: scroll;
+  background: url(../images/mindmap-cross.png);
 }
-/* line 21, ../sass/_mindmap.scss */
+/* line 26, ../sass/_mindmap.scss */
 .mindmap ul {
   display: inline-block;
   white-space: nowrap;
   vertical-align: middle;
   list-style: none;
 }
-/* line 26, ../sass/_mindmap.scss */
+/* line 31, ../sass/_mindmap.scss */
 .mindmap ul li {
   display: block;
 }
-/* line 28, ../sass/_mindmap.scss */
+/* line 33, ../sass/_mindmap.scss */
 .mindmap ul li .tree_tmpl {
   display: inline-block;
   vertical-align: baseline;
-  margin-right: 40px;
+  margin-right: 10px;
   position: relative;
   margin: 5px 0px;
 }
-/* line 34, ../sass/_mindmap.scss */
+/* line 39, ../sass/_mindmap.scss */
 .mindmap ul li .tree_tmpl .tree_wrap {
   position: relative;
   display: inline-block;
-  max-width: 200px;
-  min-width: 5em;
+  max-width: 350px;
   margin: 10px;
 }
-/* line 40, ../sass/_mindmap.scss */
+/* line 44, ../sass/_mindmap.scss */
 .mindmap ul li .tree_tmpl .tree_wrap .col1 {
   position: absolute;
   display: inline-block;
   vertical-align: top;
-  left: 0;
-  top: 0;
-  bottom: 0;
+  right: 3px;
+  bottom: -13px;
   width: 22px;
   min-height: 22px;
   text-align: center;
 }
-/* line 52, ../sass/_mindmap.scss */
+/* line 55, ../sass/_mindmap.scss */
 .mindmap ul li .tree_tmpl .tree_wrap.folder .is_folder {
-  background: #000;
+  background: #EEE;
+  border: 1px solid #888;
   border-radius: 50%;
-  width: 22px;
-  height: 22px;
+  width: 17px;
+  height: 17px;
+  z-index: 1;
+  position: relative;
 }
-/* line 59, ../sass/_mindmap.scss */
+/* line 63, ../sass/_mindmap.scss */
+.mindmap ul li .tree_tmpl .tree_wrap.folder .is_folder:before {
+  position: absolute;
+  right: 4px;
+  top: -1px;
+  color: #888;
+  content: "+";
+  vertical-align: middle;
+}
+/* line 73, ../sass/_mindmap.scss */
 .mindmap ul li .tree_tmpl .tree_wrap .col2 {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 22px;
+  bottom: -3px;
+  left: 52px;
   min-height: 22px;
   display: inline-block;
   vertical-align: top;
   width: 22px;
-  background: #dedede;
   text-align: center;
 }
-/* line 71, ../sass/_mindmap.scss */
+/* line 84, ../sass/_mindmap.scss */
 .mindmap ul li .tree_tmpl .tree_wrap .col3 {
-  margin-left: 44px;
+  margin-left: 52px;
   white-space: normal;
   font-size: 12px;
   vertical-align: top;
   display: inline-block;
   border-bottom: 1px solid #888;
+  margin-right: 22px;
+}
+/* line 91, ../sass/_mindmap.scss */
+.mindmap ul li .tree_tmpl .tree_wrap .col3 .title {
+  margin: 0 24px;
+  margin-left: 30px;
 }
 
 /* line 58, ../sass/_main.scss */

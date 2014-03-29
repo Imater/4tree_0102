@@ -2,7 +2,7 @@
 (function() {
   "use strict";
   angular.module("4treeApp").controller("MainCtrl", [
-    '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q) {
+    '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope) {
       var set_pomidors;
       $scope.set = {
         header_panel_opened: false,
@@ -17,7 +17,7 @@
           {
             active: 7
           }, {
-            active: 0
+            active: 6
           }, {
             active: 2
           }, {
@@ -427,6 +427,44 @@
       $scope.db.tasks = db_tasks.getTasks();
       db_tree.getTreeFromNet().then(function() {
         return $scope.set.main_parent = db_tree.jsFindByParent(1);
+      });
+      $rootScope.$on('tree_loaded2', function() {
+        return $timeout(function() {
+          var element, endpointOptions1, endpointOptions2, parent_element;
+          jsPlumb.Defaults.Container = $("body");
+          parent_element = $("#node_2138").find(".col3:first");
+          element = $("#node_2144").find(".col3:first");
+          parent_element.css('border', '2px solid red');
+          element.css('border', '2px solid green');
+          endpointOptions1 = {
+            isTarget: true,
+            maxConnections: 5,
+            endpoint: "Rectangle",
+            paintStyle: {
+              fillStyle: "gray"
+            }
+          };
+          endpointOptions2 = {
+            isTarget: false,
+            maxConnections: 5,
+            endpoint: "Rectangle",
+            paintStyle: {
+              fillStyle: "gray"
+            }
+          };
+          jsPlumb.makeSource(element, endpointOptions1);
+          jsPlumb.makeTarget(parent_element, endpointOptions2);
+          return jsPlumb.connect({
+            source: element,
+            target: parent_element,
+            Container: $("body"),
+            paintStyle: {
+              lineWidth: 1,
+              strokeStyle: "#888"
+            },
+            anchors: ["Right", "Top"]
+          });
+        }, 10);
       });
       $scope.db.tree_path = db_tree.jsGetPath(1);
       $scope.fn.setCalendarBox();

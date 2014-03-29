@@ -58,6 +58,7 @@
               $rootScope.$$childTail.db.main_node = _.find(mythis._db.tree, function(el) {
                 return el.id === 1034;
               });
+              $rootScope.$broadcast('tree_loaded');
               return dfd.resolve(result.data);
             });
           });
