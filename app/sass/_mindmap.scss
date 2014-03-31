@@ -14,18 +14,16 @@
   height: auto;
   white-space: nowrap;
   overflow: scroll;
+  .editor_content {
+    padding-right: 50px;
+    display: block;
+  }
   .notselectable {
     background-image: url(../images/mindmap-cross.png);
     background-attachment: scroll;            
-  }
-  .nano {
-    .content {
-      .notselectable {
-        //overflow-x: scroll;
-        background: url(../images/mindmap-cross.png);
-        background-attachment: scroll;        
-      }
-    }
+    background-size: 50px 50px;
+    min-width: 3000px;
+    padding-right: 50px;
   }
   ul {
     display: inline-block;

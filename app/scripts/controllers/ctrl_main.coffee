@@ -13,9 +13,9 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     show_right_menu: true
     calendar_box_template: 'views/subviews/view_calendar_box.html'
     panel: [
-      {active: 7} #0
-      {active: 6} #1
-      {active: 1} #2
+      {active: 7} #0  
+      {active: 1} #1   0-дерево 1-карточки 2-mindmap 3-divider 4-календарь 5-редактор 6-none
+      {active: 4} #2
       {active: 0} #3
     ]
     autosync_on: true

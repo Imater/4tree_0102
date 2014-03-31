@@ -52,7 +52,7 @@
 
 
 
-		<h10 ng-click="set.mini_tasks_show = !set.mini_tasks_show" ng-class="{open:set.mini_tasks_show}">Дела (<span ng-if="count">{{db.main_node.id}} 1 из </span>{{(fn.service.db_tasks.getTasksByTreeId(db.main_node.id)).length}})</h10>
+		<h10 ng-click="set.mini_tasks_show = !set.mini_tasks_show" ng-class="{open:set.mini_tasks_show}">Дела (<span ng-if="count">{{db.main_node.id}} 1 из </span>{{(fn.service.db_tree.getTasksByTreeId(db.main_node.id)).length}})</h10>
 		<div class="note_mini_settings">
 			<div ng-include="'views/subviews/ms/ms_tasks.html'"></div>
 		</div>

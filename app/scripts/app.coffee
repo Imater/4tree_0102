@@ -11,7 +11,7 @@ angular.module("4treeApp", [
   "sun.scrollable"
   "sf.virtualScroll"  
   "angular-redactor"
-  "ngAnimate"
+  #"ngAnimate"
   "ui-rangeSlider"
   "$strap"
   "ngBootstrap"

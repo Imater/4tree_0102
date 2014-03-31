@@ -1,10 +1,14 @@
 suspend_timer_off = _.debounce ()->
-  #jsPlumb.setSuspendDrawing(true, true);  
-  
+  fn_count = Object.keys(draw_functions_queue).length
+  if fn_count > 20
+    jsPlumb.setSuspendDrawing(true, true);  
+  console.info 'Length', fn_count;
   _.each draw_functions_queue, (fn, i)->
     fn.apply() if fn;
     delete draw_functions_queue[i]
   #draw_functions_queue = [];
+  if fn_count > 20
+    jsPlumb.setSuspendDrawing(false, true);  
   false
 , 0
 
@@ -14,7 +18,7 @@ suspend_timer_on = _.debounce ()->
 , 120
 
 redraw_all_children = _.debounce (element)->
-  $(element).parents("li").each (i,el)->
+  (element).parents("li").each (i,el)->
     found = $(el).find("._jsPlumb_endpoint_anchor_:first")
     console.info "repaint = ", found[0].id
     jsPlumb.repaint( found[0].id );
@@ -33,7 +37,7 @@ angular.module("4treeApp").directive "plumbConnect", ($timeout)->
     parent_element = $(element).parents("li:first").parents("li:first").find('.col3')
     suspend_timer_off();
 
-    jsPlumb.Defaults.Container = $(".mindmap .content")
+    #jsPlumb.Defaults.Container = $(".mindmap .content")
     jsPlumb.Defaults.DragOptions = { cursor: 'pointer', zIndex: 2000 }
     jsPlumb.Defaults.PaintStyle = { 
         lineWidth:1, 
@@ -49,12 +53,12 @@ angular.module("4treeApp").directive "plumbConnect", ($timeout)->
       if old_value != new_value
         console.info 'title_changed'
         redraw_all_children(element);
-        
+
 
     if parent_element.length and true
-      draw_functions_queue[attrs.id] = ()->
+      draw_functions_queue[attrs.id+Math.random()*200] = ()->
         #console.info element.parent().attr("")
-        jsPlumb.Defaults.Container = parent_element.parents("li:first")
+        jsPlumb.Defaults.Container = $(parent_element).parents("li:first")
         jsPlumb.connect {
           source: parent_element
           target: element
@@ -62,6 +66,7 @@ angular.module("4treeApp").directive "plumbConnect", ($timeout)->
             lineWidth:1, 
             strokeStyle:"#888"
           }
+          #label: "Hello"
           anchors: [[ 1, 1, 1, 0, -1, -1 ],[ 0, 1, -1, 0, 1, -1 ]]
         }
         redraw_all_children(element);

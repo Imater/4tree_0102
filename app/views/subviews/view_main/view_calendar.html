@@ -1,1 +1,9 @@
-Календарь
+<ol>
+  <li ng-repeat="(key, day_element) in fn.service.db_tree.getView('tasks', 'tasks_by_date').result">
+    <h2>{{key}}</h2>
+    <ol>
+      <li ng-repeat="day in day_element">{{day.title}}</li>
+    </ol>
+  </li>
+</ol>
+

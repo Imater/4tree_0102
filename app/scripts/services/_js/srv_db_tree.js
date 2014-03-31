@@ -13,6 +13,7 @@
         },
         constructor: function($timeout) {
           this.$timeout = $timeout;
+          this.loadTasks();
           if (!this._cache) {
             this._cache = {};
           }
@@ -64,7 +65,7 @@
           });
         },
         refreshParentsIndex: function() {
-          var mymap, mythis;
+          var mymap, mymap_calendar, myreduce_calendar, mythis;
           mythis = this;
           mythis.db_parents = {};
           _.each(this._db.tree, function(el) {
@@ -135,6 +136,9 @@
                 ]
               }
             ];
+            if (el.id) {
+              el._path = mythis.jsGetPath(el.id);
+            }
             el.importance = el.importance ? el.importance : 50;
             el.tags = el.tags ? el.tags : [];
             el.counters = cnt;
@@ -170,7 +174,25 @@
               return emit(doc.date, doc.title, doc);
             }
           };
-          return this.newView('tree', 'by_date', mymap);
+          this.newView('tree', 'by_date', mymap);
+          mymap_calendar = function(doc, emit) {
+            if (doc.date2) {
+              return emit(doc.date2, doc, doc);
+            }
+          };
+          myreduce_calendar = function(memo, values) {
+            var key;
+            key = values.key;
+            key = moment(values.key);
+            key = key.format("YYYY-MM-DD");
+            if (!memo[key]) {
+              memo[key] = [];
+            }
+            if (values.value) {
+              return memo[key].push(values.value);
+            }
+          };
+          return this.newView('tasks', 'tasks_by_date', mymap_calendar, myreduce_calendar);
         },
         getTree: function(args) {
           return this._db.tree;
@@ -329,11 +351,22 @@
             return el.parent === args;
           });
         },
+        first_element: {
+          title: '4tree',
+          parent_id: '0',
+          _path: ['1']
+        },
         'jsFind': _.memoize(function(id) {
           var tree_by_id;
+          if (id === 1) {
+            return this.first_element;
+          }
           tree_by_id = _.find(this._db.tree, function(el) {
             return el.id === id;
           });
+          if (id === '1') {
+            console.info("!!!", tree_by_id);
+          }
           if (tree_by_id) {
             return tree_by_id;
           }
@@ -345,9 +378,10 @@
           while ((el = this.jsFind(id)) && (prevent_recursive--)) {
             id = el.parent;
             if ((typeof el !== "undefined" && el !== null ? el.parent : void 0) >= 0) {
-              path.push(el);
+              path.push(el.id);
             }
           }
+          path.push("1");
           return path.reverse();
         }),
         jsView: function() {
@@ -443,7 +477,126 @@
               return view.invalid.push(id);
             });
           });
-        }
+        },
+        loadTasks: function() {
+          return this._db.tasks = [
+            {
+              id: 0,
+              tree_id: '1034',
+              date1: new Date(2014, 4, 11),
+              date2: new Date(2014, 4, 11),
+              title: 'Записаться в бассейн, это очень важно и нужно это сделать очень срочно, потомучто плавать это круто и всем нравится и это очень даже прикольно'
+            }, {
+              id: 1,
+              tree_id: '1034',
+              date1: new Date(2014, 2, 3),
+              date2: new Date(2014, 2, 3),
+              title: 'Начало сериала на ТНТ про дружбу народов',
+              did: new Date()
+            }, {
+              id: 2,
+              tree_id: '1034',
+              date1: new Date(2013, 2, 3),
+              date2: new Date(2014, 2, 3),
+              title: 'Как жизнь? написать письмо',
+              did: new Date()
+            }, {
+              id: 3,
+              tree_id: '1034',
+              date1: new Date(2014, 2, 2),
+              date2: new Date(2014, 2, 2),
+              title: 'Урал край голубых озёр - написать статью'
+            }, {
+              id: 4,
+              tree_id: '1034',
+              date1: new Date(new Date().getTime() - 1000 * 60 * 220),
+              date2: new Date(2014, 2, 3),
+              title: 'Двадцать минут назад я тут был :)'
+            }, {
+              id: 5,
+              tree_id: '1034',
+              date1: '',
+              date2: new Date(2014, 2, 3),
+              title: 'Как жизнь? написать письмо'
+            }, {
+              id: 8,
+              tree_id: '1034',
+              date1: '',
+              date2: new Date(2014, 2, 3),
+              title: 'Нужно купить Мартини'
+            }, {
+              id: 6,
+              tree_id: '1034',
+              date1: new Date(new Date().getTime() + 1000 * 60 * 20),
+              date2: new Date(new Date().getTime() + 1000 * 60 * 20),
+              title: 'Через 20 минут выходим'
+            }, {
+              id: -1,
+              tree_id: '2138',
+              date1: new Date(2014, 2, 1),
+              date2: new Date(2014, 2, 1),
+              title: 'Очень важное дело, которое нужно сделать сегодня'
+            }
+          ];
+        },
+        clearCache: function() {
+          return _.each(this, function(fn) {
+            if (fn) {
+              return fn.cache = {};
+            }
+          });
+        },
+        getTasks: function() {
+          return this._db.tasks;
+        },
+        getTasksByTreeId: _.memoize(function(tree_id, only_next) {
+          var answer, answer1;
+          answer = _.filter(this._db.tasks, function(el) {
+            console.info('? = ', el.tree_id);
+            return el.tree_id === tree_id;
+          });
+          answer = _.sortBy(answer, function(el) {
+            return el.date1;
+          });
+          console.info("ANSWER = ", answer, tree_id);
+          if (only_next === true) {
+            answer1 = _.find(answer, function(el) {
+              return el.date1 && !el.did;
+            });
+            if (!answer1) {
+              answer1 = _.find(answer, function(el) {
+                return !el.did;
+              });
+            }
+            if (answer1) {
+              answer = [answer1];
+            } else {
+              answer = void 0;
+            }
+          } else {
+            answer = _.sortBy(answer, function(el) {
+              var res;
+              if (el.date1) {
+                res = -el.date1.getTime();
+                res = res + 100000000000000;
+              } else {
+                res = new Date().getTime();
+                res = res + 200000000000000;
+              }
+              if (el.did) {
+                res = res + 500000000000000;
+              }
+              return res;
+            });
+          }
+          if (answer) {
+            return answer;
+          } else {
+            return [];
+          }
+        }, function(tree_id, only_next) {
+          return tree_id + only_next;
+        })
       };
     }
   ]);

@@ -1,4 +1,4 @@
-<div class="p_inside_header2">
+<div class="p_inside_header2" ng-init="set.main_parent_id = '1'">
 
     <div class="right_menu_button_w">
         </i><i class="icon-th-list r_menu_button"></i>
@@ -13,25 +13,28 @@
     <div class="editor_content">
 
 
-        <div class="notselectable">
-            <ul>
-                <li class="tree2" ng-repeat="tree in fn.jsFindByParent(set.main_parent_id)">
+        <div class="notselectable" ng-if="trees = fn.jsFindByParent(set.main_parent_id)">
+            <div class="path_element" ng-repeat="path in pt = fn.service.db_tree.jsFind(set.main_parent_id)._path">
+
+              <ol class="path_ul">
+                <li ng-repeat="path_element in fn.jsFindByParent(path)" ng-class="{active:(selected = pt.indexOf(path_element.id)!=-1)};" ng-click="set.main_parent_id = path_element.id; db.main_node = path_element;" ng-if="path_element._childs>0">
+                  <div class="title" ng-bind="path_element.title"></div>
+                </li>
+              </ol>
+
+            </div>
+
+
+            <ul class="tree_ul">
+                <li class="tree2" ng-repeat="tree in trees" ng-click="db.main_node = tree;">
                     <div class="tree_tmpl" ng-include="'views/subviews/view_one_line_cards.html'"></div>
                 </li>
             </ul>
-            <hr>
-            <ul>
-                {{fn.service.db_tree.getView('tree', 'by_date')}}
-                <hr>
-                <li ng-repeat="sync in fn.service.syncApi.sync_journal" style="padding:10px">
-                    {{sync}}
-                </li>
-            </ul>
-
         </div>
                             
     </div>
 </div>
+
 
 
 
@@ -42,10 +45,10 @@
         <div class="col1">
           <div class="is_folder" ng-click="tree._open=!tree._open"></div>
         </div>
-        <div class="col2" title="{{tree._childs}}">
+        <div class="col2" title="{{tree._childs}}" ng-click="set.main_parent_id = tree.id">
           <i class="icon-heart-empty"></i>
         </div>
-        <div class="col3" ng-click="db.main_node = tree" plumb-connect="{{tree.parent}}" id="col3_{{tree.id}}">
+        <div class="col3" ng-click="db.main_node = tree" id="col3_{{tree.id}}">
             <div class="title" contenteditable="true" ng-model="tree.title"></div>
         </div>
       </div>
@@ -53,13 +56,8 @@
         <div class="col_text" contenteditable="true" ng-model="tree.text">
         </div>
       </div>
+      {{tree._path}}
     </div>
-
-    <ul ng-if="false&&tree._open&&tree._childs" jq-show-effect-off="tree._open" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
-        <li class="tree2" ng-repeat="tree in (all = fn.jsFindByParent(tree.id))" style="margin-left:{{margin_left}}px" ng-sex="{{margin_left = $index<(all.length/2)?$index*2:(all.length-$index)*2}}">
-            <div class="tree_tmpl" ng-include="'views/subviews/view_one_line_mindmap.html'"></div>
-        </li>
-    </ul>
 
 </script>
 <!-- End Templates -->

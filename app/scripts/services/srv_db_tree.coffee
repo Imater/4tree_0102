@@ -6,6 +6,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   pepper: ()->
     ' primarily of sodium chloride (NaCl)'
   constructor: (@$timeout) -> 
+    @loadTasks();
     if(!@_cache)
       @_cache = {}
     if(!@_db.tree)
@@ -62,6 +63,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           {d: '2013-03-12', cnt: 21}
         ]}
       ]
+      el._path = mythis.jsGetPath(el.id) if el.id
       el.importance = if el.importance then el.importance else 50;
       el.tags = if el.tags then el.tags else [];
       el.counters = cnt;
@@ -86,6 +88,19 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       emit(doc.date, doc.title, doc) if doc.text and doc.text.indexOf('жопа')!=-1;
 
     @newView('tree', 'by_date', mymap);
+
+    mymap_calendar = (doc, emit)->
+      emit(doc.date2, doc, doc) if doc.date2;
+
+    myreduce_calendar = (memo, values)->
+      key = values.key; 
+      key = moment(values.key);
+      key = key.format("YYYY-MM-DD")
+      memo[key] = [] if !memo[key]
+      memo[key].push(values.value) if values.value
+
+
+    @newView('tasks', 'tasks_by_date', mymap_calendar, myreduce_calendar)
 
   getTree: (args) ->
     @_db.tree
@@ -129,16 +144,24 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   jsFindByParentTags: (args) ->
     _.filter @tree_tags, (el)->
       el.parent == args
+  first_element: {
+    title: '4tree'
+    parent_id: '0'
+    _path: ['1']
+  }
   'jsFind': _.memoize (id)->
+    return @first_element if id == 1
     tree_by_id = _.find @_db.tree, (el)->
       el.id == id
+    console.info "!!!", (tree_by_id) if id == '1'
     tree_by_id if tree_by_id
   'jsGetPath': _.memoize (id) ->
     path = [];
     prevent_recursive = 5000;
     while (el = @jsFind(id)) and (prevent_recursive--)
       id = el.parent
-      path.push(el) if el?.parent >= 0;
+      path.push(el.id) if el?.parent >= 0;
+    path.push("1");
     path.reverse();
   jsView: ()->
     @_cache
@@ -210,6 +233,120 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     _.each ids, (id)->
       _.each mythis._cache[db_name].views, (view)->
         view.invalid.push( id )
+########################## T A S K S ########################
+  loadTasks: ()->
+    @_db.tasks = [
+      { 
+      id: 0, 
+      tree_id: '1034', 
+      date1: new Date(2014,4,11), 
+      date2: new Date(2014,4,11), 
+      title: 'Записаться в бассейн, это очень важно и нужно это сделать очень срочно, потомучто плавать это круто и всем нравится и это очень даже прикольно' 
+      }
+
+      { 
+      id: 1, 
+      tree_id: '1034', 
+      date1: new Date(2014,2,3), 
+      date2: new Date(2014,2,3), 
+      title: 'Начало сериала на ТНТ про дружбу народов' 
+      did: new Date();
+      }
+
+      { 
+      id: 2, 
+      tree_id: '1034', 
+      date1: new Date(2013,2,3), 
+      date2: new Date(2014,2,3), 
+      title: 'Как жизнь? написать письмо' 
+      did: new Date();
+      }
+
+      { 
+      id: 3, 
+      tree_id: '1034', 
+      date1: new Date(2014,2,2), 
+      date2: new Date(2014,2,2), 
+      title: 'Урал край голубых озёр - написать статью' 
+      #did: new Date();
+      }
+
+      { 
+      id: 4, 
+      tree_id: '1034', 
+      date1: new Date( new Date().getTime()-1000*60*220 ), 
+      date2: new Date(2014,2,3), 
+      title: 'Двадцать минут назад я тут был :)' 
+      }
+
+      { 
+      id: 5, 
+      tree_id: '1034', 
+      date1: '', 
+      date2: new Date(2014,2,3), 
+      title: 'Как жизнь? написать письмо' 
+      }
+      { 
+      id: 8, 
+      tree_id: '1034', 
+      date1: '', 
+      date2: new Date(2014,2,3), 
+      title: 'Нужно купить Мартини' 
+      }
+
+      { 
+      id: 6, 
+      tree_id: '1034', 
+      date1: new Date( new Date().getTime()+1000*60*20 ), 
+      date2: new Date( new Date().getTime()+1000*60*20 ), 
+      title: 'Через 20 минут выходим' 
+      }
+
+      { 
+      id: -1, 
+      tree_id: '2138', 
+      date1: new Date(2014,2,1), 
+      date2: new Date(2014,2,1), 
+      title: 'Очень важное дело, которое нужно сделать сегодня' 
+      }
+    ]
+  clearCache: ()->
+    _.each @, (fn)->
+      fn.cache = {} if fn
+  getTasks: ()->
+    @_db.tasks;
+  getTasksByTreeId: _.memoize (tree_id, only_next)->
+    answer = _.filter @_db.tasks, (el)->
+      console.info '? = ', el.tree_id
+      el.tree_id == tree_id 
+    answer = _.sortBy answer, (el)-> el.date1
+    console.info "ANSWER = ", answer, tree_id;
+
+    if only_next == true 
+      answer1 = _.find answer, (el)-> el.date1 && !el.did;
+      if !answer1
+        answer1 = _.find answer, (el)-> !el.did
+      if answer1
+        answer = [ answer1 ];
+      else
+        answer = undefined;
+    else
+      answer = _.sortBy answer, (el)-> 
+        if el.date1
+          res = -el.date1.getTime();
+          res = res + 100000000000000 
+        else
+          res = new Date().getTime();
+          res = res + 200000000000000 
+
+        if el.did
+          res = res + 500000000000000 
+
+        res
+
+    if answer then answer else []
+  , (tree_id, only_next)->
+    tree_id+only_next
 
 
 ]

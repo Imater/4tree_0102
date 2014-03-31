@@ -17,9 +17,9 @@
           {
             active: 7
           }, {
-            active: 6
-          }, {
             active: 1
+          }, {
+            active: 4
           }, {
             active: 0
           }

@@ -3,12 +3,21 @@
   var draw_functions_queue, redraw_all_children, suspend_timer_off, suspend_timer_on;
 
   suspend_timer_off = _.debounce(function() {
+    var fn_count;
+    fn_count = Object.keys(draw_functions_queue).length;
+    if (fn_count > 20) {
+      jsPlumb.setSuspendDrawing(true, true);
+    }
+    console.info('Length', fn_count);
     _.each(draw_functions_queue, function(fn, i) {
       if (fn) {
         fn.apply();
       }
       return delete draw_functions_queue[i];
     });
+    if (fn_count > 20) {
+      jsPlumb.setSuspendDrawing(false, true);
+    }
     return false;
   }, 0);
 
@@ -17,7 +26,7 @@
   }, 120);
 
   redraw_all_children = _.debounce(function(element) {
-    return $(element).parents("li").each(function(i, el) {
+    return element.parents("li").each(function(i, el) {
       var found;
       found = $(el).find("._jsPlumb_endpoint_anchor_:first");
       console.info("repaint = ", found[0].id);
@@ -35,7 +44,6 @@
         var parent_element;
         parent_element = $(element).parents("li:first").parents("li:first").find('.col3');
         suspend_timer_off();
-        jsPlumb.Defaults.Container = $(".mindmap .content");
         jsPlumb.Defaults.DragOptions = {
           cursor: 'pointer',
           zIndex: 2000
@@ -64,8 +72,8 @@
           }
         });
         if (parent_element.length && true) {
-          draw_functions_queue[attrs.id] = function() {
-            jsPlumb.Defaults.Container = parent_element.parents("li:first");
+          draw_functions_queue[attrs.id + Math.random() * 200] = function() {
+            jsPlumb.Defaults.Container = $(parent_element).parents("li:first");
             jsPlumb.connect({
               source: parent_element,
               target: element,

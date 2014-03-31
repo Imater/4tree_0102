@@ -26,4 +26,4 @@ angular.module("4treeApp").directive "contenteditable", ->
       scope.$apply readViewText
 
     element.on '$destroy', ()->
-      element.unbind('blur keyup change')
+      #element.unbind('blur keyup change')

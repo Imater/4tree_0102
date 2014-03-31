@@ -23,9 +23,7 @@
         element.on("blur keyup change", function() {
           return scope.$apply(readViewText);
         });
-        return element.on('$destroy', function() {
-          return element.unbind('blur keyup change');
-        });
+        return element.on('$destroy', function() {});
       }
     };
   });
