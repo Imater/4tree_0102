@@ -1,0 +1,50 @@
+@charset "UTF-8";
+//Квадратики календаря
+
+@import 'mymixins';
+
+.big_calendar
+{
+  ul {
+    list-style: none;
+  }
+  .day_li {
+    height: auto;
+    min-height: $grid*2 + $padding;
+    position: relative;
+    .calendar_box_wrap {
+      height: auto !important;
+    }
+    .col1 {
+      height: auto;
+      text-align: center;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: $grid * 2;
+      .calendar_box {
+        height: auto;
+      }
+      .box_month {
+        bottom: auto;
+        top: $grid+$padding + round($padding/2);
+      }
+    }
+    .col2 {
+
+    }
+    .col3 {
+      margin-left: $grid*2 + $padding;
+      padding: $padding;
+      ol {
+        list-style: none;
+        padding: $padding;
+        li {
+          padding: $grid;
+        }
+      }
+
+    }
+  }
+}

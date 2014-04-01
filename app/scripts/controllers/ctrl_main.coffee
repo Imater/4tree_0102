@@ -136,6 +136,8 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       '@Вецель'
       '@когда-нибудь'
     ]
+    scrollTop: ()->
+      $('#p_right_wrap .content').scrollTop(50000);
     jsCopyClipboard: (value)->
       value
     jsCopyClipboardConfirm: (value)->

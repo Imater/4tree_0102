@@ -136,6 +136,9 @@
           return dates.startDate + dates.endDate;
         }),
         tags: ['@gtd', '@срочно', '@завтра', '@быстро', '@на сайт', '@общее', '@Вецель', '@когда-нибудь'],
+        scrollTop: function() {
+          return $('#p_right_wrap .content').scrollTop(50000);
+        },
         jsCopyClipboard: function(value) {
           return value;
         },

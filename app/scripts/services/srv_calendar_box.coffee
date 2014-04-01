@@ -1,4 +1,7 @@
-angular.module("4treeApp").service 'calendarBox', ['$translate', ($translate) ->
+angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', ($translate, db_tree) ->
+  _calendar_container: [1..5000]
+  datasource: ()->
+    [1..5000]
   constructor: (@$timeout) -> 
     @color = 'grey'
   getDate: (args) ->
@@ -59,6 +62,8 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', ($translate) ->
     @current_month = (new Date()).getMonth() if (!@current_month);
     day = date.getDate().toString();
     month1 = date.getMonth();
+    year = date.getFullYear().toString();
+    fulldate = date;
     week_day = $translate( 'WEEKDAY.'+(date.getDay() ) )
     month = $translate( 'MONTH.'+(month1+1 ) )
     myclass = 'week_'+(date.getDay());
@@ -66,10 +71,33 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', ($translate) ->
     add = 1 if (@current_month%2)
     myclass += " odd_month" if ((month1 + add)%2) 
     myclass += " this_month" if month1 == @current_month;
-    answer = {day: day, month: month, week_day: week_day, myclass: myclass}
+    answer = {day, month, year, week_day, myclass, fulldate}
   getDays: 
     _.memoize (date, only_days)->
       @jsDateDiff(date, only_days)
     , (date, only_days) -> 
       (date + parseInt( new Date().getTime()/1000/120 ) + only_days )
+  getCalendarForIndex: _.memoize ($index)->
+    date = new Date( new Date().getTime() + ($index-3)*24*60*60*1000 );
+    element = @getDateBox(date);
+    key = moment(element.fulldate).format('YYYY-MM-DD');
+    element.tasks = db_tree.getView('tasks', 'tasks_by_date').result[key]
+    element
 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

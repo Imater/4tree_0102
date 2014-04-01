@@ -50,7 +50,7 @@ angular.module("4treeApp").service 'oAuth2Api', ['$q', '$http', ($q, $http) ->
 
     console.info "REFRESH TOKEN = ", refresh_token
     $http({
-      url: 'oauth/token'
+      url: '/oauth/token'
       method: "POST"
       isArray: true
       #dataType: 'json'
@@ -74,7 +74,7 @@ angular.module("4treeApp").service 'oAuth2Api', ['$q', '$http', ($q, $http) ->
     dfd = $q.defer();
 
     $http({
-      url: 'oauth/token'
+      url: '/oauth/token'
       method: "POST"
       isArray: true
       #dataType: 'json'

@@ -32,33 +32,37 @@
     font-weight: 300;
     cursor: pointer;
     @include animate_me(background, 0.1s);
+    border-bottom: 1px solid rgba(255,255,255,0.7);
     &.weekend {
       background: lighten($main_color, 35%);
       color: lighten($main_color, 0%);
     }
     &.week_0 {
-      opacity: 0.55;      
+//      opacity: 0.55;      
+      background: lighten($main_color, 40%);
     }
     &.week_1 {
-      opacity: 0.97;
+//      opacity: 0.97;
     }
     &.week_2 {
-      opacity: 0.9;
+//      opacity: 0.9;
     }
     &.week_3 {
-      opacity: 0.84;      
+//      opacity: 0.84;      
     }
     &.week_4 {
-      opacity: 0.76;      
+//      opacity: 0.76;      
     }
     &.week_5 {
-      opacity: 0.69;      
+//      opacity: 0.69;      
     }
     &.week_6 {
-      opacity: 0.62;      
+      background: lighten($main_color, 40%);
+
+//      opacity: 0.62;      
     }
     &.week_7 {
-      opacity: 0.55;      
+//      opacity: 0.55;      
     }
 
     &:hover {

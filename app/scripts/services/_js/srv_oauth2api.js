@@ -60,7 +60,7 @@
           dfd = $q.defer();
           console.info("REFRESH TOKEN = ", refresh_token);
           $http({
-            url: 'oauth/token',
+            url: '/oauth/token',
             method: "POST",
             isArray: true,
             headers: {
@@ -82,7 +82,7 @@
           var dfd;
           dfd = $q.defer();
           $http({
-            url: 'oauth/token',
+            url: '/oauth/token',
             method: "POST",
             isArray: true,
             headers: {

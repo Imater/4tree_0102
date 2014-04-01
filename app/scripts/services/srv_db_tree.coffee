@@ -1,3 +1,12 @@
+angular.module("4treeApp").factory 'datasource', ['$timeout', ($timeout)->
+  get: (index, count, success)->
+    console.info "COUNT = ", count
+    result = []
+    for i in [index..index + count-1]
+      result.push "item ##{i}"
+    success(result)
+]
+
 angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$rootScope', 'oAuth2Api', ($translate, $http, $q, $rootScope, oAuth2Api) ->
   _db: {}
   _cache: {}
@@ -239,16 +248,16 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       { 
       id: 0, 
       tree_id: '1034', 
-      date1: new Date(2014,4,11), 
-      date2: new Date(2014,4,11), 
+      date1: new Date(2014,2,31), 
+      date2: new Date(2014,2,31, 8, 30), 
       title: 'Записаться в бассейн, это очень важно и нужно это сделать очень срочно, потомучто плавать это круто и всем нравится и это очень даже прикольно' 
       }
 
       { 
       id: 1, 
       tree_id: '1034', 
-      date1: new Date(2014,2,3), 
-      date2: new Date(2014,2,3), 
+      date1: new Date(2014,3,4, 12, 30, 0), 
+      date2: new Date(2014,3,4, 10, 30, 0), 
       title: 'Начало сериала на ТНТ про дружбу народов' 
       did: new Date();
       }
@@ -257,7 +266,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       id: 2, 
       tree_id: '1034', 
       date1: new Date(2013,2,3), 
-      date2: new Date(2014,2,3), 
+      date2: new Date(2014,3,4, 17, 30, 0), 
       title: 'Как жизнь? написать письмо' 
       did: new Date();
       }
@@ -265,8 +274,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       { 
       id: 3, 
       tree_id: '1034', 
-      date1: new Date(2014,2,2), 
-      date2: new Date(2014,2,2), 
+      date1: new Date(2014,1,4, 12, 30, 0), 
+      date2: new Date(2014,3,2, 18, 30, 0), 
       title: 'Урал край голубых озёр - написать статью' 
       #did: new Date();
       }
@@ -275,7 +284,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       id: 4, 
       tree_id: '1034', 
       date1: new Date( new Date().getTime()-1000*60*220 ), 
-      date2: new Date(2014,2,3), 
+      date2: new Date( new Date().getTime()-1000*60*220 ), 
       title: 'Двадцать минут назад я тут был :)' 
       }
 
@@ -283,14 +292,14 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       id: 5, 
       tree_id: '1034', 
       date1: '', 
-      date2: new Date(2014,2,3), 
+      date2: new Date(2014,3,8, 12, 30, 0), 
       title: 'Как жизнь? написать письмо' 
       }
       { 
       id: 8, 
       tree_id: '1034', 
       date1: '', 
-      date2: new Date(2014,2,3), 
+      date2: new Date(2014,3,8, 12, 30, 0), 
       title: 'Нужно купить Мартини' 
       }
 
@@ -305,8 +314,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       { 
       id: -1, 
       tree_id: '2138', 
-      date1: new Date(2014,2,1), 
-      date2: new Date(2014,2,1), 
+      date1: new Date(2014,2,29), 
+      date2: new Date(2014,2,29, 14,20), 
       title: 'Очень важное дело, которое нужно сделать сегодня' 
       }
     ]

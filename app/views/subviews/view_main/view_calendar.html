@@ -1,9 +1,38 @@
-<ol>
-  <li ng-repeat="(key, day_element) in fn.service.db_tree.getView('tasks', 'tasks_by_date').result">
-    <h2>{{key}}</h2>
-    <ol>
-      <li ng-repeat="day in day_element">{{day.title}}</li>
-    </ol>
-  </li>
-</ol>
+<div class="p_inside_header2">
+    <a class="btn btn-default" ng-click="fn.scrollTop()">ScrollTop</a>
+    <div class="right_menu_button_w">
+        </i><i class="icon-th-list r_menu_button"></i>
+    </div>
 
+    <div ng-include="'views/subviews/view_tree_header.html'"></div>
+
+
+</div>
+
+<div class="p_inside_content big_calendar vertical_scroll has_header" scrollable2="{alwaysVisible:'true'}" ng-scroll-viewport>
+
+    <div class="editor_content">
+      <ul>
+        <li class="day_li" ng-scroll="note in datasource" buffer-size="30" padding="0.3">
+          <div class="day_wrap calendar_box_wrap" ng-if="day = fn.service.calendarBox.getCalendarForIndex($index)">
+            <div class="col1 calendar_box" ng-class="day.myclass">
+              <div class="box_week_day">{{day.week_day}}</div>
+              <div class="box_day">{{day.day}}</div>
+              {{day.year}}
+              <div class="box_month">{{day.month}}</div>
+              
+            </div>
+            <div class="col2"></div>
+            <div class="col3">
+              <ol>
+                <li ng-repeat="task in day.tasks">
+                  {{task.title}}
+                </li>
+              </ol>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+</div>
