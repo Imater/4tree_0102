@@ -66,14 +66,14 @@
               url: '/api/v2/tree',
               method: "GET",
               params: {
-                user_id: 12,
+                user_id: '5330ff92898a2b63c2f7095f',
                 access_token: access_token
               }
             }).then(function(result) {
               mythis._db.tree = result.data;
               mythis.refreshParentsIndex();
               $rootScope.$$childTail.db.main_node = _.find(mythis._db.tree, function(el) {
-                return el.id === 1034;
+                return el._id === 1034;
               });
               $rootScope.$broadcast('tree_loaded');
               return dfd.resolve(result.data);
@@ -152,20 +152,23 @@
                 ]
               }
             ];
-            if (el.id) {
-              el._path = mythis.jsGetPath(el.id);
+            if (el._id) {
+              el._path = mythis.jsGetPath(el._id);
             }
             el.importance = el.importance ? el.importance : 50;
             el.tags = el.tags ? el.tags : [];
             el.counters = cnt;
-            if (el.parent === '1') {
+            if (el.parent_id === '1') {
               el._open = true;
             }
             el.dates = {
               startDate: el.dates ? moment(el.dates.startDate) : "",
               endDate: el.dates ? moment(el.dates.endDate) : ""
             };
-            parent = 'n' + el.parent;
+            parent = 'n' + el.parent_id;
+            if (el.folder === 'main') {
+              $rootScope.$$childTail.set.main_parent_id = el._id;
+            }
             if (!mythis.db_parents[parent]) {
               mythis.db_parents[parent] = [];
             }
@@ -174,12 +177,12 @@
           _.each(mythis.db_parents, function(el, key) {
             var found;
             found = _.find(mythis._db.tree, function(e) {
-              return key === 'n' + e.id;
+              return key === 'n' + e._id;
             });
             if (found) {
               found._childs = el.length;
             }
-            if (found && ((found._childs > 50 && found.parent !== '1') || found.id === '756')) {
+            if (found && ((found._childs > 50 && found.parent_id !== '1') || found._id === '756')) {
               found._open = false;
             }
             return true;
@@ -359,15 +362,15 @@
         ],
         jsFindByParentWeb: function(args) {
           return _.filter(this.web_tags, function(el) {
-            return el.parent === args;
+            return el.parent_id === args;
           });
         },
         jsFindByParentTags: function(args) {
           return _.filter(this.tree_tags, function(el) {
-            return el.parent === args;
+            return el.parent_id === args;
           });
         },
-        first_element: {
+        'first_element': {
           title: '4tree',
           parent_id: '0',
           _path: ['1']
@@ -378,7 +381,7 @@
             return this.first_element;
           }
           tree_by_id = _.find(this._db.tree, function(el) {
-            return el.id === id;
+            return el._id === id;
           });
           if (id === '1') {
             console.info("!!!", tree_by_id);
@@ -392,12 +395,13 @@
           path = [];
           prevent_recursive = 5000;
           while ((el = this.jsFind(id)) && (prevent_recursive--)) {
-            id = el.parent;
-            if ((typeof el !== "undefined" && el !== null ? el.parent : void 0) >= 0) {
-              path.push(el.id);
+            id = el.parent_id;
+            if (el.parent_id) {
+              path.push(el._id);
             }
           }
-          path.push("1");
+          path.push($rootScope.$$childTail.set.main_parent_id);
+          console.info("Path", id, path);
           return path.reverse();
         }),
         jsView: function() {
@@ -441,11 +445,11 @@
           if (view_invalid) {
             myrows = [
               _.find(this._db[db_name], function(el) {
-                return view_invalid.indexOf(el.id) !== -1;
+                return view_invalid.indexOf(el._id) !== -1;
               })
             ];
             view.rows = _.filter(view.rows, function(el) {
-              return view_invalid.indexOf(el.id) === -1;
+              return view_invalid.indexOf(el._id) === -1;
             });
           } else {
             myrows = this._db[db_name];
@@ -456,7 +460,7 @@
               view.rows = [];
             }
             view.rows.push({
-              id: doc.id,
+              id: doc._id,
               key: key,
               value: value
             });

@@ -6,16 +6,16 @@ require '../../models/_js/model_tree.js'
 Tree = mongoose.model('Tree');
 
 exports.get = (req, res)->
-  user_id = parseInt(req.query.user_id)
+  user_id = req.query.user_id
   async.waterfall [
 
     (callback)->
+      console.info "USER_ID = ", user_id
       Tree.find {'user_id':user_id, 'del':0}, (err, rows)->
         async.eachLimit rows, 50, (row, callback)->
           row._open = false;
           row._settings = false;
           row.title = strip_tags(row.title) if row.title
-          row._text = strip_tags(row.text).substr(0,200)
           callback null;
         , (err)->
           callback err, rows

@@ -2,9 +2,25 @@
 //Квадратики календаря
 
 @import 'mymixins';
+.fast_year_select {
+  margin-top: $padding;
+  ul {
+    text-align: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li {
+      display: inline-block;
+      padding: 0 round($padding/1.5);
+      color: $main_color;
+      cursor: pointer;
+    }    
+  }
+}
 
 .big_calendar
 {
+  top: $grid*3 !important;
   ul {
     list-style: none;
   }
@@ -26,10 +42,6 @@
       .calendar_box {
         height: auto;
       }
-      .box_month {
-        bottom: auto;
-        top: $grid+$padding + round($padding/2);
-      }
     }
     .col2 {
 
@@ -41,7 +53,10 @@
         list-style: none;
         padding: $padding;
         li {
-          padding: $grid;
+          padding: $padding;
+        }
+        .add_task {
+          color: $light_gray;
         }
       }
 

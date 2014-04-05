@@ -1,4 +1,4 @@
-angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', ($translate, db_tree) ->
+angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', '$rootScope', ($translate, db_tree, $rootScope) ->
   _calendar_container: [1..5000]
   datasource: ()->
     [1..5000]
@@ -62,27 +62,36 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', ($tr
     @current_month = (new Date()).getMonth() if (!@current_month);
     day = date.getDate().toString();
     month1 = date.getMonth();
-    year = date.getFullYear().toString();
+    year = date.getFullYear().toString().substr(2,4);
     fulldate = date;
     week_day = $translate( 'WEEKDAY.'+(date.getDay() ) )
     month = $translate( 'MONTH.'+(month1+1 ) )
     myclass = 'week_'+(date.getDay());
-    myclass = "today" if date.toString() == new Date().toString()
+    myclass += " past" if date < new Date()
+    myclass += " today" if date.toString() == new Date().toString()
     add = 1 if (@current_month%2)
-    myclass += " odd_month" if ((month1 + add)%2) 
-    myclass += " this_month" if month1 == @current_month;
+    #myclass += " odd_month" if ((month1 + add)%2) 
+    #myclass += " this_month" if month1 == @current_month;
     answer = {day, month, year, week_day, myclass, fulldate}
   getDays: 
     _.memoize (date, only_days)->
       @jsDateDiff(date, only_days)
     , (date, only_days) -> 
       (date + parseInt( new Date().getTime()/1000/120 ) + only_days )
-  getCalendarForIndex: _.memoize ($index)->
+  getCalendarForIndex: ($index)->
+    $index = $index + $rootScope.$$childHead.set.from_today_index
     date = new Date( new Date().getTime() + ($index-3)*24*60*60*1000 );
     element = @getDateBox(date);
     key = moment(element.fulldate).format('YYYY-MM-DD');
     element.tasks = db_tree.getView('tasks', 'tasks_by_date').result[key]
+    _.each element.tasks, (task)->
+      tm = moment(task.date2).format('HH:MM')
+      task.time = tm;
+    element.tasks = _.sortBy element.tasks, (task)->
+      task.time;
     element
+  #, ($index) ->
+  #  $rootScope.$$childHead.set.from_today_index+$index
 ]
 
 

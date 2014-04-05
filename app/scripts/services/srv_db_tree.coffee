@@ -35,14 +35,14 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         url: '/api/v2/tree',
         method: "GET",
         params: {
-          user_id: 12
+          user_id: '5330ff92898a2b63c2f7095f'
           access_token: access_token
         }
       }).then (result)->
         mythis._db.tree = result.data;
         mythis.refreshParentsIndex();
         $rootScope.$$childTail.db.main_node = _.find mythis._db.tree, (el)->
-          el.id == 1034
+          el._id == 1034
         $rootScope.$broadcast('tree_loaded');
         dfd.resolve(result.data);
   refreshParentsIndex: ()->
@@ -72,23 +72,25 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           {d: '2013-03-12', cnt: 21}
         ]}
       ]
-      el._path = mythis.jsGetPath(el.id) if el.id
+      el._path = mythis.jsGetPath(el._id) if el._id
       el.importance = if el.importance then el.importance else 50;
       el.tags = if el.tags then el.tags else [];
       el.counters = cnt;
-      el._open = true if el.parent == '1';
+      el._open = true if el.parent_id == '1';
       el.dates = {
         startDate: if el.dates then moment(el.dates.startDate) else ""
         endDate: if el.dates then moment(el.dates.endDate) else ""
       }
-      parent = 'n' + el.parent
+      parent = 'n' + el.parent_id
+      $rootScope.$$childTail.set.main_parent_id = el._id if el.folder == 'main'
+
       mythis.db_parents[parent] = [] if !mythis.db_parents[parent];
       mythis.db_parents[parent].push( el ); 
     _.each mythis.db_parents, (el, key)->
       found = _.find mythis._db.tree, (e)->
-        key == 'n' + e.id
+        key == 'n' + e._id
       found._childs = el.length if found
-      found._open = false if (found) and ((found._childs > 50 and found.parent != '1') or found.id == '756')
+      found._open = false if (found) and ((found._childs > 50 and found.parent_id != '1') or found._id == '756')
       true
     true
         
@@ -149,11 +151,11 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   ]
   jsFindByParentWeb: (args) ->
     _.filter @web_tags, (el)->
-      el.parent == args
+      el.parent_id == args
   jsFindByParentTags: (args) ->
     _.filter @tree_tags, (el)->
-      el.parent == args
-  first_element: {
+      el.parent_id == args
+  'first_element': {
     title: '4tree'
     parent_id: '0'
     _path: ['1']
@@ -161,16 +163,17 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   'jsFind': _.memoize (id)->
     return @first_element if id == 1
     tree_by_id = _.find @_db.tree, (el)->
-      el.id == id
+      el._id == id
     console.info "!!!", (tree_by_id) if id == '1'
     tree_by_id if tree_by_id
   'jsGetPath': _.memoize (id) ->
     path = [];
     prevent_recursive = 5000;
     while (el = @jsFind(id)) and (prevent_recursive--)
-      id = el.parent
-      path.push(el.id) if el?.parent >= 0;
-    path.push("1");
+      id = el.parent_id
+      path.push(el._id) if el.parent_id;
+    path.push( $rootScope.$$childTail.set.main_parent_id );
+    console.info "Path", id, path
     path.reverse();
   jsView: ()->
     @_cache
@@ -209,10 +212,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
     if view_invalid
       myrows = [ _.find @_db[db_name], (el)->
-        view_invalid.indexOf(el.id) != -1
+        view_invalid.indexOf(el._id) != -1
       ]
       view.rows = _.filter view.rows, (el)->
-        view_invalid.indexOf(el.id) == -1
+        view_invalid.indexOf(el._id) == -1
     else 
       myrows = @_db[db_name]
 
@@ -220,7 +223,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
     emit = (key, value, doc)->
       view.rows = [] if !view.rows
-      view.rows.push( {id:doc.id, key, value} )
+      view.rows.push( {id:doc._id, key, value} )
       view['reduce'](memo, {key, value}) if !view_invalid and view['reduce']
 
     _.each myrows, (doc, key)->

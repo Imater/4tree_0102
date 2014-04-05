@@ -12,9 +12,10 @@
 
   exports.get = function(req, res) {
     var user_id;
-    user_id = parseInt(req.query.user_id);
+    user_id = req.query.user_id;
     return async.waterfall([
       function(callback) {
+        console.info("USER_ID = ", user_id);
         return Tree.find({
           'user_id': user_id,
           'del': 0
@@ -25,7 +26,6 @@
             if (row.title) {
               row.title = strip_tags(row.title);
             }
-            row._text = strip_tags(row.text).substr(0, 200);
             return callback(null);
           }, function(err) {
             callback(err, rows);

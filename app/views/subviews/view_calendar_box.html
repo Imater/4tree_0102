@@ -1,11 +1,16 @@
 <div class="p_inside_content vertical_scroll" scrollable="{alwaysVisible:'true'}">
     <!-- Линия с календарем -->
     <div id="calendar_box_line" class="calendar_box_line1" ng-if="set.p_right_side_open" scrollpane="calendar_box_line1">
-        <div class="calendar_box_wrap" sf-virtual-repeat="box in db.calendar_boxes">
-            <div class="calendar_box {{box.myclass}}" ng-click="fn.calendar_box_click($index)" ng-class="{active:(db.box_active == $index)}">
+        <div class="calendar_box_wrap" ng-scroll="box in datasource">
+            <div class="calendar_box {{box.myclass}}" ng-click="fn.calendar_box_click($index)" ng-class="{active:(db.box_active == $index)}" ng-if="box = fn.service.calendarBox.getCalendarForIndex($index)">
                 <div bindonce bo-text="box.week_day" class="box_week_day"></div>
                 <div bindonce bo-text="box.day" class="box_day"></div>
-                <div bindonce bo-text="box.month" class="box_month"></div>
+                <div bindonce class="box_month">{{box.month}}.{{box.year}}</div>
+                <div class="minitasks_ol">
+                    <div class="time_element" ng-repeat="task in box.tasks" title="{{task.title}}">
+                      {{task.time}}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

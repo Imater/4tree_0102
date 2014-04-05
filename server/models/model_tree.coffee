@@ -1,12 +1,14 @@
 mongoose = require("mongoose")
-treeSchema = new mongoose.Schema(
+Schema = mongoose.Schema
+treeSchema = new Schema (
   'id': String
   'title': String
   'text': String
-  'parent_id': String
+  'folder': String
+  'parent_id': Schema.ObjectId
   'parent': String
   'pos': { type: Number, default: 0 }
-  'user_id': Number
+  'user_id': Schema.ObjectId
   'add_tm': Date
   'icon': String
   'del': { type: Number, default: 0 }

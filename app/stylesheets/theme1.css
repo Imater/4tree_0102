@@ -1345,18 +1345,16 @@ h10.open:before {
 
 /* line 18, ../sass/_calendar_boxes.scss */
 .calendar_box_wrap {
-  height: 50px;
+  min-height: 50px;
 }
 /* line 21, ../sass/_calendar_boxes.scss */
 .calendar_box_wrap .calendar_box {
   position: relative;
   display: inline-block;
-  height: 50px;
   width: 50px;
-  line-height: 50px;
   text-align: center;
   background: #c7f1b3;
-  color: #2f6913;
+  color: #555;
   font-family: "Ubuntu", Verdana;
   font-weight: 300;
   cursor: pointer;
@@ -1364,72 +1362,67 @@ h10.open:before {
   -o-transition: background 0.1s ease-out;
   -moz-transition: background 0.1s ease-out;
   transition: background 0.1s ease-out;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid #FFF;
 }
-/* line 36, ../sass/_calendar_boxes.scss */
+/* line 34, ../sass/_calendar_boxes.scss */
 .calendar_box_wrap .calendar_box.weekend {
   background: #7edf4f;
   color: #2f6913;
 }
-/* line 40, ../sass/_calendar_boxes.scss */
+/* line 38, ../sass/_calendar_boxes.scss */
 .calendar_box_wrap .calendar_box.week_0 {
   background: #8ee365;
 }
-/* line 59, ../sass/_calendar_boxes.scss */
+/* line 57, ../sass/_calendar_boxes.scss */
 .calendar_box_wrap .calendar_box.week_6 {
   background: #8ee365;
 }
-/* line 71, ../sass/_calendar_boxes.scss */
+/* line 69, ../sass/_calendar_boxes.scss */
 .calendar_box_wrap .calendar_box.odd_month {
   background: #ddd3ff;
 }
-/* line 74, ../sass/_calendar_boxes.scss */
+/* line 72, ../sass/_calendar_boxes.scss */
 .calendar_box_wrap .calendar_box.active {
-  background: #FFF;
-  opacity: 1;
+  background: #FFF !important;
 }
-/* line 79, ../sass/_calendar_boxes.scss */
-.calendar_box_wrap .calendar_box.today {
-  color: #7edf4f;
-  background: #2f6913;
-  opacity: 1 !important;
-}
-/* line 83, ../sass/_calendar_boxes.scss */
-.calendar_box_wrap .calendar_box.today.active {
-  background: #FFF;
-  color: #000;
+/* line 76, ../sass/_calendar_boxes.scss */
+.calendar_box_wrap .calendar_box.past {
+  background: #dedede;
 }
 /* line 86, ../sass/_calendar_boxes.scss */
-.calendar_box_wrap .calendar_box.today.active .box_day {
-  font-weight: bold;
+.calendar_box_wrap .calendar_box.past.week_0, .calendar_box_wrap .calendar_box.past.week_6 {
+  background: #cccccc !important;
+}
+/* line 90, ../sass/_calendar_boxes.scss */
+.calendar_box_wrap .calendar_box.today {
+  color: #000;
+  background: #ffe892;
 }
 /* line 93, ../sass/_calendar_boxes.scss */
+.calendar_box_wrap .calendar_box.today .time_element {
+  color: #000 !important;
+  border: 1px solid rgba(0, 0, 0, 0.5) !important;
+}
+/* line 103, ../sass/_calendar_boxes.scss */
 .calendar_box_wrap .calendar_box .box_week_day {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
   vertical-align: top;
-  line-height: 15.625px;
+  padding-top: 0px;
   font-size: 10px;
 }
-/* line 102, ../sass/_calendar_boxes.scss */
+/* line 108, ../sass/_calendar_boxes.scss */
 .calendar_box_wrap .calendar_box .box_month {
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
   vertical-align: top;
-  line-height: 16.66667px;
   font-size: 10px;
+  padding-bottom: 2px;
 }
-/* line 111, ../sass/_calendar_boxes.scss */
+/* line 113, ../sass/_calendar_boxes.scss */
 .calendar_box_wrap .calendar_box .box_day {
-  font-size: 23.75px;
+  font-size: 20px;
+  line-height: 22.5px;
   vertical-align: middle;
   cursor: pointer;
 }
-/* line 116, ../sass/_calendar_boxes.scss */
+/* line 119, ../sass/_calendar_boxes.scss */
 .calendar_box_wrap .calendar_box .box_stat {
   display: none;
   color: #CCC;
@@ -1439,6 +1432,22 @@ h10.open:before {
   left: 0px;
   right: 0px;
   bottom: -1.3em;
+}
+/* line 129, ../sass/_calendar_boxes.scss */
+.calendar_box_wrap .calendar_box .minitasks_ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* line 133, ../sass/_calendar_boxes.scss */
+.calendar_box_wrap .calendar_box .minitasks_ol .time_element {
+  line-height: 18px;
+  font-size: 0.9em;
+  color: #444;
+  border-radius: 3px;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  background: rgba(128, 128, 128, 0.2);
+  margin: 16px 5px;
 }
 
 /* -------------------------------------------------------------
@@ -1858,19 +1867,23 @@ h10.open:before {
 .main_tree ul .tree2 .tree_wrap.folder .col3 .title {
   font-weight: bold;
 }
-/* line 131, ../sass/_tree_one_line.scss */
+/* line 128, ../sass/_tree_one_line.scss */
+.main_tree ul .tree2 .tree_wrap.folder .col3 .title .cnt {
+  font-weight: normal;
+}
+/* line 134, ../sass/_tree_one_line.scss */
 .main_tree ul .tree2 .tree_wrap.active {
   background: rgba(217, 245, 207, 0.95);
 }
-/* line 134, ../sass/_tree_one_line.scss */
+/* line 137, ../sass/_tree_one_line.scss */
 .main_tree ul .tree2 .tree_wrap.open > .col2 {
   border-bottom-left-radius: 4px;
 }
-/* line 138, ../sass/_tree_one_line.scss */
+/* line 141, ../sass/_tree_one_line.scss */
 .main_tree ul .tree2 .tree_wrap.open .is_folder:after {
   content: '\25be' !important;
 }
-/* line 142, ../sass/_tree_one_line.scss */
+/* line 145, ../sass/_tree_one_line.scss */
 .main_tree ul .tree2 .tree_wrap .col2 {
   position: absolute;
   top: 0;
@@ -1883,18 +1896,18 @@ h10.open:before {
   background: #dedede;
   text-align: center;
 }
-/* line 153, ../sass/_tree_one_line.scss */
+/* line 156, ../sass/_tree_one_line.scss */
 .main_tree ul .tree2 .tree_wrap .col2 i {
   color: gray;
   font-size: 12px;
   margin-top: 4px;
   display: inline-block;
 }
-/* line 159, ../sass/_tree_one_line.scss */
+/* line 162, ../sass/_tree_one_line.scss */
 .main_tree ul .tree2 .tree_wrap .col2 i:before {
   margin: 0 !important;
 }
-/* line 163, ../sass/_tree_one_line.scss */
+/* line 166, ../sass/_tree_one_line.scss */
 .main_tree ul .tree2 .tree_wrap .col3 {
   margin-left: 44px;
   white-space: normal;
@@ -1902,7 +1915,7 @@ h10.open:before {
   vertical-align: top;
   display: inline-block;
 }
-/* line 169, ../sass/_tree_one_line.scss */
+/* line 172, ../sass/_tree_one_line.scss */
 .main_tree ul .tree2 .tree_wrap .col3 .title {
   margin-left: 7px;
   padding-top: 3px;
@@ -1910,17 +1923,17 @@ h10.open:before {
   padding-right: 8px;
   outline: none;
 }
-/* line 184, ../sass/_tree_one_line.scss */
+/* line 187, ../sass/_tree_one_line.scss */
 .main_tree .tree_line.active .h_line {
   background: #bbeaaa;
   color: #000;
 }
-/* line 187, ../sass/_tree_one_line.scss */
+/* line 190, ../sass/_tree_one_line.scss */
 .main_tree .tree_line.active .h_line .btn_menu {
   display: block;
   color: #265e12;
 }
-/* line 194, ../sass/_tree_one_line.scss */
+/* line 197, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line {
   cursor: pointer;
   position: relative;
@@ -1928,7 +1941,7 @@ h10.open:before {
   height: 25px;
   line-height: 25px;
 }
-/* line 200, ../sass/_tree_one_line.scss */
+/* line 203, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .is_folder {
   background: #FFF;
   vertical-align: top;
@@ -1938,15 +1951,15 @@ h10.open:before {
   text-align: center;
   color: #cccccc;
 }
-/* line 211, ../sass/_tree_one_line.scss */
+/* line 214, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .is_folder.folder {
   cursor: pointer;
 }
-/* line 213, ../sass/_tree_one_line.scss */
+/* line 216, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .is_folder.folder:hover {
   color: #2f6913;
 }
-/* line 216, ../sass/_tree_one_line.scss */
+/* line 219, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .is_folder.folder:after {
   display: inline-block;
   content: '\25b8';
@@ -1956,11 +1969,11 @@ h10.open:before {
   line-height: 25px;
   vertical-align: top;
 }
-/* line 226, ../sass/_tree_one_line.scss */
+/* line 229, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .is_folder.folder.open:after {
   content: '\25be';
 }
-/* line 231, ../sass/_tree_one_line.scss */
+/* line 234, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .box {
   display: inline-block;
   position: relative;
@@ -1971,19 +1984,19 @@ h10.open:before {
   cursor: pointer;
   color: #8ee365;
 }
-/* line 240, ../sass/_tree_one_line.scss */
+/* line 243, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .box i {
   font-size: 12.5px;
 }
-/* line 242, ../sass/_tree_one_line.scss */
+/* line 245, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .box i:before, .main_tree .tree_line .h_line .box i:after {
   margin: 0px !important;
 }
-/* line 246, ../sass/_tree_one_line.scss */
+/* line 249, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .box:hover {
   color: #FFF;
 }
-/* line 249, ../sass/_tree_one_line.scss */
+/* line 252, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .box .childs {
   color: #000;
   opacity: 0.6;
@@ -1994,14 +2007,14 @@ h10.open:before {
   bottom: 3px;
   line-height: 7.14286px;
 }
-/* line 260, ../sass/_tree_one_line.scss */
+/* line 263, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .tree_icon {
   display: inline;
   color: #cccccc;
   opacity: 0.3;
   margin-left: 2.5px;
 }
-/* line 266, ../sass/_tree_one_line.scss */
+/* line 269, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .title_wrap {
   white-space: nowrap;
   /* Запрещаем перенос строк */
@@ -2010,7 +2023,7 @@ h10.open:before {
   text-overflow: ellipsis;
   display: inline;
 }
-/* line 269, ../sass/_tree_one_line.scss */
+/* line 272, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .title_wrap .title {
   display: inline;
   margin-left: 8.33333px;
@@ -2020,7 +2033,7 @@ h10.open:before {
   font-weight: bold;
   font-size: 1em;
 }
-/* line 281, ../sass/_tree_one_line.scss */
+/* line 284, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .note_line {
   display: inline-block;
   margin-left: 25px;
@@ -2028,7 +2041,7 @@ h10.open:before {
   font-weight: normal;
   font-family: Arial;
 }
-/* line 289, ../sass/_tree_one_line.scss */
+/* line 292, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .btn_menu {
   display: none;
   -webkit-transition: color 0.2s ease-out;
@@ -2046,20 +2059,20 @@ h10.open:before {
   cursor: pointer;
   color: #b3b3b3;
 }
-/* line 299, ../sass/_tree_one_line.scss */
+/* line 302, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .h_line .btn_menu:before {
   content: '\25aa';
   font-family: 'fontello';
   font-size: 12.5px;
   margin: 0px;
 }
-/* line 307, ../sass/_tree_one_line.scss */
+/* line 310, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .settings {
   position: relative;
   margin-left: 25px;
   background: #2f6913;
 }
-/* line 312, ../sass/_tree_one_line.scss */
+/* line 315, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .settings .left_set_line {
   background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 200, 0.5) 100%);
   /* FF3.6+ */
@@ -2082,20 +2095,20 @@ h10.open:before {
   bottom: 0;
   left: 0;
 }
-/* line 317, ../sass/_tree_one_line.scss */
+/* line 320, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .settings .settings_content {
   margin-left: 25px;
   padding: 12.5px 25px;
   background: white;
   padding-bottom: 25px;
 }
-/* line 322, ../sass/_tree_one_line.scss */
+/* line 325, ../sass/_tree_one_line.scss */
 .main_tree .tree_line .settings .settings_content .settings_part {
   display: none;
   padding: 6.25px 0;
 }
 
-/* line 333, ../sass/_tree_one_line.scss */
+/* line 336, ../sass/_tree_one_line.scss */
 .notselectable {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -3383,56 +3396,53 @@ h10.open:before {
 /* TRIPLE BORDERS */
 /* line 6, ../sass/_cards.scss */
 .cards {
-  background-image: url(../images/cork.jpg);
-  background-size: 50px 50px;
-  background-attachment: scroll;
+  background: #f3f2ff;
 }
-/* line 11, ../sass/_cards.scss */
+/* line 12, ../sass/_cards.scss */
 .cards .path_element {
   text-align: center;
 }
-/* line 14, ../sass/_cards.scss */
+/* line 15, ../sass/_cards.scss */
 .cards .path_ul {
-  margin: 4px 0;
-  padding: 16px;
   list-style: none;
-  border-top: 1px solid rgba(0, 0, 0, 0.3);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-  background: rgba(0, 0, 0, 0.15);
-  width: 100%;
-  display: inline-block;
+  margin: 0;
 }
-/* line 25, ../sass/_cards.scss */
+/* line 19, ../sass/_cards.scss */
+.cards .path_ul:after {
+  content: '\e864';
+  font-family: 'fontello';
+  font-size: 0.8em;
+  line-height: 1.5em;
+  display: block;
+  color: gray;
+}
+/* line 27, ../sass/_cards.scss */
 .cards .path_ul li {
   display: inline-block;
   padding: 0;
   margin: 0;
   cursor: pointer;
 }
-/* line 31, ../sass/_cards.scss */
+/* line 33, ../sass/_cards.scss */
 .cards .path_ul li.active .title {
-  background: #2f6913;
+  background: gray;
   color: #FFF;
+  border-radius: 0;
+  max-width: 300px;
 }
-/* line 35, ../sass/_cards.scss */
-.cards .path_ul li.active .text {
-  display: none;
-  min-height: 100px;
-  background: #FFF;
-}
-/* line 41, ../sass/_cards.scss */
+/* line 40, ../sass/_cards.scss */
 .cards .path_ul li .title {
-  padding: 4px 16px;
-  background: #FFF;
-  margin: 0 8px;
-  width: 150px;
-  max-width: 200px;
-  white-space: nowrap;
+  padding: 0 8px;
+  line-height: 2em;
+  max-width: 150px;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
-  -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
-  -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+  font-weight: bold;
+}
+/* line 48, ../sass/_cards.scss */
+.cards .path_ul li .title b {
+  font-weight: normal;
 }
 /* line 54, ../sass/_cards.scss */
 .cards .tree2 {
@@ -3453,12 +3463,16 @@ h10.open:before {
 .cards .tree2 .folder .title {
   font-weight: bold;
 }
-/* line 69, ../sass/_cards.scss */
+/* line 67, ../sass/_cards.scss */
+.cards .tree2 .folder .title .cnt {
+  font-weight: normal;
+}
+/* line 72, ../sass/_cards.scss */
 .cards .tree2 .card_header {
   border-bottom: 1px solid #cccccc;
   position: relative;
 }
-/* line 72, ../sass/_cards.scss */
+/* line 75, ../sass/_cards.scss */
 .cards .tree2 .card_header .col1 {
   position: absolute;
   display: inline-block;
@@ -3470,7 +3484,7 @@ h10.open:before {
   min-height: 22px;
   text-align: center;
 }
-/* line 83, ../sass/_cards.scss */
+/* line 86, ../sass/_cards.scss */
 .cards .tree2 .card_header .col2 {
   position: absolute;
   top: 0;
@@ -3482,12 +3496,12 @@ h10.open:before {
   width: 22px;
   text-align: center;
 }
-/* line 93, ../sass/_cards.scss */
+/* line 96, ../sass/_cards.scss */
 .cards .tree2 .card_header .col2 i {
   display: inline-block;
   margin-top: 2px;
 }
-/* line 98, ../sass/_cards.scss */
+/* line 101, ../sass/_cards.scss */
 .cards .tree2 .card_header .col3 {
   margin-left: 44px;
   white-space: normal;
@@ -3495,7 +3509,7 @@ h10.open:before {
   vertical-align: top;
   display: inline-block;
 }
-/* line 104, ../sass/_cards.scss */
+/* line 107, ../sass/_cards.scss */
 .cards .tree2 .card_header .col3 .title {
   margin-left: 7px;
   padding-top: 3px;
@@ -3503,13 +3517,13 @@ h10.open:before {
   padding-right: 8px;
   outline: none;
 }
-/* line 113, ../sass/_cards.scss */
+/* line 116, ../sass/_cards.scss */
 .cards .tree2 .col_text {
   height: 150px;
   overflow-y: auto;
   padding: 8px;
 }
-/* line 117, ../sass/_cards.scss */
+/* line 120, ../sass/_cards.scss */
 .cards .tree2 .col_text img {
   max-width: 100%;
 }
@@ -3579,21 +3593,44 @@ h10.open:before {
 /* TRANSFORM  */
 /* TRANSITION */
 /* TRIPLE BORDERS */
-/* line 8, ../sass/_bigcalendar.scss */
+/* line 5, ../sass/_bigcalendar.scss */
+.fast_year_select {
+  margin-top: 8px;
+}
+/* line 7, ../sass/_bigcalendar.scss */
+.fast_year_select ul {
+  text-align: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+/* line 12, ../sass/_bigcalendar.scss */
+.fast_year_select ul li {
+  display: inline-block;
+  padding: 0 5px;
+  color: #2f6913;
+  cursor: pointer;
+}
+
+/* line 22, ../sass/_bigcalendar.scss */
+.big_calendar {
+  top: 75px !important;
+}
+/* line 24, ../sass/_bigcalendar.scss */
 .big_calendar ul {
   list-style: none;
 }
-/* line 11, ../sass/_bigcalendar.scss */
+/* line 27, ../sass/_bigcalendar.scss */
 .big_calendar .day_li {
   height: auto;
   min-height: 58px;
   position: relative;
 }
-/* line 15, ../sass/_bigcalendar.scss */
+/* line 31, ../sass/_bigcalendar.scss */
 .big_calendar .day_li .calendar_box_wrap {
   height: auto !important;
 }
-/* line 18, ../sass/_bigcalendar.scss */
+/* line 34, ../sass/_bigcalendar.scss */
 .big_calendar .day_li .col1 {
   height: auto;
   text-align: center;
@@ -3603,28 +3640,27 @@ h10.open:before {
   left: 0;
   width: 50px;
 }
-/* line 26, ../sass/_bigcalendar.scss */
+/* line 42, ../sass/_bigcalendar.scss */
 .big_calendar .day_li .col1 .calendar_box {
   height: auto;
 }
-/* line 29, ../sass/_bigcalendar.scss */
-.big_calendar .day_li .col1 .box_month {
-  bottom: auto;
-  top: 37px;
-}
-/* line 37, ../sass/_bigcalendar.scss */
+/* line 49, ../sass/_bigcalendar.scss */
 .big_calendar .day_li .col3 {
   margin-left: 58px;
   padding: 8px;
 }
-/* line 40, ../sass/_bigcalendar.scss */
+/* line 52, ../sass/_bigcalendar.scss */
 .big_calendar .day_li .col3 ol {
   list-style: none;
   padding: 8px;
 }
-/* line 43, ../sass/_bigcalendar.scss */
+/* line 55, ../sass/_bigcalendar.scss */
 .big_calendar .day_li .col3 ol li {
-  padding: 25px;
+  padding: 8px;
+}
+/* line 58, ../sass/_bigcalendar.scss */
+.big_calendar .day_li .col3 ol .add_task {
+  color: #dedede;
 }
 
 /* line 61, ../sass/_main.scss */

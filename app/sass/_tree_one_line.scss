@@ -125,6 +125,9 @@ $grid_box: $grid*1;
           .col3 {
             .title {
               font-weight: bold;
+              .cnt {
+                font-weight: normal;
+              }
             }            
           }
         }

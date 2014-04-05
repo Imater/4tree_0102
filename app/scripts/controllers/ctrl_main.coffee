@@ -8,7 +8,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     p_left_side_open: false
     p_right_side_open: true
     p_plan_of_day_open: true
-    main_parent_id: 1
+    main_parent_id: '53401c6b976e540000448b95'
     show_pomidor_timer: false
     show_right_menu: true
     calendar_box_template: 'views/subviews/view_calendar_box.html'
@@ -19,6 +19,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       {active: 0} #3
     ]
     autosync_on: true
+    from_today_index: 0
     side_views_menu: [
       {
         title: 'План дня'
@@ -136,6 +137,18 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       '@Вецель'
       '@когда-нибудь'
     ]
+    addTask: ()->
+      id = parseInt( Math.random()*10000);
+      db_tree._db.tasks.push {
+        id: id, 
+        tree_id: '1034', 
+        date1: new Date( new Date().getTime()+1000*60*20 ), 
+        date2: new Date( new Date().getTime()+1000*60*20 ), 
+        title: 'Новое дело '+id
+      }
+      db_tree.refreshView('tasks', [id])
+      db_tree.clearCache()
+      console.info db_tree._db.tasks
     scrollTop: ()->
       $('#p_right_wrap .content').scrollTop(50000);
     jsCopyClipboard: (value)->

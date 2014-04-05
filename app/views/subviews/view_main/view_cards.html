@@ -1,4 +1,4 @@
-<div class="p_inside_header2" ng-init="set.main_parent_id = '1'">
+<div class="p_inside_header2" ng-if="false">
 
     <div class="right_menu_button_w">
         </i><i class="icon-th-list r_menu_button"></i>
@@ -8,17 +8,17 @@
 
 </div>
 
-<div class="p_inside_content cards vertical_scroll has_header" scrollable="{alwaysVisible:'true'}">
+<div class="p_inside_content cards vertical_scroll has_header_no" scrollable="{alwaysVisible:'true'}">
 
     <div class="editor_content">
-
 
         <div class="notselectable" ng-if="trees = fn.jsFindByParent(set.main_parent_id)">
             <div class="path_element" ng-repeat="path in pt = fn.service.db_tree.jsFind(set.main_parent_id)._path">
 
               <ol class="path_ul">
-                <li ng-repeat="path_element in fn.jsFindByParent(path)" ng-class="{active:(selected = pt.indexOf(path_element.id)!=-1)};" ng-click="set.main_parent_id = path_element.id; db.main_node = path_element;" ng-if="path_element._childs>0">
-                  <div class="title" ng-bind="path_element.title"></div>
+                {{path}}
+                <li ng-repeat="path_element in fn.jsFindByParent(path)" ng-class="{active:(selected = pt.indexOf(path_element._id)!=-1)};" ng-click="set.main_parent_id = path_element._id; db.main_node = path_element;" ng-if="path_element._childs>0">
+                  <div class="title">{{path_element.title}} <b>({{path_element._childs}})</b></div>
                 </li>
               </ol>
 
@@ -40,16 +40,19 @@
 
 <!-- Begin Templates -->
 <script type="text/ng-template" id="views/subviews/view_one_line_cards.html">
-    <div ng-controller="save_tree_db" class="tree_wrap" ng-class="{open:tree._open, folder:tree._childs, active:db.main_node.id==tree.id}" id="node_{{tree.id}}">
+    <div ng-controller="save_tree_db" class="tree_wrap" ng-class="{open:tree._open, folder:tree._childs, active:db.main_node._id==tree._id}" id="node_{{tree._id}}">
       <div class="card_header">
         <div class="col1">
           <div class="is_folder" ng-click="tree._open=!tree._open"></div>
         </div>
-        <div class="col2" title="{{tree._childs}}" ng-click="set.main_parent_id = tree.id">
+        <div class="col2" title="{{tree._childs}}" ng-click="set.main_parent_id = tree._id">
           <i class="icon-heart-empty"></i>
         </div>
-        <div class="col3" ng-click="db.main_node = tree" id="col3_{{tree.id}}">
-            <div class="title" contenteditable="true" ng-model="tree.title"></div>
+        <div class="col3" ng-click="db.main_node = tree" id="col3_{{tree._id}}">
+            <div class="title">
+              <span contenteditable="true" ng-model="tree.title"></span>
+              <span class="cnt" ng-if="tree._childs">({{tree._childs}})</span>
+            </div>
         </div>
       </div>
       <div class="text_wrap">

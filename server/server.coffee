@@ -51,16 +51,56 @@ else
   md5 = require('MD5');
   Pool = require('mysql-simple-pool');
   async = require('async');
+  fs = require('fs');
 
   MongoClient = require('mongodb').MongoClient
 
+  Imap = require('imap');
 
+  notifier = require('mail-notifier');
+
+  imap = {
+    username: "4tree@4tree.ru",
+    user: "4tree@4tree.ru"
+    password: "uuS4foos_VE",
+    host: "mail.4tree.ru",
+    port: 993, # imap port
+    secure: true # use secure connection
+    tls: true
+    debug: (msg)->
+      console.info "MAIL: ", msg
+  }
+
+  notifier_instance = notifier(imap).on 'mail', (mail)->
+    mail_service.save_mail_to_tree(mail)
+
+  notifier_instance.start()
+
+  ###
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+  imap_connection = new Imap(imap);
+
+
+  openInbox = (cb)->
+    imap.openBox('INBOX', false, cb);
+
+  imap_connection.once 'ready', ()->
+    console.info 'Mail Ready!!!!!!!!!!!!!!!!!'
+
+  imap_connection.on 'error', (err)->
+    console.info 'Mail error', err
+
+  imap_connection.connect();
+  ###
+
+  #Сервис обслуживающий электронную почту
 
 
   #OAUTH2
 
   mongoose = require("mongoose")
-  mongoose.set("debug", true)
+  mongoose.set("debug", false)
   uristring = "mongodb://127.0.0.1:27017/4tree"
 
 
@@ -107,8 +147,6 @@ else
         console.info "SPEED", new Date().getTime() - tm
 
 
-
-
   oauthserver = require("node-oauth2-server")
   model = require("node-oauth2-server/examples/mongodb/model.js")
   app.configure ->
@@ -131,6 +169,46 @@ else
   #OAUTH2 end
 
 
+  OAuthUsersModel = mongoose.model('OAuthUsers');
+
+  mail_service = {
+    #сохраняем входящие письма по пользователям
+    save_mail_to_tree: (mail)->
+      @getUserId(mail).then (result)->
+        console.info "FOUND CLIENTS = ", result;
+      if(mail.attachments)
+        async.each mail.attachments, (file, callback)->
+          console.info "save_file", file
+          fs.writeFile "user_data/"+file.contentId+file.fileName, file.content, (err)->
+            console.info "error", err
+            callback(err)
+    #выленяем email из строки from и to
+    getUserId: (mail)->
+      mythis = @;
+      dfd = $.Deferred()
+      check_emails = [];
+      mymails = mail['from'].concat(mail['to']) if mail['to']
+      mymails = mymails.concat(mail['cc']) if mail['cc'];
+      _.each mymails, (from)->
+        console.info "ADRESS", from
+        check_emails.push(from.address)
+      check_emails = _.uniq check_emails, (item)->
+        item
+      found_clients = [];
+      async.each check_emails, (item, callback)->
+        mythis.findUserByEmail(item).then (result)->
+          found_clients = found_clients.concat(result) if result;
+          callback();
+      , ()->
+        dfd.resolve(found_clients);
+
+      return dfd.promise();
+    findUserByEmail: (email)->
+      dfd = $.Deferred()
+      OAuthUsersModel.find {email: email}, (err, result)->
+        dfd.resolve(result)
+      dfd.promise()
+  }
 
 
 

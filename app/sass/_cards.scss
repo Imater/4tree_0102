@@ -4,24 +4,26 @@
 @import 'mymixins';
 
 .cards {
-  background-image: url(../images/cork.jpg);
-  background-size: 50px 50px;
-  background-attachment: scroll; 
+  //background-image: url(../images/cork.jpg);
+  //background-size: 50px 50px;
+  //background-attachment: scroll; 
   //text-align: center;
+  background: #f3f2ff;
   .path_element {
     text-align: center;
   }
   .path_ul {
-    margin: round($padding/2) 0;
-    padding: $padding*2;
     list-style: none;
-    //text-align: center;
-    //background: rgba(0,0,0,0.3);
-    border-top: 1px solid rgba(0,0,0,0.3);
-    border-bottom: 1px solid rgba(0,0,0,0.3);
-    background: rgba(0,0,0,0.15);
-    width: 100%;
-    display: inline-block;
+    //background: rgba(255,255,255,0.5);
+    margin: 0;
+    &:after {
+      content: '\e864';
+      font-family: 'fontello';
+      font-size: 0.8em;
+      line-height: 1.5em;
+      display: block;
+      color: $dark_gray;
+    }
     li {
       display: inline-block;
       padding: 0;
@@ -29,25 +31,23 @@
       cursor: pointer;
       &.active {
         .title {
-          background: $main_color;
+          background: $dark_gray;
           color: #FFF;
-        }
-        .text {
-          display: none;
-          min-height: 100px;
-          background: #FFF;
+          border-radius: 0;
+          max-width: 300px;
         }
       }
       .title {
-        padding: round($padding/2) $padding*2;
-        background: #FFF;
-        margin: 0 $padding;
-        width: 150px;
-        max-width: 200px;
-        white-space: nowrap;
+        padding: 0 $padding;
+        line-height: 2em;
+        max-width: 150px;
         overflow: hidden;
+        white-space: nowrap;
         text-overflow: ellipsis; 
-        @include box-shadow();        
+        font-weight: bold;
+        b {
+          font-weight: normal;
+        }
       }
     }
   }           
@@ -64,6 +64,9 @@
       }
       .title {
         font-weight: bold;
+        .cnt {
+          font-weight: normal;
+        }
       }
     }
     .card_header {
