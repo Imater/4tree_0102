@@ -4,18 +4,20 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
 
   #параметры
   $scope.set = {
+    today_date: new Date()
     header_panel_opened: false
     p_left_side_open: false
     p_right_side_open: true
     p_plan_of_day_open: true
-    main_parent_id: '53401c6b976e540000448b95'
+    top_parent_id: 'no parent'
+    main_parent_id: 'no parent'
     show_pomidor_timer: false
     show_right_menu: true
     calendar_box_template: 'views/subviews/view_calendar_box.html'
     panel: [
       {active: 7} #0  
-      {active: 1} #1   0-дерево 1-карточки 2-mindmap 3-divider 4-календарь 5-редактор 6-none
-      {active: 4} #2
+      {active: 0} #1   0-дерево 1-карточки 2-mindmap 3-divider 4-календарь 5-редактор 6-none
+      {active: 5} #2
       {active: 0} #3
     ]
     autosync_on: true
@@ -99,7 +101,6 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       }
     ]
     refresh: 0
-    today_date: Date()
     ms_show_icon_limit: 36
     mini_settings_btn_active: 0
     mini_settings_show: true
@@ -179,6 +180,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       else
         $scope.db.box_active = null
         $scope.set.p_plan_of_day_open = false;
+      $scope.set.today_date = calendarBox.getCalendarForIndex($index).fulldate
     addNote: (title)->
       $scope.db.db_tree.push({id:0, title: "Hi!!!!!!!!!!!"})
     jsFindByParent: (args)->

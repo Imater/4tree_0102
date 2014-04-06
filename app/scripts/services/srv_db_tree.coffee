@@ -48,6 +48,14 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   refreshParentsIndex: ()->
     mythis = @;
     mythis.db_parents = {};
+
+    found = _.find @_db.tree, (el)->
+      el.folder == 'main'
+    if found
+      $rootScope.$$childTail.set.main_parent_id = found._id
+      $rootScope.$$childTail.set.top_parent_id = found._id
+
+
     _.each @_db.tree, (el)->
       cnt = [
         {title:'шагов', cnt_today: 20, days: [ 
@@ -76,13 +84,12 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       el.importance = if el.importance then el.importance else 50;
       el.tags = if el.tags then el.tags else [];
       el.counters = cnt;
-      el._open = true if el.parent_id == '1';
+      el._open = false if el.parent_id != '1';
       el.dates = {
         startDate: if el.dates then moment(el.dates.startDate) else ""
         endDate: if el.dates then moment(el.dates.endDate) else ""
       }
       parent = 'n' + el.parent_id
-      $rootScope.$$childTail.set.main_parent_id = el._id if el.folder == 'main'
 
       mythis.db_parents[parent] = [] if !mythis.db_parents[parent];
       mythis.db_parents[parent].push( el ); 
@@ -110,14 +117,13 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       memo[key] = [] if !memo[key]
       memo[key].push(values.value) if values.value
 
-
     @newView('tasks', 'tasks_by_date', mymap_calendar, myreduce_calendar)
 
   getTree: (args) ->
     @_db.tree
   jsFindByParent: (args) ->
     @db_parents['n'+args]
-  web_tags: [
+  'web_tags': [
     {id: 1, parent: 0, title: "Кулинария", cnt: 1}
     {id: 5, parent: 1, title: "Супы", cnt: 6}
     {id: 7, parent: 5, title: "Диетические", cnt: 1}
@@ -173,7 +179,6 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       id = el.parent_id
       path.push(el._id) if el.parent_id;
     path.push( $rootScope.$$childTail.set.main_parent_id );
-    console.info "Path", id, path
     path.reverse();
   jsView: ()->
     @_cache
@@ -288,7 +293,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       tree_id: '1034', 
       date1: new Date( new Date().getTime()-1000*60*220 ), 
       date2: new Date( new Date().getTime()-1000*60*220 ), 
-      title: 'Двадцать минут назад я тут был :)' 
+      title: 'Двадцать минут назад я тут был :) И мне тут понравилось.' 
       }
 
       { 
@@ -311,7 +316,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       tree_id: '1034', 
       date1: new Date( new Date().getTime()+1000*60*20 ), 
       date2: new Date( new Date().getTime()+1000*60*20 ), 
-      title: 'Через 20 минут выходим' 
+      title: 'Через 20 минут выходим и нам нужно ехать будет в театр' 
       }
 
       { 
@@ -332,7 +337,6 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       console.info '? = ', el.tree_id
       el.tree_id == tree_id 
     answer = _.sortBy answer, (el)-> el.date1
-    console.info "ANSWER = ", answer, tree_id;
 
     if only_next == true 
       answer1 = _.find answer, (el)-> el.date1 && !el.did;
@@ -359,6 +363,15 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     if answer then answer else []
   , (tree_id, only_next)->
     tree_id+only_next
+
+  jsExpand: (id, make_open)->
+    _.each @_db.tree, (el)->
+      if el._path and el._path.indexOf(id) != -1
+        if !(make_open == true and el._childs>50)
+          el._open = make_open 
+        else 
+          el._open = false
+      return
 
 
 ]

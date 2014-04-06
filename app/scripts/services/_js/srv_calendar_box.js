@@ -146,6 +146,23 @@
             return task.time;
           });
           return element;
+        },
+        getToDoForIndex: function($date) {
+          var date, element, key;
+          date = new Date($rootScope.$$childHead.set.today_date);
+          console.info("D", date, $rootScope.$$childHead.set.today_date);
+          element = {};
+          key = moment(date).format('YYYY-MM-DD');
+          element.tasks = db_tree.getView('tasks', 'tasks_by_date').result[key];
+          _.each(element.tasks, function(task) {
+            var tm;
+            tm = moment(task.date2).format('HH:MM');
+            return task.time = tm;
+          });
+          element.tasks = _.sortBy(element.tasks, function(task) {
+            return task.time;
+          });
+          return element;
         }
       };
     }

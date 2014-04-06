@@ -12,12 +12,33 @@
     padding-left: 0px;
     li {
       font-size: 1em;
-      .time {
+      white-space: nowrap;
+      position: relative;
+      padding-bottom: $padding;
+      .time1 {
         display: inline-block;
         width: 3.5em;
       }
-      .title {
+      .title1 {
         display: inline-block;
+      }
+      .col1 {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: inline-block;
+        min-width: 3em;
+        vertical-align: top;
+      }
+      .col2 {
+        margin-left: 3em;
+        white-space: normal;
+        display: inline-block;
+        vertical-align: top;
+        .title {
+          display: inline-block;
+
+        }
       }
       &.done {
         color: #222;

@@ -12,25 +12,15 @@
 
     <div class="editor_content">
 
-        <div class="notselectable" ng-if="trees = fn.jsFindByParent(set.main_parent_id)">
-            <div class="path_element" ng-repeat="path in pt = fn.service.db_tree.jsFind(set.main_parent_id)._path">
-
-              <ol class="path_ul">
-                {{path}}
-                <li ng-repeat="path_element in fn.jsFindByParent(path)" ng-class="{active:(selected = pt.indexOf(path_element._id)!=-1)};" ng-click="set.main_parent_id = path_element._id; db.main_node = path_element;" ng-if="path_element._childs>0">
-                  <div class="title">{{path_element.title}} <b>({{path_element._childs}})</b></div>
-                </li>
-              </ol>
-
-            </div>
-
-
+        <div ng-include="'views/subviews/view_main/sub/path_header.html'"></div>
+        <div class="cards_main" ng-if="trees = fn.jsFindByParent(set.main_parent_id)">
             <ul class="tree_ul">
                 <li class="tree2" ng-repeat="tree in trees" ng-click="db.main_node = tree;">
                     <div class="tree_tmpl" ng-include="'views/subviews/view_one_line_cards.html'"></div>
                 </li>
             </ul>
         </div>
+
                             
     </div>
 </div>

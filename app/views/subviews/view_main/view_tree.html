@@ -13,7 +13,11 @@
     <div class="editor_content">
 
 
+
+        <div ng-include="'views/subviews/view_main/sub/path_header.html'"></div>
+
         <div class="main_tree notselectable">
+
             <ul>
                 <li class="tree2" ng-repeat="tree in fn.jsFindByParent(set.main_parent_id)">
                     <div class="tree_tmpl" ng-include="'views/subviews/view_one_line2.html'"></div>
@@ -21,8 +25,6 @@
             </ul>
             <hr>
             <ul>
-                {{fn.service.db_tree.getView('tree', 'by_date')}}
-                <hr>
                 <li ng-repeat="sync in fn.service.syncApi.sync_journal" style="padding:10px">
                     {{sync}}
                 </li>
@@ -41,7 +43,7 @@
         <div class="col1">
           <div class="is_folder" ng-click="tree._open=!tree._open"></div>
         </div>
-        <div class="col2" title="{{tree._childs}}">
+        <div class="col2" title="{{tree._childs}}" ng-click="set.main_parent_id = tree._id">
           <i class="icon-heart-empty"></i>
         </div>
         <div class="col3" ng-click="db.main_node = tree">

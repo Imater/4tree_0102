@@ -90,6 +90,19 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', '$ro
     element.tasks = _.sortBy element.tasks, (task)->
       task.time;
     element
+  getToDoForIndex: ($date)->
+    date = new Date($rootScope.$$childHead.set.today_date);
+    console.info "D",date, $rootScope.$$childHead.set.today_date
+    element = {};
+    key = moment(date).format('YYYY-MM-DD');
+    element.tasks = db_tree.getView('tasks', 'tasks_by_date').result[key]
+    _.each element.tasks, (task)->
+      tm = moment(task.date2).format('HH:MM')
+      task.time = tm;
+    element.tasks = _.sortBy element.tasks, (task)->
+      task.time;
+    element
+
   #, ($index) ->
   #  $rootScope.$$childHead.set.from_today_index+$index
 ]

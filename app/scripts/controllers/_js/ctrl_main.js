@@ -5,11 +5,13 @@
     '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope) {
       var set_pomidors;
       $scope.set = {
+        today_date: new Date(),
         header_panel_opened: false,
         p_left_side_open: false,
         p_right_side_open: true,
         p_plan_of_day_open: true,
-        main_parent_id: '53401c6b976e540000448b95',
+        top_parent_id: 'no parent',
+        main_parent_id: 'no parent',
         show_pomidor_timer: false,
         show_right_menu: true,
         calendar_box_template: 'views/subviews/view_calendar_box.html',
@@ -17,9 +19,9 @@
           {
             active: 7
           }, {
-            active: 1
+            active: 0
           }, {
-            active: 4
+            active: 5
           }, {
             active: 0
           }
@@ -92,7 +94,6 @@
           }
         ],
         refresh: 0,
-        today_date: Date(),
         ms_show_icon_limit: 36,
         mini_settings_btn_active: 0,
         mini_settings_show: true,
@@ -197,11 +198,12 @@
         calendar_box_click: function($index) {
           if ($scope.db.box_active !== $index) {
             $scope.set.p_plan_of_day_open = true;
-            return $scope.db.box_active = $index;
+            $scope.db.box_active = $index;
           } else {
             $scope.db.box_active = null;
-            return $scope.set.p_plan_of_day_open = false;
+            $scope.set.p_plan_of_day_open = false;
           }
+          return $scope.set.today_date = calendarBox.getCalendarForIndex($index).fulldate;
         },
         addNote: function(title) {
           return $scope.db.db_tree.push({

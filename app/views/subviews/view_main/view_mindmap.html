@@ -13,6 +13,7 @@
     <div class="editor_content">
 
 
+        <div ng-include="'views/subviews/view_main/sub/path_header.html'"></div>
         <div class="notselectable">
             <ul class="mindmap_main_ul">
                 <li class="tree2" ng-repeat="tree in fn.jsFindByParent(set.main_parent_id)">
@@ -37,21 +38,21 @@
 
 <!-- Begin Templates -->
 <script type="text/ng-template" id="views/subviews/view_one_line_mindmap.html">
-    <div ng-controller="save_tree_db" class="tree_wrap" ng-class="{open:tree._open, folder:tree._childs, active:db.main_node.id==tree.id}" id="node_{{tree.id}}">
+    <div ng-controller="save_tree_db" class="tree_wrap" ng-class="{open:tree._open, folder:tree._childs, active:db.main_node._id==tree._id}" id="node_{{tree._id}}">
         <div class="col1">
           <div class="is_folder" ng-click="tree._open=!tree._open"></div>
         </div>
         <div class="col2" title="{{tree._childs}}">
           <i class="icon-heart-empty"></i>
         </div>
-        <div class="col3" ng-click="db.main_node = tree" plumb-connect="{{tree.parent}}" id="col3_{{tree.id}}">
+        <div class="col3" ng-click="db.main_node = tree" plumb-connect="{{tree.parent}}" id="col3_{{tree._id}}">
             <div class="title" contenteditable="true" ng-model="tree.title"></div>
         </div>
         
     </div>
 
     <ul ng-if="tree._open&&tree._childs" jq-show-effect-off="tree._open" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
-        <li class="tree2" ng-repeat="tree in (all = fn.jsFindByParent(tree.id))">
+        <li class="tree2" ng-repeat="tree in (all = fn.jsFindByParent(tree._id))">
             <div class="tree_tmpl" ng-include="'views/subviews/view_one_line_mindmap.html'"></div>
         </li>
     </ul>
@@ -64,17 +65,17 @@
 <!-- Begin Templates -->
 <script type="text/ng-template" id="views/subviews/view_one_line1.html">
 
-    <div class="tree_line" ng-controller="save_tree_db" ng-class="{active:db.main_node.id==tree.id}">
+    <div class="tree_line" ng-controller="save_tree_db" ng-class="{active:db.main_node._id==tree._id}">
         <div class="h_line" ng-click="db.main_node = tree">
             <div class="is_folder" ng-class="{open:tree._open, folder:tree._childs}" ng-click="tree._open=!tree._open">
-            </div><div class="box" ng-click="fn.jsTreeFocus(tree.id)">
+            </div><div class="box" ng-click="fn.jsTreeFocus(tree._id)">
                 <div class="tree_icon">
                     <i class="icon-heart-empty"></i>
                 </div>
                 <div class="childs">{{tree._childs}}</div>
             </div>
             <div class="title_wrap">
-                <div title="{{tree.id}}" class="title" contenteditable="true" ng-model="tree.title"></div>
+                <div title="{{tree._id}}" class="title" contenteditable="true" ng-model="tree.title"></div>
             </div>
 
             <div class="note_line"></div>
@@ -126,7 +127,7 @@
     </div>
 
     <ul ng-if="tree._open&&tree._childs" jq-show-effect-off="tree._open" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
-        <li class="tree" ng-repeat="tree in fn.jsFindByParent(tree.id)">
+        <li class="tree" ng-repeat="tree in fn.jsFindByParent(tree._id)">
             <div ng-include="'views/subviews/view_one_line1.html'"></div>
         </li>
     </ul>

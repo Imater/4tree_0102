@@ -124,5 +124,9 @@
 
 
     </div>
-
+    <div class="settings_task" ng-if="set.set_task">
+      <div class="pull-right" ng-click="set.set_task = undefined">закрыть</div>
+      {{set.set_task.time}}
+      <div contenteditable="true" ng-model="set.set_task.title"></div>
+    </div>
 </div>

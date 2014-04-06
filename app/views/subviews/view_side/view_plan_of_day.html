@@ -1,9 +1,12 @@
 <div class="plan_of_day">
-	<h10 class="open">дела на сегодня</h10>
+	<center><b>{{set.today_date}}</b></center>
+	<h10 class="open">дела на сегодня ({{todo1.length}})</h10>
 	<ul>
-		<li ng-repeat="the_do in db.today_do" class="{{the_do.myclass}}">
-			<div class="time">{{the_do.time}}</div>
-			<div class="title">{{the_do.title}}</div>
+		<li ng-repeat="the_do in todo1 = fn.service.calendarBox.getToDoForIndex().tasks" class="{{the_do.myclass}}" ng-click="set.set_task = the_do">
+			<span class="col1 time">{{the_do.time}}</span>
+			<span class="col2">
+				<span class="title">{{the_do.title}}</span>
+			</span>
 		</li>
 		<li class="add_do">
 			<div class="time">&nbsp;</div>
@@ -14,12 +17,11 @@
 
 	<h10 class="open">дела без даты</h10>
 	<ul>
-		<li ng-repeat="the_do in db.nodate_do" class="{{the_do.myclass}}">
+		<li ng-repeat="the_do in fn.service.calendarBox.getToDoForIndex().tasks" class="{{the_do.myclass}}">
 			<input type="checkbox">
 			<div class="title">{{the_do.title}}</div>
 		</li>
 	</ul>
-
 	<h10 class="open">достижения на сегодня</h10>
 	<ul>
 		<li ng-repeat="the_do in db.reward_do" class="{{the_do.myclass}}">

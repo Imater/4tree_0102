@@ -81,9 +81,16 @@
           });
         },
         refreshParentsIndex: function() {
-          var mymap, mymap_calendar, myreduce_calendar, mythis;
+          var found, mymap, mymap_calendar, myreduce_calendar, mythis;
           mythis = this;
           mythis.db_parents = {};
+          found = _.find(this._db.tree, function(el) {
+            return el.folder === 'main';
+          });
+          if (found) {
+            $rootScope.$$childTail.set.main_parent_id = found._id;
+            $rootScope.$$childTail.set.top_parent_id = found._id;
+          }
           _.each(this._db.tree, function(el) {
             var cnt, parent;
             cnt = [
@@ -158,24 +165,20 @@
             el.importance = el.importance ? el.importance : 50;
             el.tags = el.tags ? el.tags : [];
             el.counters = cnt;
-            if (el.parent_id === '1') {
-              el._open = true;
+            if (el.parent_id !== '1') {
+              el._open = false;
             }
             el.dates = {
               startDate: el.dates ? moment(el.dates.startDate) : "",
               endDate: el.dates ? moment(el.dates.endDate) : ""
             };
             parent = 'n' + el.parent_id;
-            if (el.folder === 'main') {
-              $rootScope.$$childTail.set.main_parent_id = el._id;
-            }
             if (!mythis.db_parents[parent]) {
               mythis.db_parents[parent] = [];
             }
             return mythis.db_parents[parent].push(el);
           });
           _.each(mythis.db_parents, function(el, key) {
-            var found;
             found = _.find(mythis._db.tree, function(e) {
               return key === 'n' + e._id;
             });
@@ -219,7 +222,7 @@
         jsFindByParent: function(args) {
           return this.db_parents['n' + args];
         },
-        web_tags: [
+        'web_tags': [
           {
             id: 1,
             parent: 0,
@@ -401,7 +404,6 @@
             }
           }
           path.push($rootScope.$$childTail.set.main_parent_id);
-          console.info("Path", id, path);
           return path.reverse();
         }),
         jsView: function() {
@@ -531,7 +533,7 @@
               tree_id: '1034',
               date1: new Date(new Date().getTime() - 1000 * 60 * 220),
               date2: new Date(new Date().getTime() - 1000 * 60 * 220),
-              title: 'Двадцать минут назад я тут был :)'
+              title: 'Двадцать минут назад я тут был :) И мне тут понравилось.'
             }, {
               id: 5,
               tree_id: '1034',
@@ -549,7 +551,7 @@
               tree_id: '1034',
               date1: new Date(new Date().getTime() + 1000 * 60 * 20),
               date2: new Date(new Date().getTime() + 1000 * 60 * 20),
-              title: 'Через 20 минут выходим'
+              title: 'Через 20 минут выходим и нам нужно ехать будет в театр'
             }, {
               id: -1,
               tree_id: '2138',
@@ -578,7 +580,6 @@
           answer = _.sortBy(answer, function(el) {
             return el.date1;
           });
-          console.info("ANSWER = ", answer, tree_id);
           if (only_next === true) {
             answer1 = _.find(answer, function(el) {
               return el.date1 && !el.did;
@@ -616,7 +617,18 @@
           }
         }, function(tree_id, only_next) {
           return tree_id + only_next;
-        })
+        }),
+        jsExpand: function(id, make_open) {
+          return _.each(this._db.tree, function(el) {
+            if (el._path && el._path.indexOf(id) !== -1) {
+              if (!(make_open === true && el._childs > 50)) {
+                el._open = make_open;
+              } else {
+                el._open = false;
+              }
+            }
+          });
+        }
       };
     }
   ]);

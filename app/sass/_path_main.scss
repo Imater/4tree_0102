@@ -1,0 +1,51 @@
+@charset "UTF-8";
+// Главное окно приложения
+
+@import 'mymixins';
+
+
+.path_main {
+  white-space: nowrap;
+  overflow-x: auto;
+  margin: $grid;
+  .path_element {
+    white-space: normal;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 1px;
+    max-height: 1200px;
+    overflow-y: auto;
+    .path_ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      li {
+        max-width: 200px;
+        padding: 0;
+        cursor: pointer;
+        &.isFolder {
+          .title {
+            font-weight: bold;
+            b {
+              display: inline-block;
+            }
+          }
+        }
+        &.active {
+          .title {
+            background: $light_gray;
+            border-radius: 0;
+          }
+        }
+        .title {
+          padding: round($padding/2) $padding;
+          overflow: hidden;
+          b {
+            font-weight: normal;
+            display: none;
+          }
+        }
+      }
+    }           
+  }
+}
