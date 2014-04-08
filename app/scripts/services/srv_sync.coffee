@@ -11,7 +11,7 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
     mythis = @;
     @jsDeepEach new_value, (el, key)->
       old_el = mythis.jsGetByKeys(old_value, key)[ key[key.length-1] ]
-      if !_.isEqual( el , old_el)
+      if !_.isEqual( el , old_el) and key[0] and key[0][0]!="_"
         mythis.jsAddToSyncJournal( new_value._id, key )
         console.info new_value._id + " changed " + key.join(".");
     @sync_journal

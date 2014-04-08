@@ -150,7 +150,6 @@
         getToDoForIndex: function($date) {
           var date, element, key;
           date = new Date($rootScope.$$childHead.set.today_date);
-          console.info("D", date, $rootScope.$$childHead.set.today_date);
           element = {};
           key = moment(date).format('YYYY-MM-DD');
           element.tasks = db_tree.getView('tasks', 'tasks_by_date').result[key];

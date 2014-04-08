@@ -97,11 +97,13 @@
           &:after {
             content: '\e825';
             font-family: 'fontello';
-            color: #FFF;
             width: $grid;
             text-align: center;
             line-height: $grid;
             position: absolute;
+            margin-left: $grid_box/10;
+            line-height: $grid_box;
+            vertical-align: top;
           }
         }
       }     

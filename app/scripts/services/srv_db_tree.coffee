@@ -45,18 +45,23 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           el._id == 1034
         $rootScope.$broadcast('tree_loaded');
         dfd.resolve(result.data);
-  refreshParentsIndex: ()->
+  refreshParentsIndex: (parent_id)->
     mythis = @;
-    mythis.db_parents = {};
+    if !parent_id
+      mythis.db_parents = {}
+    else
+      mythis.db_parents['n'+parent_id] = []
 
     found = _.find @_db.tree, (el)->
       el.folder == 'main'
     if found
-      $rootScope.$$childTail.set.main_parent_id = found._id
+      $rootScope.$$childTail.set.main_parent_id = found._id if $rootScope.$$childTail.set.main_parent_id == 'no parent'
       $rootScope.$$childTail.set.top_parent_id = found._id
 
 
     _.each @_db.tree, (el)->
+      if parent_id and el.parent_id != parent_id
+        return true
       cnt = [
         {title:'шагов', cnt_today: 20, days: [ 
           {d: '2013-03-01', cnt: 12}
@@ -84,7 +89,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       el.importance = if el.importance then el.importance else 50;
       el.tags = if el.tags then el.tags else [];
       el.counters = cnt;
-      el._open = false if el.parent_id != '1';
+      #el._open = false if el.parent_id != '1';
       el.dates = {
         startDate: if el.dates then moment(el.dates.startDate) else ""
         endDate: if el.dates then moment(el.dates.endDate) else ""
@@ -93,11 +98,14 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
       mythis.db_parents[parent] = [] if !mythis.db_parents[parent];
       mythis.db_parents[parent].push( el ); 
+      return true
+
     _.each mythis.db_parents, (el, key)->
+      if parent_id and el._id != parent_id
+        return true
       found = _.find mythis._db.tree, (e)->
         key == 'n' + e._id
       found._childs = el.length if found
-      found._open = false if (found) and ((found._childs > 50 and found.parent_id != '1') or found._id == '756')
       true
     true
         
@@ -122,7 +130,11 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   getTree: (args) ->
     @_db.tree
   jsFindByParent: (args) ->
-    @db_parents['n'+args]
+    elements = _.sortBy @db_parents['n'+args], (value, key)->
+      value.pos
+    elements = _.filter elements, (value)->
+      value.del!=1
+
   'web_tags': [
     {id: 1, parent: 0, title: "Кулинария", cnt: 1}
     {id: 5, parent: 1, title: "Супы", cnt: 6}
@@ -368,10 +380,50 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     _.each @_db.tree, (el)->
       if el._path and el._path.indexOf(id) != -1
         if !(make_open == true and el._childs>50)
-          el._open = make_open 
+          el._open = make_open if el._childs>0
         else 
-          el._open = false
+          el._open = undefined
       return
+  tree_template: ()->
+    return {
+      title: ''
+      parent_id: ''
+      _id: ''
+    }
+  getIcon: (tree)->
+    if (!tree.icon)
+      return 'icon-heart-empty'
+    else
+      return tree.icon
+  diffForSort: (tree)->
+    parents = @.db_parents['n'+tree.parent_id];
+    parents = _.sortBy parents, (value)->
+      value.pos
+    found = _.find parents, (value)->
+      value.pos>tree.pos
+    if found and found.pos
+      console.info "POS = ", found.pos, tree.pos
+      return (parseInt(1000000000000*(found.pos - tree.pos)/1.1))/1000000000000
+    else
+      return 1
+  addNote: (tree, new_note_title, make_child)->
+    console.info 'new_note', tree, new_note_title
+    new_note = new @tree_template;
+    new_note.title = new_note_title;
+    new_note._id = new ObjectId().toString();
+    new_note.pos = tree.pos + @diffForSort(tree);
+    new_note._add_show = true
+    tree._add_show = false
+    @_db.tree.push(new_note)
+    if !make_child 
+      new_note.parent_id = tree.parent_id;
+      @refreshParentsIndex(tree.parent_id);
+    else
+      new_note.parent_id = tree._id;
+      @refreshParentsIndex();
+      tree._open = true;
+    $rootScope.$$childTail.db.main_node=new_note
+
 
 
 ]

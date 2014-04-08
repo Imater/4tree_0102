@@ -80,19 +80,28 @@
             });
           });
         },
-        refreshParentsIndex: function() {
+        refreshParentsIndex: function(parent_id) {
           var found, mymap, mymap_calendar, myreduce_calendar, mythis;
           mythis = this;
-          mythis.db_parents = {};
+          if (!parent_id) {
+            mythis.db_parents = {};
+          } else {
+            mythis.db_parents['n' + parent_id] = [];
+          }
           found = _.find(this._db.tree, function(el) {
             return el.folder === 'main';
           });
           if (found) {
-            $rootScope.$$childTail.set.main_parent_id = found._id;
+            if ($rootScope.$$childTail.set.main_parent_id === 'no parent') {
+              $rootScope.$$childTail.set.main_parent_id = found._id;
+            }
             $rootScope.$$childTail.set.top_parent_id = found._id;
           }
           _.each(this._db.tree, function(el) {
             var cnt, parent;
+            if (parent_id && el.parent_id !== parent_id) {
+              return true;
+            }
             cnt = [
               {
                 title: 'шагов',
@@ -165,9 +174,6 @@
             el.importance = el.importance ? el.importance : 50;
             el.tags = el.tags ? el.tags : [];
             el.counters = cnt;
-            if (el.parent_id !== '1') {
-              el._open = false;
-            }
             el.dates = {
               startDate: el.dates ? moment(el.dates.startDate) : "",
               endDate: el.dates ? moment(el.dates.endDate) : ""
@@ -176,17 +182,18 @@
             if (!mythis.db_parents[parent]) {
               mythis.db_parents[parent] = [];
             }
-            return mythis.db_parents[parent].push(el);
+            mythis.db_parents[parent].push(el);
+            return true;
           });
           _.each(mythis.db_parents, function(el, key) {
+            if (parent_id && el._id !== parent_id) {
+              return true;
+            }
             found = _.find(mythis._db.tree, function(e) {
               return key === 'n' + e._id;
             });
             if (found) {
               found._childs = el.length;
-            }
-            if (found && ((found._childs > 50 && found.parent_id !== '1') || found._id === '756')) {
-              found._open = false;
             }
             return true;
           });
@@ -220,7 +227,13 @@
           return this._db.tree;
         },
         jsFindByParent: function(args) {
-          return this.db_parents['n' + args];
+          var elements;
+          elements = _.sortBy(this.db_parents['n' + args], function(value, key) {
+            return value.pos;
+          });
+          return elements = _.filter(elements, function(value) {
+            return value.del !== 1;
+          });
         },
         'web_tags': [
           {
@@ -622,12 +635,64 @@
           return _.each(this._db.tree, function(el) {
             if (el._path && el._path.indexOf(id) !== -1) {
               if (!(make_open === true && el._childs > 50)) {
-                el._open = make_open;
+                if (el._childs > 0) {
+                  el._open = make_open;
+                }
               } else {
-                el._open = false;
+                el._open = void 0;
               }
             }
           });
+        },
+        tree_template: function() {
+          return {
+            title: '',
+            parent_id: '',
+            _id: ''
+          };
+        },
+        getIcon: function(tree) {
+          if (!tree.icon) {
+            return 'icon-heart-empty';
+          } else {
+            return tree.icon;
+          }
+        },
+        diffForSort: function(tree) {
+          var found, parents;
+          parents = this.db_parents['n' + tree.parent_id];
+          parents = _.sortBy(parents, function(value) {
+            return value.pos;
+          });
+          found = _.find(parents, function(value) {
+            return value.pos > tree.pos;
+          });
+          if (found && found.pos) {
+            console.info("POS = ", found.pos, tree.pos);
+            return (parseInt(1000000000000 * (found.pos - tree.pos) / 1.1)) / 1000000000000;
+          } else {
+            return 1;
+          }
+        },
+        addNote: function(tree, new_note_title, make_child) {
+          var new_note;
+          console.info('new_note', tree, new_note_title);
+          new_note = new this.tree_template;
+          new_note.title = new_note_title;
+          new_note._id = new ObjectId().toString();
+          new_note.pos = tree.pos + this.diffForSort(tree);
+          new_note._add_show = true;
+          tree._add_show = false;
+          this._db.tree.push(new_note);
+          if (!make_child) {
+            new_note.parent_id = tree.parent_id;
+            this.refreshParentsIndex(tree.parent_id);
+          } else {
+            new_note.parent_id = tree._id;
+            this.refreshParentsIndex();
+            tree._open = true;
+          }
+          return $rootScope.$$childTail.db.main_node = new_note;
         }
       };
     }

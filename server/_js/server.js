@@ -91,7 +91,7 @@
     */
 
     mongoose = require("mongoose");
-    mongoose.set("debug", false);
+    mongoose.set("debug", true);
     uristring = "mongodb://127.0.0.1:27017/4tree";
     mongoose.connect(uristring, function(err, res) {
       if (err) {
@@ -294,6 +294,9 @@
         return Tree.update({
           _id: _id
         }, note, function(err) {
+          if (err) {
+            console.info(err);
+          }
           return callback(err);
         });
       }, function(callback) {

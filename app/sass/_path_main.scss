@@ -7,14 +7,49 @@
 .path_main {
   white-space: nowrap;
   overflow-x: auto;
-  margin: $grid;
+  margin: $padding;
+  &.p_closed {
+    white-space: normal;
+  }
+  .show_path_panel {
+    display: inline-block;
+    cursor: pointer;
+    &:after {
+      display: inline-block;
+      margin-top: -2px;
+      content: '\25b8';
+      font-family: 'fontello';
+      font-size: round($grid_box/1.3);
+      color: $dark_gray;
+      margin-left: 0;
+      margin-right: round($padding/2);
+    }
+    &.opened {
+      &:after {
+        content: '\25be';
+      }
+    }
+  }
   .path_element {
     white-space: normal;
     display: inline-block;
     vertical-align: top;
-    margin-right: 1px;
     max-height: 1200px;
     overflow-y: auto;
+    &.closed {
+      li {
+        .title {
+          background: none !important;
+          padding: 0 round($padding/2) !important;
+          &:after {
+            margin-left: round($padding/2);
+            content: '\e866';
+            font-family: 'fontello';
+            color: $gray;
+          }
+        }
+      }
+    }
     .path_ul {
       list-style: none;
       margin: 0;
@@ -38,7 +73,9 @@
           }
         }
         .title {
-          padding: round($padding/2) $padding;
+          padding: 0 round($padding);
+          min-height: $tree_grid;
+          line-height: $tree_grid;
           overflow: hidden;
           b {
             font-weight: normal;

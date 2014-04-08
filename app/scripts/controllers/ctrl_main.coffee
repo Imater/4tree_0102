@@ -11,6 +11,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     p_plan_of_day_open: true
     top_parent_id: 'no parent'
     main_parent_id: 'no parent'
+    show_path_panel: false
     show_pomidor_timer: false
     show_right_menu: true
     calendar_box_template: 'views/subviews/view_calendar_box.html'
@@ -541,23 +542,23 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       'glyphicon glyphicon-tree-conifer'
     ]
     icons_collection_colors: [
-      '#265e12'
-      '#198603'
+      {color: '#265e12', icon_color: '#b0ff8d'}
+      {color: '#198603', icon_color: '#b0ff8d'}
 
-      '#ffaf10'
-      '#f0cb09'
+      {color: '#ffaf10', icon_color: '#9a6113'}
+      {color: '#f0cb09', icon_color: '#9a6113'}
 
-      '#993333'
-      '#e0292b'
+      {color: '#993333', icon_color: '#000'}
+      {color: '#e0292b', icon_color: '#ffc1c8'}
 
-      '#CC6699'
-      '#ff0080'
+      {color: '#CC6699', icon_color: '#fff'}
+      {color: '#ff0080', icon_color: '#fff'}
 
-      '#008AB8'
-      '#3F5D7D'
+      {color: '#008AB8', icon_color: '#fff'}
+      {color: '#3F5D7D', icon_color: '#fff'}
 
-      '#6f6f6f'
-      '#000'
+      {color: 'gray', icon_color: '#dedede'}
+      {color: '#000', icon_color: '#FFF'}
     ]
   }
 

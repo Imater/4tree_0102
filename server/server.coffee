@@ -100,7 +100,7 @@ else
   #OAUTH2
 
   mongoose = require("mongoose")
-  mongoose.set("debug", false)
+  mongoose.set("debug", true)
   uristring = "mongodb://127.0.0.1:27017/4tree"
 
 
@@ -279,6 +279,7 @@ else
       _id = note._id
       delete note._id
       Tree.update { _id }, note, (err)->
+        console.info err if err
         callback err
     , (callback)->
       res.send true

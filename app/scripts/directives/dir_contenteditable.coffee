@@ -27,3 +27,22 @@ angular.module("4treeApp").directive "contenteditable", ->
 
     element.on '$destroy', ()->
       #element.unbind('blur keyup change')
+
+
+
+
+angular.module("4treeApp").directive "focusMe", ($timeout) ->
+  scope:
+    trigger: "=focusMe"
+
+  link: (scope, element) ->
+    scope.$watch "trigger", (value) ->
+      if value is true
+        
+        #console.log('trigger',value);
+        $timeout ()->
+          element[0].focus()
+        scope.trigger = false
+      return
+
+    return

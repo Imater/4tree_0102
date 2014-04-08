@@ -20,6 +20,8 @@
     'user_id': Schema.ObjectId,
     'add_tm': Date,
     'icon': String,
+    'color': String,
+    'icon_color': String,
     'del': {
       type: Number,
       "default": 0
@@ -31,10 +33,6 @@
     'old_tag': String,
     'date1': Date,
     'date2': Date,
-    'dates': {
-      startDate: Date,
-      endDate: Date
-    },
     'tags': [],
     'counters': [],
     'hide_in_todo': Boolean,

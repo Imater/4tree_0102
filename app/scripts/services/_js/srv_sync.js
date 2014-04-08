@@ -16,7 +16,7 @@
           this.jsDeepEach(new_value, function(el, key) {
             var old_el;
             old_el = mythis.jsGetByKeys(old_value, key)[key[key.length - 1]];
-            if (!_.isEqual(el, old_el)) {
+            if (!_.isEqual(el, old_el) && key[0] && key[0][0] !== "_") {
               mythis.jsAddToSyncJournal(new_value._id, key);
               return console.info(new_value._id + " changed " + key.join("."));
             }
