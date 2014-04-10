@@ -5,15 +5,18 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   #параметры
   $scope.set = {
     today_date: new Date()
+    focus: 1
+    focus_edit: 1
     header_panel_opened: false
     p_left_side_open: false
     p_right_side_open: true
     p_plan_of_day_open: true
     top_parent_id: 'no parent'
-    main_parent_id: 'no parent'
+    main_parent_id: []
     show_path_panel: false
     show_pomidor_timer: false
     show_right_menu: true
+    new_title: 'Новая заметка'
     calendar_box_template: 'views/subviews/view_calendar_box.html'
     panel: [
       {active: 7} #0  
@@ -123,6 +126,8 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       calendarBox: calendarBox
       syncApi: syncApi
     }
+    getFormId: (name)->
+      name + '_' + new ObjectId().toString();
     datediff: _.memoize (dates)->
       d1 = new moment(dates.startDate);
       d2 = new moment(dates.endDate);
@@ -187,7 +192,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     jsFindByParent: (args)->
       db_tree.jsFindByParent(args)
     jsTreeFocus: (id)->
-      $scope.set.main_parent_id = id
+      $scope.set.main_parent_id[ $scope.set.focus ] = id
       console.info 'focus ', id
       $scope.db.tree_path = db_tree.jsGetPath(id);
     jsClosePomidor: ()->
@@ -272,9 +277,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     calendar_boxes: []
     mystate: undefined
     tree_path: []
-    main_node: {
-      id: 1034
-    }
+    main_node: [{},{},{},{}]
     pomidors: {
       active: false,
       procent: 100,
@@ -548,8 +551,8 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       {color: '#ffaf10', icon_color: '#9a6113'}
       {color: '#f0cb09', icon_color: '#9a6113'}
 
-      {color: '#993333', icon_color: '#000'}
-      {color: '#e0292b', icon_color: '#ffc1c8'}
+      {color: '#993333', icon_color: '#FFF'}
+      {color: '#e0292b', icon_color: '#000'}
 
       {color: '#CC6699', icon_color: '#fff'}
       {color: '#ff0080', icon_color: '#fff'}
@@ -570,44 +573,6 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     $scope.set.main_parent = db_tree.jsFindByParent(1);
 
   # init procedures #
-
-  $rootScope.$on 'tree_loaded2', ()->
-    $timeout ()->
-      jsPlumb.Defaults.Container = $("body");
-      parent_element = $("#node_2138").find(".col3:first");
-      element = $("#node_2144").find(".col3:first");
-
-      parent_element.css('border', '2px solid red')
-      element.css('border', '2px solid green')
-
-      endpointOptions1 = { 
-        isTarget:true, 
-        maxConnections:5,
-        endpoint:"Rectangle", 
-        paintStyle:{ fillStyle:"gray" } 
-      }
-
-      endpointOptions2 = { 
-        isTarget:false, 
-        maxConnections:5,
-        endpoint:"Rectangle", 
-        paintStyle:{ fillStyle:"gray" } 
-      }
-
-      jsPlumb.makeSource(element, endpointOptions1);
-      jsPlumb.makeTarget(parent_element, endpointOptions2);
-
-      jsPlumb.connect ({
-        source: element
-        target: parent_element
-        Container: $("body")
-        paintStyle: { 
-          lineWidth:1, 
-          strokeStyle:"#888"
-        },
-        anchors: ["Right", "Top"]
-      })
-    , 10
 
 
   #$scope.set.main_parent = [{id:1, title: {v:"4tree"}, _childs:100, _open: true}];

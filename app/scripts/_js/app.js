@@ -4,7 +4,7 @@
 
   moment.lang('ru');
 
-  angular.module("4treeApp", ["ngCookies", "ngResource", "ngRoute", "pasvaz.bindonce", "pascalprecht.translate", "ngTouch", "sun.scrollable", "ui.scroll", "angular-redactor", "ui-rangeSlider", "$strap", "ngBootstrap", "ngTagsInput", "sly", "ngClipboard", "Decorators", "drahak.hotkeys"]);
+  angular.module("4treeApp", ["ngCookies", "ngResource", "ngRoute", "pasvaz.bindonce", "pascalprecht.translate", "sun.scrollable", "ui.scroll", "angular-redactor", "ui-rangeSlider", "$strap", "ngBootstrap", "ngTagsInput", "sly", "ngClipboard", "Decorators", "drahak.hotkeys"]);
 
   angular.module("4treeApp").config([
     "$translateProvider", "$routeProvider", function($translateProvider, $routeProvider) {

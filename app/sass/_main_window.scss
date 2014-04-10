@@ -513,6 +513,12 @@
             @include nowrap_me;
             vertical-align: middle;
             line-height: $p_inside_header_height;
+            &.make_white {
+                color: #FFF;                
+                &.drop:after {
+                  color: #FFF;
+                }
+            }
             i:before {
                 margin-right: 0 !important;
             }

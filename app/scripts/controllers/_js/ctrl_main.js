@@ -6,15 +6,18 @@
       var set_pomidors;
       $scope.set = {
         today_date: new Date(),
+        focus: 1,
+        focus_edit: 1,
         header_panel_opened: false,
         p_left_side_open: false,
         p_right_side_open: true,
         p_plan_of_day_open: true,
         top_parent_id: 'no parent',
-        main_parent_id: 'no parent',
+        main_parent_id: [],
         show_path_panel: false,
         show_pomidor_timer: false,
         show_right_menu: true,
+        new_title: 'Новая заметка',
         calendar_box_template: 'views/subviews/view_calendar_box.html',
         panel: [
           {
@@ -130,6 +133,9 @@
           calendarBox: calendarBox,
           syncApi: syncApi
         },
+        getFormId: function(name) {
+          return name + '_' + new ObjectId().toString();
+        },
         datediff: _.memoize(function(dates) {
           var d1, d2;
           d1 = new moment(dates.startDate);
@@ -216,7 +222,7 @@
           return db_tree.jsFindByParent(args);
         },
         jsTreeFocus: function(id) {
-          $scope.set.main_parent_id = id;
+          $scope.set.main_parent_id[$scope.set.focus] = id;
           console.info('focus ', id);
           return $scope.db.tree_path = db_tree.jsGetPath(id);
         },
@@ -317,9 +323,7 @@
         calendar_boxes: [],
         mystate: void 0,
         tree_path: [],
-        main_node: {
-          id: 1034
-        },
+        main_node: [{}, {}, {}, {}],
         pomidors: {
           active: false,
           procent: 100,
@@ -456,10 +460,10 @@
             icon_color: '#9a6113'
           }, {
             color: '#993333',
-            icon_color: '#000'
+            icon_color: '#FFF'
           }, {
             color: '#e0292b',
-            icon_color: '#ffc1c8'
+            icon_color: '#000'
           }, {
             color: '#CC6699',
             icon_color: '#fff'
@@ -486,44 +490,6 @@
       $scope.db.tasks = db_tasks.getTasks();
       db_tree.getTreeFromNet().then(function() {
         return $scope.set.main_parent = db_tree.jsFindByParent(1);
-      });
-      $rootScope.$on('tree_loaded2', function() {
-        return $timeout(function() {
-          var element, endpointOptions1, endpointOptions2, parent_element;
-          jsPlumb.Defaults.Container = $("body");
-          parent_element = $("#node_2138").find(".col3:first");
-          element = $("#node_2144").find(".col3:first");
-          parent_element.css('border', '2px solid red');
-          element.css('border', '2px solid green');
-          endpointOptions1 = {
-            isTarget: true,
-            maxConnections: 5,
-            endpoint: "Rectangle",
-            paintStyle: {
-              fillStyle: "gray"
-            }
-          };
-          endpointOptions2 = {
-            isTarget: false,
-            maxConnections: 5,
-            endpoint: "Rectangle",
-            paintStyle: {
-              fillStyle: "gray"
-            }
-          };
-          jsPlumb.makeSource(element, endpointOptions1);
-          jsPlumb.makeTarget(parent_element, endpointOptions2);
-          return jsPlumb.connect({
-            source: element,
-            target: parent_element,
-            Container: $("body"),
-            paintStyle: {
-              lineWidth: 1,
-              strokeStyle: "#888"
-            },
-            anchors: ["Right", "Top"]
-          });
-        }, 10);
       });
       $scope.db.tree_path = db_tree.jsGetPath(1);
       $scope.fn.setCalendarBox();

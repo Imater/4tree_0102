@@ -11,7 +11,7 @@
 
 	
 	<ol>
-		<li ng-repeat="counter in db.main_node.counters">
+		<li ng-repeat="counter in db.main_node[set.focus_edit].counters">
 			<input class="cnt" type="number" ng-model="counter.cnt_today"><input class="title" ng-model="counter.title">
 			<i class="icon-cancel remove"></i>
 			<div class="week_stat">

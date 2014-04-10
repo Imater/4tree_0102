@@ -9,35 +9,29 @@
 </div>
 
 <div class="p_inside_content vertical_scroll not_has_header" scrollable="{alwaysVisible:'true'}">
-
     <div class="editor_content">
-
-
-
         <div ng-include="'views/subviews/view_main/sub/path_header.html'"></div>
         <center>
-          <a class="btn btn-default" ng-click="fn.service.db_tree.jsExpand(set.main_parent_id, false)">
+          <a class="btn btn-default" ng-click="fn.service.db_tree.jsExpand(set.main_parent_id[panel_id], false)">
             <i class="glyphicon glyphicon-minus-sign"></i>
           </a>
-          <a class="btn btn-default" ng-click="fn.service.db_tree.jsExpand(set.main_parent_id, true)">
+          <a class="btn btn-default" ng-click="fn.service.db_tree.jsExpand(set.main_parent_id[panel_id], true)">
             <i class="glyphicon glyphicon-plus-sign"></i>
           </a>
+          <br>
         </center>
-        <div class="main_tree notselectable">
+        <div class="main_tree notselectable"> 
+
+        <my-tree-childs tree="fn.service.db_tree.jsFindByParent('534020016b84290000acf9d2')" fn="fn" set="set" db="db" panelid="panel_id">
+        </my-tree-childs>
 
 
-            <ul>
-                <li class="tree2" ng-repeat="tree in fn.jsFindByParent(set.main_parent_id)">
-                    <div class="tree_tmpl" ng-include="'views/subviews/view_one_line2.html'"></div>
+            <ul ng-if="false" my-sortable class="sortable" data-parent-id="{{set.main_parent_id[panel_id]}}">
+                <li class="tree2" ng-repeat="tree in fn.jsFindByParent(set.main_parent_id[panel_id]);">
+                    <div my-draggable=".sortable" data-id="{{tree._id}}" class="tree_tmpl" ng-include2="'views/subviews/view_one_line2.html'"></div>
+                    <div my-tree8="tree" tree="tree" fn="fn" set="set" db="db" panelid="panel_id"></div>
                 </li>
             </ul>
-            <ul ng-if="false">
-                <li ng-repeat="sync in fn.service.syncApi.sync_journal" style="padding:10px">
-                    {{sync}}
-                </li>
-
-            </ul>
-
         </div>
                             
     </div>
@@ -47,145 +41,69 @@
 
 <!-- Begin Templates -->
 <script type="text/ng-template" id="views/subviews/view_one_line2.html">
-    <div ng-controller="save_tree_db" class="tree_wrap" ng-class="{open:tree._open, folder:tree._childs, active:(db.main_node._id==tree._id)}" ng-click="db.main_node = tree">
+  <div class="tree_tmpl">
+    <div ng-controller="save_tree_db" class="tree_wrap" ng-class="{open:tree.panel[panel_id]._open, folder:tree._childs, active:(db.main_node[panel_id]._id==tree._id)}" ng-click="db.main_node[panel_id] = tree">
         <div class="col1">
-          <div class="is_folder" ng-click="tree._open=!tree._open"></div>
+          <div class="is_folder" ng-click="tree.panel[panel_id]._open=!tree.panel[panel_id]._open"></div>
         </div>
-        <div class="col2" title="{{tree._childs}}" ng-click="set.main_parent_id = tree._id" style="background:{{tree.color}};">
+        <div class="col2" title="{{tree._childs}}" ng-click="set.main_parent_id[panel_id] = tree._id" style="background:{{tree.color}};" ng-class="{tree_new:tree._new}">
           <i class="{{fn.service.db_tree.getIcon(tree)}}" style="color: {{tree.icon_color}};"></i>
         </div>
         <div class="col3">
             <div class="title">
-                 <span contenteditable="true" ng-model="tree.title"></span>
+                 <span contenteditable="true" ng-model="tree.title" focus-me="tree._focus_me" hotkey="{'Enter':fn.service.db_tree.jsEnterPress,'Esc':fn.service.db_tree.jsEscPress}" ng-blur="fn.service.db_tree.jsBlur($event, undefined, tree)" tabindex="-1"></span>
                  <span class="cnt" ng-if="tree._childs">({{tree._childs}})</span>
             </div>    
         </div>        
-        <div class="col4" ng-click="tree._add_show = !tree._add_show">
+        <div class="col4" ng-click="fn.service.db_tree.jsAddNote(tree); $event.stopPropagation();">
           <div class="col4table">
             <i class="icon-plus"></i>
           </div>
         </div>
     </div>
-    <div class="tree_wrap" ng-if="(tree._add_show&&db.main_node._id==tree._id)" ng-init="focusInput=true">
+
+    <ul my-sortable class="sortable" ng-if="tree.panel[panel_id]._open&&tree._childs" jq-show-effect-off="tree.panel[panel_id]._open" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}" data-parent-id="{{tree._id}}">
+        <li class="tree2" ng-repeat="tree2 in fn.jsFindByParent(tree._id)">
+            <div my-draggable=".sortable" class="tree_tmpl" data-id="{{tree._id}}" ng-include2="'views/subviews/view_one_line2.html'"></div>
+            <div my-tree2="tree" tree="tree2" fn="fn" set="set" db="db"></div>
+        </li>
+    </ul>
+  </div>
+
+</script>
+
+
+<script type="text/ng-template" id="views/subviews/view_one_line0.html">
+  <div class="tree_tmpl" my-draggable=".sortable" data-id="{{tree._id}}">
+    <div ng-controller="save_tree_db" class="tree_wrap" ng-class="{open:tree.panel[panel_id]._open, folder:tree._childs, active:(db.main_node[panel_id]._id==tree._id)}" ng-click="db.main_node[panel_id] = tree">
         <div class="col1">
+          <div class="is_folder" ng-click="tree.panel[panel_id]._open=!tree.panel[panel_id]._open"></div>
         </div>
-        <div class="col2 col2_add" title="{{tree._childs}}" ng-click="set.main_parent_id = tree._id">
-          <i class="icon-plus"></i>
+        <div class="col2" title="{{tree._childs}}" ng-click="set.main_parent_id[panel_id] = tree._id" style="background:{{tree.color}};" ng-class="{tree_new:tree._new}">
+          <i class="{{fn.service.db_tree.getIcon(tree)}}" style="color: {{tree.icon_color}};"></i>
         </div>
         <div class="col3">
-            <div class="title addtextarea" hotkey="Esc" invoke="tree._add_show = false">
-                <input placeholder="Добавить..."  hotkey="Enter" invoke="fn.service.db_tree.addNote(tree, new_note_title)" ng-model="new_note_title" focus-me="focusInput"></input>
+            <div class="title">
+                 <span contenteditable="true" ng-model="tree.title" focus-me="tree._focus_me" hotkey="{'Enter':fn.service.db_tree.jsEnterPress,'Esc':fn.service.db_tree.jsEscPress}" ng-blur="fn.service.db_tree.jsBlur($event, undefined, tree)" tabindex="-1"></span>
+                 <span class="cnt" ng-if="tree._childs">({{tree._childs}})</span>
             </div>    
-        </div>
-        <div class="col4 always_show">
-          <i class="icon-ok"></i>
-        </div>
-    </div>
-    <ul ng-if="(tree._add_show&&db.main_node._id==tree._id)" class="add_subchild">
-      <div class="tree_wrap" ng-init="focusInput=false" ng-if="(tree._add_show&&db.main_node._id==tree._id)">
-          <div class="col1">
-          </div>
-          <div class="col2 col2_add" title="{{tree._childs}}" ng-click="set.main_parent_id = tree._id">
+        </div>        
+        <div class="col4" ng-click="fn.service.db_tree.jsAddNote(tree); $event.stopPropagation();">
+          <div class="col4table">
             <i class="icon-plus"></i>
           </div>
-          <div class="col3">
-              <div class="title addtextarea" hotkey="Esc" invoke="tree._add_show = false">
-                  <input placeholder='Добавить в "{{tree.title}}"...'  hotkey="Enter" invoke="fn.service.db_tree.addNote(tree, new_note_title, true)" ng-model="new_note_title" focus-me="focusInput"></input>
-              </div>    
-          </div>
-          <div class="col4 always_show">
-            <i class="icon-ok"></i>
-          </div>
-      </div>
-      <div class="tree_menu">
-        <div class="col0" ng-click="tree.del = 1" title="Удалить {{tree.title}}">
-          <i class="icon-trash">Удалить</i>
-          <i class="icon-trash">Архивировать</i>
         </div>
-      </div>
-    </ul>
-
-    <ul ng-if="tree._open&&tree._childs" jq-show-effect-off="tree._open" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
-        <li class="tree2" ng-repeat="tree in fn.jsFindByParent(tree._id)">
-            <div class="tree_tmpl" ng-include="'views/subviews/view_one_line2.html'"></div>
-        </li>
-    </ul>
-
-</script>
-<!-- End Templates -->
-
-
-
-<!-- Begin Templates -->
-<script type="text/ng-template" id="views/subviews/view_one_line1.html">
-
-    <div class="tree_line" ng-controller="save_tree_db" ng-class="{active:db.main_node._id==tree._id}">
-        <div class="h_line" ng-click="db.main_node = tree">
-            <div class="is_folder" ng-class="{open:tree._open, folder:tree._childs}" ng-click="tree._open=!tree._open">
-            </div><div class="box" ng-click="fn.jsTreeFocus(tree._id)">
-                <div class="tree_icon">
-                    <i class="icon-heart-empty"></i>
-                </div>
-                <div class="childs">{{tree._childs}}</div>
-            </div>
-            <div class="title_wrap">
-                <div title="{{tree._id}}" class="title" contenteditable="true" ng-model="tree.title"></div>
-            </div>
-
-            <div class="note_line"></div>
-            <div class="btn_menu" ng-click="tree._settings=!tree._settings"></div>
-        </div>
-
-
-
-
-        <div class="settings" ng-if="tree._settings" ng-show="tree._settings" jq-show-effect-off="tree._settings" jq-options-off="{type:'slide', duration:300, delay:0, hideImmediately: false}">
-            <div class="left__set_line" ng-click="tree._settings=false"></div>
-            <div class="settings_content">
-                <h10 ng-class="{open:tree._set_part0}" ng-click="tree._set_part0=!tree._set_part0">Поделиться</h10>
-                <div class="settings_part" jq-show-effect="tree._set_part0" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
-                    <a href="http://4tree.ru/sx4d">http://4tree.ru/sx4d</a><br>
-                    <div ng-repeat="share in tree.share" >
-                        <input ng-model="share.link"> {{share.link._t}}
-                    </div>
-                </div>
-
-                <h10 ng-class="{open:tree._set_part1}" ng-click="tree._set_part1=!tree._set_part1">Поручить</h10>
-                <div class="settings_part" jq-show-effect="tree._set_part1" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
-                    Поручения
-                </div>
-
-                <h10 ng-class="{open:tree._set_part2}" ng-click="tree._set_part2=!tree._set_part2; set.refresh = set.refresh+1">Заметка</h10>
-                <div class="settings_part" jq-show-effect="tree._set_part2" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
-                    <div ng-model="tree.text" contenteditable="true"></div>
-                </div>
-
-                <h10 ng-class="{open:tree._set_part3}" ng-click="tree._set_part3=!tree._set_part3">Комментарии</h10>
-                <div class="settings_part" jq-show-effect="tree._set_part3" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
-                    Комментарии
-                </div>
-                            
-                <h10 ng-class="{open:tree._set_part4}" ng-click="tree._set_part4=!tree._set_part4">Дела</h10>
-                <div class="settings_part" jq-show-effect="tree._set_part4" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
-                    Дела
-                </div>
-                            
-                <h10 ng-class="{open:tree._set_part5}" ng-click="tree._set_part5=!tree._set_part5">Настройки</h10>
-                <div class="settings_part" jq-show-effect="tree._set_part5" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
-                    Настройки
-                </div>
-                            
-            </div>
-        </div>
-
     </div>
-
-    <ul ng-if="tree._open&&tree._childs" jq-show-effect-off="tree._open" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}">
-        <li class="tree" ng-repeat="tree in fn.jsFindByParent(tree._id)">
-            <div ng-include="'views/subviews/view_one_line1.html'"></div>
-        </li>
-    </ul>
-
-
+  </div>
 </script>
+
+
+<script type="text/ng-template" id="views/subviews/view_one_line3.html">
+  <div>
+    <div style="font-size: 10px" ng-repeat="tree2 in fn.jsFindByParent(tree._id)">
+      <div my-tree="tree" tree="tree2" fn="fn" set="set" db="db" panelid="panel_id"></div>      
+    </div>
+  </div>
+</script>
+
 <!-- End Templates -->

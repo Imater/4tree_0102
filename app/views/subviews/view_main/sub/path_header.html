@@ -10,9 +10,9 @@
         </li>
       </ol>
     </div>
-    <div class="path_element" ng-repeat="path in pt = fn.service.db_tree.jsFind(set.main_parent_id)._path" ng-class="{closed:!set.show_path_panel}">
+    <div class="path_element" ng-repeat="path in pt = fn.service.db_tree.jsFind(set.main_parent_id[panel_id])._path" ng-class="{closed:!set.show_path_panel}">
       <ol class="path_ul">
-        <li ng-repeat="path_element in fn.jsFindByParent(path)" ng-class="{active:(selected = pt.indexOf(path_element._id)!=-1), isFolder:path_element._childs>0};" ng-click="(path_element._childs>0)?((set.main_parent_id = path_element._id)):''; (db.main_node = path_element);" ng-if="( (set.show_path_panel)||(pt.indexOf(path_element._id)!=-1) )">
+        <li ng-repeat="path_element in fn.jsFindByParent(path)" ng-class="{active:(selected = pt.indexOf(path_element._id)!=-1), isFolder:path_element._childs>0};" ng-click="(path_element._childs>0)?((set.main_parent_id[panel_id] = path_element._id)):''; (db.main_node = path_element);" ng-if="( (set.show_path_panel)||(pt.indexOf(path_element._id)!=-1) )">
           <div class="title">{{path_element.title}} <b>({{path_element._childs}})</b></div>
         </li>
       </ol>

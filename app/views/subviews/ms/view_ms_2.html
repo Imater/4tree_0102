@@ -24,7 +24,7 @@
 		</th>
 		<td>
 			<div class="daterange_diff">
-			30.08.2014 <a ng-if="dt1 = fn.service.calendarBox.getDays(db.main_node.dates.startDate._d,'days')"></a>
+			30.08.2014 <a ng-if="dt1 = fn.service.calendarBox.getDays(db.main_node[set.focus_edit].dates.startDate._d,'days')"></a>
 				<div class="task_date right {{dt1.class}}" style="{{dt1.image}}">{{dt1.text}}</div>
 				<a class="">пропустить</a>
 			</div>
@@ -36,7 +36,7 @@
 		Отметить:
 		</th>
 		<td>
-		<input type="checkbox" id="show_in_todo" ng-model="db.main_node.hide_in_todo"> <label for="show_in_todo">Обзор проведён сегодня</label>
+		<input type="checkbox" id="show_in_todo" ng-model="db.main_node[set.focus_edit].hide_in_todo"> <label for="show_in_todo">Обзор проведён сегодня</label>
 		</td>
 	</tr>
 

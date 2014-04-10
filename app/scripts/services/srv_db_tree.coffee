@@ -1,20 +1,31 @@
 angular.module("4treeApp").factory 'datasource', ['$timeout', ($timeout)->
   get: (index, count, success)->
-    console.info "COUNT = ", count
     result = []
     for i in [index..index + count-1]
-      result.push "item ##{i}"
+      result.push "{i}"
     success(result)
 ]
 
-angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$rootScope', 'oAuth2Api', ($translate, $http, $q, $rootScope, oAuth2Api) ->
+angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', ($translate, $http, $q, $rootScope, oAuth2Api, $timeout) ->
   _db: {}
   _cache: {}
   salt: ()->
     'Salt is a mineral substance composed'
   pepper: ()->
     ' primarily of sodium chloride (NaCl)'
-  constructor: (@$timeout) -> 
+  constructor: () -> 
+    mythis = @;
+    $rootScope.$on 'my-sorted', (event, data)->
+      $timeout ()->
+        console.info "SORTED", data
+        mythis.jsFind(data.from_id).parent_id = data.to_id;
+        mythis.refreshParentsIndex();
+        $timeout ()->
+          $("ul > .tree_tmpl").remove()
+
+
+    $rootScope.$on 'my-created', (event, data)->
+      console.info "CREATED", data
     @loadTasks();
     if(!@_cache)
       @_cache = {}
@@ -41,11 +52,12 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       }).then (result)->
         mythis._db.tree = result.data;
         mythis.refreshParentsIndex();
-        $rootScope.$$childTail.db.main_node = _.find mythis._db.tree, (el)->
-          el._id == 1034
+        $rootScope.$$childTail.db.main_node = []
         $rootScope.$broadcast('tree_loaded');
+        mythis.clearCache();
         dfd.resolve(result.data);
   refreshParentsIndex: (parent_id)->
+    focus = $rootScope.$$childTail.set.focus    
     mythis = @;
     if !parent_id
       mythis.db_parents = {}
@@ -55,7 +67,12 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     found = _.find @_db.tree, (el)->
       el.folder == 'main'
     if found
-      $rootScope.$$childTail.set.main_parent_id = found._id if $rootScope.$$childTail.set.main_parent_id == 'no parent'
+      if $rootScope.$$childTail.set.main_parent_id.length == 0
+        $rootScope.$$childTail.set.main_parent_id[0] = found._id 
+        $rootScope.$$childTail.set.main_parent_id[1] = found._id 
+        $rootScope.$$childTail.set.main_parent_id[2] = found._id 
+        $rootScope.$$childTail.set.main_parent_id[3] = found._id 
+        console.info 2
       $rootScope.$$childTail.set.top_parent_id = found._id
 
 
@@ -85,28 +102,32 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           {d: '2013-03-12', cnt: 21}
         ]}
       ]
-      el._path = mythis.jsGetPath(el._id) if el._id
+      el._path = mythis.jsGetPath(el._id) if el._id and el._id != 1
       el.importance = if el.importance then el.importance else 50;
       el.tags = if el.tags then el.tags else [];
       el.counters = cnt;
+      el.panel = [{_open:false}, {_open:true}, {_open:false}, {_open:false}] if !el.panel
       #el._open = false if el.parent_id != '1';
-      el.dates = {
-        startDate: if el.dates then moment(el.dates.startDate) else ""
-        endDate: if el.dates then moment(el.dates.endDate) else ""
-      }
+      if false
+        el.dates = {
+          startDate: if el.dates then moment(el.dates.startDate) else ""
+          endDate: if el.dates then moment(el.dates.endDate) else ""
+        }
       parent = 'n' + el.parent_id
 
       mythis.db_parents[parent] = [] if !mythis.db_parents[parent];
       mythis.db_parents[parent].push( el ); 
       return true
 
-    _.each mythis.db_parents, (el, key)->
-      if parent_id and el._id != parent_id
-        return true
-      found = _.find mythis._db.tree, (e)->
-        key == 'n' + e._id
-      found._childs = el.length if found
+    _.each mythis._db.tree, (el)->
+      parent = 'n' + el._id
+      if mythis.db_parents[parent]
+        el._childs = mythis.db_parents[parent].length
+      else
+        el._childs = 0;
+        el._open = false;
       true
+    console.info 3
     true
         
 
@@ -129,7 +150,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
   getTree: (args) ->
     @_db.tree
-  jsFindByParent: (args) ->
+  jsFindByParent: _.memoize (args) ->
     elements = _.sortBy @db_parents['n'+args], (value, key)->
       value.pos
     elements = _.filter elements, (value)->
@@ -176,21 +197,23 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   'first_element': {
     title: '4tree'
     parent_id: '0'
-    _path: ['1']
+    _path: ['2']
   }
   'jsFind': _.memoize (id)->
-    return @first_element if id == 1
+    if id == 1
+      return @first_element 
     tree_by_id = _.find @_db.tree, (el)->
       el._id == id
-    console.info "!!!", (tree_by_id) if id == '1'
+    return undefined if id == undefined
     tree_by_id if tree_by_id
   'jsGetPath': _.memoize (id) ->
+    return ['100'] if id==1 or id==0
     path = [];
-    prevent_recursive = 5000;
+    prevent_recursive = 1000;
     while (el = @jsFind(id)) and (prevent_recursive--)
       id = el.parent_id
       path.push(el._id) if el.parent_id;
-    path.push( $rootScope.$$childTail.set.main_parent_id );
+    path.push( $rootScope.$$childTail.set.top_parent_id );
     path.reverse();
   jsView: ()->
     @_cache
@@ -346,7 +369,6 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     @_db.tasks;
   getTasksByTreeId: _.memoize (tree_id, only_next)->
     answer = _.filter @_db.tasks, (el)->
-      console.info '? = ', el.tree_id
       el.tree_id == tree_id 
     answer = _.sortBy answer, (el)-> el.date1
 
@@ -377,13 +399,16 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     tree_id+only_next
 
   jsExpand: (id, make_open)->
+    console.time 'expand'
+    focus = $rootScope.$$childTail.set.focus    
     _.each @_db.tree, (el)->
       if el._path and el._path.indexOf(id) != -1
         if !(make_open == true and el._childs>50)
-          el._open = make_open if el._childs>0
+          el.panel[focus]._open = make_open if el._childs>0
         else 
           el._open = undefined
       return
+    console.timeEnd 'expand'
   tree_template: ()->
     return {
       title: ''
@@ -396,7 +421,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     else
       return tree.icon
   diffForSort: (tree)->
-    parents = @.db_parents['n'+tree.parent_id];
+    parents = @db_parents['n'+tree.parent_id];
     parents = _.sortBy parents, (value)->
       value.pos
     found = _.find parents, (value)->
@@ -406,13 +431,32 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       return (parseInt(1000000000000*(found.pos - tree.pos)/1.1))/1000000000000
     else
       return 1
+  jsAddNote: (tree, make_child)->
+    focus = $rootScope.$$childTail.set.focus    
+    console.info "AddNote", tree
+    new_note = new @tree_template;
+    new_note.title = $rootScope.$$childTail.set.new_title;
+    new_note._id = new ObjectId().toString();
+    new_note['_new'] = true
+    new_note._focus_me = true;
+    new_note.pos = tree.pos + @diffForSort(tree);
+    @_db.tree.push(new_note)
+    if !make_child 
+      new_note.parent_id = tree.parent_id;
+      @refreshParentsIndex(tree.parent_id);
+    else
+      new_note.parent_id = tree._id;
+      @refreshParentsIndex();
+      tree._open = true;
+    $rootScope.$$childTail.db.main_node[focus]=new_note
+
   addNote: (tree, new_note_title, make_child)->
+    focus = $rootScope.$$childTail.set.focus    
     console.info 'new_note', tree, new_note_title
     new_note = new @tree_template;
     new_note.title = new_note_title;
     new_note._id = new ObjectId().toString();
     new_note.pos = tree.pos + @diffForSort(tree);
-    new_note._add_show = true
     tree._add_show = false
     @_db.tree.push(new_note)
     if !make_child 
@@ -422,7 +466,157 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       new_note.parent_id = tree._id;
       @refreshParentsIndex();
       tree._open = true;
-    $rootScope.$$childTail.db.main_node=new_note
+    $rootScope.$$childTail.db.main_node[focus]=new_note
+  jsEnterPress: (event, scope, tree)->
+    scope.tree['_new'] = false if scope and scope.tree._new;
+    event.target.blur()
+  jsBlur: (event, scope, tree)->
+    tree['_new'] = false if tree;
+  jsFindPreviusParent: (tree)->
+    parents = $rootScope.$$childTail.fn.service.db_tree.db_parents['n'+tree.parent_id];
+    parents = _.sortBy parents, (value)->
+      value.pos
+    found = _.filter parents, (value)->
+      value.pos<tree.pos    
+    found = found[found.length - 1];
+
+  jsEscPress: (event, scope)->
+    focus = $rootScope.$$childTail.set.focus    
+    prev_note = $rootScope.$$childTail.fn.service.db_tree.jsFindPreviusParent(scope.tree);
+    scope.tree.del = 1 if scope.tree['_new']
+    $rootScope.$$childTail.db.main_node[focus]=prev_note if prev_note
+    event.target.blur()
+  findMaxPos: (prev_note_id)->
+    parents = $rootScope.$$childTail.fn.service.db_tree.db_parents['n'+prev_note_id];
+    parents = _.sortBy parents, (value)->
+      value.pos
+    if parents.length
+      return parents[parents.length-1].pos + 1 
+    else
+      return 1
+  jsTabPress: (event, scope, tree)->
+    focus = $rootScope.$$childTail.set.focus    
+    db_tree = $rootScope.$$childTail.fn.service.db_tree;
+    if (db_tree.jsIsTree())
+      event.stopPropagation();
+      event.preventDefault();
+      main_node = $rootScope.$$childTail.db.main_node[focus];
+      console.info main_node;
+
+      shift = event.shiftKey;
+      if !shift
+        prev_note = db_tree.jsFindPreviusParent(main_node);
+        if prev_note
+          prev_note.panel[focus]._open=true;
+          main_node.parent_id = prev_note._id;
+          main_node.pos = db_tree.findMaxPos(prev_note._id);
+          main_node._focus_me = true;
+          db_tree.refreshParentsIndex();
+      else
+        parent_note = db_tree.jsFind(main_node.parent_id);
+        console.info { parent_note }
+        if parent_note and parent_note.folder != 'main'
+          main_node.parent_id = parent_note.parent_id;
+          main_node.pos = parent_note.pos + db_tree.diffForSort(parent_note);
+          main_node._focus_me = true;
+          db_tree.refreshParentsIndex();
+  jsFindNext: (tree, ignore_open)->
+    focus = $rootScope.$$childTail.set.focus
+    db_tree = $rootScope.$$childTail.fn.service.db_tree;
+    if tree and tree.panel[focus]._open and !ignore_open
+      found = db_tree.db_parents['n'+tree._id][0] if db_tree.db_parents['n'+tree._id];
+      return found
+    parents = db_tree.db_parents['n'+tree.parent_id];
+    parents = _.sortBy parents, (value)->
+      value.pos
+    found_key = 0;
+    found = _.find parents, (value, key)->
+      found_key = key if (value._id==tree._id)
+      value._id==tree._id
+    found = parents[found_key+1];
+    if !found
+      console.info 'need_to_parent'
+      next = db_tree.jsFind(tree.parent_id);
+      found = db_tree.jsFindNext(next, 'ignore_open') if next;
+    found
+  jsFindPrev: (tree, ignore_open, last_and_deep)->
+    focus = $rootScope.$$childTail.set.focus
+    db_tree = $rootScope.$$childTail.fn.service.db_tree;
+    if (tree and tree._open2 and !ignore_open) or (last_and_deep)
+      parents = db_tree.db_parents['n'+tree._id];
+      found = parents[parents.length-1];
+      if last_and_deep and found._open 
+        return db_tree.jsFindPrev(found, 'true', 'last_and_deep')
+      else
+        return found
+    parents = db_tree.db_parents['n'+tree.parent_id];
+    parents = _.sortBy parents, (value)->
+      value.pos
+    found_key = 0;
+    found = _.find parents, (value, key)->
+      found_key = key if (value._id==tree._id)
+      value._id==tree._id
+    found = parents[found_key-1];
+    if found and found.panel[focus]._open
+      found = db_tree.jsFindPrev(db_tree.jsFind(found._id), 'ignore_open', 'last_and_deep');
+    if !found and !ignore_open and !last_and_deep
+      found = db_tree.jsFind(tree.parent_id) if tree.parent_id!=$rootScope.$$childTail.set.main_parent_id[focus]
+    found
+  jsIsTree: ()->
+    focus = $rootScope.$$childTail.set.focus
+    widget_index = $rootScope.$$childTail.set.panel[focus].active
+    if ([0].indexOf(widget_index) != -1)
+      return true
+    else
+      return false
+  jsUpPress: (event, scope)->
+    focus = $rootScope.$$childTail.set.focus
+    db_tree = $rootScope.$$childTail.fn.service.db_tree;
+    if (db_tree.jsIsTree())
+      event.stopPropagation();
+      event.preventDefault();
+      found = db_tree.jsFindPrev( $rootScope.$$childTail.db.main_node[focus] );
+      if found
+        $rootScope.$$childTail.db.main_node[focus] = found
+  jsDownPress: (event, scope)->
+    focus = $rootScope.$$childTail.set.focus
+    db_tree = $rootScope.$$childTail.fn.service.db_tree;
+    if (db_tree.jsIsTree())
+      event.stopPropagation();
+      event.preventDefault();
+      found = db_tree.jsFindNext( $rootScope.$$childTail.db.main_node[focus] );
+      if found
+        $rootScope.$$childTail.db.main_node[focus] = found
+  jsLeftPress: (event, scope)->
+    focus = $rootScope.$$childTail.set.focus
+    db_tree = $rootScope.$$childTail.fn.service.db_tree;
+    if (db_tree.jsIsTree())
+      event.stopPropagation();
+      event.preventDefault();
+      if $rootScope.$$childTail.db.main_node[focus].panel[focus]._open
+        $rootScope.$$childTail.db.main_node[focus].panel[focus]._open = false;
+      else
+        true
+  jsRightPress: (event, scope)->
+    focus = $rootScope.$$childTail.set.focus
+    db_tree = $rootScope.$$childTail.fn.service.db_tree;
+    if (db_tree.jsIsTree())
+      event.stopPropagation();
+      event.preventDefault();
+      if !$rootScope.$$childTail.db.main_node[focus].panel[focus]._open
+        $rootScope.$$childTail.db.main_node[focus].panel[focus]._open = true;
+      else
+        true
+  jsFocus1: ()->
+    $rootScope.$$childTail.set.focus = 0
+  jsFocus2: ()->
+    $rootScope.$$childTail.set.focus = 1
+  jsFocus3: ()->
+    $rootScope.$$childTail.set.focus = 2
+  jsFocus4: ()->
+    $rootScope.$$childTail.set.focus = 3
+
+
 
 
 

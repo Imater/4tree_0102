@@ -5,10 +5,9 @@
       return {
         get: function(index, count, success) {
           var i, result, _i, _ref;
-          console.info("COUNT = ", count);
           result = [];
           for (i = _i = index, _ref = index + count - 1; index <= _ref ? _i <= _ref : _i >= _ref; i = index <= _ref ? ++_i : --_i) {
-            result.push("item #" + i);
+            result.push("{i}");
           }
           return success(result);
         }
@@ -17,7 +16,7 @@
   ]);
 
   angular.module("4treeApp").service('db_tree', [
-    '$translate', '$http', '$q', '$rootScope', 'oAuth2Api', function($translate, $http, $q, $rootScope, oAuth2Api) {
+    '$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', function($translate, $http, $q, $rootScope, oAuth2Api, $timeout) {
       return {
         _db: {},
         _cache: {},
@@ -27,8 +26,22 @@
         pepper: function() {
           return ' primarily of sodium chloride (NaCl)';
         },
-        constructor: function($timeout) {
-          this.$timeout = $timeout;
+        constructor: function() {
+          var mythis;
+          mythis = this;
+          $rootScope.$on('my-sorted', function(event, data) {
+            return $timeout(function() {
+              console.info("SORTED", data);
+              mythis.jsFind(data.from_id).parent_id = data.to_id;
+              mythis.refreshParentsIndex();
+              return $timeout(function() {
+                return $("ul > .tree_tmpl").remove();
+              });
+            });
+          });
+          $rootScope.$on('my-created', function(event, data) {
+            return console.info("CREATED", data);
+          });
           this.loadTasks();
           if (!this._cache) {
             this._cache = {};
@@ -72,16 +85,16 @@
             }).then(function(result) {
               mythis._db.tree = result.data;
               mythis.refreshParentsIndex();
-              $rootScope.$$childTail.db.main_node = _.find(mythis._db.tree, function(el) {
-                return el._id === 1034;
-              });
+              $rootScope.$$childTail.db.main_node = [];
               $rootScope.$broadcast('tree_loaded');
+              mythis.clearCache();
               return dfd.resolve(result.data);
             });
           });
         },
         refreshParentsIndex: function(parent_id) {
-          var found, mymap, mymap_calendar, myreduce_calendar, mythis;
+          var focus, found, mymap, mymap_calendar, myreduce_calendar, mythis;
+          focus = $rootScope.$$childTail.set.focus;
           mythis = this;
           if (!parent_id) {
             mythis.db_parents = {};
@@ -92,8 +105,12 @@
             return el.folder === 'main';
           });
           if (found) {
-            if ($rootScope.$$childTail.set.main_parent_id === 'no parent') {
-              $rootScope.$$childTail.set.main_parent_id = found._id;
+            if ($rootScope.$$childTail.set.main_parent_id.length === 0) {
+              $rootScope.$$childTail.set.main_parent_id[0] = found._id;
+              $rootScope.$$childTail.set.main_parent_id[1] = found._id;
+              $rootScope.$$childTail.set.main_parent_id[2] = found._id;
+              $rootScope.$$childTail.set.main_parent_id[3] = found._id;
+              console.info(2);
             }
             $rootScope.$$childTail.set.top_parent_id = found._id;
           }
@@ -168,16 +185,31 @@
                 ]
               }
             ];
-            if (el._id) {
+            if (el._id && el._id !== 1) {
               el._path = mythis.jsGetPath(el._id);
             }
             el.importance = el.importance ? el.importance : 50;
             el.tags = el.tags ? el.tags : [];
             el.counters = cnt;
-            el.dates = {
-              startDate: el.dates ? moment(el.dates.startDate) : "",
-              endDate: el.dates ? moment(el.dates.endDate) : ""
-            };
+            if (!el.panel) {
+              el.panel = [
+                {
+                  _open: false
+                }, {
+                  _open: true
+                }, {
+                  _open: false
+                }, {
+                  _open: false
+                }
+              ];
+            }
+            if (false) {
+              el.dates = {
+                startDate: el.dates ? moment(el.dates.startDate) : "",
+                endDate: el.dates ? moment(el.dates.endDate) : ""
+              };
+            }
             parent = 'n' + el.parent_id;
             if (!mythis.db_parents[parent]) {
               mythis.db_parents[parent] = [];
@@ -185,18 +217,18 @@
             mythis.db_parents[parent].push(el);
             return true;
           });
-          _.each(mythis.db_parents, function(el, key) {
-            if (parent_id && el._id !== parent_id) {
-              return true;
-            }
-            found = _.find(mythis._db.tree, function(e) {
-              return key === 'n' + e._id;
-            });
-            if (found) {
-              found._childs = el.length;
+          _.each(mythis._db.tree, function(el) {
+            var parent;
+            parent = 'n' + el._id;
+            if (mythis.db_parents[parent]) {
+              el._childs = mythis.db_parents[parent].length;
+            } else {
+              el._childs = 0;
+              el._open = false;
             }
             return true;
           });
+          console.info(3);
           true;
           mymap = function(doc, emit) {
             if (doc.text && doc.text.indexOf('жопа') !== -1) {
@@ -226,7 +258,7 @@
         getTree: function(args) {
           return this._db.tree;
         },
-        jsFindByParent: function(args) {
+        jsFindByParent: _.memoize(function(args) {
           var elements;
           elements = _.sortBy(this.db_parents['n' + args], function(value, key) {
             return value.pos;
@@ -234,7 +266,7 @@
           return elements = _.filter(elements, function(value) {
             return value.del !== 1;
           });
-        },
+        }),
         'web_tags': [
           {
             id: 1,
@@ -389,7 +421,7 @@
         'first_element': {
           title: '4tree',
           parent_id: '0',
-          _path: ['1']
+          _path: ['2']
         },
         'jsFind': _.memoize(function(id) {
           var tree_by_id;
@@ -399,8 +431,8 @@
           tree_by_id = _.find(this._db.tree, function(el) {
             return el._id === id;
           });
-          if (id === '1') {
-            console.info("!!!", tree_by_id);
+          if (id === void 0) {
+            return void 0;
           }
           if (tree_by_id) {
             return tree_by_id;
@@ -408,15 +440,18 @@
         }),
         'jsGetPath': _.memoize(function(id) {
           var el, path, prevent_recursive;
+          if (id === 1 || id === 0) {
+            return ['100'];
+          }
           path = [];
-          prevent_recursive = 5000;
+          prevent_recursive = 1000;
           while ((el = this.jsFind(id)) && (prevent_recursive--)) {
             id = el.parent_id;
             if (el.parent_id) {
               path.push(el._id);
             }
           }
-          path.push($rootScope.$$childTail.set.main_parent_id);
+          path.push($rootScope.$$childTail.set.top_parent_id);
           return path.reverse();
         }),
         jsView: function() {
@@ -587,7 +622,6 @@
         getTasksByTreeId: _.memoize(function(tree_id, only_next) {
           var answer, answer1;
           answer = _.filter(this._db.tasks, function(el) {
-            console.info('? = ', el.tree_id);
             return el.tree_id === tree_id;
           });
           answer = _.sortBy(answer, function(el) {
@@ -632,17 +666,21 @@
           return tree_id + only_next;
         }),
         jsExpand: function(id, make_open) {
-          return _.each(this._db.tree, function(el) {
+          var focus;
+          console.time('expand');
+          focus = $rootScope.$$childTail.set.focus;
+          _.each(this._db.tree, function(el) {
             if (el._path && el._path.indexOf(id) !== -1) {
               if (!(make_open === true && el._childs > 50)) {
                 if (el._childs > 0) {
-                  el._open = make_open;
+                  el.panel[focus]._open = make_open;
                 }
               } else {
                 el._open = void 0;
               }
             }
           });
+          return console.timeEnd('expand');
         },
         tree_template: function() {
           return {
@@ -674,14 +712,35 @@
             return 1;
           }
         },
+        jsAddNote: function(tree, make_child) {
+          var focus, new_note;
+          focus = $rootScope.$$childTail.set.focus;
+          console.info("AddNote", tree);
+          new_note = new this.tree_template;
+          new_note.title = $rootScope.$$childTail.set.new_title;
+          new_note._id = new ObjectId().toString();
+          new_note['_new'] = true;
+          new_note._focus_me = true;
+          new_note.pos = tree.pos + this.diffForSort(tree);
+          this._db.tree.push(new_note);
+          if (!make_child) {
+            new_note.parent_id = tree.parent_id;
+            this.refreshParentsIndex(tree.parent_id);
+          } else {
+            new_note.parent_id = tree._id;
+            this.refreshParentsIndex();
+            tree._open = true;
+          }
+          return $rootScope.$$childTail.db.main_node[focus] = new_note;
+        },
         addNote: function(tree, new_note_title, make_child) {
-          var new_note;
+          var focus, new_note;
+          focus = $rootScope.$$childTail.set.focus;
           console.info('new_note', tree, new_note_title);
           new_note = new this.tree_template;
           new_note.title = new_note_title;
           new_note._id = new ObjectId().toString();
           new_note.pos = tree.pos + this.diffForSort(tree);
-          new_note._add_show = true;
           tree._add_show = false;
           this._db.tree.push(new_note);
           if (!make_child) {
@@ -692,7 +751,228 @@
             this.refreshParentsIndex();
             tree._open = true;
           }
-          return $rootScope.$$childTail.db.main_node = new_note;
+          return $rootScope.$$childTail.db.main_node[focus] = new_note;
+        },
+        jsEnterPress: function(event, scope, tree) {
+          if (scope && scope.tree._new) {
+            scope.tree['_new'] = false;
+          }
+          return event.target.blur();
+        },
+        jsBlur: function(event, scope, tree) {
+          if (tree) {
+            return tree['_new'] = false;
+          }
+        },
+        jsFindPreviusParent: function(tree) {
+          var found, parents;
+          parents = $rootScope.$$childTail.fn.service.db_tree.db_parents['n' + tree.parent_id];
+          parents = _.sortBy(parents, function(value) {
+            return value.pos;
+          });
+          found = _.filter(parents, function(value) {
+            return value.pos < tree.pos;
+          });
+          return found = found[found.length - 1];
+        },
+        jsEscPress: function(event, scope) {
+          var focus, prev_note;
+          focus = $rootScope.$$childTail.set.focus;
+          prev_note = $rootScope.$$childTail.fn.service.db_tree.jsFindPreviusParent(scope.tree);
+          if (scope.tree['_new']) {
+            scope.tree.del = 1;
+          }
+          if (prev_note) {
+            $rootScope.$$childTail.db.main_node[focus] = prev_note;
+          }
+          return event.target.blur();
+        },
+        findMaxPos: function(prev_note_id) {
+          var parents;
+          parents = $rootScope.$$childTail.fn.service.db_tree.db_parents['n' + prev_note_id];
+          parents = _.sortBy(parents, function(value) {
+            return value.pos;
+          });
+          if (parents.length) {
+            return parents[parents.length - 1].pos + 1;
+          } else {
+            return 1;
+          }
+        },
+        jsTabPress: function(event, scope, tree) {
+          var db_tree, focus, main_node, parent_note, prev_note, shift;
+          focus = $rootScope.$$childTail.set.focus;
+          db_tree = $rootScope.$$childTail.fn.service.db_tree;
+          if (db_tree.jsIsTree()) {
+            event.stopPropagation();
+            event.preventDefault();
+            main_node = $rootScope.$$childTail.db.main_node[focus];
+            console.info(main_node);
+            shift = event.shiftKey;
+            if (!shift) {
+              prev_note = db_tree.jsFindPreviusParent(main_node);
+              if (prev_note) {
+                prev_note.panel[focus]._open = true;
+                main_node.parent_id = prev_note._id;
+                main_node.pos = db_tree.findMaxPos(prev_note._id);
+                main_node._focus_me = true;
+                return db_tree.refreshParentsIndex();
+              }
+            } else {
+              parent_note = db_tree.jsFind(main_node.parent_id);
+              console.info({
+                parent_note: parent_note
+              });
+              if (parent_note && parent_note.folder !== 'main') {
+                main_node.parent_id = parent_note.parent_id;
+                main_node.pos = parent_note.pos + db_tree.diffForSort(parent_note);
+                main_node._focus_me = true;
+                return db_tree.refreshParentsIndex();
+              }
+            }
+          }
+        },
+        jsFindNext: function(tree, ignore_open) {
+          var db_tree, focus, found, found_key, next, parents;
+          focus = $rootScope.$$childTail.set.focus;
+          db_tree = $rootScope.$$childTail.fn.service.db_tree;
+          if (tree && tree.panel[focus]._open && !ignore_open) {
+            if (db_tree.db_parents['n' + tree._id]) {
+              found = db_tree.db_parents['n' + tree._id][0];
+            }
+            return found;
+          }
+          parents = db_tree.db_parents['n' + tree.parent_id];
+          parents = _.sortBy(parents, function(value) {
+            return value.pos;
+          });
+          found_key = 0;
+          found = _.find(parents, function(value, key) {
+            if (value._id === tree._id) {
+              found_key = key;
+            }
+            return value._id === tree._id;
+          });
+          found = parents[found_key + 1];
+          if (!found) {
+            console.info('need_to_parent');
+            next = db_tree.jsFind(tree.parent_id);
+            if (next) {
+              found = db_tree.jsFindNext(next, 'ignore_open');
+            }
+          }
+          return found;
+        },
+        jsFindPrev: function(tree, ignore_open, last_and_deep) {
+          var db_tree, focus, found, found_key, parents;
+          focus = $rootScope.$$childTail.set.focus;
+          db_tree = $rootScope.$$childTail.fn.service.db_tree;
+          if ((tree && tree._open2 && !ignore_open) || last_and_deep) {
+            parents = db_tree.db_parents['n' + tree._id];
+            found = parents[parents.length - 1];
+            if (last_and_deep && found._open) {
+              return db_tree.jsFindPrev(found, 'true', 'last_and_deep');
+            } else {
+              return found;
+            }
+          }
+          parents = db_tree.db_parents['n' + tree.parent_id];
+          parents = _.sortBy(parents, function(value) {
+            return value.pos;
+          });
+          found_key = 0;
+          found = _.find(parents, function(value, key) {
+            if (value._id === tree._id) {
+              found_key = key;
+            }
+            return value._id === tree._id;
+          });
+          found = parents[found_key - 1];
+          if (found && found.panel[focus]._open) {
+            found = db_tree.jsFindPrev(db_tree.jsFind(found._id), 'ignore_open', 'last_and_deep');
+          }
+          if (!found && !ignore_open && !last_and_deep) {
+            if (tree.parent_id !== $rootScope.$$childTail.set.main_parent_id[focus]) {
+              found = db_tree.jsFind(tree.parent_id);
+            }
+          }
+          return found;
+        },
+        jsIsTree: function() {
+          var focus, widget_index;
+          focus = $rootScope.$$childTail.set.focus;
+          widget_index = $rootScope.$$childTail.set.panel[focus].active;
+          if ([0].indexOf(widget_index) !== -1) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+        jsUpPress: function(event, scope) {
+          var db_tree, focus, found;
+          focus = $rootScope.$$childTail.set.focus;
+          db_tree = $rootScope.$$childTail.fn.service.db_tree;
+          if (db_tree.jsIsTree()) {
+            event.stopPropagation();
+            event.preventDefault();
+            found = db_tree.jsFindPrev($rootScope.$$childTail.db.main_node[focus]);
+            if (found) {
+              return $rootScope.$$childTail.db.main_node[focus] = found;
+            }
+          }
+        },
+        jsDownPress: function(event, scope) {
+          var db_tree, focus, found;
+          focus = $rootScope.$$childTail.set.focus;
+          db_tree = $rootScope.$$childTail.fn.service.db_tree;
+          if (db_tree.jsIsTree()) {
+            event.stopPropagation();
+            event.preventDefault();
+            found = db_tree.jsFindNext($rootScope.$$childTail.db.main_node[focus]);
+            if (found) {
+              return $rootScope.$$childTail.db.main_node[focus] = found;
+            }
+          }
+        },
+        jsLeftPress: function(event, scope) {
+          var db_tree, focus;
+          focus = $rootScope.$$childTail.set.focus;
+          db_tree = $rootScope.$$childTail.fn.service.db_tree;
+          if (db_tree.jsIsTree()) {
+            event.stopPropagation();
+            event.preventDefault();
+            if ($rootScope.$$childTail.db.main_node[focus].panel[focus]._open) {
+              return $rootScope.$$childTail.db.main_node[focus].panel[focus]._open = false;
+            } else {
+              return true;
+            }
+          }
+        },
+        jsRightPress: function(event, scope) {
+          var db_tree, focus;
+          focus = $rootScope.$$childTail.set.focus;
+          db_tree = $rootScope.$$childTail.fn.service.db_tree;
+          if (db_tree.jsIsTree()) {
+            event.stopPropagation();
+            event.preventDefault();
+            if (!$rootScope.$$childTail.db.main_node[focus].panel[focus]._open) {
+              return $rootScope.$$childTail.db.main_node[focus].panel[focus]._open = true;
+            } else {
+              return true;
+            }
+          }
+        },
+        jsFocus1: function() {
+          return $rootScope.$$childTail.set.focus = 0;
+        },
+        jsFocus2: function() {
+          return $rootScope.$$childTail.set.focus = 1;
+        },
+        jsFocus3: function() {
+          return $rootScope.$$childTail.set.focus = 2;
+        },
+        jsFocus4: function() {
+          return $rootScope.$$childTail.set.focus = 3;
         }
       };
     }

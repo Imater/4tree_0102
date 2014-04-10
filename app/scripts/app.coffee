@@ -7,7 +7,7 @@ angular.module("4treeApp", [
   "ngRoute"
   "pasvaz.bindonce"
   "pascalprecht.translate"
-  "ngTouch"
+  #"ngTouch"
   "sun.scrollable"
   "ui.scroll" 
   #"sf.virtualScrollNew" 
