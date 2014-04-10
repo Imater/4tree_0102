@@ -5,60 +5,15 @@ angular.module("4treeApp").directive "myDraggable", ->
       helper: "clone"
       appendTo: "#w_main"
       distance: 10
+      handle: '.handle, .col2'
+      #cancel: '.contenteditable,.title'
       stop: (event, ui)->
         console.info 'draggable stop', ui
       #containment: "window"
-
-    el.disableSelection()
+    #el.disableSelection()
     return
 
 
-angular.module("4treeApp").directive "myTree8", ->
-  restrict: "A"
-  scope: {
-    tree: '='
-    fn: '='
-    set: '='
-    db: '='
-    panel_id: '=panelid'
-  }
-  replace: true
-  transclude: false
-  templateUrl: "views/subviews/view_one_line0.html"
-  link: ($scope, $element, $attributes)->
-    return
-
-angular.module("4treeApp").directive "member", ($compile, $rootScope)->
-  restrict: 'E'
-  replace: true
-  transclude: true
-  scope: {
-    tree: '=member'
-    fn: '='
-    db: '='
-    set: '='
-    panel_id: '=panelid'
-  }
-  templateUrl: 'views/subviews/view_one_line0.html'
-  link: (scope, element, attrs)->
-    if scope.tree._childs > 0 and scope.tree.panel[1]._open and (elements = $rootScope.$$childTail.fn.service.db_tree.jsFindByParent( scope.tree._id ))
-      element.append('<my-tree-childs tree="fn.service.db_tree.jsFindByParent(tree._id)" fn="fn" set="set" db="db" panelid="panel_id"></my-tree-childs>')
-      $compile(element.contents())(scope)
-
-angular.module("4treeApp").directive "myTreeChilds", ($compile)->
-  restrict: "E"
-  scope: {
-    tree: '='
-    fn: '='
-    db: '='
-    set: '='
-    panel_id: '=panelid'
-  }
-  replace: true
-  transclude: true
-  template: "<ul><member member='note' fn='fn' set='set' db='db' panelid='panel_id' ng-repeat='note in tree'></member></ul>"
-  link: ($scope, $element, $attributes)->
-    return
 
 
 
@@ -68,7 +23,9 @@ angular.module("4treeApp").directive "mySortable", ->
     el.sortable 
       revert: false
       distance: 10
-    el.disableSelection()
+      handle: '.handle, .col2'
+      cancel: '.contenteditable,.title'
+    #el.disableSelection()
     el.on "sortstart", (event, ui) ->
       console.info 'start', ui.item[0].dataset.id
       $(this).data().sort_id = ui.item[0].dataset.id;
