@@ -12,6 +12,7 @@ angular.module("4treeApp").directive "myDraggable", ->
     el.disableSelection()
     return
 
+
 angular.module("4treeApp").directive "myTree8", ->
   restrict: "A"
   scope: {
@@ -27,6 +28,7 @@ angular.module("4treeApp").directive "myTree8", ->
   link: ($scope, $element, $attributes)->
     return
 
+<<<<<<< HEAD
 strVar="";
 strVar += "  <div class=\"tree_tmpl\" my-draggable=\".sortable\" data-id=\"{{tree._id}}\">";
 strVar += "    <div ng-controller=\"save_tree_db\" class=\"tree_wrap\" ng-class=\"{open:tree.panel[panel_id]._open, folder:tree._childs, active:(db.main_node[panel_id]._id==tree._id)}\" ng-click=\"db.main_node[panel_id] = tree\">";
@@ -52,9 +54,12 @@ strVar += "  <\/div>";
 
 
 angular.module("4treeApp").directive "member", ($compile, $rootScope, $timeout)->
+=======
+angular.module("4treeApp").directive "member", ($compile, $rootScope)->
+>>>>>>> parent of b410692... Ускорил
   restrict: 'E'
   replace: true
-  transclude: false
+  transclude: true
   scope: {
     tree: '=member'
     fn: '='
@@ -62,6 +67,7 @@ angular.module("4treeApp").directive "member", ($compile, $rootScope, $timeout)-
     set: '='
     panel_id: '=panelid'
   }
+<<<<<<< HEAD
   templateUrl: 'views/subviews/view_one_line_10.html'
   template2: "<div style='font-size:10px'>"+
     "<div contenteditable='true' ng-model='tree.title'></div>"+
@@ -78,6 +84,13 @@ angular.module("4treeApp").directive "member", ($compile, $rootScope, $timeout)-
           #scope.elements = scope.fn.service.db_tree.jsFindByParent(scope.tree._id);
           element.append('<my-tree-childs tree="fn.service.db_tree.jsFindByParent(tree._id)" fn="fn" set="set" db="db" panelid="panel_id"></my-tree-childs>')
           $compile(element.contents())(scope)
+=======
+  templateUrl: 'views/subviews/view_one_line0.html'
+  link: (scope, element, attrs)->
+    if scope.tree._childs > 0 and scope.tree.panel[1]._open and (elements = $rootScope.$$childTail.fn.service.db_tree.jsFindByParent( scope.tree._id ))
+      element.append('<my-tree-childs tree="fn.service.db_tree.jsFindByParent(tree._id)" fn="fn" set="set" db="db" panelid="panel_id"></my-tree-childs>')
+      $compile(element.contents())(scope)
+>>>>>>> parent of b410692... Ускорил
 
 angular.module("4treeApp").directive "myTreeChilds", ($compile)->
   restrict: "E"
@@ -89,8 +102,8 @@ angular.module("4treeApp").directive "myTreeChilds", ($compile)->
     panel_id: '=panelid'
   }
   replace: true
-  transclude: false
-  template: "<ul><member member='note' fn='fn' set='set' db='db' panelid='panel_id' bindonce ng-repeat='note in tree'></member></ul>"
+  transclude: true
+  template: "<ul><member member='note' fn='fn' set='set' db='db' panelid='panel_id' ng-repeat='note in tree'></member></ul>"
   link: ($scope, $element, $attributes)->
     return
 

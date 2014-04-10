@@ -36,6 +36,7 @@
     };
   });
 
+<<<<<<< HEAD
   strVar = "";
 
   strVar += "  <div class=\"tree_tmpl\" my-draggable=\".sortable\" data-id=\"{{tree._id}}\">";
@@ -81,10 +82,13 @@
   strVar += "  <\/div>";
 
   angular.module("4treeApp").directive("member", function($compile, $rootScope, $timeout) {
+=======
+  angular.module("4treeApp").directive("member", function($compile, $rootScope) {
+>>>>>>> parent of b410692... Ускорил
     return {
       restrict: 'E',
       replace: true,
-      transclude: false,
+      transclude: true,
       scope: {
         tree: '=member',
         fn: '=',
@@ -92,9 +96,9 @@
         set: '=',
         panel_id: '=panelid'
       },
-      templateUrl: 'views/subviews/view_one_line_10.html',
-      template2: "<div style='font-size:10px'>" + "<div contenteditable='true' ng-model='tree.title'></div>" + "</div>",
+      templateUrl: 'views/subviews/view_one_line0.html',
       link: function(scope, element, attrs) {
+<<<<<<< HEAD
         console.time('treeRenderTime');
         $timeout(function() {
           return console.timeEnd('treeRenderTime');
@@ -108,6 +112,13 @@
             }
           }
         });
+=======
+        var elements;
+        if (scope.tree._childs > 0 && scope.tree.panel[1]._open && (elements = $rootScope.$$childTail.fn.service.db_tree.jsFindByParent(scope.tree._id))) {
+          element.append('<my-tree-childs tree="fn.service.db_tree.jsFindByParent(tree._id)" fn="fn" set="set" db="db" panelid="panel_id"></my-tree-childs>');
+          return $compile(element.contents())(scope);
+        }
+>>>>>>> parent of b410692... Ускорил
       }
     };
   });
@@ -123,8 +134,8 @@
         panel_id: '=panelid'
       },
       replace: true,
-      transclude: false,
-      template: "<ul><member member='note' fn='fn' set='set' db='db' panelid='panel_id' bindonce ng-repeat='note in tree'></member></ul>",
+      transclude: true,
+      template: "<ul><member member='note' fn='fn' set='set' db='db' panelid='panel_id' ng-repeat='note in tree'></member></ul>",
       link: function($scope, $element, $attributes) {}
     };
   });
