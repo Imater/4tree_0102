@@ -12,7 +12,6 @@ angular.module("4treeApp").directive "myDraggable", ->
     el.disableSelection()
     return
 
-
 angular.module("4treeApp").directive "myTree8", ->
   restrict: "A"
   scope: {
@@ -28,10 +27,10 @@ angular.module("4treeApp").directive "myTree8", ->
   link: ($scope, $element, $attributes)->
     return
 
-angular.module("4treeApp").directive "member", ($compile, $rootScope)->
+angular.module("4treeApp").directive "member", ($compile, $rootScope, $timeout)->
   restrict: 'E'
   replace: true
-  transclude: true
+  transclude: false
   scope: {
     tree: '=member'
     fn: '='
@@ -39,9 +38,16 @@ angular.module("4treeApp").directive "member", ($compile, $rootScope)->
     set: '='
     panel_id: '=panelid'
   }
-  templateUrl: 'views/subviews/view_one_line0.html'
+  templateUrl: 'views/subviews/view_one_line_10.html'
+  template2: "<div style='font-size:10px'>"+
+    "<div contenteditable='true' ng-model='tree.title'></div>"+
+    "</div>"
   link: (scope, element, attrs)->
-    if scope.tree._childs > 0 and scope.tree.panel[1]._open and (elements = $rootScope.$$childTail.fn.service.db_tree.jsFindByParent( scope.tree._id ))
+    console.time 'treeRenderTime';
+    $timeout ()->
+      console.timeEnd 'treeRenderTime';
+    if scope.tree._childs > 0 and scope.tree.panel[1]._open
+      #scope.elements = scope.fn.service.db_tree.jsFindByParent(scope.tree._id);
       element.append('<my-tree-childs tree="fn.service.db_tree.jsFindByParent(tree._id)" fn="fn" set="set" db="db" panelid="panel_id"></my-tree-childs>')
       $compile(element.contents())(scope)
 
@@ -55,8 +61,8 @@ angular.module("4treeApp").directive "myTreeChilds", ($compile)->
     panel_id: '=panelid'
   }
   replace: true
-  transclude: true
-  template: "<ul><member member='note' fn='fn' set='set' db='db' panelid='panel_id' ng-repeat='note in tree'></member></ul>"
+  transclude: false
+  template: "<ul><member member='note' fn='fn' set='set' db='db' panelid='panel_id' bindonce ng-repeat='note in tree'></member></ul>"
   link: ($scope, $element, $attributes)->
     return
 
