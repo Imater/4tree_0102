@@ -20,9 +20,30 @@
           </a>
           <br>
         </center>
-        <div class="main_tree notselectable"> 
 
-        <my-tree-childs tree="fn.service.db_tree.jsFindByParent('534020016b84290000acf9d2')" fn="fn" set="set" db="db" panelid="panel_id">
+
+        <div class="main_tree notselectable2"> 
+
+          <ul ng-if="panel_id==1" my-sortable class="sortable" data-parent-id="534020016b84290000acf9d2">
+              <li class="tree2" ng-repeat="tree in fn.jsFindByParent('534020016b84290000acf9d2')">
+                  <div my-draggable=".sortable" class="tree_tmpl" data-id="{{tree._id}}" ng-include="'views/subviews/view_one_line2.html'"></div>
+              </li>
+          </ul>
+
+
+        <ul ng-if="panel_id==2" frang-tree my-sortable class="sortable" data-parent-id="534020016b84290000acf9d2">
+          <li class="tree2" frang-tree-repeat="tree in fn.service.db_tree.jsFindByParent('534020016b84290000acf9d2')">
+              {{tree._id}}
+              <div ng-include="'views/subviews/view_one_line0.html'"></div>
+              <ul ng-if="tree.panel[panel_id]._open"
+                  frang-tree-insert-children="fn.service.db_tree.jsFindByParent(tree._id)" my-sortable class="sortable" data-parent-id="{{tree._id}}">
+
+              </ul>
+          </li>
+        </ul>
+
+
+        <my-tree-childs ng-if="false" tree="fn.service.db_tree.jsFindByParent('534020016b84290000acf9d2')" fn="fn" set="set" db="db" panelid="panel_id">
         </my-tree-childs>
 
 
@@ -63,9 +84,8 @@
     </div>
 
     <ul my-sortable class="sortable" ng-if="tree.panel[panel_id]._open&&tree._childs" jq-show-effect-off="tree.panel[panel_id]._open" jq-options="{type:'slide', duration:100, delay:0, hideImmediately: false}" data-parent-id="{{tree._id}}">
-        <li class="tree2" ng-repeat="tree2 in fn.jsFindByParent(tree._id)">
-            <div my-draggable=".sortable" class="tree_tmpl" data-id="{{tree._id}}" ng-include2="'views/subviews/view_one_line2.html'"></div>
-            <div my-tree2="tree" tree="tree2" fn="fn" set="set" db="db"></div>
+        <li class="tree2" ng-repeat="tree in fn.jsFindByParent(tree._id)">
+          <div ng-if="true" my-draggable=".sortable" class="tree_tmpl" data-id="{{tree._id}}" ng-include="'views/subviews/view_one_line2.html'"></div>
         </li>
     </ul>
   </div>

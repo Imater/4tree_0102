@@ -106,7 +106,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       el.importance = if el.importance then el.importance else 50;
       el.tags = if el.tags then el.tags else [];
       el.counters = cnt;
-      el.panel = [{_open:false}, {_open:true}, {_open:false}, {_open:false}] if !el.panel
+      el.panel = [{_open:false}, {_open:false}, {_open:false}, {_open:false}] if !el.panel
       #el._open = false if el.parent_id != '1';
       if false
         el.dates = {
@@ -127,6 +127,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         el._childs = 0;
         el._open = false;
       true
+    mythis.clearCache();
     console.info 3
     true
         

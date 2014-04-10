@@ -4,6 +4,7 @@ angular.module("4treeApp", [
   "ngCookies"
   "ngResource"
   #"ngSanitize"
+  "app.directives"
   "ngRoute"
   "pasvaz.bindonce"
   "pascalprecht.translate"

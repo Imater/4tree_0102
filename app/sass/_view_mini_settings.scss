@@ -7,7 +7,7 @@
   color: $gray;
   cursor: pointer;
   position: absolute;
-  right: $padding - 2px; 
+  right: $padding - 2px;
   top: $grid;
   &:hover {
     color: darken($gray, 10%);

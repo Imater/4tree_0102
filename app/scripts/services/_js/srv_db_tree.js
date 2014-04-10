@@ -196,7 +196,7 @@
                 {
                   _open: false
                 }, {
-                  _open: true
+                  _open: false
                 }, {
                   _open: false
                 }, {
@@ -228,6 +228,7 @@
             }
             return true;
           });
+          mythis.clearCache();
           console.info(3);
           true;
           mymap = function(doc, emit) {
