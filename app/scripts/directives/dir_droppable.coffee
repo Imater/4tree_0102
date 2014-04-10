@@ -27,6 +27,30 @@ angular.module("4treeApp").directive "myTree8", ->
   link: ($scope, $element, $attributes)->
     return
 
+strVar="";
+strVar += "  <div class=\"tree_tmpl\" my-draggable=\".sortable\" data-id=\"{{tree._id}}\">";
+strVar += "    <div ng-controller=\"save_tree_db\" class=\"tree_wrap\" ng-class=\"{open:tree.panel[panel_id]._open, folder:tree._childs, active:(db.main_node[panel_id]._id==tree._id)}\" ng-click=\"db.main_node[panel_id] = tree\">";
+strVar += "        <div class=\"col1\">";
+strVar += "          <div class=\"is_folder\" ng-click=\"tree.panel[panel_id]._open=!tree.panel[panel_id]._open\"><\/div>";
+strVar += "        <\/div>";
+strVar += "        <div class=\"col2\" title=\"{{tree._childs}}\" ng-click=\"set.main_parent_id[panel_id] = tree._id\" style=\"background:{{tree.color}};\" ng-class=\"{tree_new:tree._new}\">";
+strVar += "          <i class=\"{{fn.service.db_tree.getIcon(tree)}}\" style=\"color: {{tree.icon_color}};\"><\/i>";
+strVar += "        <\/div>";
+strVar += "        <div class=\"col3\">";
+strVar += "            <div class=\"title\">";
+strVar += "                 <span contenteditable=\"true\" ng-model=\"tree.title\" focus-me=\"tree._focus_me\" hotkey=\"{'Enter':fn.service.db_tree.jsEnterPress,'Esc':fn.service.db_tree.jsEscPress}\" ng-blur=\"fn.service.db_tree.jsBlur($event, undefined, tree)\" tabindex=\"-1\"><\/span>";
+strVar += "                 <span class=\"cnt\" ng-if=\"tree._childs\">({{tree._childs}})<\/span>";
+strVar += "            <\/div>    ";
+strVar += "        <\/div>        ";
+strVar += "        <div class=\"col4\" ng-click=\"fn.service.db_tree.jsAddNote(tree); $event.stopPropagation();\">";
+strVar += "          <div class=\"col4table\">";
+strVar += "            <i class=\"icon-plus\"><\/i>";
+strVar += "          <\/div>";
+strVar += "        <\/div>";
+strVar += "    <\/div>";
+strVar += "  <\/div>";
+
+
 angular.module("4treeApp").directive "member", ($compile, $rootScope, $timeout)->
   restrict: 'E'
   replace: true
@@ -42,14 +66,18 @@ angular.module("4treeApp").directive "member", ($compile, $rootScope, $timeout)-
   template2: "<div style='font-size:10px'>"+
     "<div contenteditable='true' ng-model='tree.title'></div>"+
     "</div>"
+  #template: strVar
   link: (scope, element, attrs)->
     console.time 'treeRenderTime';
     $timeout ()->
       console.timeEnd 'treeRenderTime';
-    if scope.tree._childs > 0 and scope.tree.panel[1]._open
-      #scope.elements = scope.fn.service.db_tree.jsFindByParent(scope.tree._id);
-      element.append('<my-tree-childs tree="fn.service.db_tree.jsFindByParent(tree._id)" fn="fn" set="set" db="db" panelid="panel_id"></my-tree-childs>')
-      $compile(element.contents())(scope)
+    scope.$watch 'tree.panel['+scope.panel_id+']._open', (newVal, oldVal)->
+      console.info 'change', newVal
+      if newVal != oldVal
+        if scope.tree._childs > 0 and scope.tree.panel[scope.panel_id]._open
+          #scope.elements = scope.fn.service.db_tree.jsFindByParent(scope.tree._id);
+          element.append('<my-tree-childs tree="fn.service.db_tree.jsFindByParent(tree._id)" fn="fn" set="set" db="db" panelid="panel_id"></my-tree-childs>')
+          $compile(element.contents())(scope)
 
 angular.module("4treeApp").directive "myTreeChilds", ($compile)->
   restrict: "E"
