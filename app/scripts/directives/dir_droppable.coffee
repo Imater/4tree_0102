@@ -46,10 +46,17 @@ angular.module("4treeApp").directive "member", ($compile, $rootScope, $timeout)-
     console.time 'treeRenderTime';
     $timeout ()->
       console.timeEnd 'treeRenderTime';
-    if scope.tree._childs > 0 and scope.tree.panel[1]._open
-      #scope.elements = scope.fn.service.db_tree.jsFindByParent(scope.tree._id);
-      element.append('<my-tree-childs tree="fn.service.db_tree.jsFindByParent(tree._id)" fn="fn" set="set" db="db" panelid="panel_id"></my-tree-childs>')
-      $compile(element.contents())(scope)
+      scope.$watch 'tree.panel[1]._open', (oldVal, newVal)->
+        if oldVal == newVal
+          console.info 'watch', oldVal, newVal
+          add();
+    add = ()->
+      if scope.tree._childs > 0 and scope.tree.panel[1]._open
+        #scope.elements = scope.fn.service.db_tree.jsFindByParent(scope.tree._id);
+        element.append('<my-tree-childs tree="fn.service.db_tree.jsFindByParent(tree._id)" fn="fn" set="set" db="db" panelid="panel_id"></my-tree-childs>')
+        $compile(element.contents())(scope)
+    scope.$destroy ()->
+
 
 angular.module("4treeApp").directive "myTreeChilds", ($compile)->
   restrict: "E"
@@ -62,7 +69,7 @@ angular.module("4treeApp").directive "myTreeChilds", ($compile)->
   }
   replace: true
   transclude: false
-  template: "<ul><member member='note' fn='fn' set='set' db='db' panelid='panel_id' bindonce ng-repeat='note in tree'></member></ul>"
+  template: "<ul class='tree_ul'><member member='note' fn='fn' set='set' db='db' panelid='panel_id' bindonce ng-repeat='note in tree'></member></ul>"
   link: ($scope, $element, $attributes)->
     return
 

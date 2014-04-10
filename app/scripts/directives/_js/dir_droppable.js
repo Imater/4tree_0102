@@ -49,14 +49,24 @@
       templateUrl: 'views/subviews/view_one_line_10.html',
       template2: "<div style='font-size:10px'>" + "<div contenteditable='true' ng-model='tree.title'></div>" + "</div>",
       link: function(scope, element, attrs) {
+        var add;
         console.time('treeRenderTime');
         $timeout(function() {
-          return console.timeEnd('treeRenderTime');
+          console.timeEnd('treeRenderTime');
+          return scope.$watch('tree.panel[1]._open', function(oldVal, newVal) {
+            if (oldVal === newVal) {
+              console.info('watch', oldVal, newVal);
+              return add();
+            }
+          });
         });
-        if (scope.tree._childs > 0 && scope.tree.panel[1]._open) {
-          element.append('<my-tree-childs tree="fn.service.db_tree.jsFindByParent(tree._id)" fn="fn" set="set" db="db" panelid="panel_id"></my-tree-childs>');
-          return $compile(element.contents())(scope);
-        }
+        add = function() {
+          if (scope.tree._childs > 0 && scope.tree.panel[1]._open) {
+            element.append('<my-tree-childs tree="fn.service.db_tree.jsFindByParent(tree._id)" fn="fn" set="set" db="db" panelid="panel_id"></my-tree-childs>');
+            return $compile(element.contents())(scope);
+          }
+        };
+        return scope.$destroy(function() {});
       }
     };
   });
@@ -73,7 +83,7 @@
       },
       replace: true,
       transclude: false,
-      template: "<ul><member member='note' fn='fn' set='set' db='db' panelid='panel_id' bindonce ng-repeat='note in tree'></member></ul>",
+      template: "<ul class='tree_ul'><member member='note' fn='fn' set='set' db='db' panelid='panel_id' bindonce ng-repeat='note in tree'></member></ul>",
       link: function($scope, $element, $attributes) {}
     };
   });

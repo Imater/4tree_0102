@@ -43,7 +43,7 @@
 
 <script type="text/ng-template" id="views/subviews/view_one_line_10.html">
   <div style="font-size:10px">
-    <div contenteditable='true' ng-model='tree.title'></div>
+    <div ng-click="tree.panel[1]._open = !tree.panel[1]._open" ng-bind='tree.title'></div>{{tree.panel[1]._open}}
   </div>
 </script>
 
