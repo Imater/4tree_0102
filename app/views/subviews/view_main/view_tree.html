@@ -40,13 +40,6 @@
 
 
 <!-- Begin Templates -->
-
-<script type="text/ng-template" id="views/subviews/view_one_line_10.html">
-  <div style="font-size:10px">
-    <div ng-click="tree.panel[1]._open = !tree.panel[1]._open" ng-bind='tree.title'></div>{{tree.panel[1]._open}}
-  </div>
-</script>
-
 <script type="text/ng-template" id="views/subviews/view_one_line2.html">
   <div class="tree_tmpl">
     <div ng-controller="save_tree_db" class="tree_wrap" ng-class="{open:tree.panel[panel_id]._open, folder:tree._childs, active:(db.main_node[panel_id]._id==tree._id)}" ng-click="db.main_node[panel_id] = tree">
