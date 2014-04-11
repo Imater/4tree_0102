@@ -29,6 +29,21 @@
     };
   });
 
+  angular.module("4treeApp").directive("renderNote", function($timeout, db_tree) {
+    return {
+      restrict: "E",
+      require: "?ngModel",
+      template: "",
+      link: function(scope, el, attr, ngModel) {
+        return ngModel.$render = function() {
+          var title;
+          title = ngModel.$viewValue.title;
+          return el.html(title || "");
+        };
+      }
+    };
+  });
+
   angular.module("4treeApp").directive("renderTime", function($timeout) {
     return {
       link: function(scope, el, attr) {

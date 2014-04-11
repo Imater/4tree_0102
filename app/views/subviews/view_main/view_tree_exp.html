@@ -1,0 +1,33 @@
+<div class="p_inside_header2" ng-if="false">
+
+    <div class="right_menu_button_w">
+        </i><i class="icon-th-list r_menu_button"></i>
+    </div>
+
+    <div ng-include="'views/subviews/view_tree_header.html'"></div>
+
+</div>
+
+<div class="p_inside_content vertical_scroll not_has_header" scrollable="{alwaysVisible:'true'}">
+    <div class="editor_content">
+        <div ng-include="'views/subviews/view_main/sub/path_header.html'"></div>
+        <center>
+          <a class="btn btn-default" ng-click="fn.service.db_tree.jsExpand(set.main_parent_id[panel_id], false)">
+            <i class="glyphicon glyphicon-minus-sign"></i>
+          </a>
+          <a class="btn btn-default" ng-click="fn.service.db_tree.jsExpand(set.main_parent_id[panel_id], true)">
+            <i class="glyphicon glyphicon-plus-sign"></i>
+          </a>
+        </center>
+
+        <ul ng-if="set.tree_loaded" style="height: 500px;">
+          <li ng-scroll="box in datasourceTree" padding="1">
+            <render-note ng-model="box"></render-note>           
+          </li>
+        </ul>
+                            
+    </div>
+</div>
+
+
+

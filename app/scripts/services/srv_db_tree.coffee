@@ -1,3 +1,14 @@
+angular.module("4treeApp").factory 'datasourceTree', ['$timeout', 'db_tree', '$rootScope', ($timeout, db_tree, $rootScope)->
+  watchList: []
+  get: (index, count, success)->
+    console.info index
+    success([]) if index > db_tree._db.tree.length 
+    result = []
+    for i in [index..index + count-1]
+      result.push db_tree._db.tree[i] if db_tree._db.tree[i]
+    success(result)
+]
+
 angular.module("4treeApp").factory 'datasource', ['$timeout', ($timeout)->
   get: (index, count, success)->
     result = []
@@ -51,6 +62,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       }).then (result)->
         mythis._db.tree = result.data;
         mythis.refreshParentsIndex();
+        $rootScope.$$childTail.set.tree_loaded = true;
         $rootScope.$$childTail.db.main_node = []
         $rootScope.$broadcast('tree_loaded');
         mythis.clearCache();
@@ -105,7 +117,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       el.importance = if el.importance then el.importance else 50;
       el.tags = if el.tags then el.tags else [];
       el.counters = cnt;
-      el.panel = [{_open:false}, {_open:true}, {_open:false}, {_open:false}] if !el.panel
+      el.panel = [{_open:false}, {_open:false}, {_open:false}, {_open:false}] if !el.panel
       #el._open = false if el.parent_id != '1';
       if false
         el.dates = {

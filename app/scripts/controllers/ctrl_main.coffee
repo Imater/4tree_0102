@@ -13,6 +13,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     p_plan_of_day_open: true
     top_parent_id: 'no parent'
     main_parent_id: []
+    tree_loaded: false
     show_path_panel: false
     show_pomidor_timer: false
     show_right_menu: true
@@ -102,6 +103,11 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
         off: true
         icon: 'icon-cancel-circle'
         template: ''        
+      }
+      {
+        title: 'Дерево с подгрузкой'
+        icon: 'icon-cancel-circle'
+        template: 'views/subviews/view_main/view_tree_exp.html'        
       }
     ]
     refresh: 0

@@ -24,6 +24,17 @@ angular.module("4treeApp").directive "oneNote", ()->
   #  console.info 'link!!!';
 
 
+angular.module("4treeApp").directive "renderNote", ($timeout, db_tree)->
+  restrict: "E"
+  require: "?ngModel"
+  template: ""
+  link: (scope, el, attr, ngModel) ->
+    ngModel.$render = ->
+      title = ngModel.$viewValue.title
+      el.html title or ""
+
+
+
 angular.module("4treeApp").directive "renderTime", ($timeout)->
   link: (scope, el, attr) ->
     console.time 'renderTimeALL'
