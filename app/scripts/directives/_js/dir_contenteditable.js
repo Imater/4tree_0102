@@ -20,10 +20,9 @@
         ngModel.$render = function() {
           return element.html(ngModel.$viewValue || "");
         };
-        element.on("blur keyup change", function() {
+        return element.on("blur keyup change", function() {
           return scope.$apply(readViewText);
         });
-        return element.on('$destroy', function() {});
       }
     };
   });

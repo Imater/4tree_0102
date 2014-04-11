@@ -13,8 +13,22 @@ angular.module("4treeApp").directive "myDraggable", ->
     #el.disableSelection()
     return
 
+mytmpl = '<div class="tree_tmpl" my-draggable=".sortable" data-id="{{tree._id}}" render-time> <div ng-controller="save_tree_db" class="tree_wrap" ng-class="{open:tree.panel[panel_id]._open, folder:tree._childs, active:(db.main_node[panel_id]._id==tree._id)}" ng-click="db.main_node[panel_id] = tree"> <div class="col1"> <div class="is_folder" ng-click="tree.panel[panel_id]._open=!tree.panel[panel_id]._open"></div> </div> <div class="col2" title="{{tree._childs}}" ng-click="set.main_parent_id[panel_id] = tree._id" style="background:{{tree.color}};" ng-class="{tree_new:tree._new}"> <i class="{{fn.service.db_tree.getIcon(tree)}}" style="color: {{tree.icon_color}};"></i> </div> <div class="col3"> <div class="title"> <span contenteditable="true" class="contenteditable" ng-model="tree.title" focus-me="tree._focus_me" hotkey="{\'Enter\':fn.service.db_tree.jsEnterPress,\'Esc\':fn.service.db_tree.jsEscPress}" ng-blur="fn.service.db_tree.jsBlur($event, undefined, tree)" tabindex="-1"></span> <span class="cnt" ng-if="tree._childs">({{tree._childs}})</span> </div> </div> <div class="col4" ng-click="fn.service.db_tree.jsAddNote(tree); $event.stopPropagation();"> <div class="col4table"> <i class="icon-plus"></i> </div> </div> </div> </div>'
+
+angular.module("4treeApp").directive "oneNote", ()->
+  restrict: "E" # only activate on element attribute  
+  scope: false
+  #template: "<div style='font-size:10px'>{{tree.title}}</div>"
+  templateUrl: 'views/subviews/view_one_line0.html'
+  #link: (scope, el, attr) ->
+  #  console.info 'link!!!';
 
 
+angular.module("4treeApp").directive "renderTime", ($timeout)->
+  link: (scope, el, attr) ->
+    console.time 'renderTimeALL'
+    $timeout ()->
+      console.timeEnd 'renderTimeALL'
 
 
 angular.module("4treeApp").directive "mySortable", ->

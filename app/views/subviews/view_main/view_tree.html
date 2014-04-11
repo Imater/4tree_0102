@@ -23,35 +23,18 @@
 
         <div class="main_tree notselectable2"> 
 
-          <ul ng-if="panel_id==2" my-sortable class="sortable" data-parent-id="set.main_parent_id[panel_id]">
-              <li class="tree2" ng-repeat="tree in fn.jsFindByParent('534020016b84290000acf9d2')">
-                  <div my-draggable=".sortable" class="tree_tmpl" data-id="{{tree._id}}" ng-include="'views/subviews/view_one_line2.html'"></div>
-              </li>
+          <ul ng-if="set.main_parent_id[panel_id]" frang-tree my-sortable class="sortable" data-parent-id="{{set.main_parent_id[panel_id]}}">
+            <li class="tree2" frang-tree-repeat="tree in fn.service.db_tree.jsFindByParent(set.main_parent_id[panel_id])">
+                {{tree._id}}
+                <!--<div ng-include="'views/subviews/view_one_line0.html'"></div>-->
+                <one-note render-time></one-note>
+                <ul ng-if="tree._childs>0&&tree.panel[panel_id]._open"
+                    frang-tree-insert-children="fn.service.db_tree.jsFindByParent(tree._id)" my-sortable class="sortable" data-parent-id="{{tree._id}}">
+
+                </ul>
+            </li>
           </ul>
 
-
-        <ul ng-if="panel_id==1" frang-tree my-sortable class="sortable" data-parent-id="534020016b84290000acf9d2">
-          <li class="tree2" frang-tree-repeat="tree in fn.service.db_tree.jsFindByParent('534020016b84290000acf9d2')">
-              {{tree._id}}
-              <div ng-include="'views/subviews/view_one_line0.html'"></div>
-              <ul ng-if="tree.panel[panel_id]._open"
-                  frang-tree-insert-children="fn.service.db_tree.jsFindByParent(tree._id)" my-sortable class="sortable" data-parent-id="{{tree._id}}">
-
-              </ul>
-          </li>
-        </ul>
-
-
-        <my-tree-childs ng-if="false" tree="fn.service.db_tree.jsFindByParent('534020016b84290000acf9d2')" fn="fn" set="set" db="db" panelid="panel_id">
-        </my-tree-childs>
-
-
-            <ul ng-if="false" my-sortable class="sortable" data-parent-id="{{set.main_parent_id[panel_id]}}">
-                <li class="tree2" ng-repeat="tree in fn.jsFindByParent(set.main_parent_id[panel_id]);">
-                    <div my-draggable=".sortable" data-id="{{tree._id}}" class="tree_tmpl" ng-include2="'views/subviews/view_one_line2.html'"></div>
-                    <div my-tree8="tree" tree="tree" fn="fn" set="set" db="db" panelid="panel_id"></div>
-                </li>
-            </ul>
         </div>
                             
     </div>
@@ -60,6 +43,43 @@
 
 
 <!-- Begin Templates -->
+
+
+<script type="text/ng-template" id="views/subviews/view_one_line0.html">
+  <div class="tree_tmpl" my-draggable=".sortable" data-id="{{tree._id}}" render-time>
+    <div ng-controller="save_tree_db" class="tree_wrap" ng-class="{open:tree.panel[panel_id]._open, folder:tree._childs, active:(db.main_node[panel_id]._id==tree._id)}" ng-click="db.main_node[panel_id] = tree">
+        <div class="col1">
+          <div class="is_folder" ng-click="tree.panel[panel_id]._open=!tree.panel[panel_id]._open"></div>
+        </div>
+        <div class="col2" title="{{tree._childs}}" ng-click="set.main_parent_id[panel_id] = tree._id" style="background:{{tree.color}};" ng-class="{tree_new:tree._new}">
+          <i class="{{fn.service.db_tree.getIcon(tree)}}" style="color: {{tree.icon_color}};"></i>
+        </div>
+        <div class="col3">
+            <div class="title">
+                 <span contenteditable="true" class="contenteditable" ng-model="tree.title" focus-me="tree._focus_me" hotkey="{'Enter':fn.service.db_tree.jsEnterPress,'Esc':fn.service.db_tree.jsEscPress}" ng-blur="fn.service.db_tree.jsBlur($event, undefined, tree)" tabindex="-1"></span>
+                 <span class="cnt" ng-if="tree._childs">({{tree._childs}})</span>
+            </div>    
+        </div>        
+        <div class="col4" ng-click="fn.service.db_tree.jsAddNote(tree); $event.stopPropagation();">
+          <div class="col4table">
+            <i class="icon-plus"></i>
+          </div>
+        </div>
+    </div>
+  </div>
+</script>
+
+
+<!--
+<script type="text/ng-template" id="views/subviews/view_one_line3.html">
+  <div>
+    <div style="font-size: 10px" ng-repeat="tree2 in fn.jsFindByParent(tree._id)">
+      <div my-tree="tree" tree="tree2" fn="fn" set="set" db="db" panelid="panel_id"></div>      
+    </div>
+  </div>
+</script>
+
+
 <script type="text/ng-template" id="views/subviews/view_one_line2.html">
   <div class="tree_tmpl">
     <div ng-controller="save_tree_db" class="tree_wrap" ng-class="{open:tree.panel[panel_id]._open, folder:tree._childs, active:(db.main_node[panel_id]._id==tree._id)}" ng-click="db.main_node[panel_id] = tree">
@@ -90,40 +110,24 @@
   </div>
 
 </script>
+-->
+          <!--
+          <ul ng-if="false" my-sortable class="sortable" data-parent-id="set.main_parent_id[panel_id]">
+              <li class="tree2" ng-repeat="tree in fn.jsFindByParent('534020016b84290000acf9d2')">
+                  <div my-draggable=".sortable" class="tree_tmpl" data-id="{{tree._id}}" ng-include="'views/subviews/view_one_line2.html'"></div>
+              </li>
+          </ul>
+
+          <my-tree-childs ng-if="false" tree="fn.service.db_tree.jsFindByParent('534020016b84290000acf9d2')" fn="fn" set="set" db="db" panelid="panel_id">
+          </my-tree-childs>
 
 
-<script type="text/ng-template" id="views/subviews/view_one_line0.html">
-  <div class="tree_tmpl" my-draggable=".sortable" data-id="{{tree._id}}">
-    <div ng-controller="save_tree_db" class="tree_wrap" ng-class="{open:tree.panel[panel_id]._open, folder:tree._childs, active:(db.main_node[panel_id]._id==tree._id)}" ng-click="db.main_node[panel_id] = tree">
-        <div class="col1">
-          <div class="is_folder" ng-click="tree.panel[panel_id]._open=!tree.panel[panel_id]._open"></div>
-        </div>
-        <div class="col2" title="{{tree._childs}}" ng-click="set.main_parent_id[panel_id] = tree._id" style="background:{{tree.color}};" ng-class="{tree_new:tree._new}">
-          <i class="{{fn.service.db_tree.getIcon(tree)}}" style="color: {{tree.icon_color}};"></i>
-        </div>
-        <div class="col3">
-            <div class="title">
-                 <span contenteditable="true" class="contenteditable" ng-model="tree.title" focus-me="tree._focus_me" hotkey="{'Enter':fn.service.db_tree.jsEnterPress,'Esc':fn.service.db_tree.jsEscPress}" ng-blur="fn.service.db_tree.jsBlur($event, undefined, tree)" tabindex="-1"></span>
-                 <span class="cnt" ng-if="tree._childs">({{tree._childs}})</span>
-                 {{888}}
-            </div>    
-        </div>        
-        <div class="col4" ng-click="fn.service.db_tree.jsAddNote(tree); $event.stopPropagation();">
-          <div class="col4table">
-            <i class="icon-plus"></i>
-          </div>
-        </div>
-    </div>
-  </div>
-</script>
-
-
-<script type="text/ng-template" id="views/subviews/view_one_line3.html">
-  <div>
-    <div style="font-size: 10px" ng-repeat="tree2 in fn.jsFindByParent(tree._id)">
-      <div my-tree="tree" tree="tree2" fn="fn" set="set" db="db" panelid="panel_id"></div>      
-    </div>
-  </div>
-</script>
+            <ul ng-if="false" my-sortable class="sortable" data-parent-id="{{set.main_parent_id[panel_id]}}">
+                <li class="tree2" ng-repeat="tree in fn.jsFindByParent(set.main_parent_id[panel_id]);">
+                    <div my-draggable=".sortable" data-id="{{tree._id}}" class="tree_tmpl" ng-include2="'views/subviews/view_one_line2.html'"></div>
+                    <div my-tree8="tree" tree="tree" fn="fn" set="set" db="db" panelid="panel_id"></div>
+                </li>
+            </ul>
+            -->
 
 <!-- End Templates -->

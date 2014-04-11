@@ -31,7 +31,6 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       @_cache = {}
     if(!@_db.tree)
       @_db.tree = [
-        {id:0, parent: -1, title: {v: "4tree", _t: new Date()}, icon: 'icon-record', _open: false, _childs: 5}
       ]
       @refreshParentsIndex();
   clearCache: ()->
@@ -106,7 +105,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       el.importance = if el.importance then el.importance else 50;
       el.tags = if el.tags then el.tags else [];
       el.counters = cnt;
-      el.panel = [{_open:false}, {_open:false}, {_open:false}, {_open:false}] if !el.panel
+      el.panel = [{_open:false}, {_open:true}, {_open:false}, {_open:false}] if !el.panel
       #el._open = false if el.parent_id != '1';
       if false
         el.dates = {
@@ -119,7 +118,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       mythis.db_parents[parent].push( el ); 
       return true
 
-    _.each mythis._db.tree, (el)->
+    console.info "FIRST = ", mythis._db.tree[0]
+
+    _.each mythis._db.tree, (el, key)->
+      console.info "path", el._id, el._path, key if !el._id
       parent = 'n' + el._id
       if mythis.db_parents[parent]
         el._childs = mythis.db_parents[parent].length

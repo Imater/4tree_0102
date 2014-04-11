@@ -47,19 +47,7 @@
             this._cache = {};
           }
           if (!this._db.tree) {
-            this._db.tree = [
-              {
-                id: 0,
-                parent: -1,
-                title: {
-                  v: "4tree",
-                  _t: new Date()
-                },
-                icon: 'icon-record',
-                _open: false,
-                _childs: 5
-              }
-            ];
+            this._db.tree = [];
             return this.refreshParentsIndex();
           }
         },
@@ -196,7 +184,7 @@
                 {
                   _open: false
                 }, {
-                  _open: false
+                  _open: true
                 }, {
                   _open: false
                 }, {
@@ -217,8 +205,12 @@
             mythis.db_parents[parent].push(el);
             return true;
           });
-          _.each(mythis._db.tree, function(el) {
+          console.info("FIRST = ", mythis._db.tree[0]);
+          _.each(mythis._db.tree, function(el, key) {
             var parent;
+            if (!el._id) {
+              console.info("path", el._id, el._path, key);
+            }
             parent = 'n' + el._id;
             if (mythis.db_parents[parent]) {
               el._childs = mythis.db_parents[parent].length;
