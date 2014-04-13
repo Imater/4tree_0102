@@ -74,7 +74,14 @@
           }
         },
         clearCache: function() {
-          return _.each(this, function(fn) {
+          _.each(this, function(fn) {
+            if (fn) {
+              return fn.cache = {};
+            }
+          });
+          console.info('clear_cache');
+          return _.each($rootScope.$$childTail.fn.service.calendarBox, function(fn) {
+            console.info('fn');
             if (fn) {
               return fn.cache = {};
             }
@@ -251,9 +258,8 @@
               return emit(doc.date, doc.title, doc);
             }
           };
-          this.newView('tree', 'by_date', mymap);
           mymap_calendar = function(doc, emit) {
-            if (doc.date2) {
+            if (doc != null ? doc.date2 : void 0) {
               return emit(doc.date2, doc, doc);
             }
           };
@@ -526,7 +532,7 @@
               view.rows = [];
             }
             view.rows.push({
-              id: doc._id,
+              _id: doc._id,
               key: key,
               value: value
             });
@@ -558,74 +564,89 @@
         refreshView: function(db_name, ids, new_value, old_value) {
           var mythis;
           mythis = this;
-          return _.each(ids, function(id) {
-            return _.each(mythis._cache[db_name].views, function(view) {
+          _.each(ids, function(id) {
+            var _ref;
+            return _.each((_ref = mythis._cache[db_name]) != null ? _ref.views : void 0, function(view) {
+              console.info('view', view);
               return view.invalid.push(id);
             });
           });
+          return this.clearCache();
         },
         loadTasks: function() {
           return this._db.tasks = [
             {
-              id: 0,
+              _id: 0,
               tree_id: '1034',
               date1: new Date(2014, 2, 31),
               date2: new Date(2014, 2, 31, 8, 30),
               title: 'Записаться в бассейн, это очень важно и нужно это сделать очень срочно, потомучто плавать это круто и всем нравится и это очень даже прикольно'
             }, {
-              id: 1,
+              _id: 1,
               tree_id: '1034',
               date1: new Date(2014, 3, 4, 12, 30, 0),
               date2: new Date(2014, 3, 4, 10, 30, 0),
               title: 'Начало сериала на ТНТ про дружбу народов',
               did: new Date()
             }, {
-              id: 2,
+              _id: 2,
               tree_id: '1034',
               date1: new Date(2013, 2, 3),
               date2: new Date(2014, 3, 4, 17, 30, 0),
               title: 'Как жизнь? написать письмо',
               did: new Date()
             }, {
-              id: 3,
+              _id: 3,
               tree_id: '1034',
               date1: new Date(2014, 1, 4, 12, 30, 0),
               date2: new Date(2014, 3, 2, 18, 30, 0),
               title: 'Урал край голубых озёр - написать статью'
             }, {
-              id: 4,
+              _id: 4,
               tree_id: '1034',
               date1: new Date(new Date().getTime() - 1000 * 60 * 220),
               date2: new Date(new Date().getTime() - 1000 * 60 * 220),
               title: 'Двадцать минут назад я тут был :) И мне тут понравилось.'
             }, {
-              id: 5,
+              _id: 5,
               tree_id: '1034',
               date1: '',
               date2: new Date(2014, 3, 8, 12, 30, 0),
               title: 'Как жизнь? написать письмо'
             }, {
-              id: 8,
+              _id: 8,
               tree_id: '1034',
               date1: '',
               date2: new Date(2014, 3, 8, 12, 30, 0),
               title: 'Нужно купить Мартини'
             }, {
-              id: 6,
+              _id: 6,
               tree_id: '1034',
               date1: new Date(new Date().getTime() + 1000 * 60 * 20),
               date2: new Date(new Date().getTime() + 1000 * 60 * 20),
               title: 'Через 20 минут выходим и нам нужно ехать будет в театр'
             }, {
-              id: -1,
+              _id: -1,
               tree_id: '2138',
               date1: new Date(2014, 2, 29),
               date2: new Date(2014, 2, 29, 14, 20),
               title: 'Очень важное дело, которое нужно сделать сегодня'
+            }, {
+              _id: 11,
+              tree_id: '2138',
+              date1: new Date(2014, 4, 12),
+              date2: new Date(2014, 4, 12, 14, 20),
+              title: 'День рождения Жени'
+            }, {
+              _id: 12,
+              tree_id: '2138',
+              date1: new Date(2014, 4, 12),
+              date2: new Date(2014, 4, 18, 14, 20),
+              title: 'День рождения Вали'
             }
           ];
         },
-        clearCache: function() {
+        clearCache2: function() {
           return _.each(this, function(fn) {
             if (fn) {
               return fn.cache = {};

@@ -773,8 +773,8 @@ h10.open:before {
   position: absolute;
   top: 100px;
   left: 100px;
-  width: 300px;
-  height: 250px;
+  width: 450px;
+  height: 350px;
   background: #ebffe1;
   -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
@@ -1478,6 +1478,10 @@ h10.open:before {
   border: 1px solid rgba(128, 128, 128, 0.3);
   background: rgba(128, 128, 128, 0.2);
   margin: 16px 5px;
+}
+/* line 134, ../sass/_calendar_boxes.scss */
+.calendar_box_wrap .calendar_box .minitasks_ol .time_element.set_task {
+  background: #FFF;
 }
 
 /* -------------------------------------------------------------
@@ -3936,18 +3940,258 @@ h10.open:before {
   display: none;
 }
 
-/* line 68, ../sass/_main.scss */
+/* -------------------------------------------------------------
+  Sass CSS3 Mixins! The Cross-Browser CSS3 Sass Library
+  By: Matthieu Aussaguel, http://www.mynameismatthieu.com, @matthieu_tweets
+
+  List of CSS3 Sass Mixins File to be @imported and @included as you need
+
+  The purpose of this library is to facilitate the use of CSS3 on different browsers avoiding HARD TO READ and NEVER
+  ENDING css files
+
+  note: All CSS3 Properties are being supported by Safari 5
+  more info: http://www.findmebyip.com/litmus/#css3-properties
+
+  Mixins available:
+    -   background-gradient     - arguments: Start Color: #3C3C3C, End Color: #999999
+    -   background-size         - arguments: Width: 100%, Height: 100%
+    -   border-radius           - arguments: Radius: 5px
+    -   border-radius-separate  - arguments: Top Left: 5px, Top Left: 5px, Bottom Left: 5px, Bottom Right: 5px
+    -   box                     - arguments: Orientation: horizontal, Pack: center, Align: center
+    -   box-rgba                - arguments: R: 60, G: 3, B: 12, Opacity: 0.23, Color: #3C3C3C
+    -   box-shadow              - arguments: X: 2px, Y: 2px, Blur: 5px, Color: rgba(0,0,0,.4)
+    -   box-sizing              - arguments: Type: border-box
+    -   columns                 - arguments: Count: 3, Gap: 10
+    -   double-borders          - arguments: Color One: #3C3C3C, Color Two: #999999, Radius: 0
+    -   flex                    - arguments: Value: 1
+    -   flip                    - arguments: ScaleX: -1
+    -   font-face               - arguments: Font Family: myFont, Eot File Src: myFont.eot, Woff File Src: myFont.woff, Ttf File Src: myFont.ttf
+    -   opacity                 - arguments: Opacity: 0.5
+    -   outline radius          - arguments: Radius: 5px
+    -   resize                  - arguments: Direction: both
+    -   rotate                  - arguments: Degree: 0, M11: 0, M12: 0, M21: 0, M22: 0
+    CSS Matrix Rotation Calculator http://www.boogdesign.com/examples/transforms/matrix-calculator.html
+    -   text-shadow             - arguments: X: 2px, Y: 2px, Blur: 5px, Color: rgba(0,0,0,.4)
+    -   transform               - arguments: Parameters: null
+    -   transition              - arguments: What: all, Length: 1s, Easing: ease-in-out
+    -   triple-borders          - arguments: Color One: #3C3C3C, Color Two: #999999, Color Three: #000000, Radius: 0
+
+------------------------------------------------------------- */
+/* BACKGROUND GRADIENT */
+/* BACKGROUND SIZE */
+/* BORDER RADIUS */
+/* BOX */
+/* BOX RGBA */
+/* BOX SHADOW */
+/* BOX SIZING */
+/* COLUMNS */
+/* DOUBLE BORDERS */
+/* FLEX */
+/* FLIP */
+/* FONT FACE */
+/* OPACITY 
+@mixin opacity($opacity: 0.5) {
+    filter:         alpha(opacity=($opacity * 100));
+    -ms-filter:     "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ($opacity * 100) + ")";
+    -moz-opacity:   $opacity;
+    -khtml-opacity: $opacity;
+    opacity:        $opacity;
+}
+*/
+/* OUTLINE RADIUS */
+/* RESIZE */
+/* ROTATE*/
+/* TEXT SHADOW */
+/* TRANSFORM  */
+/* TRANSITION */
+/* TRIPLE BORDERS */
+/* line 6, ../sass/_datetimepicker.scss */
+.datetimeinput {
+  text-align: center;
+  white-space: nowrap;
+}
+/* line 9, ../sass/_datetimepicker.scss */
+.datetimeinput .dt_wrap {
+  display: inline-block;
+}
+/* line 11, ../sass/_datetimepicker.scss */
+.datetimeinput .dt_wrap i {
+  display: block;
+}
+/* line 13, ../sass/_datetimepicker.scss */
+.datetimeinput .dt_wrap i:before {
+  margin: 0;
+}
+/* line 17, ../sass/_datetimepicker.scss */
+.datetimeinput .dt_wrap input {
+  outline: none;
+  width: auto;
+  border: none;
+  background: #EEE;
+  text-align: center;
+  -webkit-appearance: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+/* line 32, ../sass/_datetimepicker.scss */
+.datetimepicker th {
+  font-size: 1.1em;
+  text-align: center;
+}
+/* line 36, ../sass/_datetimepicker.scss */
+.datetimepicker th:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+/* line 41, ../sass/_datetimepicker.scss */
+.datetimepicker th .up:before {
+  content: '\25b4';
+  display: inline-block;
+  color: #888;
+  width: 1em;
+  height: 1em;
+  font-family: "fontello";
+}
+/* line 49, ../sass/_datetimepicker.scss */
+.datetimepicker th .down:before {
+  content: '\25be';
+  display: inline-block;
+  color: #888;
+  width: 1em;
+  height: 1em;
+  font-family: "fontello";
+}
+/* line 58, ../sass/_datetimepicker.scss */
+.datetimepicker .margin_right {
+  width: 16px;
+  background: none;
+}
+/* line 62, ../sass/_datetimepicker.scss */
+.datetimepicker td {
+  background: #FFF;
+  font-weight: bold;
+  font-size: 1.2em;
+  padding: 4px 8px;
+}
+/* line 63, ../sass/_datetimepicker.scss */
+.datetimepicker td.remark {
+  background: none;
+  font-size: 1em;
+}
+
+/* -------------------------------------------------------------
+  Sass CSS3 Mixins! The Cross-Browser CSS3 Sass Library
+  By: Matthieu Aussaguel, http://www.mynameismatthieu.com, @matthieu_tweets
+
+  List of CSS3 Sass Mixins File to be @imported and @included as you need
+
+  The purpose of this library is to facilitate the use of CSS3 on different browsers avoiding HARD TO READ and NEVER
+  ENDING css files
+
+  note: All CSS3 Properties are being supported by Safari 5
+  more info: http://www.findmebyip.com/litmus/#css3-properties
+
+  Mixins available:
+    -   background-gradient     - arguments: Start Color: #3C3C3C, End Color: #999999
+    -   background-size         - arguments: Width: 100%, Height: 100%
+    -   border-radius           - arguments: Radius: 5px
+    -   border-radius-separate  - arguments: Top Left: 5px, Top Left: 5px, Bottom Left: 5px, Bottom Right: 5px
+    -   box                     - arguments: Orientation: horizontal, Pack: center, Align: center
+    -   box-rgba                - arguments: R: 60, G: 3, B: 12, Opacity: 0.23, Color: #3C3C3C
+    -   box-shadow              - arguments: X: 2px, Y: 2px, Blur: 5px, Color: rgba(0,0,0,.4)
+    -   box-sizing              - arguments: Type: border-box
+    -   columns                 - arguments: Count: 3, Gap: 10
+    -   double-borders          - arguments: Color One: #3C3C3C, Color Two: #999999, Radius: 0
+    -   flex                    - arguments: Value: 1
+    -   flip                    - arguments: ScaleX: -1
+    -   font-face               - arguments: Font Family: myFont, Eot File Src: myFont.eot, Woff File Src: myFont.woff, Ttf File Src: myFont.ttf
+    -   opacity                 - arguments: Opacity: 0.5
+    -   outline radius          - arguments: Radius: 5px
+    -   resize                  - arguments: Direction: both
+    -   rotate                  - arguments: Degree: 0, M11: 0, M12: 0, M21: 0, M22: 0
+    CSS Matrix Rotation Calculator http://www.boogdesign.com/examples/transforms/matrix-calculator.html
+    -   text-shadow             - arguments: X: 2px, Y: 2px, Blur: 5px, Color: rgba(0,0,0,.4)
+    -   transform               - arguments: Parameters: null
+    -   transition              - arguments: What: all, Length: 1s, Easing: ease-in-out
+    -   triple-borders          - arguments: Color One: #3C3C3C, Color Two: #999999, Color Three: #000000, Radius: 0
+
+------------------------------------------------------------- */
+/* BACKGROUND GRADIENT */
+/* BACKGROUND SIZE */
+/* BORDER RADIUS */
+/* BOX */
+/* BOX RGBA */
+/* BOX SHADOW */
+/* BOX SIZING */
+/* COLUMNS */
+/* DOUBLE BORDERS */
+/* FLEX */
+/* FLIP */
+/* FONT FACE */
+/* OPACITY 
+@mixin opacity($opacity: 0.5) {
+    filter:         alpha(opacity=($opacity * 100));
+    -ms-filter:     "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ($opacity * 100) + ")";
+    -moz-opacity:   $opacity;
+    -khtml-opacity: $opacity;
+    opacity:        $opacity;
+}
+*/
+/* OUTLINE RADIUS */
+/* RESIZE */
+/* ROTATE*/
+/* TEXT SHADOW */
+/* TRANSFORM  */
+/* TRANSITION */
+/* TRIPLE BORDERS */
+/* line 7, ../sass/_week_calendar.scss */
+.big_week_calendar .week_calendar_ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+/* line 11, ../sass/_week_calendar.scss */
+.big_week_calendar .week_calendar_ul .day_li {
+  display: table;
+  border: none;
+  border-collapse: collapse;
+  table-layout: fixed;
+  height: 100px;
+  width: 100%;
+}
+/* line 18, ../sass/_week_calendar.scss */
+.big_week_calendar .week_calendar_ul .day_li .week_line {
+  display: table-row;
+  width: 100%;
+}
+/* line 21, ../sass/_week_calendar.scss */
+.big_week_calendar .week_calendar_ul .day_li .week_line .week_day {
+  display: table-cell;
+  border: 1px solid #EEE;
+  border-top: none;
+}
+/* line 25, ../sass/_week_calendar.scss */
+.big_week_calendar .week_calendar_ul .day_li .week_line .week_day .one_task {
+  font-size: 10px;
+  white-space: normal;
+}
+/* line 28, ../sass/_week_calendar.scss */
+.big_week_calendar .week_calendar_ul .day_li .week_line .week_day .one_task span {
+  outline: none;
+}
+
+/* line 72, ../sass/_main.scss */
 .wrapper_line {
   position: relative;
   white-space: nowrap;
 }
-/* line 71, ../sass/_main.scss */
+/* line 75, ../sass/_main.scss */
 .wrapper_line .box {
   display: inline-block;
   width: 30px;
   min-height: 30px;
 }
-/* line 76, ../sass/_main.scss */
+/* line 80, ../sass/_main.scss */
 .wrapper_line .box:before {
   content: '';
   position: absolute;
@@ -3958,13 +4202,13 @@ h10.open:before {
   top: 0px;
   background: green;
 }
-/* line 86, ../sass/_main.scss */
+/* line 90, ../sass/_main.scss */
 .wrapper_line .title_wrap {
   vertical-align: top;
   display: inline-block;
   line-height: 15px;
 }
-/* line 90, ../sass/_main.scss */
+/* line 94, ../sass/_main.scss */
 .wrapper_line .title_wrap .title {
   content: "";
   min-width: 60px;

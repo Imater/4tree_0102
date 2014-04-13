@@ -6,7 +6,7 @@
         }"
         >
 
-    <hotkey bind="{'Tab':fn.service.db_tree.jsTabPress, 'shift + tab':fn.service.db_tree.jsTabPress, 'down':fn.service.db_tree.jsDownPress, 'up':fn.service.db_tree.jsUpPress, 'right':fn.service.db_tree.jsRightPress, 'left':fn.service.db_tree.jsLeftPress}"></hotkey>
+    <hotkey2 bind="{'Tab':fn.service.db_tree.jsTabPress, 'shift + tab':fn.service.db_tree.jsTabPress, 'down':fn.service.db_tree.jsDownPress, 'up':fn.service.db_tree.jsUpPress, 'right':fn.service.db_tree.jsRightPress, 'left':fn.service.db_tree.jsLeftPress}"></hotkey2>
 
     <hotkey bind="{'Alt + 0':fn.service.db_tree.jsFocus1,'Alt + 1':fn.service.db_tree.jsFocus2,'Alt + 2':fn.service.db_tree.jsFocus3,'Alt + 3':fn.service.db_tree.jsFocus4}"
 
@@ -127,10 +127,12 @@
 
 
     </div>
-    <div class="settings_task" ng-if="set.set_task">
+    <div class="settings_task" ng-if="set.set_task||false" ng-controller="save_task_db">
       <div class="pull-right" ng-click="set.set_task = undefined">закрыть</div>
-      <input ng-model="set.set_task.date1">
-      <input ng-model="set.set_task.date2">
+      <br>
+      <date-time-input ng-model="set.set_task.date1"></date-time-input>
+      <date-time-input ng-model="set.set_task.date2"></date-time-input>
+
       <div contenteditable="true" ng-model="set.set_task.title"></div>
     </div>
 </div>

@@ -149,7 +149,7 @@
         },
         getToDoForIndex: function($date) {
           var date, element, key;
-          date = new Date($rootScope.$$childHead.set.today_date);
+          date = new Date($date);
           element = {};
           key = moment(date).format('YYYY-MM-DD');
           element.tasks = db_tree.getView('tasks', 'tasks_by_date').result[key];
@@ -162,7 +162,33 @@
             return task.time;
           });
           return element;
-        }
+        },
+        getWeekCalendarForIndex: _.memoize(function($index) {
+          var date, month, mythis, today, week;
+          mythis = this;
+          today = new Date().getTime();
+          date = new Date(today + 24 * 60 * 60 * 1000 * ($index * 7));
+          month = date.getMonth();
+          week = [{}, {}, {}, {}, {}, {}, {}];
+          _.each([1, 2, 3, 4, 5, 6, 7], function(week_day) {
+            var tasks;
+            date = new Date(today + 24 * 60 * 60 * 1000 * ($index * 7 + week_day));
+            tasks = mythis.getToDoForIndex(date);
+            if (month === date.getMonth()) {
+              week[date.getDay()] = {
+                date: date.getDate() + '.' + (date.getMonth() + 1),
+                tasks: tasks
+              };
+            } else {
+              week[date.getDay()] = {
+                date: 'X',
+                tasks: []
+              };
+            }
+            return month = date.getMonth();
+          });
+          return week;
+        })
       };
     }
   ]);

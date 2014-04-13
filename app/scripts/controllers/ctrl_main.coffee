@@ -21,8 +21,8 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     calendar_box_template: 'views/subviews/view_calendar_box.html'
     panel: [
       {active: 7} #0  
-      {active: 0} #1   0-дерево 1-карточки 2-mindmap 3-divider 4-календарь 5-редактор 6-none
-      {active: 5} #2
+      {active: 6} #1   0-дерево 1-карточки 2-mindmap 3-divider 4-календарь 5-редактор 6-none
+      {active: 7} #2
       {active: 0} #3
     ]
     autosync_on: true
@@ -105,9 +105,9 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
         template: ''        
       }
       {
-        title: 'Дерево с подгрузкой'
-        icon: 'icon-cancel-circle'
-        template: 'views/subviews/view_main/view_tree_exp.html'        
+        title: 'Неделя'
+        icon: 'icon-calendar'
+        template: 'views/subviews/view_main/view_week_calendar.html'        
       }
     ]
     refresh: 0
@@ -607,8 +607,14 @@ angular.module("4treeApp").controller "save_tree_db", ($scope, syncApi, db_tree)
   $scope.$watchCollection "tree", (new_value, old_value)->
     if !_.isEqual( new_value, old_value )
       syncApi.jsFindChangesForSync(new_value, old_value);
-      db_tree.refreshView('tree', [old_value.id], new_value, old_value)
+      db_tree.refreshView('tree', [old_value._id], new_value, old_value)
 
+
+angular.module("4treeApp").controller "save_task_db", ($scope, syncApi, db_tree)->
+
+  $scope.$watchCollection "set.set_task", (new_value, old_value)->
+    if !_.isEqual( new_value, old_value )
+      db_tree.refreshView('tasks', [new_value._id], new_value, old_value)
 
 
 

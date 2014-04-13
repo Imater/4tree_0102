@@ -24,9 +24,9 @@
           {
             active: 7
           }, {
-            active: 0
+            active: 6
           }, {
-            active: 5
+            active: 7
           }, {
             active: 0
           }
@@ -97,9 +97,9 @@
             icon: 'icon-cancel-circle',
             template: ''
           }, {
-            title: 'Дерево с подгрузкой',
-            icon: 'icon-cancel-circle',
-            template: 'views/subviews/view_main/view_tree_exp.html'
+            title: 'Неделя',
+            icon: 'icon-calendar',
+            template: 'views/subviews/view_main/view_week_calendar.html'
           }
         ],
         refresh: 0,
@@ -513,7 +513,15 @@
     return $scope.$watchCollection("tree", function(new_value, old_value) {
       if (!_.isEqual(new_value, old_value)) {
         syncApi.jsFindChangesForSync(new_value, old_value);
-        return db_tree.refreshView('tree', [old_value.id], new_value, old_value);
+        return db_tree.refreshView('tree', [old_value._id], new_value, old_value);
+      }
+    });
+  });
+
+  angular.module("4treeApp").controller("save_task_db", function($scope, syncApi, db_tree) {
+    return $scope.$watchCollection("set.set_task", function(new_value, old_value) {
+      if (!_.isEqual(new_value, old_value)) {
+        return db_tree.refreshView('tasks', [new_value._id], new_value, old_value);
       }
     });
   });

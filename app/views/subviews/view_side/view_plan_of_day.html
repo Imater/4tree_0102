@@ -1,11 +1,11 @@
 <div class="plan_of_day">
-	<center><b>{{set.today_date}}</b></center>
+  <date-time-input ng-model="set.today_date"></date-time-input>
 	<h10 class="open">дела на сегодня ({{todo1.length}})</h10>
 	<ul>
-		<li ng-repeat="the_do in todo1 = fn.service.calendarBox.getToDoForIndex().tasks" class="{{the_do.myclass}}" ng-click="set.set_task = the_do">
+		<li ng-repeat="the_do in todo1 = fn.service.calendarBox.getToDoForIndex(set.today_date).tasks" class="{{the_do.myclass}}" ng-click="set.set_task = the_do">
 			<span class="col1 time">{{the_do.time}}</span>
 			<span class="col2">
-				<span class="title">{{the_do.title}}</span>
+				<span contenteditable="true" ng-model="the_do.title" class="title"></span>
 			</span>
 		</li>
 		<li class="add_do">
@@ -35,3 +35,27 @@
 	</div>
 
 </div>
+
+
+<!-- Begin Templates -->
+<script type="text/ng-template" id="datetimeinput.html">
+  <div class="datetimeinput">
+    <div class="dt_wrap">
+      <i class="icon-up-dir"></i>
+      <input class="day" size="2" only-digits>
+      <i class="icon-down-dir"></i>
+    </div>
+
+    <div class="dt_wrap">
+      <i class="icon-up-dir"></i>
+      <input class="month" size="5">
+      <i class="icon-down-dir"></i>
+    </div>
+
+    <div class="dt_wrap">
+      <i class="icon-up-dir"></i>
+      <input class="year" size="4">
+      <i class="icon-down-dir"></i>
+    </div>
+  </div>
+</script>

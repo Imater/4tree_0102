@@ -91,7 +91,7 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', '$ro
       task.time;
     element
   getToDoForIndex: ($date)->
-    date = new Date($rootScope.$$childHead.set.today_date);
+    date = new Date($date);
     element = {};
     key = moment(date).format('YYYY-MM-DD');
     element.tasks = db_tree.getView('tasks', 'tasks_by_date').result[key]
@@ -104,6 +104,21 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', '$ro
 
   #, ($index) ->
   #  $rootScope.$$childHead.set.from_today_index+$index
+  getWeekCalendarForIndex: _.memoize ($index)->
+    mythis = @;
+    today = new Date().getTime();
+    date = new Date(today + 24*60*60*1000 * ($index*7) );
+    month = date.getMonth();
+    week = [{},{},{},{},{},{},{}]
+    _.each [1..7], (week_day)->
+      date = new Date(today + 24*60*60*1000 * ($index*7 + week_day) );
+      tasks = mythis.getToDoForIndex(date);
+      if month == date.getMonth()
+        week[date.getDay()] = ( {date: date.getDate()+'.'+(date.getMonth()+1), tasks: tasks} ) 
+      else         
+        week[date.getDay()] = {date:'X', tasks:[]}
+      month = date.getMonth();
+    week
 ]
 
 

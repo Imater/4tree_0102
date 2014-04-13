@@ -1,0 +1,27 @@
+<div class="p_inside_header2">
+</div>
+
+<div class="p_inside_content big_week_calendar vertical_scroll not_has_header" scrollable="{alwaysVisible:'true'}">
+
+    <div class="editor_content">
+      <ul class="week_calendar_ul">
+        <li class="day_li" ng-scroll="note in datasource" buffer-size="7" padding="0.3">
+          <div class="week_line" ng-include="'tmpl/week_line.html'"></div>
+        </li>
+      </ul>
+
+    </div>
+</div>
+
+
+<!-- Begin Templates -->
+<script type="text/ng-template" id="tmpl/week_line.html">
+  <div class="week_day" ng-repeat="day in fn.service.calendarBox.getWeekCalendarForIndex($index)">
+    {{day.date}}
+    <div class="one_task" my-draggable ng-if="day.tasks.tasks" ng-repeat="task in day.tasks.tasks">
+      <b class="handle" ng-click="set.set_task = task">{{task.time}}</b> <span contenteditable="true" ng-model="task.title"></span>
+    </div>
+  </div>
+</script>
+<!-- End Templates datasource -->
+

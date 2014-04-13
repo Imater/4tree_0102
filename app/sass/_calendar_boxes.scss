@@ -131,6 +131,9 @@
       margin: 0;
       padding: 0;
       .time_element {
+        &.set_task {
+          background: #FFF;
+        }
         line-height: 18px;
         font-size: 0.9em;
         color: #444;

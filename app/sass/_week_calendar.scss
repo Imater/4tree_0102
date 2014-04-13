@@ -1,0 +1,36 @@
+@charset "UTF-8";
+// Главное окно приложения
+
+@import 'mymixins';
+
+.big_week_calendar {
+  .week_calendar_ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    .day_li {
+      display: table;
+      border: none;
+      border-collapse: collapse;
+      table-layout: fixed;
+      height: 100px;
+      width: 100%;
+      .week_line {
+        display: table-row;
+        width: 100%;
+        .week_day {
+          display: table-cell;
+          border: 1px solid #EEE;
+          border-top: none;
+          .one_task {
+            font-size: 10px;
+            white-space: normal;
+            span {
+              outline: none;
+            }
+          }
+        }
+      }      
+    }
+  }
+}

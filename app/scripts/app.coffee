@@ -16,6 +16,7 @@ angular.module("4treeApp", [
   #"ngAnimate"
   "ui-rangeSlider"
   "$strap"
+  "$strap.directives"
   "ngBootstrap"
   "ngTagsInput"
   "sly"

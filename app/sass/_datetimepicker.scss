@@ -1,0 +1,72 @@
+@charset "UTF-8";
+//Линия пути до дерева
+
+@import 'mymixins';
+
+.datetimeinput {
+  text-align: center;
+  white-space: nowrap;
+  .dt_wrap {
+    display: inline-block;
+    i {
+      display: block;
+      &:before {
+        margin: 0;
+      }
+    }
+    input {
+      outline: none;
+      width: auto;
+      border: none;
+      background: #EEE;
+      text-align: center;
+      -webkit-appearance: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }    
+  }
+}
+
+
+.datetimepicker {
+  th {
+    &.thin {
+
+    }
+    &:hover {
+      background: rgba(0,0,0,0.1);
+    }
+    font-size: 1.1em;
+    text-align: center;
+    .up:before {
+      content: '\25b4';
+      display: inline-block;
+      color: #888;
+      width: 1em;
+      height: 1em;
+      font-family: 'fontello'
+    }
+    .down:before {
+      content: '\25be';
+      display: inline-block;
+      color: #888;
+      width: 1em;
+      height: 1em;
+      font-family: 'fontello'
+    }    
+  }
+  .margin_right {
+    width: $padding*2;
+    background: none;
+  }
+  td {
+    &.remark {
+      background: none;
+      font-size: 1em;
+    }
+    background: #FFF;
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: round($padding/2) round($padding);
+  }
+}

@@ -47,6 +47,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   clearCache: ()->
     _.each @, (fn)->
       fn.cache = {} if fn
+    console.info 'clear_cache'
+    _.each $rootScope.$$childTail.fn.service.calendarBox, (fn)->
+      console.info 'fn'
+      fn.cache = {} if fn
   getTreeFromNet: ()->
     dfd = $q.defer();
     mythis = @;
@@ -149,10 +153,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     mymap = (doc, emit)->
       emit(doc.date, doc.title, doc) if doc.text and doc.text.indexOf('жопа')!=-1;
 
-    @newView('tree', 'by_date', mymap);
+    #@newView('tree', 'by_date', mymap);
 
     mymap_calendar = (doc, emit)->
-      emit(doc.date2, doc, doc) if doc.date2;
+      emit(doc.date2, doc, doc) if doc?.date2;
 
     myreduce_calendar = (memo, values)->
       key = values.key; 
@@ -278,7 +282,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
     emit = (key, value, doc)->
       view.rows = [] if !view.rows
-      view.rows.push( {id:doc._id, key, value} )
+      view.rows.push( {_id:doc._id, key, value} )
       view['reduce'](memo, {key, value}) if !view_invalid and view['reduce']
 
     _.each myrows, (doc, key)->
@@ -298,13 +302,16 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   refreshView: (db_name, ids, new_value, old_value)->
     mythis = @;
     _.each ids, (id)->
-      _.each mythis._cache[db_name].views, (view)->
+      _.each mythis._cache[db_name]?.views, (view)->
+        console.info 'view', view
         view.invalid.push( id )
+    @clearCache();
+
 ########################## T A S K S ########################
   loadTasks: ()->
     @_db.tasks = [
       { 
-      id: 0, 
+      _id: 0, 
       tree_id: '1034', 
       date1: new Date(2014,2,31), 
       date2: new Date(2014,2,31, 8, 30), 
@@ -312,7 +319,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       }
 
       { 
-      id: 1, 
+      _id: 1, 
       tree_id: '1034', 
       date1: new Date(2014,3,4, 12, 30, 0), 
       date2: new Date(2014,3,4, 10, 30, 0), 
@@ -321,7 +328,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       }
 
       { 
-      id: 2, 
+      _id: 2, 
       tree_id: '1034', 
       date1: new Date(2013,2,3), 
       date2: new Date(2014,3,4, 17, 30, 0), 
@@ -330,7 +337,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       }
 
       { 
-      id: 3, 
+      _id: 3, 
       tree_id: '1034', 
       date1: new Date(2014,1,4, 12, 30, 0), 
       date2: new Date(2014,3,2, 18, 30, 0), 
@@ -339,7 +346,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       }
 
       { 
-      id: 4, 
+      _id: 4, 
       tree_id: '1034', 
       date1: new Date( new Date().getTime()-1000*60*220 ), 
       date2: new Date( new Date().getTime()-1000*60*220 ), 
@@ -347,14 +354,14 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       }
 
       { 
-      id: 5, 
+      _id: 5, 
       tree_id: '1034', 
       date1: '', 
       date2: new Date(2014,3,8, 12, 30, 0), 
       title: 'Как жизнь? написать письмо' 
       }
       { 
-      id: 8, 
+      _id: 8, 
       tree_id: '1034', 
       date1: '', 
       date2: new Date(2014,3,8, 12, 30, 0), 
@@ -362,7 +369,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       }
 
       { 
-      id: 6, 
+      _id: 6, 
       tree_id: '1034', 
       date1: new Date( new Date().getTime()+1000*60*20 ), 
       date2: new Date( new Date().getTime()+1000*60*20 ), 
@@ -370,14 +377,28 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       }
 
       { 
-      id: -1, 
+      _id: -1, 
       tree_id: '2138', 
       date1: new Date(2014,2,29), 
       date2: new Date(2014,2,29, 14,20), 
       title: 'Очень важное дело, которое нужно сделать сегодня' 
       }
+      { 
+      _id: 11, 
+      tree_id: '2138', 
+      date1: new Date(2014,4,12), 
+      date2: new Date(2014,4,12, 14,20), 
+      title: 'День рождения Жени' 
+      }
+      {
+      _id: 12, 
+      tree_id: '2138', 
+      date1: new Date(2014,4,12), 
+      date2: new Date(2014,4,18, 14,20), 
+      title: 'День рождения Вали' 
+      }
     ]
-  clearCache: ()->
+  clearCache2: ()->
     _.each @, (fn)->
       fn.cache = {} if fn
   getTasks: ()->
