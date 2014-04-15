@@ -1,5 +1,5 @@
 "use strict"
-angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', ($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope) ->
+angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', ($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi) ->
 
 
   #параметры
@@ -21,8 +21,8 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     calendar_box_template: 'views/subviews/view_calendar_box.html'
     panel: [
       {active: 7} #0  
-      {active: 6} #1   0-дерево 1-карточки 2-mindmap 3-divider 4-календарь 5-редактор 6-none
-      {active: 7} #2
+      {active: 0} #1   0-дерево 1-карточки 2-mindmap 3-divider 4-календарь 5-редактор 6-none
+      {active: 5} #2
       {active: 0} #3
     ]
     autosync_on: true
@@ -602,19 +602,34 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   
 ]
 
-angular.module("4treeApp").controller "save_tree_db", ($scope, syncApi, db_tree)->
+angular.module("4treeApp").controller "save_tree_db_editor", ($scope, syncApi, db_tree, $rootScope)->
+  ###
+  $scope.$watch "db.main_node[set.focus_edit]", ()->
+    console.info 8888
+    if !_.isEqual( new_value, old_value )
+      $rootScope.$emit("jsFindAndSaveDiff",'tree', new_value, old_value);
+  , true
+  ###
+
+  $scope.$watch "db.main_node[set.focus_edit]", (new_value, old_value)->
+    console.info 'watch'
+    if !_.isEqual( new_value, old_value ) and new_value and old_value and (new_value._id == old_value._id)
+      $rootScope.$emit("jsFindAndSaveDiff",'tree', new_value, old_value);
+  , true
+
+
+angular.module("4treeApp").controller "save_tree_db", ($scope, syncApi, db_tree, $rootScope)->
 
   $scope.$watchCollection "tree", (new_value, old_value)->
     if !_.isEqual( new_value, old_value )
-      syncApi.jsFindChangesForSync(new_value, old_value);
-      db_tree.refreshView('tree', [old_value._id], new_value, old_value)
+      $rootScope.$emit("jsFindAndSaveDiff",'tree', new_value, old_value);
 
 
-angular.module("4treeApp").controller "save_task_db", ($scope, syncApi, db_tree)->
+angular.module("4treeApp").controller "save_task_db", ($scope, syncApi, db_tree, $rootScope)->
 
   $scope.$watchCollection "set.set_task", (new_value, old_value)->
     if !_.isEqual( new_value, old_value )
-      db_tree.refreshView('tasks', [new_value._id], new_value, old_value)
+      $rootScope.$emit("jsFindAndSaveDiff",'tasks', new_value, old_value);
 
 
 

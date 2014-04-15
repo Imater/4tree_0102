@@ -18,9 +18,46 @@
   }
 }
 
+.calendar_header {
+  position: relative;
+  text-align: center;
+  background: rgba(255,255,255,0.9);
+  @include box-shadow(0,1px,0px, rgba(0,0,0,0.2));
+  .dropdown-menu {
+    text-align: left;
+  }
+  .week_header {
+    padding-bottom: 0;
+  }
+  .calendar_left {
+    position: absolute;
+    left: $padding;
+    top: 2px + $padding;
+  }
+  .calendar_center {
+    margin: $padding 0;
+  }
+  .calendar_right {
+    position: absolute;
+    right: $padding;
+    top: 3px + $padding;
+  }
+  .btn {
+    width: 4em;
+  }
+  table {
+    td {
+      text-align: center;
+      color: #666;
+      &.week_end {
+        color: rgba(#580001,0.5);
+      }
+    }
+  }
+}
+
 .big_calendar
 {
-  top: $grid*3 !important;
   ul {
     list-style: none;
   }

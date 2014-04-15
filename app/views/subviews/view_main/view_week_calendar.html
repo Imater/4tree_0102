@@ -1,23 +1,29 @@
-<div class="p_inside_header2">
+<div ng-controller="WeekCalendarController">
+  <div class="p_inside_header2 top_header_calendar">
+
+    <div ng-include="'views/subviews/view_main/sub/view_calendar_header.html'"></div>
+
+  </div>
+
+  <div class="p_inside_content big_week_calendar vertical_scroll not_has_header" scrollable="{alwaysVisible:'true'}">
+
+      <div class="editor_content">
+        <ul class="week_calendar_ul">
+          <li class="day_li" ng-scroll="note in datasource" buffer-size="3" padding="1">
+            <div class="week_line" ng-include="'tmpl/week_line.html'"></div>
+          </li>
+        </ul>
+
+      </div>
+  </div>
 </div>
-
-<div class="p_inside_content big_week_calendar vertical_scroll not_has_header" scrollable="{alwaysVisible:'true'}">
-
-    <div class="editor_content">
-      <ul class="week_calendar_ul">
-        <li class="day_li" ng-scroll="note in datasource" buffer-size="7" padding="0.3">
-          <div class="week_line" ng-include="'tmpl/week_line.html'"></div>
-        </li>
-      </ul>
-
-    </div>
-</div>
-
 
 <!-- Begin Templates -->
 <script type="text/ng-template" id="tmpl/week_line.html">
-  <div class="week_day" ng-repeat="day in fn.service.calendarBox.getWeekCalendarForIndex($index)">
-    {{day.date}}
+  <div class="week_day {{day.myclass}}" ng-repeat="day in fn.service.calendarBox.getWeekCalendarForIndex($index)">
+    <div class="day_header">
+      <b>{{day.date}}</b>
+    </div>
     <div class="one_task" my-draggable ng-if="day.tasks.tasks" ng-repeat="task in day.tasks.tasks">
       <b class="handle" ng-click="set.set_task = task">{{task.time}}</b> <span contenteditable="true" ng-model="task.title"></span>
     </div>

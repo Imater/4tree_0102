@@ -1,60 +1,37 @@
-<div class="p_inside_header2">
+<div ng-controller="bigCalendarController">
+  <div class="p_inside_header2 top_header_calendar">
 
-  <div class="fast_year_select">
-    <ul>
-      <li ng-click="set.from_today_index = 100">сегодня</li>
-      <li ng-click="fn.addTask()">2010</li>
-      <li>2011</li>
-      <li>2012</li>
-      <li>2013</li>
-      <li>2014</li>
-      <li>2015</li>
-    </ul>
+    <div ng-include="'views/subviews/view_main/sub/view_calendar_header.html'"></div>
 
-    <ul>
-      <li>1</li>
-      <li>2</li>
-      <li>3</li>
-      <li>4</li>
-      <li>5</li>
-      <li>6</li>
-      <li>7</li>
-      <li>8</li>
-      <li>9</li>
-      <li>10</li>
-      <li>11</li>
-      <li>12</li>
-    </ul>
   </div>
 
-</div>
+  <div class="p_inside_content big_calendar vertical_scroll" scrollable="{alwaysVisible:'true'}">
 
-<div class="p_inside_content big_calendar vertical_scroll has_header" scrollable="{alwaysVisible:'true'}">
-
-    <div class="editor_content">
-      <ul>
-        <li class="day_li" ng-scroll="note in datasource" buffer-size="30" padding="0.3">
-          <div class="day_wrap calendar_box_wrap" ng-if="day = fn.service.calendarBox.getCalendarForIndex($index)">
-            <div class="col1 calendar_box" ng-class="day.myclass">
-              <div class="box_week_day">{{day.week_day}}</div>
-              <div class="box_day">{{day.day}}</div>
-              <div class="box_month">{{day.month}}.{{day.year}}</div>
-              
+      <div class="editor_content">
+        <ul>
+          <li class="day_li" ng-scroll="note in datasource" buffer-size="10" padding="1">
+            <div class="day_wrap calendar_box_wrap" ng-if="day = fn.service.calendarBox.getCalendarForIndex($index)">
+              <div class="col1 calendar_box" ng-class="day.myclass">
+                <div class="box_week_day">{{day.week_day}}</div>
+                <div class="box_day">{{day.day}}</div>
+                <div class="box_month">{{day.month}}.{{day.year}}</div>
+                
+              </div>
+              <div class="col2"></div>
+              <div class="col3">
+                <ol>
+                  <li ng-repeat="task in day.tasks">
+                    <b ng-click="set.set_task = task">{{task.time}}</b> — <span contenteditable="true" ng-model="task.title"></span>
+                  </li>
+                  <li class="add_task">
+                    <b>00:00</b> — <span>Новое дело...</span>
+                  </li>
+                </ol>
+              </div>
             </div>
-            <div class="col2"></div>
-            <div class="col3">
-              <ol>
-                <li ng-repeat="task in day.tasks">
-                  <b>{{task.time}}</b> — <span contenteditable="true" ng-model="task.title"></span>
-                </li>
-                <li class="add_task">
-                  <b>00:00</b> — <span>Новое дело...</span>
-                </li>
-              </ol>
-            </div>
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
 
-    </div>
+      </div>
+  </div>
 </div>

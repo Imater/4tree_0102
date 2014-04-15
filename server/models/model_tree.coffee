@@ -20,7 +20,7 @@ treeSchema = new Schema (
   'date2': Date
   #'dates': { startDate: Date, endDate: Date }
   'tags': []
-  'counters': []
+  'counters': [ { 'cnt_today': Number, 'title': String, 'days': [] } ]
   'hide_in_todo': Boolean
   'importance': { type: Number, default: 50 }
 )

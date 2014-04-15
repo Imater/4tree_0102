@@ -5,11 +5,13 @@
 @import 'mymixins';
 
 #w_main {
+    background: red;
     @include absolute_me(0, 0, 0, 0);
     #w_header_main {
         @include animate_me(height, 0.1s);
         @include absolute_me(0, 0, auto, 0);
         height: $header_height_closed;
+        z-index: 3;
         .navbar {
             z-index: 2;
             margin: 0px;
@@ -582,6 +584,11 @@
 
     .p_inside_header2 {
         height: $p_inside_header_height;
+        position: absolute;
+        z-index: 1;
+        left: 0;
+        right: 0;
+        height: auto;
     }
     .p_inside_content {
         @include absolute_me($p_inside_header_height,0,0,0);
@@ -613,7 +620,7 @@
         width: 50%;
         bottom: auto;
         height: $grid;
-        z-index: 1;
+        z-index: 2;
         .p_inside_header {
             .title {
                 opacity: 0.4;
@@ -635,7 +642,7 @@
         width: 50%;
         bottom: auto;
         height: $grid;
-        z-index: 1;
+        z-index: 2;
         .p_inside_header {
             .title {
                 opacity: 0.4;
@@ -659,7 +666,7 @@
         width: 50%;
         bottom: auto;
         height: $grid;
-        z-index: 1;
+        z-index: 2;
         .p_inside_header {
             width: 100%;
         }        

@@ -86,9 +86,9 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', '$ro
     element.tasks = db_tree.getView('tasks', 'tasks_by_date').result[key]
     _.each element.tasks, (task)->
       tm = moment(task.date2).format('HH:MM')
-      task.time = tm;
+      task._time = tm;
     element.tasks = _.sortBy element.tasks, (task)->
-      task.time;
+      task._time;
     element
   getToDoForIndex: ($date)->
     date = new Date($date);
@@ -97,34 +97,111 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', '$ro
     element.tasks = db_tree.getView('tasks', 'tasks_by_date').result[key]
     _.each element.tasks, (task)->
       tm = moment(task.date2).format('HH:MM')
-      task.time = tm;
+      task._time = tm;
     element.tasks = _.sortBy element.tasks, (task)->
-      task.time;
+      task._time;
     element
 
   #, ($index) ->
   #  $rootScope.$$childHead.set.from_today_index+$index
+  getDateOfWeek: (w, y)->
+    d = (1 + (w - 1) * 7); # 1st of January + 7 days for each week
+    return new Date(y, 0, d);
+  getDateOfISOWeek: (w, y) ->
+    simple = new Date(y, 0, 1 + (w - 1) * 7)
+    dow = simple.getDay()
+    ISOweekStart = simple
+    if dow <= 4
+      ISOweekStart.setDate simple.getDate() - simple.getDay() + 1
+    else
+      ISOweekStart.setDate simple.getDate() + 8 - simple.getDay()
+    ISOweekStart
+  getWeek: (date)->
+    onejan = new Date(date.getFullYear(), 0, 1);
+    return Math.ceil((((date - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+  getWeekByMonth: (month_number)->
+    date = new Date();
+    this_week = @getWeek( date ); 
+    date.setMonth(month_number-1);
+    @getWeek( date ) - this_week - 4
+  getWeekByYear: (month_number)->
+    date = new Date();
+    this_week = @getWeek( date ); 
+    date.setYear(month_number);
+    @getWeek( date ) - this_week - 4
   getWeekCalendarForIndex: _.memoize ($index)->
     mythis = @;
-    today = new Date().getTime();
-    date = new Date(today + 24*60*60*1000 * ($index*7) );
-    month = date.getMonth();
-    week = [{},{},{},{},{},{},{}]
+    today = new Date();
+    first_day_of_month = new Date( today.getFullYear(), today.getMonth(), 0 );
+    this_week = mythis.getWeek( new Date( first_day_of_month ) );
+    week = [{},{},{},{},{},{}]
+    convertGetDay = [6,0,1,2,3,4,5]
+    date = mythis.getDateOfISOWeek($index + this_week - 2, today.getFullYear());
     _.each [1..7], (week_day)->
-      date = new Date(today + 24*60*60*1000 * ($index*7 + week_day) );
       tasks = mythis.getToDoForIndex(date);
-      if month == date.getMonth()
-        week[date.getDay()] = ( {date: date.getDate()+'.'+(date.getMonth()+1), tasks: tasks} ) 
-      else         
-        week[date.getDay()] = {date:'X', tasks:[]}
-      month = date.getMonth();
+      myclass = if ( (date.getMonth()+ (if today.getMonth()%2 then 1 else 0) )%2 ) then 'odd' else 'even';
+      myclass = myclass+' today' if moment(date).format('YYYY-MM-DD') == moment(today).format('YYYY-MM-DD');
+      week_index = convertGetDay[date.getDay()];
+      myclass = myclass+ (if week_index>=5 then ' weekend' else '')
+      date_title = date.getDate();
+      if (date.getDate() == 1)
+        date_title += ' ' + $translate( 'MONTH.'+(date.getMonth()+1 ) ) 
+      week[ week_index ] = ( {date: date_title, tasks: tasks, myclass: myclass} ) 
+      date = new Date(date.getTime() + 24*60*60*1000);
+      return
     week
 ]
 
 
 
+angular.module("4treeApp").controller "WeekCalendarController", [ '$scope', 'calendarBox', 'db_tree', '$translate', ($scope, calendarBox, db_tree, $translate) ->
+  $scope.$on 'position.first', (e, first, next, bufferSize)->
+    first_date = calendarBox.getDateOfISOWeek( next+bufferSize-4, new Date().getFullYear() );
+    month_number = first_date.getMonth()+1;
+    $scope.this_month = $translate( 'MONTH_FULL.'+( month_number ) ) 
+    $scope.this_year = first_date.getFullYear();
+    $scope.isWeek = true;
+    $scope.monthes = [
+      {title: 'Январь!', goto: calendarBox.getWeekByMonth(1) }
+      {title: 'Февраль', goto: calendarBox.getWeekByMonth(2)}
+      {title: 'Март', goto: calendarBox.getWeekByMonth(3)}
+      {title: 'Апрель', goto: calendarBox.getWeekByMonth(4)}
+      {title: 'Май', goto: calendarBox.getWeekByMonth(5)}
+      {title: 'Июнь', goto: calendarBox.getWeekByMonth(6)}
+      {title: 'Июль', goto: calendarBox.getWeekByMonth(7)}
+      {title: 'Август', goto: calendarBox.getWeekByMonth(8)}
+      {title: 'Сентябрь', goto: calendarBox.getWeekByMonth(9)}
+      {title: 'Октябрь', goto: calendarBox.getWeekByMonth(10)}
+      {title: 'Ноябрь', goto: calendarBox.getWeekByMonth(11)}
+      {title: 'Декабрь', goto: calendarBox.getWeekByMonth(12)}
+    ]
+    $scope.goTo = (index)->
+      $scope.$$childHead.$emit('goto_index', index + 1);
+]
 
-
+angular.module("4treeApp").controller "bigCalendarController", [ '$scope', 'calendarBox', 'db_tree', '$translate', ($scope, calendarBox, db_tree, $translate) ->
+  $scope.$on 'position.first', (e, first, next, bufferSize)->
+    first_date = new Date( new Date().getTime() + (first+bufferSize+1)*24*60*60*1000 );
+    month_number = first_date.getMonth()+1;
+    $scope.this_month = $translate( 'MONTH_FULL.'+( month_number ) );
+    $scope.this_year = first_date.getFullYear();
+    $scope.monthes = [
+      {title: 'Январь', goto: 0}
+      {title: 'Февраль', goto: 0}
+      {title: 'Март', goto: 0}
+      {title: 'Апрель', goto: 0}
+      {title: 'Май', goto: 0}
+      {title: 'Июнь', goto: 0}
+      {title: 'Июль', goto: 0}
+      {title: 'Август', goto: 0}
+      {title: 'Сентябрь', goto: 0}
+      {title: 'Октябрь', goto: 0}
+      {title: 'Ноябрь', goto: 0}
+      {title: 'Декабрь', goto: 0}
+    ]
+    $scope.goTo = (index)->
+      $scope.$$childHead.$emit('goto_index', index - 8);
+]
 
 
 

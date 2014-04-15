@@ -23,7 +23,7 @@
   ]);
 
   angular.module("4treeApp").factory('datasource', [
-    '$timeout', function($timeout) {
+    '$timeout', '$rootScope', function($timeout, $rootScope) {
       return {
         get: function(index, count, success) {
           var i, result, _i, _ref;
@@ -32,13 +32,14 @@
             result.push("{i}");
           }
           return success(result);
-        }
+        },
+        scope2: $rootScope
       };
     }
   ]);
 
   angular.module("4treeApp").service('db_tree', [
-    '$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', function($translate, $http, $q, $rootScope, oAuth2Api, $timeout) {
+    '$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', function($translate, $http, $q, $rootScope, oAuth2Api, $timeout, syncApi) {
       return {
         _db: {},
         _cache: {},
@@ -53,8 +54,13 @@
           mythis = this;
           $rootScope.$on('my-sorted', function(event, data) {
             return $timeout(function() {
+              var element, new_value, old_value;
               console.info("SORTED", data);
-              mythis.jsFind(data.from_id).parent_id = data.to_id;
+              element = mythis.jsFind(data.from_id);
+              old_value = _.clone(element);
+              element.parent_id = data.to_id;
+              new_value = element;
+              $rootScope.$emit("jsFindAndSaveDiff", 'tree2', new_value, old_value);
               mythis.refreshParentsIndex();
               return $timeout(function() {
                 return $("ul > .tree_tmpl").remove();
@@ -79,9 +85,7 @@
               return fn.cache = {};
             }
           });
-          console.info('clear_cache');
           return _.each($rootScope.$$childTail.fn.service.calendarBox, function(fn) {
-            console.info('fn');
             if (fn) {
               return fn.cache = {};
             }
@@ -128,7 +132,6 @@
               $rootScope.$$childTail.set.main_parent_id[1] = found._id;
               $rootScope.$$childTail.set.main_parent_id[2] = found._id;
               $rootScope.$$childTail.set.main_parent_id[3] = found._id;
-              console.info(2);
             }
             $rootScope.$$childTail.set.top_parent_id = found._id;
           }
@@ -208,7 +211,9 @@
             }
             el.importance = el.importance ? el.importance : 50;
             el.tags = el.tags ? el.tags : [];
-            el.counters = cnt;
+            if (!el.counters) {
+              el.counters = cnt;
+            }
             if (!el.panel) {
               el.panel = [
                 {
@@ -235,7 +240,6 @@
             mythis.db_parents[parent].push(el);
             return true;
           });
-          console.info("FIRST = ", mythis._db.tree[0]);
           _.each(mythis._db.tree, function(el, key) {
             var parent;
             if (!el._id) {
@@ -251,7 +255,6 @@
             return true;
           });
           mythis.clearCache();
-          console.info(3);
           true;
           mymap = function(doc, emit) {
             if (doc.text && doc.text.indexOf('жопа') !== -1) {
@@ -567,7 +570,6 @@
           _.each(ids, function(id) {
             var _ref;
             return _.each((_ref = mythis._cache[db_name]) != null ? _ref.views : void 0, function(view) {
-              console.info('view', view);
               return view.invalid.push(id);
             });
           });

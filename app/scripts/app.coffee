@@ -21,12 +21,12 @@ angular.module("4treeApp", [
   "ngTagsInput"
   "sly"
   "ngClipboard"
-  "Decorators"
+  #"Decorators"
   "drahak.hotkeys"
 ])
 
 angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($translateProvider, $routeProvider) ->
-
+  
   $routeProvider.when("/",
     templateUrl: "views/main.html"
     controller: "MainCtrl"
@@ -104,18 +104,32 @@ angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($tra
       '8': 'Вы заслужили отдых 15 минут'
     }
     MONTH: { 
-      '1': "янв"
-      '2': "февр"
-      '3': "март"
-      '4': "апр"
-      '5': "май"
-      '6': "июнь"
-      '7': "июль"
-      '8': "авг"
-      '9': "сент"
-      '10': "окт"
-      '11': "нояб"
-      '12': "дек"
+      '1': "янв."
+      '2': "февр."
+      '3': "марта"
+      '4': "апр."
+      '5': "мая"
+      '6': "июня"
+      '7': "июля"
+      '8': "авг."
+      '9': "сент."
+      '10': "окт."
+      '11': "нояб."
+      '12': "дек."
+    }
+    MONTH_FULL: { 
+      '1': "Январь"
+      '2': "Февраль"
+      '3': "Март"
+      '4': "Апрель"
+      '5': "Май"
+      '6': "Июнь"
+      '7': "Июль"
+      '8': "Август"
+      '9': "Сентябрь"
+      '10': "Октябрь"
+      '11': "Ноябрь"
+      '12': "Декабрь"
     }
     WEEKDAY: {
       '0': "вс"

@@ -74,7 +74,7 @@ else
   notifier_instance = notifier(imap).on 'mail', (mail)->
     mail_service.save_mail_to_tree(mail)
 
-  notifier_instance.start()
+  notifier_instance.start() if false
 
   ###
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -261,6 +261,11 @@ else
   subscriber.subscribe 'chanel_2'
   subscriber.subscribe 'chanel_1'
 
+  diff = require('../changeset/_js/changeset.js');
+
+  logJson = require('../logJson/_js/logJson.js');
+
+
   subscriber.on "message", (chanel, message)->
     try message = JSON.parse message catch 
     console.info chanel, message[0], message[1]
@@ -278,13 +283,36 @@ else
     async.eachLimit notes, 50, (note, callback)->
       _id = note._id
       delete note._id
-      Tree.update { _id }, note, (err)->
+      Tree.update2 { _id }, note, (err)->
         console.info err if err
         callback err
     , (callback)->
       res.send true
 
+  exports.sync_db = (req, res)->
+    token = req.query.token
+    databases = req.body.diff_journal
+    async.eachLimit Object.keys(databases), 10, (db_name, callback)->
+      this_db = databases[db_name];
+      async.eachLimit Object.keys( this_db ), 10, (item_name, item_callback)->
+        this_item = this_db[item_name];
+        Tree.findOne {_id: item_name}, (err, doc)->
+          if (doc)
+            _.each Object.keys(this_item), (item_diff)->
+              df = this_item[item_diff]
+              diff.apply([df], doc, true);
+            doc.save (err)->
+              item_callback(err);
+          else 
+            console.info 'need_to_create '+item_name
+      , ()->
+        callback();
+    , (callback)->
+      res.send true
+
   app.post('/api/v1/sync', app.oauth.authorise(), exports.sync);
+
+  app.post('/api/v1/sync_db', app.oauth.authorise(), exports.sync_db);
 
   app.get('/api/v1/message', exports.newMessage);
   app.get '/api/import_from_mysql', (req, res)->

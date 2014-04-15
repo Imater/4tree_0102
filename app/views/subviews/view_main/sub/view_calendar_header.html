@@ -1,0 +1,39 @@
+<div class="calendar_header" ng-class="{week_header:isWeek}">
+  <span class="calendar_left">
+    <span class="dropdown">
+      <span class="dropdown-toggle" data-toggle="dropdown"><a><b>{{this_month}}</b></a></span>
+      <ul class="dropdown-menu">
+        <li ng-repeat="month in monthes" ng-click="goTo(month.goto)"><a>{{$index+1}} — {{month.title}}</a></li>
+      </ul>
+    </span>
+
+    <span class="dropdown">
+      <span class="dropdown-toggle" data-toggle="dropdown"><a>{{this_year}}</a></span>
+      <ul class="dropdown-menu">
+        <li ng-repeat="year in years"><a>{{year.title}}</a></li>
+      </ul>
+    </span>
+  </span>
+
+  <div class="btn-group calendar_center">
+    <button type="button" class="btn btn-default btn-xs">День!</button>
+    <button type="button" class="btn btn-default btn-xs">Месяц</button>
+    <button type="button" class="btn btn-default btn-xs">Год</button>
+  </div>
+
+  <span class="calendar_right">
+    <a ng-click="goTo(0)">14 апр.</a>
+  </span>
+
+  <table class="week_day" style="width:100%" ng-if="isWeek">
+    <tr>
+      <td>пн</td>
+      <td>вт</td>
+      <td>ср</td>
+      <td>чт</td>
+      <td>пт</td>
+      <td class="week_end">сб</td>
+      <td class="week_end">вс</td>
+    </tr>
+  </table>
+</div>

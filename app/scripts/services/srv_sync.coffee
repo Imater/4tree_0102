@@ -1,4 +1,4 @@
-angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$http', 'oAuth2Api', ($translate, db_tree, $q, $http, oAuth2Api) ->
+angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$http', 'oAuth2Api', 'diffApi', '$rootScope', ($translate, db_tree, $q, $http, oAuth2Api, diffApi, $rootScope) ->
   autosync_on: false
   sync_journal: {}
   last_sync_time: "не проводилась"
@@ -91,6 +91,45 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
       dfd.promise;
   jsSyncJournalCount: ()->
     Object.keys(@sync_journal).length
+  #######################
+  diff_journal: {}
+  constructor: ()->
+    mythis = @;
+    $rootScope.$on 'jsFindAndSaveDiff', (event, db_name, new_value, old_value)->
+      return if !old_value or !new_value
+      diffs = diffApi.diff( old_value, new_value, new Date().getTime() );
+      _.each diffs, (diff)->
+        if diff.key[0][0] != '_' and diff.key[diff.key.length-1][0] != '$'
+          key = diff.type+':'+diff.key.join('.');
+          mythis.diff_journal[db_name] = {} if !mythis.diff_journal[db_name]
+          mythis.diff_journal[db_name][old_value._id] = {} if !mythis.diff_journal[db_name][old_value._id]
+          mythis.diff_journal[db_name][old_value._id][key] = diff
+        return
+      db_tree.refreshView(db_name, [old_value._id], new_value, old_value)
+      #diffApi.logJson 'diff_journal', mythis.diff_journal
+  syncToServer: ()->
+    dfd = $q.defer();
+    mythis = @;
+    data = {
+      @diff_journal
+    }
+    diffApi.logJson 'sending data', data;
+    oAuth2Api.jsGetToken().then (token)->
+      $http({
+        url: '/api/v1/sync_db',
+        method: "POST",
+        isArray: true,
+        params: {
+            access_token: token
+        }
+        data: data
+      }).then (result)->
+        console.info "SYNC_RESULT = ", result
+        mythis.diff_journal = {}
+        dfd.resolve result.data
+
+    dfd.promise;
+
   
 
 ]

@@ -9,15 +9,16 @@ angular.module("4treeApp").factory 'datasourceTree', ['$timeout', 'db_tree', '$r
     success(result)
 ]
 
-angular.module("4treeApp").factory 'datasource', ['$timeout', ($timeout)->
+angular.module("4treeApp").factory 'datasource', ['$timeout', '$rootScope', ($timeout, $rootScope)->
   get: (index, count, success)->
     result = []
     for i in [index..index + count-1]
       result.push "{i}"
     success(result)
+  scope2: $rootScope
 ]
 
-angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', ($translate, $http, $q, $rootScope, oAuth2Api, $timeout) ->
+angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', ($translate, $http, $q, $rootScope, oAuth2Api, $timeout, syncApi) ->
   _db: {}
   _cache: {}
   salt: ()->
@@ -29,7 +30,12 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     $rootScope.$on 'my-sorted', (event, data)->
       $timeout ()->
         console.info "SORTED", data
-        mythis.jsFind(data.from_id).parent_id = data.to_id;
+        element = mythis.jsFind(data.from_id);
+        old_value = _.clone( element ); #clone
+        element.parent_id = data.to_id;
+        new_value = element;
+        $rootScope.$emit("jsFindAndSaveDiff",'tree2', new_value, old_value);
+
         mythis.refreshParentsIndex();
         $timeout ()->
           $("ul > .tree_tmpl").remove()
@@ -47,9 +53,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   clearCache: ()->
     _.each @, (fn)->
       fn.cache = {} if fn
-    console.info 'clear_cache'
     _.each $rootScope.$$childTail.fn.service.calendarBox, (fn)->
-      console.info 'fn'
       fn.cache = {} if fn
   getTreeFromNet: ()->
     dfd = $q.defer();
@@ -87,7 +91,6 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         $rootScope.$$childTail.set.main_parent_id[1] = found._id 
         $rootScope.$$childTail.set.main_parent_id[2] = found._id 
         $rootScope.$$childTail.set.main_parent_id[3] = found._id 
-        console.info 2
       $rootScope.$$childTail.set.top_parent_id = found._id
 
 
@@ -120,7 +123,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       el._path = mythis.jsGetPath(el._id) if el._id and el._id != 1
       el.importance = if el.importance then el.importance else 50;
       el.tags = if el.tags then el.tags else [];
-      el.counters = cnt;
+      el.counters = cnt if !el.counters;
       el.panel = [{_open:false}, {_open:false}, {_open:false}, {_open:false}] if !el.panel
       #el._open = false if el.parent_id != '1';
       if false
@@ -134,8 +137,6 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       mythis.db_parents[parent].push( el ); 
       return true
 
-    console.info "FIRST = ", mythis._db.tree[0]
-
     _.each mythis._db.tree, (el, key)->
       console.info "path", el._id, el._path, key if !el._id
       parent = 'n' + el._id
@@ -146,7 +147,6 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         el._open = false;
       true
     mythis.clearCache();
-    console.info 3
     true
         
 
@@ -303,7 +303,6 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     mythis = @;
     _.each ids, (id)->
       _.each mythis._cache[db_name]?.views, (view)->
-        console.info 'view', view
         view.invalid.push( id )
     @clearCache();
 

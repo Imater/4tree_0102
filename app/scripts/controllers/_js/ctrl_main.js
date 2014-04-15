@@ -2,7 +2,7 @@
 (function() {
   "use strict";
   angular.module("4treeApp").controller("MainCtrl", [
-    '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope) {
+    '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi) {
       var set_pomidors;
       $scope.set = {
         today_date: new Date(),
@@ -24,9 +24,9 @@
           {
             active: 7
           }, {
-            active: 6
+            active: 0
           }, {
-            active: 7
+            active: 5
           }, {
             active: 0
           }
@@ -509,19 +509,35 @@
     }
   ]);
 
-  angular.module("4treeApp").controller("save_tree_db", function($scope, syncApi, db_tree) {
+  angular.module("4treeApp").controller("save_tree_db_editor", function($scope, syncApi, db_tree, $rootScope) {
+    /*
+    $scope.$watch "db.main_node[set.focus_edit]", ()->
+      console.info 8888
+      if !_.isEqual( new_value, old_value )
+        $rootScope.$emit("jsFindAndSaveDiff",'tree', new_value, old_value);
+    , true
+    */
+
+    return $scope.$watch("db.main_node[set.focus_edit]", function(new_value, old_value) {
+      console.info('watch');
+      if (!_.isEqual(new_value, old_value) && new_value && old_value && (new_value._id === old_value._id)) {
+        return $rootScope.$emit("jsFindAndSaveDiff", 'tree', new_value, old_value);
+      }
+    }, true);
+  });
+
+  angular.module("4treeApp").controller("save_tree_db", function($scope, syncApi, db_tree, $rootScope) {
     return $scope.$watchCollection("tree", function(new_value, old_value) {
       if (!_.isEqual(new_value, old_value)) {
-        syncApi.jsFindChangesForSync(new_value, old_value);
-        return db_tree.refreshView('tree', [old_value._id], new_value, old_value);
+        return $rootScope.$emit("jsFindAndSaveDiff", 'tree', new_value, old_value);
       }
     });
   });
 
-  angular.module("4treeApp").controller("save_task_db", function($scope, syncApi, db_tree) {
+  angular.module("4treeApp").controller("save_task_db", function($scope, syncApi, db_tree, $rootScope) {
     return $scope.$watchCollection("set.set_task", function(new_value, old_value) {
       if (!_.isEqual(new_value, old_value)) {
-        return db_tree.refreshView('tasks', [new_value._id], new_value, old_value);
+        return $rootScope.$emit("jsFindAndSaveDiff", 'tasks', new_value, old_value);
       }
     });
   });

@@ -140,10 +140,10 @@
           _.each(element.tasks, function(task) {
             var tm;
             tm = moment(task.date2).format('HH:MM');
-            return task.time = tm;
+            return task._time = tm;
           });
           element.tasks = _.sortBy(element.tasks, function(task) {
-            return task.time;
+            return task._time;
           });
           return element;
         },
@@ -156,40 +156,190 @@
           _.each(element.tasks, function(task) {
             var tm;
             tm = moment(task.date2).format('HH:MM');
-            return task.time = tm;
+            return task._time = tm;
           });
           element.tasks = _.sortBy(element.tasks, function(task) {
-            return task.time;
+            return task._time;
           });
           return element;
         },
+        getDateOfWeek: function(w, y) {
+          var d;
+          d = 1 + (w - 1) * 7;
+          return new Date(y, 0, d);
+        },
+        getDateOfISOWeek: function(w, y) {
+          var ISOweekStart, dow, simple;
+          simple = new Date(y, 0, 1 + (w - 1) * 7);
+          dow = simple.getDay();
+          ISOweekStart = simple;
+          if (dow <= 4) {
+            ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
+          } else {
+            ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
+          }
+          return ISOweekStart;
+        },
+        getWeek: function(date) {
+          var onejan;
+          onejan = new Date(date.getFullYear(), 0, 1);
+          return Math.ceil((((date - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+        },
+        getWeekByMonth: function(month_number) {
+          var date, this_week;
+          date = new Date();
+          this_week = this.getWeek(date);
+          date.setMonth(month_number - 1);
+          return this.getWeek(date) - this_week - 4;
+        },
+        getWeekByYear: function(month_number) {
+          var date, this_week;
+          date = new Date();
+          this_week = this.getWeek(date);
+          date.setYear(month_number);
+          return this.getWeek(date) - this_week - 4;
+        },
         getWeekCalendarForIndex: _.memoize(function($index) {
-          var date, month, mythis, today, week;
+          var convertGetDay, date, first_day_of_month, mythis, this_week, today, week;
           mythis = this;
-          today = new Date().getTime();
-          date = new Date(today + 24 * 60 * 60 * 1000 * ($index * 7));
-          month = date.getMonth();
-          week = [{}, {}, {}, {}, {}, {}, {}];
+          today = new Date();
+          first_day_of_month = new Date(today.getFullYear(), today.getMonth(), 0);
+          this_week = mythis.getWeek(new Date(first_day_of_month));
+          week = [{}, {}, {}, {}, {}, {}];
+          convertGetDay = [6, 0, 1, 2, 3, 4, 5];
+          date = mythis.getDateOfISOWeek($index + this_week - 2, today.getFullYear());
           _.each([1, 2, 3, 4, 5, 6, 7], function(week_day) {
-            var tasks;
-            date = new Date(today + 24 * 60 * 60 * 1000 * ($index * 7 + week_day));
+            var date_title, myclass, tasks, week_index;
             tasks = mythis.getToDoForIndex(date);
-            if (month === date.getMonth()) {
-              week[date.getDay()] = {
-                date: date.getDate() + '.' + (date.getMonth() + 1),
-                tasks: tasks
-              };
-            } else {
-              week[date.getDay()] = {
-                date: 'X',
-                tasks: []
-              };
+            myclass = (date.getMonth() + (today.getMonth() % 2 ? 1 : 0)) % 2 ? 'odd' : 'even';
+            if (moment(date).format('YYYY-MM-DD') === moment(today).format('YYYY-MM-DD')) {
+              myclass = myclass + ' today';
             }
-            return month = date.getMonth();
+            week_index = convertGetDay[date.getDay()];
+            myclass = myclass + (week_index >= 5 ? ' weekend' : '');
+            date_title = date.getDate();
+            if (date.getDate() === 1) {
+              date_title += ' ' + $translate('MONTH.' + (date.getMonth() + 1));
+            }
+            week[week_index] = {
+              date: date_title,
+              tasks: tasks,
+              myclass: myclass
+            };
+            date = new Date(date.getTime() + 24 * 60 * 60 * 1000);
           });
           return week;
         })
       };
+    }
+  ]);
+
+  angular.module("4treeApp").controller("WeekCalendarController", [
+    '$scope', 'calendarBox', 'db_tree', '$translate', function($scope, calendarBox, db_tree, $translate) {
+      return $scope.$on('position.first', function(e, first, next, bufferSize) {
+        var first_date, month_number;
+        first_date = calendarBox.getDateOfISOWeek(next + bufferSize - 4, new Date().getFullYear());
+        month_number = first_date.getMonth() + 1;
+        $scope.this_month = $translate('MONTH_FULL.' + month_number);
+        $scope.this_year = first_date.getFullYear();
+        $scope.isWeek = true;
+        $scope.monthes = [
+          {
+            title: 'Январь!',
+            goto: calendarBox.getWeekByMonth(1)
+          }, {
+            title: 'Февраль',
+            goto: calendarBox.getWeekByMonth(2)
+          }, {
+            title: 'Март',
+            goto: calendarBox.getWeekByMonth(3)
+          }, {
+            title: 'Апрель',
+            goto: calendarBox.getWeekByMonth(4)
+          }, {
+            title: 'Май',
+            goto: calendarBox.getWeekByMonth(5)
+          }, {
+            title: 'Июнь',
+            goto: calendarBox.getWeekByMonth(6)
+          }, {
+            title: 'Июль',
+            goto: calendarBox.getWeekByMonth(7)
+          }, {
+            title: 'Август',
+            goto: calendarBox.getWeekByMonth(8)
+          }, {
+            title: 'Сентябрь',
+            goto: calendarBox.getWeekByMonth(9)
+          }, {
+            title: 'Октябрь',
+            goto: calendarBox.getWeekByMonth(10)
+          }, {
+            title: 'Ноябрь',
+            goto: calendarBox.getWeekByMonth(11)
+          }, {
+            title: 'Декабрь',
+            goto: calendarBox.getWeekByMonth(12)
+          }
+        ];
+        return $scope.goTo = function(index) {
+          return $scope.$$childHead.$emit('goto_index', index + 1);
+        };
+      });
+    }
+  ]);
+
+  angular.module("4treeApp").controller("bigCalendarController", [
+    '$scope', 'calendarBox', 'db_tree', '$translate', function($scope, calendarBox, db_tree, $translate) {
+      return $scope.$on('position.first', function(e, first, next, bufferSize) {
+        var first_date, month_number;
+        first_date = new Date(new Date().getTime() + (first + bufferSize + 1) * 24 * 60 * 60 * 1000);
+        month_number = first_date.getMonth() + 1;
+        $scope.this_month = $translate('MONTH_FULL.' + month_number);
+        $scope.this_year = first_date.getFullYear();
+        $scope.monthes = [
+          {
+            title: 'Январь',
+            goto: 0
+          }, {
+            title: 'Февраль',
+            goto: 0
+          }, {
+            title: 'Март',
+            goto: 0
+          }, {
+            title: 'Апрель',
+            goto: 0
+          }, {
+            title: 'Май',
+            goto: 0
+          }, {
+            title: 'Июнь',
+            goto: 0
+          }, {
+            title: 'Июль',
+            goto: 0
+          }, {
+            title: 'Август',
+            goto: 0
+          }, {
+            title: 'Сентябрь',
+            goto: 0
+          }, {
+            title: 'Октябрь',
+            goto: 0
+          }, {
+            title: 'Ноябрь',
+            goto: 0
+          }, {
+            title: 'Декабрь',
+            goto: 0
+          }
+        ];
+        return $scope.goTo = function(index) {
+          return $scope.$$childHead.$emit('goto_index', index - 8);
+        };
+      });
     }
   ]);
 

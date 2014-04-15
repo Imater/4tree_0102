@@ -34,7 +34,13 @@
     'date1': Date,
     'date2': Date,
     'tags': [],
-    'counters': [],
+    'counters': [
+      {
+        'cnt_today': Number,
+        'title': String,
+        'days': []
+      }
+    ],
     'hide_in_todo': Boolean,
     'importance': {
       type: Number,

@@ -45,7 +45,6 @@
             }
           });
           year = parseInt(year);
-          console.info(year, found_month_key, day);
           return new Date(year, found_month_key, day);
         };
         el.on('keyup', 'input', function(e) {
@@ -57,7 +56,6 @@
           var parsed_date;
           parsed_date = parseDateFromInput(el);
           if (_.isDate(parsed_date)) {
-            console.info('try to parse', parseDateFromInput(el));
             return scope.$apply(function() {
               return ngModel.$setViewValue(new Date(parsed_date));
             });
@@ -65,7 +63,6 @@
         });
         charLimit = 2;
         el.on('keyup', '.day', function(e) {
-          console.info('e', e);
           if (e.which === 8 && this.value.length === 0) {
 
           } else if ($.inArray(e.which, params.keys) >= 0) {

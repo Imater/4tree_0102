@@ -20,8 +20,33 @@
         width: 100%;
         .week_day {
           display: table-cell;
-          border: 1px solid #EEE;
+          border: 1px solid $light_gray;
           border-top: none;
+          padding: round( $padding );
+          padding-bottom: 0;
+          &.odd {
+            background: $dropdown_menu;
+            border-color: darken($dropdown_menu,10%);
+          }
+          &.even {
+            .day_header {
+              color: $main_color;
+            }
+          }
+          &.today {
+            background: $today_background;
+          }
+          &.weekend {
+            .day_header {
+              color: rgba(#6c0000, 0.7);              
+            }
+          }
+          .day_header {
+            text-align: right;
+            b {
+              font-weight: normal;
+            }
+          }
           .one_task {
             font-size: 10px;
             white-space: normal;

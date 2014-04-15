@@ -92,7 +92,6 @@ angular.module("4treeApp").directive "dateTimeInput", ($timeout, $compile)->
         found_month_key = key if substr_month.indexOf(month.substr(0,4))!=-1
       year = parseInt(year);
 
-      console.info year, found_month_key, day
 
       new Date( year, found_month_key, day )
 
@@ -103,13 +102,11 @@ angular.module("4treeApp").directive "dateTimeInput", ($timeout, $compile)->
     el.on 'blur', 'input', (e)->
       parsed_date = parseDateFromInput(el);
       if _.isDate(parsed_date)
-        console.info 'try to parse', parseDateFromInput(el);
         scope.$apply ()->
           ngModel.$setViewValue new Date(parsed_date)
 
     charLimit = 2
     el.on 'keyup', '.day', (e) ->
-      console.info 'e', e
       if e.which is 8 and @value.length is 0
         #$(this).prev(".inputs").focus()
       else if $.inArray(e.which, params.keys) >= 0

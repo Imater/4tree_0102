@@ -49,7 +49,6 @@
               this.jsGetRemoteTokenByPassword().then(save_and_answer_token);
             }
           } else {
-            console.info("SAVED = ", oauth_saved);
             token_data_saved = JSON.parse(oauth_saved);
             dfd.resolve(token_data_saved.access_token);
           }

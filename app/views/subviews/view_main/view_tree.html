@@ -34,6 +34,17 @@
                 </ul>
             </li>
           </ul>
+          <ul>
+            <li ng-click="fn.service.syncApi.syncToServer()"><a class="btn btn-default">Отправить на сервер</a></li>
+            <li ng-repeat="(key, diff) in fn.service.syncApi.diff_journal" style="padding: 10px">
+              {{key}}
+              <ul>
+                <li ng-repeat="(i,d) in diff" style="padding: 10px;">
+                  {{i}} — {{d}}
+                </li>
+              </ul>
+            </li>
+          </ul>
 
         </div>
 
