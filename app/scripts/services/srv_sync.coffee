@@ -1,5 +1,5 @@
-angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$http', 'oAuth2Api', 'diffApi', '$rootScope', ($translate, db_tree, $q, $http, oAuth2Api, diffApi, $rootScope) ->
-  autosync_on: false
+angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$http', 'oAuth2Api', 'diffApi', '$rootScope', '$timeout', '$socket', ($translate, db_tree, $q, $http, oAuth2Api, diffApi, $rootScope, $timeout, $socket) ->
+  autosync_on: true
   sync_journal: {}
   last_sync_time: "не проводилась"
   gen: 1;
@@ -48,12 +48,15 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
         obj = obj[point]
     prev_obj
   'jsStartSyncInWhile': _.debounce ()->
-      @jsStartSync() if @autosync_on;
-    , 5000
+      console.info 'wait 5 sec...'
+      @jsStartSync() if @autosync_on and Object.keys(@diff_journal).length;
+    , 10
   jsHideSyncIndicator: _.debounce ()->
       $(".sync_indicator").removeClass('active')
     , 1000
   jsStartSync: ()->
+    @syncToServer()
+    return true;
     $(".sync_indicator").addClass('active')
     mythis = @
     to_send = {
@@ -93,42 +96,124 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
     Object.keys(@sync_journal).length
   #######################
   diff_journal: {}
+  sync_now: false;
   constructor: ()->
     mythis = @;
-    $rootScope.$on 'jsFindAndSaveDiff', (event, db_name, new_value, old_value)->
-      return if !old_value or !new_value
+    $rootScope.$on 'jsFindAndSaveDiff', _.debounce (event, db_name, new_value, old_value)->
+      console.info 'watch'
+      return if !old_value or !new_value or mythis.sync_now
       diffs = diffApi.diff( old_value, new_value, new Date().getTime() );
       _.each diffs, (diff)->
-        if diff.key[0][0] != '_' and diff.key[diff.key.length-1][0] != '$'
+        if diff.key[0][0] != '_' and diff.key[diff.key.length-1][0] != '$' and diff.key[diff.key.length-1][0] != '_'
           key = diff.type+':'+diff.key.join('.');
           mythis.diff_journal[db_name] = {} if !mythis.diff_journal[db_name]
           mythis.diff_journal[db_name][old_value._id] = {} if !mythis.diff_journal[db_name][old_value._id]
           mythis.diff_journal[db_name][old_value._id][key] = diff
         return
-      db_tree.refreshView(db_name, [old_value._id], new_value, old_value)
-      #diffApi.logJson 'diff_journal', mythis.diff_journal
+      if diffs.length
+        db_tree.refreshView(db_name, [old_value._id], new_value, old_value)
+        mythis.jsStartSyncInWhile();
+        #diffApi.logJson 'diff_journal', mythis.diff_journal
+      db_tree.jsSaveElementToLocal(new_value).then('saved_local');
+    , 50
+  getLastSyncTime: ()->
+    max_element = _.max db_tree._db.tree, (el)->
+      if el.tm
+        return new Date(el.tm)
+      else 
+        return 0
+    max_element.tm
+  dfd_sync: $q.defer();
+  syncThrough: (transport, data)->
+    mythis = @;
+    mythis.dfd_sync = $q.defer();
+    diffApi.logJson 'sending data through ['+transport+']', data;
+    if transport == 'http'
+      oAuth2Api.jsGetToken().then (token)->
+        $http({
+          url: '/api/v1/sync_db',
+          method: "POST",
+          isArray: true,
+          params: {
+              access_token: token
+          }
+          data: data
+        }).then (result)->
+          mythis.jsUpdateDb(result.data).then ()->
+            mythis.dfd_sync.resolve result.data
+    if transport == 'websocket'
+      $socket.emit 'sync_data', data
+
+    mythis.dfd_sync.promise;
+
   syncToServer: ()->
     dfd = $q.defer();
     mythis = @;
+
     data = {
       @diff_journal
+      last_sync_time: mythis.getLastSyncTime()
+      user_instance: $rootScope.$$childTail.set.user_instance
     }
-    diffApi.logJson 'sending data', data;
-    oAuth2Api.jsGetToken().then (token)->
-      $http({
-        url: '/api/v1/sync_db',
-        method: "POST",
-        isArray: true,
-        params: {
-            access_token: token
-        }
-        data: data
-      }).then (result)->
-        console.info "SYNC_RESULT = ", result
-        mythis.diff_journal = {}
-        dfd.resolve result.data
+    if $socket.is_online() and false
+      @syncThrough('websocket', data).then ()->
+        console.info 'sync_socket_ended';
+    else
+      @syncThrough('http', data).then ()->
+        console.info 'sync_http_ended';
 
     dfd.promise;
+
+  jsUpdateDb: (data)->
+    dfd = $.Deferred();
+    dfdArray = [];
+    mythis = @;
+    _.each data, (db_table, db_name)->
+      dfdArray.push mythis.jsUpdateDbOne(db_table, db_name)
+    $.when.apply(null, dfdArray).then ()->
+      dfd.resolve();
+    dfd.promise();
+  jsUpdateDbOne: (db_table, db_name)->
+    console.info "ONE = ", db_table
+    new_data = db_table.new_data;
+    sync_confirm_id = db_table.sync_confirm_id;
+    console.info 'confirm = ', sync_confirm_id, 'new_data = ', new_data
+    dfd = $.Deferred();
+    mythis = @;
+    mythis.sync_now = true;
+
+    copyObject = (source, obj)->
+      newObj = source;
+      for key of obj
+          newObj[key] = obj[key];
+      return newObj;
+
+    i_need_refresh = false;
+    _.each new_data, (new_data_element)->
+      found = _.find db_tree._db[db_name], (el, key)->
+        el._id == new_data_element._id
+      if found
+        copyObject(found, new_data_element)
+        #found.$$hashKey = 'sex'
+        i_need_refresh = true
+        console.info 'new = ', found;
+      return true
+    _.each sync_confirm_id, (confirm_element)->
+      found = _.find db_tree._db[db_name], (el, key)->
+        el._id == confirm_element._id
+      if found
+        console.info 'confirm_times', found.tm, confirm_element.tm;
+        i_need_refresh = true;
+        found.tm = confirm_element.tm;
+
+    if i_need_refresh
+      db_tree.refreshParentsIndex();
+    dfd.resolve();
+    mythis.diff_journal = {}; #объекты обновлены, можно считать синхронизацию завершённой
+    $timeout ()->
+      mythis.sync_now = false;
+
+    dfd.promise();
 
   
 

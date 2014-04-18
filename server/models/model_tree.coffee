@@ -18,10 +18,15 @@ treeSchema = new Schema (
   'old_tag': String
   'date1': Date
   'date2': Date
+  'short_link_on': Boolean
+  'web_on': Boolean
+  'share_frends': Boolean
   #'dates': { startDate: Date, endDate: Date }
   'tags': []
   'counters': [ { 'cnt_today': Number, 'title': String, 'days': [] } ]
   'hide_in_todo': Boolean
   'importance': { type: Number, default: 50 }
+  '_sync': [ { key: String, diff: { 'tm': String } } ]
+  'tm': Date
 )
 Tree = module.exports = mongoose.model("Tree", treeSchema)

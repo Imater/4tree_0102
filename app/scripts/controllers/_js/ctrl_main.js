@@ -2,9 +2,44 @@
 (function() {
   "use strict";
   angular.module("4treeApp").controller("MainCtrl", [
-    '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi) {
-      var set_pomidors;
+    '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', 'cryptApi', '$socket', 'oAuth2Api', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi, cryptApi, $socket, oAuth2Api) {
+      var pas1_encrypted, pasA, pasB, pubKey, sendtoA, sendtoB, set_pomidors;
+      if (false) {
+        pasA = "sex";
+        pubKey = "lexus";
+        pasB = "hello";
+        console.info('sha3(pasA)', sendtoB = cryptApi.sha3(pasA + pubKey));
+        console.info('sha3(pasB)', sendtoA = cryptApi.sha3(pasB + pubKey));
+        console.info("SEND TO B", sendtoB);
+        console.info('sha3(pasA)+sha3(pasB)1 = ', cryptApi.sha3(cryptApi.sha3(pasA + pubKey) + sendtoA));
+        console.info('sha3(pasA)+sha3(pasB)2 = ', cryptApi.sha3(sendtoB + cryptApi.sha3(pasB + pubKey)));
+        pas1_encrypted = cryptApi.encrypt(pasA, 0);
+        console.info('ENCRYPT', {
+          pas1_encrypted: pas1_encrypted
+        }, cryptApi.decrypt(pas1_encrypted));
+      }
+      $socket.on('who_are_you', $scope, function(data) {
+        console.info('Попросили представиться', data);
+        return $socket.emit('i_am_user', {
+          _id: $scope.set.user_id,
+          user_instance: $scope.set.user_instance
+        });
+      });
+      $socket.on('need_sync', $scope, function(data) {
+        console.info('sync_data', data);
+        return syncApi.jsUpdateDb(data);
+      });
+      $socket.on('sync_answer', $scope, function(data) {
+        return syncApi.jsUpdateDb(data).then(function() {
+          return syncApi.dfd_sync.resolve();
+        });
+      });
+      $scope.send = function(message) {
+        return $socket.emit('hello', message);
+      };
       $scope.set = {
+        user_id: '5330ff92898a2b63c2f7095f',
+        user_instance: new ObjectId().toString(),
         today_date: new Date(),
         focus: 1,
         focus_edit: 1,
@@ -519,7 +554,6 @@
     */
 
     return $scope.$watch("db.main_node[set.focus_edit]", function(new_value, old_value) {
-      console.info('watch');
       if (!_.isEqual(new_value, old_value) && new_value && old_value && (new_value._id === old_value._id)) {
         return $rootScope.$emit("jsFindAndSaveDiff", 'tree', new_value, old_value);
       }
@@ -527,11 +561,11 @@
   });
 
   angular.module("4treeApp").controller("save_tree_db", function($scope, syncApi, db_tree, $rootScope) {
-    return $scope.$watchCollection("tree", function(new_value, old_value) {
-      if (!_.isEqual(new_value, old_value)) {
+    return $scope.$watch("tree", function(new_value, old_value) {
+      if (!_.isEqual(new_value, old_value) && (new_value._id === old_value._id)) {
         return $rootScope.$emit("jsFindAndSaveDiff", 'tree', new_value, old_value);
       }
-    });
+    }, true);
   });
 
   angular.module("4treeApp").controller("save_task_db", function($scope, syncApi, db_tree, $rootScope) {

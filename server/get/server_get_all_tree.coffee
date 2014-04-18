@@ -10,18 +10,28 @@ exports.get = (req, res)->
   async.waterfall [
 
     (callback)->
-      console.info "USER_ID = ", user_id
-      Tree.find {'user_id':user_id, 'del':0}, (err, rows)->
-        async.eachLimit rows, 50, (row, callback)->
-          row._open = false;
-          row._settings = false;
-          row.title = strip_tags(row.title) if row.title
-          callback null;
+      result = {};
+      async.each Object.keys(global._db_models), (db_name, callback2)->
+        console.info '!!DB_NAME', db_name
+        db_model = global._db_models[db_name];
+        console.info "USER_ID = ", user_id
+        db_model.find {'user_id':user_id, 'del':0}, (err, rows)->
+          async.eachLimit rows, 50, (row, callback)->
+            row._open = false;
+            row._settings = false;
+            row.title = strip_tags(row.title) if row.title
+            row.tm = new Date() if !row.tm;
+            if row._sync
+              delete row._sync 
+            callback null;
+          , (err)->
+            result[db_name] = rows;
+            callback err, rows
+            callback2 err
         , (err)->
-          callback err, rows
-          res.send( JSON.stringify rows )
+          console.info 'hi!!!';
       , (err)->
-        callback err
+        res.send( JSON.stringify result )
 
 
   ], (err, rows)->

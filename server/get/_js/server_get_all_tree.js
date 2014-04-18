@@ -15,24 +15,40 @@
     user_id = req.query.user_id;
     return async.waterfall([
       function(callback) {
-        console.info("USER_ID = ", user_id);
-        return Tree.find({
-          'user_id': user_id,
-          'del': 0
-        }, function(err, rows) {
-          return async.eachLimit(rows, 50, function(row, callback) {
-            row._open = false;
-            row._settings = false;
-            if (row.title) {
-              row.title = strip_tags(row.title);
-            }
-            return callback(null);
+        var result;
+        result = {};
+        return async.each(Object.keys(global._db_models), function(db_name, callback2) {
+          var db_model;
+          console.info('!!DB_NAME', db_name);
+          db_model = global._db_models[db_name];
+          console.info("USER_ID = ", user_id);
+          return db_model.find({
+            'user_id': user_id,
+            'del': 0
+          }, function(err, rows) {
+            return async.eachLimit(rows, 50, function(row, callback) {
+              row._open = false;
+              row._settings = false;
+              if (row.title) {
+                row.title = strip_tags(row.title);
+              }
+              if (!row.tm) {
+                row.tm = new Date();
+              }
+              if (row._sync) {
+                delete row._sync;
+              }
+              return callback(null);
+            }, function(err) {
+              result[db_name] = rows;
+              callback(err, rows);
+              return callback2(err);
+            });
           }, function(err) {
-            callback(err, rows);
-            return res.send(JSON.stringify(rows));
+            return console.info('hi!!!');
           });
         }, function(err) {
-          return callback(err);
+          return res.send(JSON.stringify(result));
         });
       }
     ], function(err, rows) {});

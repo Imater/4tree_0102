@@ -91,11 +91,97 @@
             }
           });
         },
+        saveAllTreeToLocal: function() {
+          var mythis;
+          mythis = this;
+          return _.each(mythis._db.tree, function(el) {
+            return localforage.setItem('tree_' + el._id, el, function(err) {
+              if (!err) {
+                return console.info('saved ' + el._id, err);
+              }
+            });
+          });
+        },
+        loadAllTreeFromLocal: function() {
+          var dfdArray, getKeys, was;
+          getKeys = function(i) {
+            var dfd;
+            dfd = $.Deferred();
+            localforage.key(i, function(key) {
+              localforage.getItem(key, function(data, i) {
+                return dfd.resolve();
+              });
+            });
+            return dfd.promise();
+          };
+          console.time('start_loading');
+          was = new Date().getTime();
+          dfdArray = [];
+          return localforage.length(function(length) {
+            var i;
+            i = 0;
+            while (i < length) {
+              dfdArray.push(getKeys(i));
+              i++;
+            }
+            $.when.apply(null, dfdArray).done(function() {
+              console.info('end');
+              console.timeEnd('start_loading');
+              return alert('end' + (new Date().getTime() - was));
+            });
+          });
+        },
+        getTreeFromeWebOrLocal: function() {
+          var dfd, mythis;
+          mythis = this;
+          this.dbInit();
+          dfd = $.Deferred();
+          this.ydnLoadFromLocal(mythis).then(function(records) {
+            if (records.length === 0) {
+              console.info('NEED DATA FROM NET');
+              return mythis.getTreeFromWeb().then(function(data) {
+                var result;
+                result = {};
+                _.each(data, function(records, db_name) {
+                  mythis.ydnSaveToLocal(db_name, records).then(function() {
+                    return console.info('SAVED TO LOCAL');
+                  });
+                  return result[db_name] = records;
+                });
+                return dfd.resolve(result);
+              });
+            } else {
+              console.info('ALL DATA FROM LOCAL');
+              return dfd.resolve(records);
+            }
+          });
+          return dfd.promise();
+        },
         getTreeFromNet: function() {
+          var db_name, dfd, mythis;
+          mythis = this;
+          dfd = $q.defer();
+          console.time('ALL DATA LOADED');
+          db_name = '4tree_db';
+          this.getTreeFromeWebOrLocal().then(function(records) {
+            _.each(records, function(data, db_name) {
+              return mythis._db[db_name] = data;
+            });
+            mythis.refreshParentsIndex();
+            $rootScope.$$childTail.set.tree_loaded = true;
+            $rootScope.$$childTail.db.main_node = [];
+            $rootScope.$broadcast('tree_loaded');
+            mythis.clearCache();
+            console.timeEnd('ALL DATA LOADED');
+            return dfd.resolve(db_name, records);
+          });
+          return dfd.promise;
+        },
+        getTreeFromWeb: function() {
           var dfd, mythis;
           dfd = $q.defer();
           mythis = this;
-          return oAuth2Api.jsGetToken().then(function(access_token) {
+          oAuth2Api.jsGetToken().then(function(access_token) {
             return $http({
               url: '/api/v2/tree',
               method: "GET",
@@ -104,15 +190,79 @@
                 access_token: access_token
               }
             }).then(function(result) {
-              mythis._db.tree = result.data;
-              mythis.refreshParentsIndex();
-              $rootScope.$$childTail.set.tree_loaded = true;
-              $rootScope.$$childTail.db.main_node = [];
-              $rootScope.$broadcast('tree_loaded');
-              mythis.clearCache();
               return dfd.resolve(result.data);
             });
           });
+          return dfd.promise;
+        },
+        db: void 0,
+        jsSaveElementToLocal: function(db_name, el) {
+          var dfd;
+          dfd = $.Deferred();
+          if (el && el.$$hashKey) {
+            delete el.$$hashKey;
+          }
+          this.db.put(db_name, el).done(function() {
+            return dfd.resolve();
+          });
+          return dfd.promise();
+        },
+        store_schema: [
+          {
+            name: 'tree',
+            keyPath: '_id',
+            autoIncrement: false
+          }, {
+            name: 'tasks',
+            keyPath: '_id',
+            autoIncrement: false
+          }
+        ],
+        dbInit: function() {
+          var options, schema;
+          schema = {
+            stores: this.store_schema
+          };
+          options = {};
+          return this.db = new ydn.db.Storage('_db.tree', schema, options);
+        },
+        ydnSaveToLocal: function(db_name, records) {
+          var dfd, mythis;
+          dfd = $.Deferred();
+          this.dbInit();
+          mythis = this;
+          this.db.clear(db_name).done(function() {
+            return async.eachLimit(records, 50, function(el, callback) {
+              if (el.$$hashKey) {
+                delete el.$$hashKey;
+              }
+              return mythis.jsSaveElementToLocal(db_name, el).then(function() {
+                return callback();
+              });
+            }, function(err) {
+              return dfd.resolve();
+            });
+          });
+          return dfd.promise();
+        },
+        ydnLoadFromLocal: function(mythis) {
+          var dfd, result;
+          this.dbInit();
+          dfd = $.Deferred();
+          console.time('load_local');
+          result = {};
+          async.each(mythis.store_schema, function(table_schema, callback) {
+            var db_name;
+            db_name = table_schema.name;
+            return mythis.db.values(db_name, null, 999999999).done(function(records) {
+              result[db_name] = records;
+              return callback();
+            });
+          }, function() {
+            console.timeEnd('load_local');
+            return dfd.resolve(result);
+          });
+          return dfd.promise();
         },
         refreshParentsIndex: function(parent_id) {
           var focus, found, mymap, mymap_calendar, myreduce_calendar, mythis;
@@ -576,77 +726,7 @@
           return this.clearCache();
         },
         loadTasks: function() {
-          return this._db.tasks = [
-            {
-              _id: 0,
-              tree_id: '1034',
-              date1: new Date(2014, 2, 31),
-              date2: new Date(2014, 2, 31, 8, 30),
-              title: 'Записаться в бассейн, это очень важно и нужно это сделать очень срочно, потомучто плавать это круто и всем нравится и это очень даже прикольно'
-            }, {
-              _id: 1,
-              tree_id: '1034',
-              date1: new Date(2014, 3, 4, 12, 30, 0),
-              date2: new Date(2014, 3, 4, 10, 30, 0),
-              title: 'Начало сериала на ТНТ про дружбу народов',
-              did: new Date()
-            }, {
-              _id: 2,
-              tree_id: '1034',
-              date1: new Date(2013, 2, 3),
-              date2: new Date(2014, 3, 4, 17, 30, 0),
-              title: 'Как жизнь? написать письмо',
-              did: new Date()
-            }, {
-              _id: 3,
-              tree_id: '1034',
-              date1: new Date(2014, 1, 4, 12, 30, 0),
-              date2: new Date(2014, 3, 2, 18, 30, 0),
-              title: 'Урал край голубых озёр - написать статью'
-            }, {
-              _id: 4,
-              tree_id: '1034',
-              date1: new Date(new Date().getTime() - 1000 * 60 * 220),
-              date2: new Date(new Date().getTime() - 1000 * 60 * 220),
-              title: 'Двадцать минут назад я тут был :) И мне тут понравилось.'
-            }, {
-              _id: 5,
-              tree_id: '1034',
-              date1: '',
-              date2: new Date(2014, 3, 8, 12, 30, 0),
-              title: 'Как жизнь? написать письмо'
-            }, {
-              _id: 8,
-              tree_id: '1034',
-              date1: '',
-              date2: new Date(2014, 3, 8, 12, 30, 0),
-              title: 'Нужно купить Мартини'
-            }, {
-              _id: 6,
-              tree_id: '1034',
-              date1: new Date(new Date().getTime() + 1000 * 60 * 20),
-              date2: new Date(new Date().getTime() + 1000 * 60 * 20),
-              title: 'Через 20 минут выходим и нам нужно ехать будет в театр'
-            }, {
-              _id: -1,
-              tree_id: '2138',
-              date1: new Date(2014, 2, 29),
-              date2: new Date(2014, 2, 29, 14, 20),
-              title: 'Очень важное дело, которое нужно сделать сегодня'
-            }, {
-              _id: 11,
-              tree_id: '2138',
-              date1: new Date(2014, 4, 12),
-              date2: new Date(2014, 4, 12, 14, 20),
-              title: 'День рождения Жени'
-            }, {
-              _id: 12,
-              tree_id: '2138',
-              date1: new Date(2014, 4, 12),
-              date2: new Date(2014, 4, 18, 14, 20),
-              title: 'День рождения Вали'
-            }
-          ];
+          return true;
         },
         clearCache2: function() {
           return _.each(this, function(fn) {

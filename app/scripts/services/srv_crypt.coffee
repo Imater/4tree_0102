@@ -1,18 +1,17 @@
 angular.module("4treeApp").service 'cryptApi', ['$translate','db_tree', '$rootScope', ($translate, db_tree, $rootScope) ->
+  methods: {
+    0: 'AES'
+    1: 'DES'
+    2: 'TripleDES'
+    3: 'Rabbit'
+    4: 'RC4Drop'
+  }  
+  pass_salt: 'salt'
+  password: "990990";
+  pass: "pass1";
+  reminder: 'ФИО'
   constructor: () -> 
     console.time('start')
-    @pass_salt = @sha3(db_tree.salt() + db_tree.pepper())
-    @password = "990990";
-    @pass = @sha3( @password + @pass_salt + @password + @pass_salt );
-    #console.info @pass
-    @reminder = 'ФИО'
-    @methods = {
-      0: 'AES'
-      1: 'DES'
-      2: 'TripleDES'
-      3: 'Rabbit'
-      4: 'RC4Drop'
-    }
     console.timeEnd('start')
   encrypt: (text, type)->
     salt = @sha3( "_"+Math.random()*100000000 ).substr(0,5);
@@ -43,6 +42,6 @@ angular.module("4treeApp").service 'cryptApi', ['$translate','db_tree', '$rootSc
       answer = answer.toString(CryptoJS.enc.Utf8)
     {text: answer, err: errors}
   sha3: (value)->
-    CryptoJS.SHA3(value, { outputLength: 512 }).toString()
+    CryptoJS.SHA3(value, { outputLength: 64 }).toString() #512
 
 ]

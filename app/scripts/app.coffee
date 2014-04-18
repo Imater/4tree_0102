@@ -21,6 +21,7 @@ angular.module("4treeApp", [
   "ngTagsInput"
   "sly"
   "ngClipboard"
+  "ngSocket"
   #"Decorators"
   "drahak.hotkeys"
 ])

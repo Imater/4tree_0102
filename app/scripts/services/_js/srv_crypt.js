@@ -3,19 +3,19 @@
   angular.module("4treeApp").service('cryptApi', [
     '$translate', 'db_tree', '$rootScope', function($translate, db_tree, $rootScope) {
       return {
+        methods: {
+          0: 'AES',
+          1: 'DES',
+          2: 'TripleDES',
+          3: 'Rabbit',
+          4: 'RC4Drop'
+        },
+        pass_salt: 'salt',
+        password: "990990",
+        pass: "pass1",
+        reminder: 'ФИО',
         constructor: function() {
           console.time('start');
-          this.pass_salt = this.sha3(db_tree.salt() + db_tree.pepper());
-          this.password = "990990";
-          this.pass = this.sha3(this.password + this.pass_salt + this.password + this.pass_salt);
-          this.reminder = 'ФИО';
-          this.methods = {
-            0: 'AES',
-            1: 'DES',
-            2: 'TripleDES',
-            3: 'Rabbit',
-            4: 'RC4Drop'
-          };
           return console.timeEnd('start');
         },
         encrypt: function(text, type) {
@@ -60,7 +60,7 @@
         },
         sha3: function(value) {
           return CryptoJS.SHA3(value, {
-            outputLength: 512
+            outputLength: 64
           }).toString();
         }
       };

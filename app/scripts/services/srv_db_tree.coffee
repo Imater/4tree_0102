@@ -55,9 +55,73 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       fn.cache = {} if fn
     _.each $rootScope.$$childTail.fn.service.calendarBox, (fn)->
       fn.cache = {} if fn
+  saveAllTreeToLocal: ()->
+    mythis = @;
+    _.each mythis._db.tree, (el)->
+      localforage.setItem 'tree_'+el._id, el, (err)->
+        console.info 'saved '+el._id, err if !err
+  loadAllTreeFromLocal: ()->
+    getKeys = (i)->
+      dfd = $.Deferred();
+      localforage.key i, (key) ->
+        localforage.getItem key, (data, i)->
+#            console.info '!!!', key
+          dfd.resolve();
+        return
+      return dfd.promise();
+
+    console.time 'start_loading'
+    was = new Date().getTime();
+    dfdArray = [];
+    localforage.length (length) ->
+      i = 0
+      while i < length        
+        dfdArray.push( getKeys(i) );
+        i++
+      $.when.apply(null, dfdArray).done ()->
+        console.info ('end');
+        console.timeEnd 'start_loading'
+        alert('end'+( new Date().getTime() - was ))
+      return
+  getTreeFromeWebOrLocal: ()->
+    mythis = @;
+    @dbInit();
+    dfd = $.Deferred();
+    @ydnLoadFromLocal(mythis).then (records)->
+      if records.length == 0
+        console.info 'NEED DATA FROM NET';
+        mythis.getTreeFromWeb().then (data)->
+          result = {};
+          _.each data, (records, db_name)->
+            mythis.ydnSaveToLocal(db_name, records).then ()->
+              console.info 'SAVED TO LOCAL'
+            result[db_name] = records;
+          dfd.resolve( result );
+      else
+        console.info 'ALL DATA FROM LOCAL'
+        dfd.resolve( records );
+    dfd.promise();
   getTreeFromNet: ()->
+    mythis = @;
+    dfd = $q.defer();
+    console.time 'ALL DATA LOADED'
+    db_name = '4tree_db';
+    @getTreeFromeWebOrLocal().then (records)->
+      _.each records, (data, db_name)->
+        mythis._db[db_name] = data;
+      mythis.refreshParentsIndex();
+      $rootScope.$$childTail.set.tree_loaded = true;
+      $rootScope.$$childTail.db.main_node = []
+      $rootScope.$broadcast('tree_loaded');
+      mythis.clearCache();
+      console.timeEnd 'ALL DATA LOADED'
+      dfd.resolve(db_name, records);
+    dfd.promise;
+  getTreeFromWeb: ()->
     dfd = $q.defer();
     mythis = @;
+    #@loadAllTreeFromLocal();
+    #return true;
 
     oAuth2Api.jsGetToken().then (access_token)->
       $http({
@@ -68,13 +132,63 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           access_token: access_token
         }
       }).then (result)->
-        mythis._db.tree = result.data;
-        mythis.refreshParentsIndex();
-        $rootScope.$$childTail.set.tree_loaded = true;
-        $rootScope.$$childTail.db.main_node = []
-        $rootScope.$broadcast('tree_loaded');
-        mythis.clearCache();
         dfd.resolve(result.data);
+    dfd.promise;
+  db: undefined
+  jsSaveElementToLocal: (db_name, el)->
+    dfd = $.Deferred();
+    delete el.$$hashKey if el and el.$$hashKey
+    @db.put(db_name, el).done ()->
+      dfd.resolve();
+    dfd.promise();
+
+  store_schema: [
+    { 
+      name: 'tree', 
+      keyPath: '_id', 
+      autoIncrement: false
+    }    
+    { 
+      name: 'tasks', 
+      keyPath: '_id', 
+      autoIncrement: false
+    }    
+  ]
+  dbInit: ()->
+    schema = {
+      stores: @store_schema
+    }; 
+    options = {};
+    @db = new ydn.db.Storage('_db.tree', schema, options);
+
+
+  ydnSaveToLocal: (db_name, records)->
+    dfd = $.Deferred();
+    @dbInit();
+    mythis = @;
+    @db.clear(db_name).done ()->
+      async.eachLimit records, 50, (el, callback)->
+        delete el.$$hashKey if el.$$hashKey
+        mythis.jsSaveElementToLocal(db_name, el).then ()->
+          callback();
+      , (err)->
+        dfd.resolve();
+    dfd.promise();
+  ydnLoadFromLocal: (mythis)->
+    @dbInit();
+    dfd = $.Deferred();
+    console.time 'load_local'
+    result = {};
+    async.each mythis.store_schema, (table_schema, callback)->
+      db_name = table_schema.name;
+      mythis.db.values(db_name,null,999999999).done (records)->
+        result[db_name] = records;
+        callback();
+    , ()->
+      console.timeEnd 'load_local'
+      dfd.resolve(result);
+    dfd.promise();
+
   refreshParentsIndex: (parent_id)->
     focus = $rootScope.$$childTail.set.focus    
     mythis = @;
@@ -308,95 +422,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
 ########################## T A S K S ########################
   loadTasks: ()->
-    @_db.tasks = [
-      { 
-      _id: 0, 
-      tree_id: '1034', 
-      date1: new Date(2014,2,31), 
-      date2: new Date(2014,2,31, 8, 30), 
-      title: 'Записаться в бассейн, это очень важно и нужно это сделать очень срочно, потомучто плавать это круто и всем нравится и это очень даже прикольно' 
-      }
-
-      { 
-      _id: 1, 
-      tree_id: '1034', 
-      date1: new Date(2014,3,4, 12, 30, 0), 
-      date2: new Date(2014,3,4, 10, 30, 0), 
-      title: 'Начало сериала на ТНТ про дружбу народов' 
-      did: new Date();
-      }
-
-      { 
-      _id: 2, 
-      tree_id: '1034', 
-      date1: new Date(2013,2,3), 
-      date2: new Date(2014,3,4, 17, 30, 0), 
-      title: 'Как жизнь? написать письмо' 
-      did: new Date();
-      }
-
-      { 
-      _id: 3, 
-      tree_id: '1034', 
-      date1: new Date(2014,1,4, 12, 30, 0), 
-      date2: new Date(2014,3,2, 18, 30, 0), 
-      title: 'Урал край голубых озёр - написать статью' 
-      #did: new Date();
-      }
-
-      { 
-      _id: 4, 
-      tree_id: '1034', 
-      date1: new Date( new Date().getTime()-1000*60*220 ), 
-      date2: new Date( new Date().getTime()-1000*60*220 ), 
-      title: 'Двадцать минут назад я тут был :) И мне тут понравилось.' 
-      }
-
-      { 
-      _id: 5, 
-      tree_id: '1034', 
-      date1: '', 
-      date2: new Date(2014,3,8, 12, 30, 0), 
-      title: 'Как жизнь? написать письмо' 
-      }
-      { 
-      _id: 8, 
-      tree_id: '1034', 
-      date1: '', 
-      date2: new Date(2014,3,8, 12, 30, 0), 
-      title: 'Нужно купить Мартини' 
-      }
-
-      { 
-      _id: 6, 
-      tree_id: '1034', 
-      date1: new Date( new Date().getTime()+1000*60*20 ), 
-      date2: new Date( new Date().getTime()+1000*60*20 ), 
-      title: 'Через 20 минут выходим и нам нужно ехать будет в театр' 
-      }
-
-      { 
-      _id: -1, 
-      tree_id: '2138', 
-      date1: new Date(2014,2,29), 
-      date2: new Date(2014,2,29, 14,20), 
-      title: 'Очень важное дело, которое нужно сделать сегодня' 
-      }
-      { 
-      _id: 11, 
-      tree_id: '2138', 
-      date1: new Date(2014,4,12), 
-      date2: new Date(2014,4,12, 14,20), 
-      title: 'День рождения Жени' 
-      }
-      {
-      _id: 12, 
-      tree_id: '2138', 
-      date1: new Date(2014,4,12), 
-      date2: new Date(2014,4,18, 14,20), 
-      title: 'День рождения Вали' 
-      }
-    ]
+    true
   clearCache2: ()->
     _.each @, (fn)->
       fn.cache = {} if fn

@@ -1,9 +1,49 @@
 "use strict"
-angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', ($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi) ->
+angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', 'cryptApi', '$socket', 'oAuth2Api',  ($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi, cryptApi, $socket, oAuth2Api) ->
+
+  if (false)
+    pasA = "sex"
+
+    pubKey = "lexus"
+
+    pasB = "hello"
+
+    console.info 'sha3(pasA)', sendtoB = cryptApi.sha3( pasA+pubKey )
+
+    console.info 'sha3(pasB)', sendtoA = cryptApi.sha3( pasB+pubKey )
+
+    console.info "SEND TO B", sendtoB
+
+    console.info 'sha3(pasA)+sha3(pasB)1 = ', cryptApi.sha3( cryptApi.sha3(pasA+pubKey) + sendtoA )
+
+
+    console.info 'sha3(pasA)+sha3(pasB)2 = ', cryptApi.sha3( sendtoB + cryptApi.sha3(pasB+pubKey) )
+
+    pas1_encrypted = cryptApi.encrypt(pasA, 0);
+
+    console.info 'ENCRYPT', {pas1_encrypted}, cryptApi.decrypt(pas1_encrypted)
+
+  $socket.on 'who_are_you', $scope, (data) ->
+    console.info 'Попросили представиться', data;
+    $socket.emit('i_am_user', { _id: $scope.set.user_id, user_instance: $scope.set.user_instance} )
+
+  $socket.on 'need_sync', $scope, (data) ->
+    console.info 'sync_data', data
+    syncApi.jsUpdateDb(data);
+    #syncApi.syncToServer()
+
+  $socket.on 'sync_answer', $scope, (data) ->
+    syncApi.jsUpdateDb(data).then ()->
+      syncApi.dfd_sync.resolve();    
+
+  $scope.send = (message)->
+    $socket.emit('hello', message)
 
 
   #параметры
   $scope.set = {
+    user_id: '5330ff92898a2b63c2f7095f'
+    user_instance: new ObjectId().toString();
     today_date: new Date()
     focus: 1
     focus_edit: 1
@@ -612,7 +652,6 @@ angular.module("4treeApp").controller "save_tree_db_editor", ($scope, syncApi, d
   ###
 
   $scope.$watch "db.main_node[set.focus_edit]", (new_value, old_value)->
-    console.info 'watch'
     if !_.isEqual( new_value, old_value ) and new_value and old_value and (new_value._id == old_value._id)
       $rootScope.$emit("jsFindAndSaveDiff",'tree', new_value, old_value);
   , true
@@ -620,9 +659,10 @@ angular.module("4treeApp").controller "save_tree_db_editor", ($scope, syncApi, d
 
 angular.module("4treeApp").controller "save_tree_db", ($scope, syncApi, db_tree, $rootScope)->
 
-  $scope.$watchCollection "tree", (new_value, old_value)->
-    if !_.isEqual( new_value, old_value )
+  $scope.$watch "tree", (new_value, old_value)->
+    if !_.isEqual( new_value, old_value ) and (new_value._id == old_value._id)
       $rootScope.$emit("jsFindAndSaveDiff",'tree', new_value, old_value);
+  , true
 
 
 angular.module("4treeApp").controller "save_task_db", ($scope, syncApi, db_tree, $rootScope)->
