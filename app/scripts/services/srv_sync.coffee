@@ -114,7 +114,8 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
         db_tree.refreshView(db_name, [old_value._id], new_value, old_value)
         mythis.jsStartSyncInWhile();
         #diffApi.logJson 'diff_journal', mythis.diff_journal
-      db_tree.jsSaveElementToLocal(new_value).then('saved_local');
+      db_tree.jsSaveElementToLocal(db_name, new_value).then ()->
+        console.info 'saved_local';
     , 50
   getLastSyncTime: ()->
     max_element = _.max db_tree._db.tree, (el)->
@@ -150,17 +151,36 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
     dfd = $q.defer();
     mythis = @;
 
-    data = {
-      @diff_journal
-      last_sync_time: mythis.getLastSyncTime()
-      user_instance: $rootScope.$$childTail.set.user_instance
-    }
-    if $socket.is_online() and false
-      @syncThrough('websocket', data).then ()->
-        console.info 'sync_socket_ended';
-    else
-      @syncThrough('http', data).then ()->
-        console.info 'sync_http_ended';
+    new_elements = {};
+
+    async.each db_tree.store_schema, (table_schema, callback)->
+      db_name = table_schema.name;
+
+      found = _.find db_tree._db[db_name], (el, key)->
+        el._new == true
+      if found
+        new_elements[db_name] = {} if !new_elements[db_name]
+        new_elements[db_name][found._id] = found
+      callback();
+    , ()->
+      console.timeEnd 'load_local'
+
+      data = {
+        diff_journal: mythis.diff_journal
+        last_sync_time: mythis.getLastSyncTime()
+        user_instance: $rootScope.$$childTail.set.user_instance
+        new_elements: new_elements
+      }
+
+      if $socket.is_online() and false
+        mythis.syncThrough('websocket', data).then ()->
+          console.info 'sync_socket_ended';
+          dfd.resolve();
+      else
+        mythis.syncThrough('http', data).then ()->
+          console.info 'sync_http_ended';
+          dfd.resolve();
+
 
     dfd.promise;
 
@@ -202,14 +222,16 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
       found = _.find db_tree._db[db_name], (el, key)->
         el._id == confirm_element._id
       if found
-        console.info 'confirm_times', found.tm, confirm_element.tm;
+        console.info 'confirm_times', found.tm, confirm_element.tm, mythis.sync_now;
         i_need_refresh = true;
         found.tm = confirm_element.tm;
+        found._new = false;
+        delete mythis.diff_journal[db_name][confirm_element._id] if mythis.diff_journal[db_name][confirm_element._id]
 
     if i_need_refresh
       db_tree.refreshParentsIndex();
     dfd.resolve();
-    mythis.diff_journal = {}; #объекты обновлены, можно считать синхронизацию завершённой
+    #mythis.diff_journal = {}; #объекты обновлены, можно считать синхронизацию завершённой
     $timeout ()->
       mythis.sync_now = false;
 

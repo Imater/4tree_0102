@@ -16,6 +16,14 @@
     'title': String,
     'date1': Date,
     'date2': Date,
+    '_sync': [
+      {
+        key: String,
+        diff: {
+          'tm': String
+        }
+      }
+    ],
     'tm': Date
   });
 

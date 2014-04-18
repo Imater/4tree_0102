@@ -15,6 +15,8 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', '$ro
     return answer unless date2
     return answer if date2 is "0000-00-00 00:00:00"
 
+    date2 = new Date(date2);
+
     answer.class = "";
     now = new Date;
     if(only_days)

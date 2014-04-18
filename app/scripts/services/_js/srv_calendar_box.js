@@ -37,6 +37,7 @@
           if (date2 === "0000-00-00 00:00:00") {
             return answer;
           }
+          date2 = new Date(date2);
           answer["class"] = "";
           now = new Date;
           if (only_days) {

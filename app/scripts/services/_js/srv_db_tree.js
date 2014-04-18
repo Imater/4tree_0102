@@ -137,7 +137,7 @@
           this.dbInit();
           dfd = $.Deferred();
           this.ydnLoadFromLocal(mythis).then(function(records) {
-            if (records.length === 0) {
+            if (records.length === 0 || true) {
               console.info('NEED DATA FROM NET');
               return mythis.getTreeFromWeb().then(function(data) {
                 var result;
@@ -764,7 +764,7 @@
             answer = _.sortBy(answer, function(el) {
               var res;
               if (el.date1) {
-                res = -el.date1.getTime();
+                res = -new Date(el.date1).getTime();
                 res = res + 100000000000000;
               } else {
                 res = new Date().getTime();
@@ -840,6 +840,7 @@
           new_note._id = new ObjectId().toString();
           new_note['_new'] = true;
           new_note._focus_me = true;
+          new_note.user_id = $rootScope.$$childTail.set.user_id;
           new_note.pos = tree.pos + this.diffForSort(tree);
           this._db.tree.push(new_note);
           if (!make_child) {
@@ -873,13 +874,10 @@
           return $rootScope.$$childTail.db.main_node[focus] = new_note;
         },
         jsEnterPress: function(event, scope, tree) {
-          if (scope && scope.tree._new) {
-            scope.tree['_new'] = false;
-          }
           return event.target.blur();
         },
         jsBlur: function(event, scope, tree) {
-          if (tree) {
+          if (false) {
             return tree['_new'] = false;
           }
         },

@@ -88,7 +88,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     @dbInit();
     dfd = $.Deferred();
     @ydnLoadFromLocal(mythis).then (records)->
-      if records.length == 0
+      if records.length == 0 or true
         console.info 'NEED DATA FROM NET';
         mythis.getTreeFromWeb().then (data)->
           result = {};
@@ -444,7 +444,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     else
       answer = _.sortBy answer, (el)-> 
         if el.date1
-          res = -el.date1.getTime();
+          res = - new Date(el.date1).getTime();
           res = res + 100000000000000 
         else
           res = new Date().getTime();
@@ -500,6 +500,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     new_note._id = new ObjectId().toString();
     new_note['_new'] = true
     new_note._focus_me = true;
+    new_note.user_id = $rootScope.$$childTail.set.user_id;
     new_note.pos = tree.pos + @diffForSort(tree);
     @_db.tree.push(new_note)
     if !make_child 
@@ -510,7 +511,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       @refreshParentsIndex();
       tree._open = true;
     $rootScope.$$childTail.db.main_node[focus]=new_note
-
+  #old
   addNote: (tree, new_note_title, make_child)->
     focus = $rootScope.$$childTail.set.focus    
     console.info 'new_note', tree, new_note_title
@@ -529,10 +530,9 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       tree._open = true;
     $rootScope.$$childTail.db.main_node[focus]=new_note
   jsEnterPress: (event, scope, tree)->
-    scope.tree['_new'] = false if scope and scope.tree._new;
     event.target.blur()
   jsBlur: (event, scope, tree)->
-    tree['_new'] = false if tree;
+    tree['_new'] = false if false;
   jsFindPreviusParent: (tree)->
     parents = $rootScope.$$childTail.fn.service.db_tree.db_parents['n'+tree.parent_id];
     parents = _.sortBy parents, (value)->

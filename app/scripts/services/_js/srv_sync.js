@@ -171,7 +171,9 @@
               db_tree.refreshView(db_name, [old_value._id], new_value, old_value);
               mythis.jsStartSyncInWhile();
             }
-            return db_tree.jsSaveElementToLocal(new_value).then('saved_local');
+            return db_tree.jsSaveElementToLocal(db_name, new_value).then(function() {
+              return console.info('saved_local');
+            });
           }, 50));
         },
         getLastSyncTime: function() {
@@ -214,23 +216,44 @@
           return mythis.dfd_sync.promise;
         },
         syncToServer: function() {
-          var data, dfd, mythis;
+          var dfd, mythis, new_elements;
           dfd = $q.defer();
           mythis = this;
-          data = {
-            diff_journal: this.diff_journal,
-            last_sync_time: mythis.getLastSyncTime(),
-            user_instance: $rootScope.$$childTail.set.user_instance
-          };
-          if ($socket.is_online() && false) {
-            this.syncThrough('websocket', data).then(function() {
-              return console.info('sync_socket_ended');
+          new_elements = {};
+          async.each(db_tree.store_schema, function(table_schema, callback) {
+            var db_name, found;
+            db_name = table_schema.name;
+            found = _.find(db_tree._db[db_name], function(el, key) {
+              return el._new === true;
             });
-          } else {
-            this.syncThrough('http', data).then(function() {
-              return console.info('sync_http_ended');
-            });
-          }
+            if (found) {
+              if (!new_elements[db_name]) {
+                new_elements[db_name] = {};
+              }
+              new_elements[db_name][found._id] = found;
+            }
+            return callback();
+          }, function() {
+            var data;
+            console.timeEnd('load_local');
+            data = {
+              diff_journal: mythis.diff_journal,
+              last_sync_time: mythis.getLastSyncTime(),
+              user_instance: $rootScope.$$childTail.set.user_instance,
+              new_elements: new_elements
+            };
+            if ($socket.is_online() && false) {
+              return mythis.syncThrough('websocket', data).then(function() {
+                console.info('sync_socket_ended');
+                return dfd.resolve();
+              });
+            } else {
+              return mythis.syncThrough('http', data).then(function() {
+                console.info('sync_http_ended');
+                return dfd.resolve();
+              });
+            }
+          });
           return dfd.promise;
         },
         jsUpdateDb: function(data) {
@@ -282,16 +305,19 @@
               return el._id === confirm_element._id;
             });
             if (found) {
-              console.info('confirm_times', found.tm, confirm_element.tm);
+              console.info('confirm_times', found.tm, confirm_element.tm, mythis.sync_now);
               i_need_refresh = true;
-              return found.tm = confirm_element.tm;
+              found.tm = confirm_element.tm;
+              found._new = false;
+              if (mythis.diff_journal[db_name][confirm_element._id]) {
+                return delete mythis.diff_journal[db_name][confirm_element._id];
+              }
             }
           });
           if (i_need_refresh) {
             db_tree.refreshParentsIndex();
           }
           dfd.resolve();
-          mythis.diff_journal = {};
           $timeout(function() {
             return mythis.sync_now = false;
           });

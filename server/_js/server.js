@@ -348,123 +348,140 @@
       });
     };
     exports.sync_db_universal = function(data) {
-      var confirm_about_sync_success_for_client, databases, dfd, last_sync_time, saving_complete, send_to_client_becouse_of_not_saving, start_sync_time, user_instance;
+      var confirm_about_sync_success_for_client, databases, dfd, last_sync_time, new_elements, saving_complete, send_to_client_becouse_of_not_saving, start_sync_time, user_instance;
       dfd = $.Deferred();
       user_instance = data.user_instance;
       databases = data.diff_journal;
+      new_elements = data.new_elements;
       last_sync_time = data.last_sync_time;
       start_sync_time = new Date();
       send_to_client_becouse_of_not_saving = [];
       confirm_about_sync_success_for_client = [];
       saving_complete = false;
-      async.eachLimit(Object.keys(databases), 10, function(db_name, callback) {
-        var this_db;
-        this_db = databases[db_name];
-        console.info("DB_NAME", db_name, global._db_models[db_name]);
-        return async.eachLimit(Object.keys(this_db), 10, function(item_name, item_callback) {
-          var this_item;
-          this_item = this_db[item_name];
-          return global._db_models[db_name].findOne({
-            _id: item_name
-          }, function(err, doc) {
-            if (doc) {
-              if (!doc._sync) {
-                doc._sync = [];
-              }
-              _.each(Object.keys(this_item), function(item_diff) {
-                var df, found, time_of_client_change, time_of_sever_change;
-                df = this_item[item_diff];
-                found = _.find(doc._sync, function(el) {
-                  return el.key === item_diff;
-                });
-                if (!found) {
-                  return doc._sync.push({
-                    key: item_diff,
-                    diff: {
-                      'tm': df.tm
-                    }
-                  });
-                } else {
-                  time_of_sever_change = found.diff.tm;
-                  time_of_client_change = df.tm;
-                  console.info('tm_server', time_of_sever_change, 'tm_client', time_of_client_change);
-                  if (time_of_sever_change > time_of_client_change) {
-                    console.info('NOT SAVING! ', item_diff);
-                    return send_to_client_becouse_of_not_saving.push({
-                      db_name: db_name,
-                      item_id: doc._id
-                    });
-                  } else {
-                    saving_complete = true;
-                    console.info('SAVING', item_diff, df);
-                    found.diff.tm = df.tm;
-                    doc.tm = new Date(start_sync_time);
-                    diff.apply([df], doc, true);
-                    return confirm_about_sync_success_for_client.push({
-                      _id: doc._id,
-                      tm: doc.tm
-                    });
-                  }
-                }
-              });
-              return doc.save(function(err) {
-                return item_callback(err);
-              });
-            } else {
-              return console.info('need_to_create ' + item_name);
-            }
+      async.eachLimit(Object.keys(new_elements), 10, function(db_name, callback) {
+        var new_elements_one_table;
+        new_elements_one_table = new_elements[db_name];
+        return async.eachLimit(Object.keys(new_elements_one_table), 10, function(item_name, callback2) {
+          var one_new_element;
+          one_new_element = new_elements[db_name][item_name];
+          console.info('need_to_create ' + item_name, one_new_element);
+          model = new global._db_models[db_name](one_new_element);
+          return model.save(function() {
+            console.info('new_element_saved ' + item_name);
+            return callback2();
           });
         }, function() {
           return callback();
         });
-      }, function(callback) {
-        var data_to_client;
-        console.info({
-          send_to_client_becouse_of_not_saving: send_to_client_becouse_of_not_saving
-        }, 'last_sync_time', last_sync_time);
-        data_to_client = {};
-        return async.each(Object.keys(global._db_models), function(db_name, callback) {
-          var db_model;
-          console.info('!!DB_NAME', db_name);
-          db_model = global._db_models[db_name];
-          return db_model.find({
-            tm: {
-              $gt: last_sync_time
-            }
-          }, function(err, docs) {
-            var connected_sockets, sync_confirm_id, user_id;
-            sync_confirm_id = _.uniq(confirm_about_sync_success_for_client, function(el) {
-              return el._id;
-            });
-            console.info('docs' + db_name, docs.length, sync_confirm_id);
-            docs = _.reject(docs, function(doc) {
-              var found;
-              found = _.find(sync_confirm_id, function(id_element) {
-                return id_element._id === doc._id;
-              });
-              return found;
-            });
-            console.info('docs' + db_name, docs.length);
-            data_to_client[db_name] = {
-              new_data: docs,
-              sync_confirm_id: sync_confirm_id
-            };
-            if (docs && docs[0] && users_connection[docs[0].user_id] && saving_complete) {
-              user_id = docs[0].user_id;
-              user_instance = user_instance;
-              connected_sockets = users_connection[user_id];
-              _.each(connected_sockets, function(one_socket) {
-                if (user_instance !== one_socket.user_instance) {
-                  one_socket.socket.emit('need_sync', data_to_client);
-                  return console.info("!!! send");
+      }, function() {
+        return async.eachLimit(Object.keys(databases), 10, function(db_name, callback) {
+          var this_db;
+          this_db = databases[db_name];
+          console.info("DB_NAME", db_name, global._db_models[db_name]);
+          return async.eachLimit(Object.keys(this_db), 10, function(item_name, item_callback) {
+            var this_item;
+            this_item = this_db[item_name];
+            return global._db_models[db_name].findOne({
+              _id: item_name
+            }, function(err, doc) {
+              if (doc) {
+                if (!doc._sync) {
+                  doc._sync = [];
                 }
-              });
-            }
+                _.each(Object.keys(this_item), function(item_diff) {
+                  var df, found, time_of_client_change, time_of_sever_change;
+                  df = this_item[item_diff];
+                  found = _.find(doc._sync, function(el) {
+                    return el.key === item_diff;
+                  });
+                  if (!found) {
+                    return doc._sync.push({
+                      key: item_diff,
+                      diff: {
+                        'tm': df.tm
+                      }
+                    });
+                  } else {
+                    time_of_sever_change = found.diff.tm;
+                    time_of_client_change = df.tm;
+                    console.info('tm_server', time_of_sever_change, 'tm_client', time_of_client_change);
+                    if (time_of_sever_change > time_of_client_change) {
+                      console.info('NOT SAVING! ', item_diff);
+                      return send_to_client_becouse_of_not_saving.push({
+                        db_name: db_name,
+                        item_id: doc._id
+                      });
+                    } else {
+                      saving_complete = true;
+                      console.info('SAVING', item_diff, df);
+                      found.diff.tm = df.tm;
+                      doc.tm = new Date(start_sync_time);
+                      diff.apply([df], doc, true);
+                      return confirm_about_sync_success_for_client.push({
+                        _id: doc._id,
+                        tm: doc.tm
+                      });
+                    }
+                  }
+                });
+                return doc.save(function(err) {
+                  return item_callback(err);
+                });
+              } else {
+                return console.info('NEW element SAVED');
+              }
+            });
+          }, function() {
             return callback();
           });
-        }, function(err) {
-          logJson('data_to_client', data_to_client);
-          return dfd.resolve(data_to_client);
+        }, function(callback) {
+          var data_to_client;
+          console.info({
+            send_to_client_becouse_of_not_saving: send_to_client_becouse_of_not_saving
+          }, 'last_sync_time', last_sync_time);
+          data_to_client = {};
+          return async.each(Object.keys(global._db_models), function(db_name, callback) {
+            var db_model;
+            console.info('!!DB_NAME', db_name);
+            db_model = global._db_models[db_name];
+            return db_model.find({
+              tm: {
+                $gt: last_sync_time
+              }
+            }, function(err, docs) {
+              var connected_sockets, sync_confirm_id, user_id;
+              sync_confirm_id = _.uniq(confirm_about_sync_success_for_client, function(el) {
+                return el._id;
+              });
+              console.info('docs' + db_name, docs.length, sync_confirm_id);
+              docs = _.reject(docs, function(doc) {
+                var found;
+                found = _.find(sync_confirm_id, function(id_element) {
+                  return id_element._id === doc._id;
+                });
+                return found;
+              });
+              console.info('docs' + db_name, docs.length);
+              data_to_client[db_name] = {
+                new_data: docs,
+                sync_confirm_id: sync_confirm_id
+              };
+              if (docs && docs[0] && users_connection[docs[0].user_id] && saving_complete) {
+                user_id = docs[0].user_id;
+                user_instance = user_instance;
+                connected_sockets = users_connection[user_id];
+                _.each(connected_sockets, function(one_socket) {
+                  if (user_instance !== one_socket.user_instance) {
+                    one_socket.socket.emit('need_sync', data_to_client);
+                    return console.info("!!! send");
+                  }
+                });
+              }
+              return callback();
+            });
+          }, function(err) {
+            return dfd.resolve(data_to_client);
+          });
         });
       });
       return dfd.promise();
