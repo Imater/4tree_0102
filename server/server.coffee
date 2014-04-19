@@ -132,25 +132,26 @@ else
     tasks: Task
   }
 
-  Task.remove {}, ()->
-    task = new Task( {
-      title: 'first_task'
-      user_id: '5330ff92898a2b63c2f7095f'
-      tree_id: '534020016b84290000acfbda'
-      date1: new Date()
-      date2: new Date()
-      tm: new Date()
-    } )
-    task.save();
-    task = new Task( {
-      title: 'second_task'
-      user_id: '5330ff92898a2b63c2f7095f'
-      tree_id: '534020016b84290000acfbda'
-      date1: new Date()
-      date2: new Date()
-      tm: new Date(2015,7,12)
-    } )
-    task.save();
+  if false
+    Task.remove {}, ()->
+      task = new Task( {
+        title: 'first_task'
+        user_id: '5330ff92898a2b63c2f7095f'
+        tree_id: '534020016b84290000acfbda'
+        date1: new Date()
+        date2: new Date()
+        tm: new Date()
+      } )
+      task.save();
+      task = new Task( {
+        title: 'second_task'
+        user_id: '5330ff92898a2b63c2f7095f'
+        tree_id: '534020016b84290000acfbda'
+        date1: new Date()
+        date2: new Date()
+        tm: new Date()
+      } )
+      task.save();
 
   ################################################
 
@@ -336,13 +337,15 @@ else
   exports.sync_db_universal = (data)->
     dfd = $.Deferred()
     user_instance = data.user_instance;
+    user_id = data.user_id;
+    console.info { user_id }
     databases = data.diff_journal
     new_elements = data.new_elements
     last_sync_time = data.last_sync_time
     start_sync_time = new Date();
     #массив для отметки тех данных, которые не записались, их нужно отправить клиенту для обновления
-    send_to_client_becouse_of_not_saving = []; 
-    confirm_about_sync_success_for_client = [];
+    send_to_client_becouse_of_not_saving = {}; 
+    confirm_about_sync_success_for_client = {};
     saving_complete = false;
 
     async.eachLimit Object.keys(new_elements), 10, (db_name, callback)->
@@ -353,14 +356,13 @@ else
         console.info 'need_to_create '+item_name, one_new_element
         model = new global._db_models[db_name](one_new_element)
         model.save ()->
-          console.info 'new_element_saved '+item_name;
+          console.info 'Сохранил новый элемент '+item_name;
           callback2();
       , ()->
         callback();
     , ()->
       async.eachLimit Object.keys(databases), 10, (db_name, callback)->
         this_db = databases[db_name];
-        console.info "DB_NAME", db_name, global._db_models[db_name]
         #Обходим все изменившиеся элементы в таблице
         async.eachLimit Object.keys( this_db ), 10, (item_name, item_callback)->
           this_item = this_db[item_name];
@@ -380,60 +382,65 @@ else
                   console.info 'tm_server', time_of_sever_change, 'tm_client', time_of_client_change
                   if time_of_sever_change > time_of_client_change
                     #данные обновлять нельзя, так как они изменены раньше, чем отправил кто-то другой
-                    console.info 'NOT SAVING! ', item_diff
-                    send_to_client_becouse_of_not_saving.push( {db_name: db_name, item_id: doc._id} )
+                    console.info 'Не сохраняю в базу (время не то)', doc.title
+                    send_to_client_becouse_of_not_saving[db_name] = [] if !send_to_client_becouse_of_not_saving[db_name]
+                    send_to_client_becouse_of_not_saving[db_name].push( {db_name: db_name, item_id: doc._id} )
                   else
                     #сохранение разрешено
                     saving_complete = true;
-                    console.info 'SAVING', item_diff, df
+                    console.info 'Сохраняю в базу', doc.title
                     found.diff.tm = df.tm;
                     doc.tm = new Date(start_sync_time); #Сохраняю время изменения, для последующих отборов
                     diff.apply([df], doc, true);
-                    confirm_about_sync_success_for_client.push( {_id:doc._id, tm: doc.tm } )
+                    confirm_about_sync_success_for_client[db_name] = [] if !confirm_about_sync_success_for_client[db_name]
+                    confirm_about_sync_success_for_client[db_name].push( {_id:doc._id, tm: doc.tm } )
                 #console.info '_sync=', doc._sync, 'dif=', item_diff, 'df=', df;
                 
               #logJson "doc=", doc
               doc.save (err)->
+                console.info 'item_saved!'
                 item_callback(err);
             else 
-              console.info 'NEW element SAVED'
+              console.info 'Странно, не могу найти новый элемент в базе'
 
         , ()->
           callback();
       , (callback)->
         #Собираю все новые данные, чтобы отправить клиенту
-        console.info { send_to_client_becouse_of_not_saving }, 'last_sync_time', last_sync_time
         data_to_client = {};
+        data_to_others = {};
         async.each Object.keys(global._db_models), (db_name, callback)->
-          console.info '!!DB_NAME', db_name
           db_model = global._db_models[db_name];
           db_model.find {tm: {$gt: last_sync_time}}, (err, docs)->
-            sync_confirm_id = _.uniq confirm_about_sync_success_for_client, (el)->
+
+            console.info 'По дате я отобрал '+docs.length+'шт. в '+db_name
+            sync_confirm_id = _.uniq confirm_about_sync_success_for_client[db_name], (el)->
               el._id
 
-            console.info 'docs'+db_name, docs.length, sync_confirm_id
-
-            docs = _.reject docs, (doc)->
+            docs_without_new = _.reject docs, (doc)->
               found = _.find sync_confirm_id, (id_element)->
-                id_element._id == doc._id
+                doc._id.toString() == id_element._id.toString()
               return found
 
-            console.info 'docs'+db_name, docs.length
+            console.info 'Отправлю на сервер ('+docs_without_new.length+' шт) за исключением: ', sync_confirm_id
 
             data_to_client[db_name] = {
-              new_data: docs
+              new_data: docs_without_new
               sync_confirm_id: sync_confirm_id
             }
-            if docs and docs[0] and users_connection[docs[0].user_id] and saving_complete
-              user_id = docs[0].user_id;
-              user_instance = user_instance;
-              connected_sockets = users_connection[user_id];
-              _.each connected_sockets, (one_socket)->
-                if user_instance != one_socket.user_instance
-                  one_socket.socket.emit('need_sync', data_to_client) 
-                  console.info "!!! send"
+            data_to_others[db_name] = {
+              new_data: docs
+              sync_confirm_id: []
+            }
             callback(); #конец обработки одной из таблиц
         , (err)->
+          if users_connection[user_id] and saving_complete
+            user_instance = user_instance;
+            connected_sockets = users_connection[user_id];
+            _.each connected_sockets, (one_socket)->
+              if user_instance.toString() != one_socket.user_instance.toString()
+                one_socket.socket.emit('need_sync', data_to_others) 
+                console.info "Socket emit ", one_socket.user_instance.toString()
           dfd.resolve( data_to_client )
 
     dfd.promise();

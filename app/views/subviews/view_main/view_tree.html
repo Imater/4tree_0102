@@ -35,7 +35,6 @@
             </li>
           </ul>
           <ul ng-if="true">
-            <li>{{fn.service.db_tree._db.tasks}}</li>
             <li ng-click="fn.service.syncApi.syncToServer()"><a class="btn btn-default">Отправить на сервер</a></li>
             <li ng-click="send('Ok.Its working!')"><a class="btn btn-default">Сообщение</a></li>
             <li ng-repeat="(key, diff) in fn.service.syncApi.diff_journal" style="padding: 10px">

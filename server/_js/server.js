@@ -117,27 +117,29 @@
       tree: Tree,
       tasks: Task
     };
-    Task.remove({}, function() {
-      var task;
-      task = new Task({
-        title: 'first_task',
-        user_id: '5330ff92898a2b63c2f7095f',
-        tree_id: '534020016b84290000acfbda',
-        date1: new Date(),
-        date2: new Date(),
-        tm: new Date()
+    if (false) {
+      Task.remove({}, function() {
+        var task;
+        task = new Task({
+          title: 'first_task',
+          user_id: '5330ff92898a2b63c2f7095f',
+          tree_id: '534020016b84290000acfbda',
+          date1: new Date(),
+          date2: new Date(),
+          tm: new Date()
+        });
+        task.save();
+        task = new Task({
+          title: 'second_task',
+          user_id: '5330ff92898a2b63c2f7095f',
+          tree_id: '534020016b84290000acfbda',
+          date1: new Date(),
+          date2: new Date(),
+          tm: new Date()
+        });
+        return task.save();
       });
-      task.save();
-      task = new Task({
-        title: 'second_task',
-        user_id: '5330ff92898a2b63c2f7095f',
-        tree_id: '534020016b84290000acfbda',
-        date1: new Date(),
-        date2: new Date(),
-        tm: new Date(2015, 7, 12)
-      });
-      return task.save();
-    });
+    }
     oauthserver = require("node-oauth2-server");
     model = require("node-oauth2-server/examples/mongodb/model.js");
     app.configure(function() {
@@ -348,15 +350,19 @@
       });
     };
     exports.sync_db_universal = function(data) {
-      var confirm_about_sync_success_for_client, databases, dfd, last_sync_time, new_elements, saving_complete, send_to_client_becouse_of_not_saving, start_sync_time, user_instance;
+      var confirm_about_sync_success_for_client, databases, dfd, last_sync_time, new_elements, saving_complete, send_to_client_becouse_of_not_saving, start_sync_time, user_id, user_instance;
       dfd = $.Deferred();
       user_instance = data.user_instance;
+      user_id = data.user_id;
+      console.info({
+        user_id: user_id
+      });
       databases = data.diff_journal;
       new_elements = data.new_elements;
       last_sync_time = data.last_sync_time;
       start_sync_time = new Date();
-      send_to_client_becouse_of_not_saving = [];
-      confirm_about_sync_success_for_client = [];
+      send_to_client_becouse_of_not_saving = {};
+      confirm_about_sync_success_for_client = {};
       saving_complete = false;
       async.eachLimit(Object.keys(new_elements), 10, function(db_name, callback) {
         var new_elements_one_table;
@@ -367,7 +373,7 @@
           console.info('need_to_create ' + item_name, one_new_element);
           model = new global._db_models[db_name](one_new_element);
           return model.save(function() {
-            console.info('new_element_saved ' + item_name);
+            console.info('Сохранил новый элемент ' + item_name);
             return callback2();
           });
         }, function() {
@@ -377,7 +383,6 @@
         return async.eachLimit(Object.keys(databases), 10, function(db_name, callback) {
           var this_db;
           this_db = databases[db_name];
-          console.info("DB_NAME", db_name, global._db_models[db_name]);
           return async.eachLimit(Object.keys(this_db), 10, function(item_name, item_callback) {
             var this_item;
             this_item = this_db[item_name];
@@ -406,18 +411,24 @@
                     time_of_client_change = df.tm;
                     console.info('tm_server', time_of_sever_change, 'tm_client', time_of_client_change);
                     if (time_of_sever_change > time_of_client_change) {
-                      console.info('NOT SAVING! ', item_diff);
-                      return send_to_client_becouse_of_not_saving.push({
+                      console.info('Не сохраняю в базу (время не то)', doc.title);
+                      if (!send_to_client_becouse_of_not_saving[db_name]) {
+                        send_to_client_becouse_of_not_saving[db_name] = [];
+                      }
+                      return send_to_client_becouse_of_not_saving[db_name].push({
                         db_name: db_name,
                         item_id: doc._id
                       });
                     } else {
                       saving_complete = true;
-                      console.info('SAVING', item_diff, df);
+                      console.info('Сохраняю в базу', doc.title);
                       found.diff.tm = df.tm;
                       doc.tm = new Date(start_sync_time);
                       diff.apply([df], doc, true);
-                      return confirm_about_sync_success_for_client.push({
+                      if (!confirm_about_sync_success_for_client[db_name]) {
+                        confirm_about_sync_success_for_client[db_name] = [];
+                      }
+                      return confirm_about_sync_success_for_client[db_name].push({
                         _id: doc._id,
                         tm: doc.tm
                       });
@@ -425,61 +436,63 @@
                   }
                 });
                 return doc.save(function(err) {
+                  console.info('item_saved!');
                   return item_callback(err);
                 });
               } else {
-                return console.info('NEW element SAVED');
+                return console.info('Странно, не могу найти новый элемент в базе');
               }
             });
           }, function() {
             return callback();
           });
         }, function(callback) {
-          var data_to_client;
-          console.info({
-            send_to_client_becouse_of_not_saving: send_to_client_becouse_of_not_saving
-          }, 'last_sync_time', last_sync_time);
+          var data_to_client, data_to_others;
           data_to_client = {};
+          data_to_others = {};
           return async.each(Object.keys(global._db_models), function(db_name, callback) {
             var db_model;
-            console.info('!!DB_NAME', db_name);
             db_model = global._db_models[db_name];
             return db_model.find({
               tm: {
                 $gt: last_sync_time
               }
             }, function(err, docs) {
-              var connected_sockets, sync_confirm_id, user_id;
-              sync_confirm_id = _.uniq(confirm_about_sync_success_for_client, function(el) {
+              var docs_without_new, sync_confirm_id;
+              console.info('По дате я отобрал ' + docs.length + 'шт. в ' + db_name);
+              sync_confirm_id = _.uniq(confirm_about_sync_success_for_client[db_name], function(el) {
                 return el._id;
               });
-              console.info('docs' + db_name, docs.length, sync_confirm_id);
-              docs = _.reject(docs, function(doc) {
+              docs_without_new = _.reject(docs, function(doc) {
                 var found;
                 found = _.find(sync_confirm_id, function(id_element) {
-                  return id_element._id === doc._id;
+                  return doc._id.toString() === id_element._id.toString();
                 });
                 return found;
               });
-              console.info('docs' + db_name, docs.length);
+              console.info('Отправлю на сервер (' + docs_without_new.length + ' шт) за исключением: ', sync_confirm_id);
               data_to_client[db_name] = {
-                new_data: docs,
+                new_data: docs_without_new,
                 sync_confirm_id: sync_confirm_id
               };
-              if (docs && docs[0] && users_connection[docs[0].user_id] && saving_complete) {
-                user_id = docs[0].user_id;
-                user_instance = user_instance;
-                connected_sockets = users_connection[user_id];
-                _.each(connected_sockets, function(one_socket) {
-                  if (user_instance !== one_socket.user_instance) {
-                    one_socket.socket.emit('need_sync', data_to_client);
-                    return console.info("!!! send");
-                  }
-                });
-              }
+              data_to_others[db_name] = {
+                new_data: docs,
+                sync_confirm_id: []
+              };
               return callback();
             });
           }, function(err) {
+            var connected_sockets;
+            if (users_connection[user_id] && saving_complete) {
+              user_instance = user_instance;
+              connected_sockets = users_connection[user_id];
+              _.each(connected_sockets, function(one_socket) {
+                if (user_instance.toString() !== one_socket.user_instance.toString()) {
+                  one_socket.socket.emit('need_sync', data_to_others);
+                  return console.info("Socket emit ", one_socket.user_instance.toString());
+                }
+              });
+            }
             return dfd.resolve(data_to_client);
           });
         });

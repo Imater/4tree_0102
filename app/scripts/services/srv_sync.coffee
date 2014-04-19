@@ -50,7 +50,7 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
   'jsStartSyncInWhile': _.debounce ()->
       console.info 'wait 5 sec...'
       @jsStartSync() if @autosync_on and Object.keys(@diff_journal).length;
-    , 10
+    , 1000
   jsHideSyncIndicator: _.debounce ()->
       $(".sync_indicator").removeClass('active')
     , 1000
@@ -99,12 +99,12 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
   sync_now: false;
   constructor: ()->
     mythis = @;
-    $rootScope.$on 'jsFindAndSaveDiff', _.debounce (event, db_name, new_value, old_value)->
-      console.info 'watch'
+    $rootScope.$on 'jsFindAndSaveDiff', (event, db_name, new_value, old_value)->
+      console.info 'watch', mythis.sync_now
       return if !old_value or !new_value or mythis.sync_now
       diffs = diffApi.diff( old_value, new_value, new Date().getTime() );
       _.each diffs, (diff)->
-        if diff.key[0][0] != '_' and diff.key[diff.key.length-1][0] != '$' and diff.key[diff.key.length-1][0] != '_'
+        if diff.key[0][0] != '_' and diff.key[diff.key.length-1][0] != '$' and diff.key[diff.key.length-1][0] != '_' and diff.key[0] != 'tm'
           key = diff.type+':'+diff.key.join('.');
           mythis.diff_journal[db_name] = {} if !mythis.diff_journal[db_name]
           mythis.diff_journal[db_name][old_value._id] = {} if !mythis.diff_journal[db_name][old_value._id]
@@ -116,7 +116,6 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
         #diffApi.logJson 'diff_journal', mythis.diff_journal
       db_tree.jsSaveElementToLocal(db_name, new_value).then ()->
         console.info 'saved_local';
-    , 50
   getLastSyncTime: ()->
     max_element = _.max db_tree._db.tree, (el)->
       if el.tm
@@ -169,6 +168,7 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
         diff_journal: mythis.diff_journal
         last_sync_time: mythis.getLastSyncTime()
         user_instance: $rootScope.$$childTail.set.user_instance
+        user_id: $rootScope.$$childTail.set.user_id
         new_elements: new_elements
       }
 
@@ -217,6 +217,10 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
         #found.$$hashKey = 'sex'
         i_need_refresh = true
         console.info 'new = ', found;
+      else 
+        console.info 'need_to_create!', new_data_element
+        db_tree._db[db_name].push new_data_element
+        i_need_refresh = true
       return true
     _.each sync_confirm_id, (confirm_element)->
       found = _.find db_tree._db[db_name], (el, key)->

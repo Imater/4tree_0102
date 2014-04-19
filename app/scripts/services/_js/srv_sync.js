@@ -85,7 +85,7 @@
           if (this.autosync_on && Object.keys(this.diff_journal).length) {
             return this.jsStartSync();
           }
-        }, 10),
+        }, 1000),
         jsHideSyncIndicator: _.debounce(function() {
           return $(".sync_indicator").removeClass('active');
         }, 1000),
@@ -147,16 +147,16 @@
         constructor: function() {
           var mythis;
           mythis = this;
-          return $rootScope.$on('jsFindAndSaveDiff', _.debounce(function(event, db_name, new_value, old_value) {
+          return $rootScope.$on('jsFindAndSaveDiff', function(event, db_name, new_value, old_value) {
             var diffs;
-            console.info('watch');
+            console.info('watch', mythis.sync_now);
             if (!old_value || !new_value || mythis.sync_now) {
               return;
             }
             diffs = diffApi.diff(old_value, new_value, new Date().getTime());
             _.each(diffs, function(diff) {
               var key;
-              if (diff.key[0][0] !== '_' && diff.key[diff.key.length - 1][0] !== '$' && diff.key[diff.key.length - 1][0] !== '_') {
+              if (diff.key[0][0] !== '_' && diff.key[diff.key.length - 1][0] !== '$' && diff.key[diff.key.length - 1][0] !== '_' && diff.key[0] !== 'tm') {
                 key = diff.type + ':' + diff.key.join('.');
                 if (!mythis.diff_journal[db_name]) {
                   mythis.diff_journal[db_name] = {};
@@ -174,7 +174,7 @@
             return db_tree.jsSaveElementToLocal(db_name, new_value).then(function() {
               return console.info('saved_local');
             });
-          }, 50));
+          });
         },
         getLastSyncTime: function() {
           var max_element;
@@ -240,6 +240,7 @@
               diff_journal: mythis.diff_journal,
               last_sync_time: mythis.getLastSyncTime(),
               user_instance: $rootScope.$$childTail.set.user_instance,
+              user_id: $rootScope.$$childTail.set.user_id,
               new_elements: new_elements
             };
             if ($socket.is_online() && false) {
@@ -296,6 +297,10 @@
               copyObject(found, new_data_element);
               i_need_refresh = true;
               console.info('new = ', found);
+            } else {
+              console.info('need_to_create!', new_data_element);
+              db_tree._db[db_name].push(new_data_element);
+              i_need_refresh = true;
             }
             return true;
           });
