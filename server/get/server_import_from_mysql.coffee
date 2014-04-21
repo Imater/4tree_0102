@@ -36,6 +36,7 @@ exports.get = (req, res)->
       pool.query 'SELECT * FROM tree WHERE user_id=? and del!=1', [user_id], (err, rows, fields)->
         callback err, rows, user, user_mongo_found
     (rows, user, user_mongo_found, callback)->
+      
       console.info "user_mongo_found_id = ", user_mongo_found._id;
       now = new Date();
       current_timezone_offset = now.getTimezoneOffset()/60;
@@ -46,7 +47,7 @@ exports.get = (req, res)->
 
 
       one_note = new Tree;
-      objectId_to_id["1"] = mongoose.Types.ObjectId()
+      objectId_to_id["1"] = mongoose.Types.ObjectId().toString()
       objectId_to_id[1] = objectId_to_id["1"] 
       one_note['_id'] = objectId_to_id["1"]
       one_note['title'] = '4tree'

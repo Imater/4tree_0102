@@ -55,7 +55,8 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
       $(".sync_indicator").removeClass('active')
     , 1000
   jsStartSync: ()->
-    @syncToServer()
+    @syncToServer().then ()->
+      $rootScope.$emit 'sync_ended';
     return true;
     $(".sync_indicator").addClass('active')
     mythis = @
@@ -155,9 +156,11 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
     async.each db_tree.store_schema, (table_schema, callback)->
       db_name = table_schema.name;
 
-      found = _.find db_tree._db[db_name], (el, key)->
+      #Нахожу все новые элементы дерева
+      found_elements = _.filter db_tree._db[db_name], (el, key)->
         el._new == true
-      if found
+
+      _.each found_elements, (found)->
         new_elements[db_name] = {} if !new_elements[db_name]
         new_elements[db_name][found._id] = found
       callback();
@@ -230,7 +233,7 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
         i_need_refresh = true;
         found.tm = confirm_element.tm;
         found._new = false;
-        delete mythis.diff_journal[db_name][confirm_element._id] if mythis.diff_journal[db_name][confirm_element._id]
+        delete mythis.diff_journal[db_name][confirm_element._id] if mythis.diff_journal?[db_name]?[confirm_element._id]
 
     if i_need_refresh
       db_tree.refreshParentsIndex();

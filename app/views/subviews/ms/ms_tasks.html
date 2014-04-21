@@ -1,7 +1,7 @@
 <div class="note_tasks">
 	{{(tasks = fn.service.db_tree.getTasksByTreeId(db.main_node[set.focus_edit]._id, !set.mini_tasks_show)).t}}
 	<div ng-repeat="task in tasks" ng-include="'views/subviews/task_one_line1.html'"></div>
-	<textarea class="add_task_input" placeholder="Добавить дело..."></textarea>
+	<textarea class="add_task_input" placeholder="Добавить дело..." hotkey="{'Enter':fn.service.db_tree.jsAddTask}" ng-model="new_task_title"></textarea>
 </div>
 
 

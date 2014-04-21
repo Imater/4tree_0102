@@ -91,7 +91,9 @@
         }, 1000),
         jsStartSync: function() {
           var mythis, to_send;
-          this.syncToServer();
+          this.syncToServer().then(function() {
+            return $rootScope.$emit('sync_ended');
+          });
           return true;
           $(".sync_indicator").addClass('active');
           mythis = this;
@@ -221,17 +223,17 @@
           mythis = this;
           new_elements = {};
           async.each(db_tree.store_schema, function(table_schema, callback) {
-            var db_name, found;
+            var db_name, found_elements;
             db_name = table_schema.name;
-            found = _.find(db_tree._db[db_name], function(el, key) {
+            found_elements = _.filter(db_tree._db[db_name], function(el, key) {
               return el._new === true;
             });
-            if (found) {
+            _.each(found_elements, function(found) {
               if (!new_elements[db_name]) {
                 new_elements[db_name] = {};
               }
-              new_elements[db_name][found._id] = found;
-            }
+              return new_elements[db_name][found._id] = found;
+            });
             return callback();
           }, function() {
             var data;
@@ -305,7 +307,7 @@
             return true;
           });
           _.each(sync_confirm_id, function(confirm_element) {
-            var found;
+            var found, _ref, _ref1;
             found = _.find(db_tree._db[db_name], function(el, key) {
               return el._id === confirm_element._id;
             });
@@ -314,7 +316,7 @@
               i_need_refresh = true;
               found.tm = confirm_element.tm;
               found._new = false;
-              if (mythis.diff_journal[db_name][confirm_element._id]) {
+              if ((_ref = mythis.diff_journal) != null ? (_ref1 = _ref[db_name]) != null ? _ref1[confirm_element._id] : void 0 : void 0) {
                 return delete mythis.diff_journal[db_name][confirm_element._id];
               }
             }

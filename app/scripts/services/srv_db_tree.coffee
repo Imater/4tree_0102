@@ -34,7 +34,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         old_value = _.clone( element ); #clone
         element.parent_id = data.to_id;
         new_value = element;
-        $rootScope.$emit("jsFindAndSaveDiff",'tree2', new_value, old_value);
+        $rootScope.$emit("jsFindAndSaveDiff",'tree', new_value, old_value);
 
         mythis.refreshParentsIndex();
         $timeout ()->
@@ -88,7 +88,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     @dbInit();
     dfd = $.Deferred();
     @ydnLoadFromLocal(mythis).then (records)->
-      if records.length == 0 or true
+      if records.tree.length == 0 or true
         console.info 'NEED DATA FROM NET';
         mythis.getTreeFromWeb().then (data)->
           result = {};
@@ -105,8 +105,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     mythis = @;
     dfd = $q.defer();
     console.time 'ALL DATA LOADED'
-    db_name = '4tree_db';
     @getTreeFromeWebOrLocal().then (records)->
+      console.info 'loaded = ', records
       _.each records, (data, db_name)->
         mythis._db[db_name] = data;
       mythis.refreshParentsIndex();
@@ -115,7 +115,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       $rootScope.$broadcast('tree_loaded');
       mythis.clearCache();
       console.timeEnd 'ALL DATA LOADED'
-      dfd.resolve(db_name, records);
+      dfd.resolve(records);
     dfd.promise;
   getTreeFromWeb: ()->
     dfd = $q.defer();
@@ -160,6 +160,9 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     }; 
     options = {};
     @db = new ydn.db.Storage('_db.tree', schema, options);
+    if false
+      @db.search('name', 'Рабочие').done (x)->
+        console.info 'found', x
 
 
   ydnSaveToLocal: (db_name, records)->
@@ -476,6 +479,12 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       parent_id: ''
       _id: ''
     }
+  task_template: ()->
+    return {
+      title: ''
+      parent_id: ''
+      _id: ''
+    }
   getIcon: (tree)->
     if (!tree.icon)
       return 'icon-heart-empty'
@@ -511,24 +520,31 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       @refreshParentsIndex();
       tree._open = true;
     $rootScope.$$childTail.db.main_node[focus]=new_note
-  #old
-  addNote: (tree, new_note_title, make_child)->
-    focus = $rootScope.$$childTail.set.focus    
-    console.info 'new_note', tree, new_note_title
-    new_note = new @tree_template;
-    new_note.title = new_note_title;
-    new_note._id = new ObjectId().toString();
-    new_note.pos = tree.pos + @diffForSort(tree);
-    tree._add_show = false
-    @_db.tree.push(new_note)
-    if !make_child 
-      new_note.parent_id = tree.parent_id;
-      @refreshParentsIndex(tree.parent_id);
-    else
-      new_note.parent_id = tree._id;
-      @refreshParentsIndex();
-      tree._open = true;
-    $rootScope.$$childTail.db.main_node[focus]=new_note
+    @clearCache();
+  jsAddTask: (event, scope, tree)->
+    event.stopPropagation();
+    event.preventDefault();
+    mythis = $rootScope.$$childTail.fn.service.db_tree;
+    console.info 'add_task', event, scope, tree;
+    tree_id = scope.db.main_node[scope.set.focus_edit]._id
+    if tree_id
+      new_task = new mythis.task_template;
+      new_task._id = new ObjectId().toString();
+      new_task.tree_id = tree_id;
+      new_task.parent_id = tree_id;
+      new_task._new = true;
+      new_task.user_id = $rootScope.$$childTail.set.user_id;
+      old_value = _.clone( new_task ); #clone
+      new_task.title = scope.new_task_title;
+      mythis._db.tasks.push(new_task)
+      console.info 'pushed new task', new_task;
+      scope.new_task_title = "";
+      mythis.clearCache();
+      new_value = new_task;
+      $rootScope.$emit("jsFindAndSaveDiff",'tasks', new_value, old_value);
+
+
+
   jsEnterPress: (event, scope, tree)->
     event.target.blur()
   jsBlur: (event, scope, tree)->
@@ -676,6 +692,21 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     $rootScope.$$childTail.set.focus = 2
   jsFocus4: ()->
     $rootScope.$$childTail.set.focus = 3
+  searchString: (searchString)->
+    dfd = new $.Deferred();
+    console.info 'search', searchString
+    oAuth2Api.jsGetToken().then (access_token)->
+      $http({
+        url: '/api/v1/search',
+        method: "GET",
+        params: {
+          user_id: '5330ff92898a2b63c2f7095f'
+          access_token: access_token
+          search: searchString
+        }
+      }).then (result)->
+        dfd.resolve(result.data);
+    dfd.promise();
 
 
 

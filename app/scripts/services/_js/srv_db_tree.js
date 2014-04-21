@@ -60,7 +60,7 @@
               old_value = _.clone(element);
               element.parent_id = data.to_id;
               new_value = element;
-              $rootScope.$emit("jsFindAndSaveDiff", 'tree2', new_value, old_value);
+              $rootScope.$emit("jsFindAndSaveDiff", 'tree', new_value, old_value);
               mythis.refreshParentsIndex();
               return $timeout(function() {
                 return $("ul > .tree_tmpl").remove();
@@ -137,7 +137,7 @@
           this.dbInit();
           dfd = $.Deferred();
           this.ydnLoadFromLocal(mythis).then(function(records) {
-            if (records.length === 0 || true) {
+            if (records.tree.length === 0 || true) {
               console.info('NEED DATA FROM NET');
               return mythis.getTreeFromWeb().then(function(data) {
                 var result;
@@ -158,12 +158,12 @@
           return dfd.promise();
         },
         getTreeFromNet: function() {
-          var db_name, dfd, mythis;
+          var dfd, mythis;
           mythis = this;
           dfd = $q.defer();
           console.time('ALL DATA LOADED');
-          db_name = '4tree_db';
           this.getTreeFromeWebOrLocal().then(function(records) {
+            console.info('loaded = ', records);
             _.each(records, function(data, db_name) {
               return mythis._db[db_name] = data;
             });
@@ -173,7 +173,7 @@
             $rootScope.$broadcast('tree_loaded');
             mythis.clearCache();
             console.timeEnd('ALL DATA LOADED');
-            return dfd.resolve(db_name, records);
+            return dfd.resolve(records);
           });
           return dfd.promise;
         },
@@ -224,7 +224,12 @@
             stores: this.store_schema
           };
           options = {};
-          return this.db = new ydn.db.Storage('_db.tree', schema, options);
+          this.db = new ydn.db.Storage('_db.tree', schema, options);
+          if (false) {
+            return this.db.search('name', 'Рабочие').done(function(x) {
+              return console.info('found', x);
+            });
+          }
         },
         ydnSaveToLocal: function(db_name, records) {
           var dfd, mythis;
@@ -808,6 +813,13 @@
             _id: ''
           };
         },
+        task_template: function() {
+          return {
+            title: '',
+            parent_id: '',
+            _id: ''
+          };
+        },
         getIcon: function(tree) {
           if (!tree.icon) {
             return 'icon-heart-empty';
@@ -851,27 +863,32 @@
             this.refreshParentsIndex();
             tree._open = true;
           }
-          return $rootScope.$$childTail.db.main_node[focus] = new_note;
+          $rootScope.$$childTail.db.main_node[focus] = new_note;
+          return this.clearCache();
         },
-        addNote: function(tree, new_note_title, make_child) {
-          var focus, new_note;
-          focus = $rootScope.$$childTail.set.focus;
-          console.info('new_note', tree, new_note_title);
-          new_note = new this.tree_template;
-          new_note.title = new_note_title;
-          new_note._id = new ObjectId().toString();
-          new_note.pos = tree.pos + this.diffForSort(tree);
-          tree._add_show = false;
-          this._db.tree.push(new_note);
-          if (!make_child) {
-            new_note.parent_id = tree.parent_id;
-            this.refreshParentsIndex(tree.parent_id);
-          } else {
-            new_note.parent_id = tree._id;
-            this.refreshParentsIndex();
-            tree._open = true;
+        jsAddTask: function(event, scope, tree) {
+          var mythis, new_task, new_value, old_value, tree_id;
+          event.stopPropagation();
+          event.preventDefault();
+          mythis = $rootScope.$$childTail.fn.service.db_tree;
+          console.info('add_task', event, scope, tree);
+          tree_id = scope.db.main_node[scope.set.focus_edit]._id;
+          if (tree_id) {
+            new_task = new mythis.task_template;
+            new_task._id = new ObjectId().toString();
+            new_task.tree_id = tree_id;
+            new_task.parent_id = tree_id;
+            new_task._new = true;
+            new_task.user_id = $rootScope.$$childTail.set.user_id;
+            old_value = _.clone(new_task);
+            new_task.title = scope.new_task_title;
+            mythis._db.tasks.push(new_task);
+            console.info('pushed new task', new_task);
+            scope.new_task_title = "";
+            mythis.clearCache();
+            new_value = new_task;
+            return $rootScope.$emit("jsFindAndSaveDiff", 'tasks', new_value, old_value);
           }
-          return $rootScope.$$childTail.db.main_node[focus] = new_note;
         },
         jsEnterPress: function(event, scope, tree) {
           return event.target.blur();
@@ -1090,6 +1107,25 @@
         },
         jsFocus4: function() {
           return $rootScope.$$childTail.set.focus = 3;
+        },
+        searchString: function(searchString) {
+          var dfd;
+          dfd = new $.Deferred();
+          console.info('search', searchString);
+          oAuth2Api.jsGetToken().then(function(access_token) {
+            return $http({
+              url: '/api/v1/search',
+              method: "GET",
+              params: {
+                user_id: '5330ff92898a2b63c2f7095f',
+                access_token: access_token,
+                search: searchString
+              }
+            }).then(function(result) {
+              return dfd.resolve(result.data);
+            });
+          });
+          return dfd.promise();
         }
       };
     }

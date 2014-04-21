@@ -63,7 +63,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       {active: 7} #0  
       {active: 0} #1   0-дерево 1-карточки 2-mindmap 3-divider 4-календарь 5-редактор 6-none
       {active: 5} #2
-      {active: 0} #3
+      {active: 7} #3
     ]
     autosync_on: true
     from_today_index: 0
@@ -190,18 +190,6 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       '@Вецель'
       '@когда-нибудь'
     ]
-    addTask: ()->
-      id = parseInt( Math.random()*10000);
-      db_tree._db.tasks.push {
-        id: id, 
-        tree_id: '1034', 
-        date1: new Date( new Date().getTime()+1000*60*20 ), 
-        date2: new Date( new Date().getTime()+1000*60*20 ), 
-        title: 'Новое дело '+id
-      }
-      db_tree.refreshView('tasks', [id])
-      db_tree.clearCache()
-      console.info db_tree._db.tasks
     scrollTop: ()->
       $('#p_right_wrap .content').scrollTop(50000);
     jsCopyClipboard: (value)->
@@ -671,7 +659,31 @@ angular.module("4treeApp").controller "save_task_db", ($scope, syncApi, db_tree,
     if !_.isEqual( new_value, old_value )
       $rootScope.$emit("jsFindAndSaveDiff",'tasks', new_value, old_value);
 
+angular.module("4treeApp").controller "searchController", ($scope, syncApi, db_tree, $rootScope, $sce, $timeout)->
+  $scope.search_notes_result = {};
+  
+  $scope.trust = (text)->
+    text = strip_tags(text, "<em>", " ") if text
+    if text
+      $sce.trustAsHtml(text)
 
+  show_search_result = _.debounce (search_text)->
+    $scope.fn.service.db_tree.searchString(search_text).then (results)->
+      _.each Object.keys(results), (db_name)->
+        $scope.search_notes_result[db_name] = []
+        $scope.search_notes_result[db_name] = results[db_name]?.hits?.hits;
+  , 600
+
+  mythis = @;
+  $rootScope.$on 'sync_ended', (event)->
+    console.info 'hello, im change'
+    $timeout ()->
+      show_search_result($scope.search_box);
+    , 500
+
+  $scope.$watch "search_box", (new_value, old_value)->
+    if new_value != old_value
+      show_search_result(new_value);
 
 
 angular.module("4treeApp").value "fooConfig",
@@ -679,6 +691,46 @@ angular.module("4treeApp").value "fooConfig",
   config2: "Default config2 but it can changes"
 
 
+strip_tags = (input, allowed, space) ->
+  space = "" if !space
+  
+  #  discuss at: http://phpjs.org/functions/strip_tags/
+  # original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  # improved by: Luke Godfrey
+  # improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  #    input by: Pul
+  #    input by: Alex
+  #    input by: Marc Palau
+  #    input by: Brett Zamir (http://brett-zamir.me)
+  #    input by: Bobby Drake
+  #    input by: Evertjan Garretsen
+  # bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  # bugfixed by: Onno Marsman
+  # bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  # bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  # bugfixed by: Eric Nagel
+  # bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  # bugfixed by: Tomasz Wesolowski
+  #  revised by: Rafał Kukawski (http://blog.kukawski.pl/)
+  #   example 1: strip_tags('<p>Kevin</p> <br /><b>van</b> <i>Zonneveld</i>', '<i><b>');
+  #   returns 1: 'Kevin <b>van</b> <i>Zonneveld</i>'
+  #   example 2: strip_tags('<p>Kevin <img src="someimage.png" onmouseover="someFunction()">van <i>Zonneveld</i></p>', '<p>');
+  #   returns 2: '<p>Kevin van Zonneveld</p>'
+  #   example 3: strip_tags("<a href='http://kevin.vanzonneveld.net'>Kevin van Zonneveld</a>", "<a>");
+  #   returns 3: "<a href='http://kevin.vanzonneveld.net'>Kevin van Zonneveld</a>"
+  #   example 4: strip_tags('1 < 5 5 > 1');
+  #   returns 4: '1 < 5 5 > 1'
+  #   example 5: strip_tags('1 <br/> 1');
+  #   returns 5: '1  1'
+  #   example 6: strip_tags('1 <br/> 1', '<br>');
+  #   returns 6: '1 <br/> 1'
+  #   example 7: strip_tags('1 <br/> 1', '<br><br/>');
+  #   returns 7: '1 <br/> 1'
+  allowed = (((allowed or "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) or []).join("") # making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+  tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/g
+  commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/g
+  input.replace(commentsAndPhpTags, space).replace tags, ($0, $1) ->
+    (if allowed.indexOf("<" + $1.toLowerCase() + ">") > -1 then $0 else "")
 
 
 

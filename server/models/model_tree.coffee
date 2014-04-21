@@ -1,14 +1,22 @@
 mongoose = require("mongoose")
+
 Schema = mongoose.Schema
+
+analyzer = {
+  type: 'custom'
+  tokenizer: 'standard'
+  filter: ['lowercase', 'nGram']
+}
+
 treeSchema = new Schema (
   'id': String
-  'title': String
-  'text': String
+  'title': { type: String, es_indexed: true } 
+  'text': { type: String, es_indexed: true }
   'folder': String
-  'parent_id': Schema.ObjectId
+  'parent_id': String #Schema.ObjectId
   'parent': String
   'pos': { type: Number, default: 0 }
-  'user_id': Schema.ObjectId
+  'user_id': { type: String, es_indexed: true } 
   'add_tm': Date
   'icon': String
   'color': String
@@ -29,4 +37,11 @@ treeSchema = new Schema (
   '_sync': [ { key: String, diff: { 'tm': String } } ]
   'tm': Date
 )
+
+mongoosastic = require('mongoosastic')
+treeSchema.plugin(mongoosastic, {index: 'trees', type:'tree'});
+
 Tree = module.exports = mongoose.model("Tree", treeSchema)
+
+Tree.createMapping (err, mapping)->
+  console.info 'mapping', mapping

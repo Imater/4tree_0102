@@ -1609,7 +1609,33 @@ h10.open:before {
 .plan_of_day ul li.done div {
   text-decoration: line-through;
 }
-/* line 51, ../sass/_plan_of_day.scss */
+/* line 52, ../sass/_plan_of_day.scss */
+.plan_of_day .search_result li {
+  margin: 12px 0;
+}
+/* line 54, ../sass/_plan_of_day.scss */
+.plan_of_day .search_result li .title {
+  white-space: normal;
+  color: #2f6913;
+  font-weight: bold;
+}
+/* line 58, ../sass/_plan_of_day.scss */
+.plan_of_day .search_result li .title em {
+  font-style: normal;
+  background: rgba(255, 255, 0, 0.3);
+}
+/* line 63, ../sass/_plan_of_day.scss */
+.plan_of_day .search_result li .minitext_highlight {
+  white-space: normal;
+  color: #555;
+}
+/* line 66, ../sass/_plan_of_day.scss */
+.plan_of_day .search_result li .minitext_highlight em {
+  font-weight: bold;
+  font-style: normal;
+  background: rgba(255, 255, 0, 0.3);
+}
+/* line 74, ../sass/_plan_of_day.scss */
 .plan_of_day .diary {
   outline: none;
   padding: 16px;
@@ -1625,21 +1651,21 @@ h10.open:before {
   -moz-transition: background 1s ease-out;
   transition: background 1s ease-out;
 }
-/* line 62, ../sass/_plan_of_day.scss */
+/* line 85, ../sass/_plan_of_day.scss */
 .plan_of_day .diary em, .plan_of_day .diary p, .plan_of_day .diary div, .plan_of_day .diary span {
   background: none !important;
 }
-/* line 65, ../sass/_plan_of_day.scss */
+/* line 88, ../sass/_plan_of_day.scss */
 .plan_of_day .diary img {
   max-width: 80%;
   max-height: 80%;
 }
-/* line 69, ../sass/_plan_of_day.scss */
+/* line 92, ../sass/_plan_of_day.scss */
 .plan_of_day .diary:focus {
   background: #fff797;
   border-bottom: 3px solid #d5ca9d;
 }
-/* line 75, ../sass/_plan_of_day.scss */
+/* line 98, ../sass/_plan_of_day.scss */
 .plan_of_day .add_do .title {
   -webkit-transition: color 0.3s ease-out;
   -o-transition: color 0.3s ease-out;
@@ -1648,48 +1674,48 @@ h10.open:before {
   color: #cccccc;
   cursor: pointer;
 }
-/* line 79, ../sass/_plan_of_day.scss */
+/* line 102, ../sass/_plan_of_day.scss */
 .plan_of_day .add_do .title:hover {
   color: #469d1c;
 }
-/* line 84, ../sass/_plan_of_day.scss */
+/* line 107, ../sass/_plan_of_day.scss */
 .plan_of_day .news_changes {
   list-style: none;
 }
-/* line 87, ../sass/_plan_of_day.scss */
+/* line 110, ../sass/_plan_of_day.scss */
 .plan_of_day .news_changes tr td {
   padding: 8px 0;
   vertical-align: top;
 }
-/* line 90, ../sass/_plan_of_day.scss */
+/* line 113, ../sass/_plan_of_day.scss */
 .plan_of_day .news_changes tr td .title {
   margin-top: 5px;
 }
-/* line 98, ../sass/_plan_of_day.scss */
+/* line 121, ../sass/_plan_of_day.scss */
 .plan_of_day .myweb_ul b {
   font-weight: normal;
 }
-/* line 102, ../sass/_plan_of_day.scss */
+/* line 125, ../sass/_plan_of_day.scss */
 .plan_of_day .myweb_ul .title {
   padding: 4px;
   font-weight: bold;
   cursor: pointer;
 }
-/* line 107, ../sass/_plan_of_day.scss */
+/* line 130, ../sass/_plan_of_day.scss */
 .plan_of_day .myweb_ul .cnt {
   color: #cccccc;
   font-weight: normal;
 }
-/* line 111, ../sass/_plan_of_day.scss */
+/* line 134, ../sass/_plan_of_day.scss */
 .plan_of_day .myweb_ul .myweb_ul {
   margin-left: 25px;
 }
-/* line 113, ../sass/_plan_of_day.scss */
+/* line 136, ../sass/_plan_of_day.scss */
 .plan_of_day .myweb_ul .myweb_ul .title {
   font-weight: normal;
 }
 
-/* line 121, ../sass/_plan_of_day.scss */
+/* line 144, ../sass/_plan_of_day.scss */
 .face {
   display: inline-block;
   vertical-align: middle;
@@ -1699,11 +1725,11 @@ h10.open:before {
   border-radius: 50%;
 }
 
-/* line 130, ../sass/_plan_of_day.scss */
+/* line 153, ../sass/_plan_of_day.scss */
 .side_search {
   margin: 0 8px;
 }
-/* line 132, ../sass/_plan_of_day.scss */
+/* line 155, ../sass/_plan_of_day.scss */
 .side_search input {
   box-shadow: none;
   border: 1px solid #dedede;
@@ -1713,7 +1739,7 @@ h10.open:before {
   border-radius: 3px;
 }
 
-/* line 142, ../sass/_plan_of_day.scss */
+/* line 165, ../sass/_plan_of_day.scss */
 .myweb_link_header {
   display: inline-block;
   text-align: center;
@@ -1722,29 +1748,29 @@ h10.open:before {
   font-size: 1.3em;
 }
 
-/* line 150, ../sass/_plan_of_day.scss */
+/* line 173, ../sass/_plan_of_day.scss */
 .frends_wrap {
   padding-top: 8px;
 }
-/* line 152, ../sass/_plan_of_day.scss */
+/* line 175, ../sass/_plan_of_day.scss */
 .frends_wrap .frends_list {
   background: rgba(217, 245, 207, 0.5);
   list-style: none;
   padding: 0 0 0 25px;
   border-bottom: 3px solid #2f6913;
 }
-/* line 157, ../sass/_plan_of_day.scss */
+/* line 180, ../sass/_plan_of_day.scss */
 .frends_wrap .frends_list li {
   padding: 4px 0;
   cursor: pointer;
 }
-/* line 163, ../sass/_plan_of_day.scss */
+/* line 186, ../sass/_plan_of_day.scss */
 .frends_wrap .select_frend {
   font-weight: bold;
   padding: 0 0 8px 25px;
   cursor: pointer;
 }
-/* line 168, ../sass/_plan_of_day.scss */
+/* line 191, ../sass/_plan_of_day.scss */
 .frends_wrap .select_frend:hover .face {
   opacity: 1;
 }

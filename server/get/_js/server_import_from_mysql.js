@@ -55,7 +55,7 @@
         need_add_hours = current_timezone_offset - user.time_dif;
         console.info('time_zone', user.time_dif, current_timezone_offset, need_add_hours);
         one_note = new Tree;
-        objectId_to_id["1"] = mongoose.Types.ObjectId();
+        objectId_to_id["1"] = mongoose.Types.ObjectId().toString();
         objectId_to_id[1] = objectId_to_id["1"];
         one_note['_id'] = objectId_to_id["1"];
         one_note['title'] = '4tree';

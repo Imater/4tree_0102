@@ -127,6 +127,64 @@ else
   Tree = mongoose.model('Tree');
   Task = mongoose.model('Task');
 
+  elasticsearch = require 'elasticsearch'
+  es_client = new elasticsearch.Client {
+    host: localhost:9200
+    log: 'trace' #'trace'
+  }
+
+  es_client.ping({
+    requestTimeout: 1000,
+    #undocumented params are appended to the query string
+    hello: "elasticsearch!"
+  }).then ()->
+    console.info 'elastic_started!'
+    need_reindex_elastic_search = true;
+    if (need_reindex_elastic_search)
+      query = {
+        type: 'tree'
+        index: 'trees'
+        body:
+          number_of_shards: 1
+          analysis:
+            filter:
+              mynGram:
+                type: "nGram"
+                min_gram: 2
+                max_gram: 10
+
+              my_stopwords:
+                type: "stop"
+                stopwords: "а,без,более,бы,был,была,были,было,быть,в,вам,вас,весь,во,вот,все,всего,всех,вы,где,да,даже,для,до,его,ее,если,есть,еще,же,за,здесь,и,из,или,им,их,к,как,ко,когда,кто,ли,либо,мне,может,мы,на,надо,наш,не,него,нее,нет,ни,них,но,ну,о,об,однако,он,она,они,оно,от,очень,по,под,при,с,со,так,также,такой,там,те,тем,то,того,тоже,той,только,том,ты,у,уже,хотя,чего,чей,чем,что,чтобы,чье,чья,эта,эти,это,я,a,an,and,are,as,at,be,but,by,for,if,in,into,is,it,no,not,of,on,or,such,that,the,their,then,there,these,they,this,to,was,will,with"
+
+            analyzer:
+              a1:
+                type: "custom"
+                tokenizer: "standard"
+                filter: ["lowercase", "mynGram"]
+      }
+      logJson 'query', query
+      if true
+        es_client.index {}, (err, response)->
+          logJson 'reindex', err, response
+          if true
+            setTimeout ()->
+              stream = Tree.synchronize();
+              count = 0;
+
+              stream.on 'data', (err, doc)->
+                count++
+              stream.on 'close', ()->
+                console.log('indexed '+count)
+
+              Task.synchronize();
+
+
+              stream.on 'error', (err)->
+                console.log err
+            , 3000
+
+
   global._db_models = {
     tree: Tree
     tasks: Task
@@ -355,8 +413,12 @@ else
         one_new_element = new_elements[db_name][item_name]
         console.info 'need_to_create '+item_name, one_new_element
         model = new global._db_models[db_name](one_new_element)
+        model.tm = new Date(start_sync_time)
         model.save ()->
+          saving_complete = true;
           console.info 'Сохранил новый элемент '+item_name;
+          confirm_about_sync_success_for_client[db_name] = [] if !confirm_about_sync_success_for_client[db_name]
+          confirm_about_sync_success_for_client[db_name].push( {_id:one_new_element._id, tm: new Date(last_sync_time) } )
           callback2();
       , ()->
         callback();
@@ -437,6 +499,7 @@ else
           if users_connection[user_id] and saving_complete
             user_instance = user_instance;
             connected_sockets = users_connection[user_id];
+            logJson 'Emit to clients', data_to_others
             _.each connected_sockets, (one_socket)->
               if user_instance.toString() != one_socket.user_instance.toString()
                 one_socket.socket.emit('need_sync', data_to_others) 
@@ -445,11 +508,89 @@ else
 
     dfd.promise();
 
+  ###
+  ###
+
+
+  search = {
+    searchString: (string)->
+      dfd = new $.Deferred()
+      all_results = {}
+      db_names = ['trees', 'tasks'];
+      async.each db_names, (db_name, callback)->        
+        all_results[db_name] = {};
+        console.info '!!!', db_name
+        query = { 
+          index: db_name
+          body: {
+            query: { 
+              "filtered": {
+                "query": {
+                  "fuzzy_like_this": { 
+                    fields: ["title", "text"]
+                    like_text: string 
+                    fuzziness: 0.7
+                  }                                        
+                }
+                "filter": {
+                  "and": [
+                    "term": {
+                      user_id: "5330ff92898a2b63c2f7095f"
+                    }                    
+                  ]
+                }
+              }
+            }
+            highlight: {
+              #"encoder": "html"
+              escape_html: true
+              fields: {
+                title: {}
+                text: { "type": "plain"}
+              }
+            }
+            fields: ["_id", "highlight", "_score", "title", "user_id"]          
+          }
+        }
+        es_client.search query, (err, results)->
+          all_results[db_name] = results;
+          callback(err);
+      , (err)->
+        console.info 'all', all_results
+        dfd.resolve(all_results)
+
+      dfd.promise()
+
+  }
+
+  exports.searchMe = (req, res)->
+    searchString = req.query.search;
+    if searchString
+      search.searchString(searchString).then (results)->
+        res.send(results)
+    else
+      res.send([])
+
+  exports.suggestMe = (req, res)->
+    searchString = req.query.search;
+    Tree.search {
+        suggest: {
+          text: searchString
+        }
+    }, (err, results)->
+      res.send(results)
+
+
   app.post('/api/v1/sync', app.oauth.authorise(), exports.sync);
 
   app.post('/api/v1/sync_db', app.oauth.authorise(), exports.sync_db);
 
   app.get('/api/v1/message', exports.newMessage);
+
+  app.get('/api/v1/search', exports.searchMe);
+
+  app.get('/api/v1/suggest', exports.suggestMe);
+
   app.get '/api/import_from_mysql', (req, res)->
     (require('../get/_js/server_import_from_mysql')).get(req, res)
 

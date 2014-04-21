@@ -64,7 +64,9 @@
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <script src="others/lodash.underscore.js"></script>
-    <script src="others/ydn.db.js"></script>
+    <script src="others/lunrjs.js"></script>
+    <script src="others/lunr.ru.js"></script>
+    <script src="bower_components/ydn.db/ydn.db-isw-core-qry-dev.js"></script>
     <script src="socket.io/socket.io.js"></script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
@@ -112,6 +114,28 @@
     <script src="bower_components/angular-hotkeys-master/angular-hotkeys.js"></script>
     <script src="bower_components/jsPlumb/dist/js/jquery.jsPlumb-1.5.5.js"></script>
     <script src="bower_components/angular-treeRepeat/app/js/directives.js"></script>
+
+    <!-- Fulltext -->
+    <script type="text/javascript" src="bower_components/fullproof-master/src/unicode/categ_letters_numbers.js"></script>
+    <script type="text/javascript" src="bower_components/fullproof-master/src/unicode/normalizer_lowercase_nomark.js"></script>
+    <script type="text/javascript" src="bower_components/fullproof-master/src/unicode/unicode.js"></script>
+    <script type="text/javascript" src="bower_components/fullproof-master/src/analyzers.js"></script>
+    <script type="text/javascript" src="bower_components/fullproof-master/src/normalizers.js"></script>
+    <script type="text/javascript" src="bower_components/fullproof-master/src/normalizers/english/metaphone.js"></script>
+    <script type="text/javascript" src="bower_components/fullproof-master/src/misc/dataloader.js"></script>
+    <script type="text/javascript" src="bower_components/fullproof-master/src/capabilities.js"></script>
+    <script type="text/javascript" src="bower_components/fullproof-master/src/utils.js"></script>
+    <script type="text/javascript" src="bower_components/fullproof-master/src/scoring-engine.js"></script>
+    <script type="text/javascript" src="bower_components/fullproof-master/src/boolean-engine.js"></script>
+    <script type="text/javascript" src="bower_components/fullproof-master/src/common-engine.js"></script>
+    <script type="text/javascript" src="bower_components/fullproof-master/src/resultsets.js"></script>
+    <script type="text/javascript" src="bower_components/fullproof-master/src/storemanager.js"></script>
+    <script type="text/javascript" src="bower_components/fullproof-master/src/stores/memory_store.js"></script>
+    <script type="text/javascript" src="bower_components/fullproof-master/src/stores/websql_store.js"></script>
+    <script type="text/javascript" src="bower_components/fullproof-master/src/stores/indexeddb_store.js"></script>
+    <!-- Fulltext end -->
+
+
         
     <!-- endbower -->
     <!-- endbuild -->

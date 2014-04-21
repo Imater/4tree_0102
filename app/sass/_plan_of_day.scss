@@ -48,6 +48,29 @@
       }
     }
   }
+  .search_result {
+    li {
+      margin: $padding*1.5 0;    
+      .title {
+        white-space: normal;
+        color: $main_color;
+        font-weight: bold;
+        em {
+          font-style: normal;
+          background: rgba(yellow, 0.3)
+        }
+      }
+      .minitext_highlight {
+        white-space: normal;
+        color: #555;
+        em {
+          font-weight: bold;
+          font-style: normal;
+          background: rgba(yellow, 0.3)
+        }
+      }
+    }
+  }
   .diary {
     outline: none;
     padding: $padding*2;

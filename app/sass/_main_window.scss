@@ -5,7 +5,6 @@
 @import 'mymixins';
 
 #w_main {
-    background: red;
     @include absolute_me(0, 0, 0, 0);
     #w_header_main {
         @include animate_me(height, 0.1s);
