@@ -10,21 +10,19 @@ image_service = {
   image_make_white: (img_url)->
     mythis = @;
     console.info img_url
+    #'+Math.round(Math.random()*100)+'.png
+    new_file_name = './user_data/1.png'
 
-    buf = fs.readFileSync(img_url)
-
-    new_file_name = '../resize'+Math.round(Math.random()*100)+'.png'
-
-    gm(buf, 'image.jpg')
-    .normalize()
-    .threshold('50%')
-    .autoOrient()
+    gm(img_url)
+#    .normalize()
+#    .threshold('50%')
+#    .autoOrient()
     .write new_file_name, (err)->
       if (!err) 
         console.log('done');
         mythis.recognize new_file_name, img_url
       else
-        console.log err
+        console.log 'ERROR = ', err
   getSize: (img_url)->
     gm(img_url).identify (err, data)->
       console.info 'size = ', data
