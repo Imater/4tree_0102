@@ -72,6 +72,8 @@ else
   }
 
   image_service = require('../scripts/_js/imagemagic.service.js')
+
+  image_service.image_make_white('../1.png')
   
   #console.info image_service.image_make_white('../val.jpg')
 
@@ -561,10 +563,36 @@ else
     }, (err, results)->
       res.send(results)
 
+  exports.uploadImage = (req, res)->
+    if req.files
+      fs.readFile req.files.file.path, (err, data)->
+        newPath = "user_data/sex.jpeg";
+        fs.writeFile newPath, data, (err)->
+          if !err
+            answer = {
+              'filelink': 'user_data/sex.jpeg'
+            }
+            res.send(answer)
+          else
+            res.send(false)
+    if req.body.data
+      fs.writeFile "user_data/clipboard.png", new Buffer(req.body.data, 'base64'), (err)->
+        if !err
+          answer = {
+            'filelink': 'user_data/clipboard.png'
+          }
+          image_service.image_make_white('user_data/clipboard.png')
+          res.send(answer)
+        else
+          res.send(false)
+
+
 
   app.post('/api/v1/sync', app.oauth.authorise(), exports.sync);
 
   app.post('/api/v1/sync_db', app.oauth.authorise(), exports.sync_db);
+
+  app.post('/api/v1/uploadImage', exports.uploadImage);
 
   app.get('/api/v1/message', exports.newMessage);
 
