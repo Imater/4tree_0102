@@ -45,4 +45,4 @@ treeSchema.plugin(mongoosastic, {index: 'trees', type:'tree'});
 Tree = module.exports = mongoose.model("Tree", treeSchema)
 
 Tree.createMapping (err, mapping)->
-  console.info 'mapping', mapping
+  console.info 'mapping', mapping if false

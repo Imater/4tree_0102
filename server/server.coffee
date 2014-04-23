@@ -71,6 +71,10 @@ else
       console.info "MAIL: ", msg
   }
 
+  image_service = require('../scripts/_js/imagemagic.service.js')
+  
+  #console.info image_service.image_make_white('../val.jpg')
+
   notifier_instance = notifier(imap).on 'mail', (mail)->
     mail_service.save_mail_to_tree(mail)
 
@@ -100,7 +104,7 @@ else
   #OAUTH2
 
   mongoose = require("mongoose")
-  mongoose.set("debug", true)
+  mongoose.set("debug", false)
   uristring = "mongodb://127.0.0.1:27017/4tree"
 
 
@@ -130,29 +134,30 @@ else
   elasticsearch = require 'elasticsearch'
   es_client = new elasticsearch.Client {
     host: localhost:9200
-    log: 'trace' #'trace'
+    log: '' #'trace'
   }
 
-  es_client.ping({
-    requestTimeout: 1000,
-    #undocumented params are appended to the query string
-    hello: "elasticsearch!"
-  }).then ()->
-    if true
-      setTimeout ()->
-        stream = Tree.synchronize();
-        count = 0;
+  if false
+    es_client.ping({
+      requestTimeout: 1000,
+      #undocumented params are appended to the query string
+      hello: "elasticsearch!"
+    }).then ()->
+      if true
+        setTimeout ()->
+          stream = Tree.synchronize();
+          count = 0;
 
-        stream.on 'data', (err, doc)->
-          count++
-        stream.on 'close', ()->
-          console.log('indexed '+count)
+          stream.on 'data', (err, doc)->
+            count++
+          stream.on 'close', ()->
+            console.log('indexed '+count)
 
-        Task.synchronize();
+          Task.synchronize();
 
 
-        stream.on 'error', (err)->
-          console.log err
+          stream.on 'error', (err)->
+            console.log err
 
 
   global._db_models = {

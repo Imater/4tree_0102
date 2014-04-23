@@ -86,7 +86,9 @@
   Tree = module.exports = mongoose.model("Tree", treeSchema);
 
   Tree.createMapping(function(err, mapping) {
-    return console.info('mapping', mapping);
+    if (false) {
+      return console.info('mapping', mapping);
+    }
   });
 
 }).call(this);
