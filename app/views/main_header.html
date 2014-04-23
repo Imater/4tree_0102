@@ -149,9 +149,23 @@
 
 
       </ul>
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group search_input">
-          <input type="text" class="form-control" placeholder="Искать..." ng-model="search_box">
+      <form class="navbar-form navbar-left header_search_form" role="search" ng-controller="searchController" ng-init="init({dont_need_highlight:true})">
+        <div class="btn-group btn-input clearfix">
+          <input type="text" class="form-control" placeholder="Искать..." ng-model="search_box" data-toggle="dropdown">
+          <ul class="dropdown-menu search_in_header">
+            <li class="title_calc" ng-repeat="note in calc_history" ng-if="show_calc">
+              <div class="title" ng-bind-html="note"></div>
+            </li>
+            <li><h10>Дела ({{search_notes_result['tasks'].length?search_notes_result['tasks'].length:0}})</h10></li>
+            <li ng-repeat="note in search_notes_result['tasks']">
+              <div class="title" ng-bind-html="trust(note.highlight.title[0]?note.highlight.title[0]:note.fields.title[0])"></div>
+            </li>
+            <li style="height:5px"></li>
+            <li><h10>Заметки ({{search_notes_result['trees'].length?search_notes_result['trees'].length:0}})</h10></li>
+            <li ng-repeat="note in search_notes_result['trees']">
+              <div class="title" ng-bind-html="trust(note.highlight.title[0]?note.highlight.title[0]:note.fields.title[0])"></div>
+            </li>
+          </ul>
         </div>
       </form>
 

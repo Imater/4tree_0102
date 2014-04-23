@@ -138,51 +138,21 @@ else
     #undocumented params are appended to the query string
     hello: "elasticsearch!"
   }).then ()->
-    console.info 'elastic_started!'
-    need_reindex_elastic_search = true;
-    if (need_reindex_elastic_search)
-      query = {
-        type: 'tree'
-        index: 'trees'
-        body:
-          number_of_shards: 1
-          analysis:
-            filter:
-              mynGram:
-                type: "nGram"
-                min_gram: 2
-                max_gram: 10
+    if true
+      setTimeout ()->
+        stream = Tree.synchronize();
+        count = 0;
 
-              my_stopwords:
-                type: "stop"
-                stopwords: "а,без,более,бы,был,была,были,было,быть,в,вам,вас,весь,во,вот,все,всего,всех,вы,где,да,даже,для,до,его,ее,если,есть,еще,же,за,здесь,и,из,или,им,их,к,как,ко,когда,кто,ли,либо,мне,может,мы,на,надо,наш,не,него,нее,нет,ни,них,но,ну,о,об,однако,он,она,они,оно,от,очень,по,под,при,с,со,так,также,такой,там,те,тем,то,того,тоже,той,только,том,ты,у,уже,хотя,чего,чей,чем,что,чтобы,чье,чья,эта,эти,это,я,a,an,and,are,as,at,be,but,by,for,if,in,into,is,it,no,not,of,on,or,such,that,the,their,then,there,these,they,this,to,was,will,with"
+        stream.on 'data', (err, doc)->
+          count++
+        stream.on 'close', ()->
+          console.log('indexed '+count)
 
-            analyzer:
-              a1:
-                type: "custom"
-                tokenizer: "standard"
-                filter: ["lowercase", "mynGram"]
-      }
-      logJson 'query', query
-      if true
-        es_client.index {}, (err, response)->
-          logJson 'reindex', err, response
-          if true
-            setTimeout ()->
-              stream = Tree.synchronize();
-              count = 0;
-
-              stream.on 'data', (err, doc)->
-                count++
-              stream.on 'close', ()->
-                console.log('indexed '+count)
-
-              Task.synchronize();
+        Task.synchronize();
 
 
-              stream.on 'error', (err)->
-                console.log err
-            , 3000
+        stream.on 'error', (err)->
+          console.log err
 
 
   global._db_models = {
@@ -513,7 +483,7 @@ else
 
 
   search = {
-    searchString: (string)->
+    searchString: (string, dont_need_highlight)->
       dfd = new $.Deferred()
       all_results = {}
       db_names = ['trees', 'tasks'];
@@ -529,7 +499,7 @@ else
                   "fuzzy_like_this": { 
                     fields: ["title", "text"]
                     like_text: string 
-                    fuzziness: 0.7
+                    fuzziness: 0.9
                   }                                        
                 }
                 "filter": {
@@ -541,17 +511,22 @@ else
                 }
               }
             }
+            size: 20
             highlight: {
+              "number_of_fragments": 1
               #"encoder": "html"
-              escape_html: true
+              #escape_html: true
               fields: {
-                title: {}
-                text: { "type": "plain"}
+                title: { "type": "plain"}
+                text:  { "type": "plain"}
               }
             }
             fields: ["_id", "highlight", "_score", "title", "user_id"]          
           }
         }
+        if dont_need_highlight
+          query.body.highlight.fields = {title:{type:'plain'}}
+
         es_client.search query, (err, results)->
           all_results[db_name] = results;
           callback(err);
@@ -565,8 +540,9 @@ else
 
   exports.searchMe = (req, res)->
     searchString = req.query.search;
+    dont_need_highlight = req.query.dont_need_highlight;
     if searchString
-      search.searchString(searchString).then (results)->
+      search.searchString(searchString, dont_need_highlight).then (results)->
         res.send(results)
     else
       res.send([])

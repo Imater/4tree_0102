@@ -1,22 +1,28 @@
 <div ng-controller="searchController" class="search_container">
 	<div class="side_search">
-		<input type="text" class="form-control" placeholder="Искать..." ng-model="search_box">
+		<input type="text" class="form-control" placeholder="Искать / считать..." ng-model="search_box">
 	</div>
 
 	<div class="plan_of_day">
 
-		<h10 class="open">Заметки ({{search_notes_result['trees'].length}})</h10>
+		<ul class="search_result" ng-if="show_calc">
+			<li class="title_calc" ng-repeat="note in calc_history">
+				<div class="title" ng-bind-html="note"></div>
+			</li>
+		</ul>
 
+		<h10 class="open">Дела ({{search_notes_result['tasks'].length?search_notes_result['tasks'].length:0}})</h10>
 		<ul class="search_result">
-			<li ng-repeat="note in search_notes_result['trees']" class="{{the_do.myclass}}">
+			<li ng-repeat="note in search_notes_result['tasks']" class="{{the_do.myclass}}">
 				<div class="title" ng-bind-html="trust(note.highlight.title[0]?note.highlight.title[0]:note.fields.title[0])"></div>
 				<div class="minitext_highlight" ng-bind-html="trust(note.highlight.text[0])"></div>
 			</li>
 		</ul>
 
-		<h10 class="open">Дела ({{search_notes_result['tasks'].length}})</h10>
+		<h10 class="open">Заметки ({{search_notes_result['trees'].length?search_notes_result['trees'].length:0}})</h10>
+
 		<ul class="search_result">
-			<li ng-repeat="note in search_notes_result['tasks']" class="{{the_do.myclass}}">
+			<li ng-repeat="note in search_notes_result['trees']" class="{{the_do.myclass}}">
 				<div class="title" ng-bind-html="trust(note.highlight.title[0]?note.highlight.title[0]:note.fields.title[0])"></div>
 				<div class="minitext_highlight" ng-bind-html="trust(note.highlight.text[0])"></div>
 			</li>

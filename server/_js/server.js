@@ -124,60 +124,22 @@
       requestTimeout: 1000,
       hello: "elasticsearch!"
     }).then(function() {
-      var need_reindex_elastic_search, query;
-      console.info('elastic_started!');
-      need_reindex_elastic_search = true;
-      if (need_reindex_elastic_search) {
-        query = {
-          type: 'tree',
-          index: 'trees',
-          body: {
-            number_of_shards: 1,
-            analysis: {
-              filter: {
-                mynGram: {
-                  type: "nGram",
-                  min_gram: 2,
-                  max_gram: 10
-                },
-                my_stopwords: {
-                  type: "stop",
-                  stopwords: "а,без,более,бы,был,была,были,было,быть,в,вам,вас,весь,во,вот,все,всего,всех,вы,где,да,даже,для,до,его,ее,если,есть,еще,же,за,здесь,и,из,или,им,их,к,как,ко,когда,кто,ли,либо,мне,может,мы,на,надо,наш,не,него,нее,нет,ни,них,но,ну,о,об,однако,он,она,они,оно,от,очень,по,под,при,с,со,так,также,такой,там,те,тем,то,того,тоже,той,только,том,ты,у,уже,хотя,чего,чей,чем,что,чтобы,чье,чья,эта,эти,это,я,a,an,and,are,as,at,be,but,by,for,if,in,into,is,it,no,not,of,on,or,such,that,the,their,then,there,these,they,this,to,was,will,with"
-                }
-              },
-              analyzer: {
-                a1: {
-                  type: "custom",
-                  tokenizer: "standard",
-                  filter: ["lowercase", "mynGram"]
-                }
-              }
-            }
-          }
-        };
-        logJson('query', query);
-        if (true) {
-          return es_client.index({}, function(err, response) {
-            logJson('reindex', err, response);
-            if (true) {
-              return setTimeout(function() {
-                var count, stream;
-                stream = Tree.synchronize();
-                count = 0;
-                stream.on('data', function(err, doc) {
-                  return count++;
-                });
-                stream.on('close', function() {
-                  return console.log('indexed ' + count);
-                });
-                Task.synchronize();
-                return stream.on('error', function(err) {
-                  return console.log(err);
-                });
-              }, 3000);
-            }
+      if (true) {
+        return setTimeout(function() {
+          var count, stream;
+          stream = Tree.synchronize();
+          count = 0;
+          stream.on('data', function(err, doc) {
+            return count++;
           });
-        }
+          stream.on('close', function() {
+            return console.log('indexed ' + count);
+          });
+          Task.synchronize();
+          return stream.on('error', function(err) {
+            return console.log(err);
+          });
+        });
       }
     });
     global._db_models = {
@@ -580,7 +542,7 @@
     */
 
     search = {
-      searchString: function(string) {
+      searchString: function(string, dont_need_highlight) {
         var all_results, db_names, dfd;
         dfd = new $.Deferred();
         all_results = {};
@@ -598,7 +560,7 @@
                     "fuzzy_like_this": {
                       fields: ["title", "text"],
                       like_text: string,
-                      fuzziness: 0.7
+                      fuzziness: 0.9
                     }
                   },
                   "filter": {
@@ -612,10 +574,13 @@
                   }
                 }
               },
+              size: 20,
               highlight: {
-                escape_html: true,
+                "number_of_fragments": 1,
                 fields: {
-                  title: {},
+                  title: {
+                    "type": "plain"
+                  },
                   text: {
                     "type": "plain"
                   }
@@ -624,6 +589,13 @@
               fields: ["_id", "highlight", "_score", "title", "user_id"]
             }
           };
+          if (dont_need_highlight) {
+            query.body.highlight.fields = {
+              title: {
+                type: 'plain'
+              }
+            };
+          }
           return es_client.search(query, function(err, results) {
             all_results[db_name] = results;
             return callback(err);
@@ -636,10 +608,11 @@
       }
     };
     exports.searchMe = function(req, res) {
-      var searchString;
+      var dont_need_highlight, searchString;
       searchString = req.query.search;
+      dont_need_highlight = req.query.dont_need_highlight;
       if (searchString) {
-        return search.searchString(searchString).then(function(results) {
+        return search.searchString(searchString, dont_need_highlight).then(function(results) {
           return res.send(results);
         });
       } else {

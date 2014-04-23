@@ -48,6 +48,7 @@
     'old_tag': String,
     'date1': Date,
     'date2': Date,
+    'diary': Date,
     'short_link_on': Boolean,
     'web_on': Boolean,
     'share_frends': Boolean,

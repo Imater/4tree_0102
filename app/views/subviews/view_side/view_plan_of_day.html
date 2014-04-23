@@ -30,10 +30,20 @@
 	</ul>
 
 	<h10 class="open">дневник</h10>
-	<div class="diary" contenteditable="true" spellcheck="false">
-		Сегодня отличный день. Собираюсь помыть машину и поехать в кинотеатр. В субботу Валюшка поедет на горячие источники.
-	</div>
 
+    <div class="diary" ng-controller="save_tree_db" ng-if='tree=fn.service.db_tree.diaryFind(set.today_date)[0]'>
+      <div class="diary_header">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default btn-xs active">22</button>
+          <button type="button" class="btn btn-default btn-xs">Апреля</button>
+          <button type="button" class="btn btn-default btn-xs">2014г</button>
+        </div>
+      </div>
+      <div class="diary_editor" contenteditable="true" spellcheck="false" ng-model="tree.text"></div>
+    </div>
+	</div>
+  <div>
+  </div>
 </div>
 
 

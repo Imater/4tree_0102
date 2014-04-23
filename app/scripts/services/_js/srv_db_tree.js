@@ -1108,7 +1108,7 @@
         jsFocus4: function() {
           return $rootScope.$$childTail.set.focus = 3;
         },
-        searchString: function(searchString) {
+        searchString: function(searchString, dont_need_highlight) {
           var dfd;
           dfd = new $.Deferred();
           console.info('search', searchString);
@@ -1119,14 +1119,43 @@
               params: {
                 user_id: '5330ff92898a2b63c2f7095f',
                 access_token: access_token,
-                search: searchString
+                search: searchString,
+                dont_need_highlight: dont_need_highlight
               }
             }).then(function(result) {
               return dfd.resolve(result.data);
             });
           });
           return dfd.promise();
-        }
+        },
+        diaryFind: _.memoize(function(date) {
+          var answer, key, mymap_diary, myreduce_diary, mythis;
+          mythis = this;
+          mymap_diary = function(doc, emit) {
+            if (doc != null ? doc.diary : void 0) {
+              return emit(doc.diary, doc, doc);
+            }
+          };
+          myreduce_diary = function(memo, values) {
+            var key;
+            key = values.key;
+            key = moment(values.key);
+            key = key.format("YYYY-MM-DD");
+            if (!memo[key]) {
+              memo[key] = [];
+            }
+            if (values.value) {
+              return memo[key].push(values.value);
+            }
+          };
+          this.newView('tree', 'diary_by_date', mymap_diary, myreduce_diary);
+          key = moment(date).format('YYYY-MM-DD');
+          answer = mythis.getView('tree', 'diary_by_date').result[key];
+          if (answer) {
+            console.info(answer, date, answer.text);
+          }
+          return answer;
+        })
       };
     }
   ]);

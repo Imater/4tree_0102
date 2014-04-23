@@ -692,7 +692,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     $rootScope.$$childTail.set.focus = 2
   jsFocus4: ()->
     $rootScope.$$childTail.set.focus = 3
-  searchString: (searchString)->
+  searchString: (searchString, dont_need_highlight)->
     dfd = new $.Deferred();
     console.info 'search', searchString
     oAuth2Api.jsGetToken().then (access_token)->
@@ -703,10 +703,30 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           user_id: '5330ff92898a2b63c2f7095f'
           access_token: access_token
           search: searchString
+          dont_need_highlight: dont_need_highlight
         }
       }).then (result)->
         dfd.resolve(result.data);
     dfd.promise();
+  diaryFind: _.memoize (date)->
+      mythis = @;
+      mymap_diary = (doc, emit)->
+        emit(doc.diary, doc, doc) if doc?.diary;
+
+      myreduce_diary = (memo, values)->
+        key = values.key; 
+        key = moment(values.key);
+        key = key.format("YYYY-MM-DD")
+        memo[key] = [] if !memo[key]
+        memo[key].push(values.value) if values.value
+
+      @newView('tree', 'diary_by_date', mymap_diary, myreduce_diary)
+
+      key = moment(date).format('YYYY-MM-DD');
+      answer = mythis.getView('tree', 'diary_by_date').result[key]
+      console.info answer, date, answer.text if answer
+      answer
+
 
 
 

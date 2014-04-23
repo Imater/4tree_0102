@@ -57,7 +57,7 @@
         font-weight: bold;
         em {
           font-style: normal;
-          background: rgba(yellow, 0.3)
+          background: $highlight_color;
         }
       }
       .minitext_highlight {
@@ -66,33 +66,43 @@
         em {
           font-weight: bold;
           font-style: normal;
-          background: rgba(yellow, 0.3)
+          background: $highlight_color;
         }
       }
     }
   }
   .diary {
-    outline: none;
     padding: $padding*2;
-    background: rgba(#ffffcc, 0.5);
-    border-bottom: 3px solid rgba(#d5ca9d, 0.2);
+    padding-top: $padding*2;
+    background: rgba(#fff797, 0.7);
+    border-bottom: 3px solid rgba(#d5ca9d, 0.3);
     margin-right: $padding;
     margin-top: $padding;
     width: 100%;
     min-height: 15em;
     margin-bottom: $grid;
+    .btn-group {
+      background: none;
+      .btn {
+        background: none;
+        border-color: rgba(#d5ca9d, 1);
+      }
+    }
+    .diary_header {
+      text-align: center;
+      margin-bottom: $padding*2;
+    }
+    .diary_editor {
+      outline: none;
+      em, p, div, span {
+        background: none !important;
+      }
+      img {
+        max-width: 80%;
+        max-height: 80%;
+      }      
+    }
     @include animate_me(background, 1s);
-    em, p, div, span {
-      background: none !important;
-    }
-    img {
-      max-width: 80%;
-      max-height: 80%;
-    }
-    &:focus {
-      background: rgba(#fff797, 1);
-      border-bottom: 3px solid rgba(#d5ca9d, 1);      
-    }
   }
   .add_do {
     .title {

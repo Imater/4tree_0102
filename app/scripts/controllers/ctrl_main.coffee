@@ -63,7 +63,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       {active: 7} #0  
       {active: 0} #1   0-дерево 1-карточки 2-mindmap 3-divider 4-календарь 5-редактор 6-none
       {active: 5} #2
-      {active: 7} #3
+      {active: 0} #3
     ]
     autosync_on: true
     from_today_index: 0
@@ -163,6 +163,9 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       {id:4, title: 'Поделиться', icon: 'icon-export-1'}
     ]
   }
+
+  $rootScope.$on 'tree_loaded', (e)->
+    console.info db_tree.diaryFind( new Date() )
 
   #общие функции
   $scope.fn = {
@@ -661,14 +664,22 @@ angular.module("4treeApp").controller "save_task_db", ($scope, syncApi, db_tree,
 
 angular.module("4treeApp").controller "searchController", ($scope, syncApi, db_tree, $rootScope, $sce, $timeout)->
   $scope.search_notes_result = {};
+  $scope.calc_history = ['2*2 = 4']
+  $scope.show_calc = false;
+
+
+  $scope.init = (params)->
+    $scope.dont_need_highlight = params.dont_need_highlight;
+    console.info 'dont_need_highlight', $scope.dont_need_highlight;
+
   
   $scope.trust = (text)->
     text = strip_tags(text, "<em>", " ") if text
     if text
       $sce.trustAsHtml(text)
 
-  show_search_result = _.debounce (search_text)->
-    $scope.fn.service.db_tree.searchString(search_text).then (results)->
+  show_search_result = _.debounce (search_text, dont_need_highlight)->
+    $scope.fn.service.db_tree.searchString(search_text, dont_need_highlight).then (results)->
       _.each Object.keys(results), (db_name)->
         $scope.search_notes_result[db_name] = []
         $scope.search_notes_result[db_name] = results[db_name]?.hits?.hits;
@@ -677,13 +688,42 @@ angular.module("4treeApp").controller "searchController", ($scope, syncApi, db_t
   mythis = @;
   $rootScope.$on 'sync_ended', (event)->
     console.info 'hello, im change'
-    $timeout ()->
-      show_search_result($scope.search_box);
-    , 500
+    if !$scope.dont_need_highlight
+      $timeout ()->
+        show_search_result($scope.search_box, $scope.dont_need_highlight);
+      , 500
 
   $scope.$watch "search_box", (new_value, old_value)->
     if new_value != old_value
-      show_search_result(new_value);
+      if new_value and $scope.dont_need_highlight
+        $(".header_search_form .btn-group").addClass("open");
+      if !new_value.length
+        $scope.search_notes_result = {};
+        $scope.show_calc = false;
+
+      three_digits = (str)->
+        spl = (""+str).split('.')
+        answer = (""+spl[0]).replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+        answer += '.' + spl[1] if spl[1]
+        answer
+
+      if ['-','=','+','/','*', ' '].indexOf(new_value[new_value.length-1])!=-1
+        new_value = new_value.substr(0,new_value.length-1);
+        console.info 's', { new_value };
+
+      try
+        if (new_value.indexOf('+')==-1 and new_value.indexOf('-')==-1 and new_value.indexOf('/')==-1 and new_value.indexOf('*')==-1)
+          console.info 'error!!!'
+          throw "dont calculate!"
+        calc_answer = Parser.evaluate( new_value.replace(/,/ig, '.').replace(/\s/ig, '') )
+        calc_answer = Math.round( calc_answer * 100000)/100000
+        new_value_shy = new_value.replace(/\+/ig, ' + ').replace(/\-/ig, ' - ').replace(/\*/ig, ' * ').replace(/\//ig, ' / ');
+        $scope.calc_history[0] = $sce.trustAsHtml(new_value_shy + " = <b>" + three_digits(calc_answer) + "</b>");
+        $scope.show_calc = true;
+      catch error
+        console.info { error }
+        show_search_result(new_value, $scope.dont_need_highlight);
+        $scope.show_calc = false;
 
 
 angular.module("4treeApp").value "fooConfig",

@@ -53,6 +53,31 @@
             .pull-right.dropdown-menu{
                 margin-top: 2px;
             }
+            .search_in_header {
+                width: 250%;
+                background: #fefffe;
+                padding: $padding;
+                padding-left: $grid;
+                margin-top: 5px;
+                max-height: 500px;
+                overflow-y: auto;
+                li {
+                    h10 {
+                        font-size: 0.85em;
+                        font-weight: normal;
+                        padding-bottom: round($padding/2);
+                    }
+                    .title {
+                        font-size: 0.85em;
+                        white-space:normal;
+                        padding: round($padding/2) 0;                        
+                    }
+                    em {
+                        background: $highlight_color;
+                        font-style: normal;
+                    }
+                }
+            }
             .sync_indicator {
                 &.active {
                     //@include animate_me(color, 0.1s);

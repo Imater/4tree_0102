@@ -80,6 +80,24 @@ h10.mini {
     }
 }
 
+.title_calc {
+    padding-left: round($padding/2);
+    margin-bottom: $padding;
+    &:before {
+      content: '\e870';
+      font-family: 'fontello';
+      color: $gray;
+      position: absolute;
+      margin-left: - round($padding*2.5);
+    }
+    .title {
+      font-weight: normal;
+      padding: 0 !important;
+      //word-wrap: break-word;
+    }
+}
+
+
 h10 {
     display: block;
     color: lighten($main_color,12%);
@@ -98,14 +116,13 @@ h10:before {
     content: '\25b8';
     font-size: 1.5em;
     position: absolute;
-    margin-left: -($padding*2) - 5px;
+    margin-left: -($padding*2) - 1px;
     margin-top: -0.2em;
     font-family: 'fontello';
     vertical-align: top;
 }
 h10.open:before {
     content: '\25be';
-    margin-left: -($padding*2) - 5px;
     margin-top: -0.19em;    
 }
 

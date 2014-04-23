@@ -65,7 +65,7 @@
           }, {
             active: 5
           }, {
-            active: 7
+            active: 0
           }
         ],
         autosync_on: true,
@@ -168,6 +168,9 @@
           }
         ]
       };
+      $rootScope.$on('tree_loaded', function(e) {
+        return console.info(db_tree.diaryFind(new Date()));
+      });
       $scope.fn = {
         service: {
           db_tasks: db_tasks,
@@ -567,6 +570,12 @@
   angular.module("4treeApp").controller("searchController", function($scope, syncApi, db_tree, $rootScope, $sce, $timeout) {
     var mythis, show_search_result;
     $scope.search_notes_result = {};
+    $scope.calc_history = ['2*2 = 4'];
+    $scope.show_calc = false;
+    $scope.init = function(params) {
+      $scope.dont_need_highlight = params.dont_need_highlight;
+      return console.info('dont_need_highlight', $scope.dont_need_highlight);
+    };
     $scope.trust = function(text) {
       if (text) {
         text = strip_tags(text, "<em>", " ");
@@ -575,8 +584,8 @@
         return $sce.trustAsHtml(text);
       }
     };
-    show_search_result = _.debounce(function(search_text) {
-      return $scope.fn.service.db_tree.searchString(search_text).then(function(results) {
+    show_search_result = _.debounce(function(search_text, dont_need_highlight) {
+      return $scope.fn.service.db_tree.searchString(search_text, dont_need_highlight).then(function(results) {
         return _.each(Object.keys(results), function(db_name) {
           var _ref, _ref1;
           $scope.search_notes_result[db_name] = [];
@@ -587,13 +596,55 @@
     mythis = this;
     $rootScope.$on('sync_ended', function(event) {
       console.info('hello, im change');
-      return $timeout(function() {
-        return show_search_result($scope.search_box);
-      }, 500);
+      if (!$scope.dont_need_highlight) {
+        return $timeout(function() {
+          return show_search_result($scope.search_box, $scope.dont_need_highlight);
+        }, 500);
+      }
     });
     return $scope.$watch("search_box", function(new_value, old_value) {
+      var calc_answer, error, new_value_shy, three_digits;
       if (new_value !== old_value) {
-        return show_search_result(new_value);
+        if (new_value && $scope.dont_need_highlight) {
+          $(".header_search_form .btn-group").addClass("open");
+        }
+        if (!new_value.length) {
+          $scope.search_notes_result = {};
+          $scope.show_calc = false;
+        }
+        three_digits = function(str) {
+          var answer, spl;
+          spl = ("" + str).split('.');
+          answer = ("" + spl[0]).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+          if (spl[1]) {
+            answer += '.' + spl[1];
+          }
+          return answer;
+        };
+        if (['-', '=', '+', '/', '*', ' '].indexOf(new_value[new_value.length - 1]) !== -1) {
+          new_value = new_value.substr(0, new_value.length - 1);
+          console.info('s', {
+            new_value: new_value
+          });
+        }
+        try {
+          if (new_value.indexOf('+') === -1 && new_value.indexOf('-') === -1 && new_value.indexOf('/') === -1 && new_value.indexOf('*') === -1) {
+            console.info('error!!!');
+            throw "dont calculate!";
+          }
+          calc_answer = Parser.evaluate(new_value.replace(/,/ig, '.').replace(/\s/ig, ''));
+          calc_answer = Math.round(calc_answer * 100000) / 100000;
+          new_value_shy = new_value.replace(/\+/ig, ' + ').replace(/\-/ig, ' - ').replace(/\*/ig, ' * ').replace(/\//ig, ' / ');
+          $scope.calc_history[0] = $sce.trustAsHtml(new_value_shy + " = <b>" + three_digits(calc_answer) + "</b>");
+          return $scope.show_calc = true;
+        } catch (_error) {
+          error = _error;
+          console.info({
+            error: error
+          });
+          show_search_result(new_value, $scope.dont_need_highlight);
+          return $scope.show_calc = false;
+        }
       }
     });
   });
