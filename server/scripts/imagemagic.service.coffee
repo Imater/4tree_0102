@@ -13,16 +13,35 @@ image_service = {
     #'+Math.round(Math.random()*100)+'.png
     new_file_name = './user_data/1.png'
 
-    gm(img_url)
-#    .normalize()
-#    .threshold('50%')
-#    .autoOrient()
-    .write new_file_name, (err)->
-      if (!err) 
-        console.log('done');
-        mythis.recognize new_file_name, img_url
-      else
-        console.log 'ERROR = ', err
+
+    exec = require('child_process').exec
+    command = [
+        'convert', img_url
+        "\\( +clone -blur 0x20 \\)",
+        '-compose', 'Divide_Src',
+        '-composite', new_file_name, 
+        ];
+    #making watermark through exec - child_process
+    exec command.join(' '), (err, stdout, stderr)->
+      if (err) 
+        console.log(err)
+      console.info stdout
+
+      gm(new_file_name)
+      #.type('Grayscale')
+      .resize(4500,5000)
+      .autoOrient()
+  #    .out('rex')
+      #.compose('Divide_Src')
+  #    .sharpen(25,25)
+      .normalize()
+  #   .threshold('50%')
+      .write new_file_name, (err)->
+        if (!err) 
+          console.log('done');
+          mythis.recognize new_file_name, img_url
+        else
+          console.log 'ERROR = ', err
   getSize: (img_url)->
     gm(img_url).identify (err, data)->
       console.info 'size = ', data
@@ -30,7 +49,7 @@ image_service = {
     options =
       l: "rus+eng"
       psm: 1 #1 - BEST RESULT
-      binary: "/opt/local/bin/tesseract"
+      binary: "/usr/local/bin/tesseract"
     console.info 'start_recognize'
     tesseract.process img_url, options, (err, text) ->
       if err
@@ -38,7 +57,7 @@ image_service = {
       else
         guessLanguage.guessLanguage.detect text, (lang)->
           if ['ru', 'en', "uk", "kk", "uz", "mn", "mk", "bg", "ky"].indexOf(lang)!=-1
-            console.log "------------------"+old_img_url+"---------------------"
+            console.log "------------------"+img_url+"---------------------"
             console.log "----------------PREPARE-----------------", text
             console.info 'LANGUAGE ok = ', lang
           else

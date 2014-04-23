@@ -14,17 +14,25 @@
 
   image_service = {
     image_make_white: function(img_url) {
-      var mythis, new_file_name;
+      var command, exec, mythis, new_file_name;
       mythis = this;
       console.info(img_url);
       new_file_name = './user_data/1.png';
-      return gm(img_url).write(new_file_name, function(err) {
-        if (!err) {
-          console.log('done');
-          return mythis.recognize(new_file_name, img_url);
-        } else {
-          return console.log('ERROR = ', err);
+      exec = require('child_process').exec;
+      command = ['convert', img_url, "\\( +clone -blur 0x20 \\)", '-compose', 'Divide_Src', '-composite', new_file_name];
+      return exec(command.join(' '), function(err, stdout, stderr) {
+        if (err) {
+          console.log(err);
         }
+        console.info(stdout);
+        return gm(new_file_name).resize(4500, 5000).autoOrient().normalize().write(new_file_name, function(err) {
+          if (!err) {
+            console.log('done');
+            return mythis.recognize(new_file_name, img_url);
+          } else {
+            return console.log('ERROR = ', err);
+          }
+        });
       });
     },
     getSize: function(img_url) {
@@ -37,7 +45,7 @@
       options = {
         l: "rus+eng",
         psm: 1,
-        binary: "/opt/local/bin/tesseract"
+        binary: "/usr/local/bin/tesseract"
       };
       console.info('start_recognize');
       return tesseract.process(img_url, options, function(err, text) {
@@ -46,7 +54,7 @@
         } else {
           guessLanguage.guessLanguage.detect(text, function(lang) {
             if (['ru', 'en', "uk", "kk", "uz", "mn", "mk", "bg", "ky"].indexOf(lang) !== -1) {
-              console.log("------------------" + old_img_url + "---------------------");
+              console.log("------------------" + img_url + "---------------------");
               console.log("----------------PREPARE-----------------", text);
               return console.info('LANGUAGE ok = ', lang);
             } else {

@@ -53,6 +53,9 @@ else
   async = require('async');
   fs = require('fs');
 
+  app.use(express.json({limit: '50mb'}));
+  app.use(express.urlencoded({limit: '50mb'}));
+
   MongoClient = require('mongodb').MongoClient
 
   Imap = require('imap');
@@ -73,7 +76,7 @@ else
 
   image_service = require('../scripts/_js/imagemagic.service.js')
 
-  image_service.image_make_white('../1.png')
+  image_service.image_make_white('user_data/clipboard.PNG')
   
   #console.info image_service.image_make_white('../val.jpg')
 
