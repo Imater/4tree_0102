@@ -73,7 +73,7 @@ else
 
   image_service = require('../scripts/_js/imagemagic.service.js')
   
-  #console.info image_service.image_make_white('../val.jpg')
+  console.info image_service.image_make_white('../1.jpeg')
 
   notifier_instance = notifier(imap).on 'mail', (mail)->
     mail_service.save_mail_to_tree(mail)
