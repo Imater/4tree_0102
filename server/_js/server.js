@@ -69,7 +69,6 @@
       }
     };
     image_service = require('../scripts/_js/imagemagic.service.js');
-    image_service.image_make_white('../1.png');
     notifier_instance = notifier(imap).on('mail', function(mail) {
       return mail_service.save_mail_to_tree(mail);
     });
@@ -634,42 +633,8 @@
         return res.send(results);
       });
     };
-    exports.uploadImage = function(req, res) {
-      if (req.files) {
-        fs.readFile(req.files.file.path, function(err, data) {
-          var newPath;
-          newPath = "user_data/sex.jpeg";
-          return fs.writeFile(newPath, data, function(err) {
-            var answer;
-            if (!err) {
-              answer = {
-                'filelink': 'user_data/sex.jpeg'
-              };
-              return res.send(answer);
-            } else {
-              return res.send(false);
-            }
-          });
-        });
-      }
-      if (req.body.data) {
-        return fs.writeFile("user_data/clipboard.png", new Buffer(req.body.data, 'base64'), function(err) {
-          var answer;
-          if (!err) {
-            answer = {
-              'filelink': 'user_data/clipboard.png'
-            };
-            image_service.image_make_white('user_data/clipboard.png');
-            return res.send(answer);
-          } else {
-            return res.send(false);
-          }
-        });
-      }
-    };
     app.post('/api/v1/sync', app.oauth.authorise(), exports.sync);
     app.post('/api/v1/sync_db', app.oauth.authorise(), exports.sync_db);
-    app.post('/api/v1/uploadImage', exports.uploadImage);
     app.get('/api/v1/message', exports.newMessage);
     app.get('/api/v1/search', exports.searchMe);
     app.get('/api/v1/suggest', exports.suggestMe);

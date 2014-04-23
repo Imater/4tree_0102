@@ -14,16 +14,17 @@
 
   image_service = {
     image_make_white: function(img_url) {
-      var mythis, new_file_name;
+      var buf, mythis, new_file_name;
       mythis = this;
       console.info(img_url);
-      new_file_name = './user_data/1.png';
-      return gm(img_url).write(new_file_name, function(err) {
+      buf = fs.readFileSync(img_url);
+      new_file_name = '../resize' + Math.round(Math.random() * 100) + '.png';
+      return gm(buf, 'image.jpg').normalize().threshold('50%').autoOrient().write(new_file_name, function(err) {
         if (!err) {
           console.log('done');
           return mythis.recognize(new_file_name, img_url);
         } else {
-          return console.log('ERROR = ', err);
+          return console.log(err);
         }
       });
     },
