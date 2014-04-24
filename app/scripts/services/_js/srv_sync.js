@@ -213,7 +213,9 @@
             });
           }
           if (transport === 'websocket') {
-            $socket.emit('sync_data', data);
+            $socket.emit('sync_data', data, function(answer) {
+              return console.info('ANSWER = ', answer);
+            });
           }
           return mythis.dfd_sync.promise;
         },
@@ -245,7 +247,7 @@
               user_id: $rootScope.$$childTail.set.user_id,
               new_elements: new_elements
             };
-            if ($socket.is_online() && false) {
+            if ($socket.is_online()) {
               return mythis.syncThrough('websocket', data).then(function() {
                 console.info('sync_socket_ended');
                 return dfd.resolve();

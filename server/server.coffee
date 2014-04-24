@@ -2,6 +2,9 @@ cluster = require('cluster')
 http = require('http')
 numCPUs = require('os').cpus().length
 $ = require('jquery')
+kue = require('kue')
+jobs = kue.createQueue();
+
 
 if cluster.isMaster
   server = require('http').createServer()
@@ -10,6 +13,8 @@ if cluster.isMaster
   redis = require('socket.io/node_modules/redis')
   publisher = redis.createClient
   subscriber = redis.createClient
+
+  kue.app.listen(3000)
 
   io = require('socket.io').listen(server, {
     log: false
@@ -21,13 +26,25 @@ if cluster.isMaster
     redisClient: redis.createClient()
   }))
 
+
   workers = {}
   allWorkers = {}
 
-  numCPUs = 0;
+  #numCPUs = 1;
+
+  debug = process.execArgv[0].indexOf('--debug') != -1;
+  console.info 'debug', debug, process.execArgv, process.execArgv.indexOf('--debug')
+  
+  cluster.setupMaster execArgv: process.execArgv.filter((s) ->
+    s isnt "--debug"
+  )
 
   for i in [0..numCPUs]
+    if (debug) 
+      cluster.settings.execArgv.push('--debug=' + (5859 + i));
     worker = cluster.fork();
+    if (debug) 
+      cluster.settings.execArgv.pop();
     allWorkers[worker.process.pid] = worker;
 
   cluster.on 'exit', (worker, code, signal) -> 
@@ -53,6 +70,21 @@ else
   async = require('async');
   fs = require('fs');
 
+  kue_cleanup = require('../scripts/kue_cleanup.js')
+
+  jobs.process "test", 5, (job, done)->
+    setTimeout ()->
+      done()
+    , 5000+Math.round(Math.random()*10000)
+    return
+
+  jobs.process "recognizeImage", 1, (job, done) ->
+    console.info 'start recognize '+job.data.imageUrl+" from process "+job.data.process+' on '+process.pid;
+    image_service.image_make_white(job.data.imageUrl).then (text)->
+      console.info 'TEXT = ', text, 'on process '+process.pid
+      done();
+    return
+
   app.use(express.json({limit: '50mb'}));
   app.use(express.urlencoded({limit: '50mb'}));
 
@@ -76,7 +108,7 @@ else
 
   image_service = require('../scripts/_js/imagemagic.service.js')
 
-  image_service.image_make_white('user_data/clipboard.PNG')
+  #image_service.image_make_white('user_data/clipboard.PNG')
   
   #console.info image_service.image_make_white('../val.jpg')
 
@@ -336,35 +368,6 @@ else
     , (callback)->
       res.send true
 
-  users_connection = {}
-
-  io.sockets.on "connection", (socket) ->
-    user_id = undefined;
-    token = undefined;
-    console.info 'connection established'
-
-    socket.on "disconnect", (socket) ->
-      #users_connection[data]
-      console.info 'user_disconected'
-
-    socket.emit "who_are_you",
-      hello: "world"
-
-    socket.on 'sync_data', (data)->
-      console.info 'syncing...', data
-      exports.sync_db_universal(data).then (answer)->
-        socket.emit 'sync_answer', answer;
-
-    socket.on "i_am_user", (data) ->
-      if data
-        user_id = '5330ff92898a2b63c2f7095f';
-        users_connection[data._id] = [] if !users_connection[data._id]
-        users_connection[data._id].push( { user_instance: data.user_instance, socket: socket } );
-        token = data;
-        console.log 'token = ', data
-      return
-
-    return
 
   exports.sync_db = (req, res)->
     data = req.body;
@@ -372,7 +375,7 @@ else
       res.send answer;
 
 
-  exports.sync_db_universal = (data)->
+  exports.sync_db_universal = (data, socket)->
     dfd = $.Deferred()
     user_instance = data.user_instance;
     user_id = data.user_id;
@@ -480,10 +483,10 @@ else
             user_instance = user_instance;
             connected_sockets = users_connection[user_id];
             logJson 'Emit to clients', data_to_others
-            _.each connected_sockets, (one_socket)->
-              if user_instance.toString() != one_socket.user_instance.toString()
-                one_socket.socket.emit('need_sync', data_to_others) 
-                console.info "Socket emit ", one_socket.user_instance.toString()
+            console.info 'user:'+user_id
+            #
+            socket.broadcast.to('user_id:'+user_id).emit 'need_sync', data_to_others, (err, answer)-> 
+              console.info 'user - ', err, answer
           dfd.resolve( data_to_client )
 
     dfd.promise();
@@ -549,6 +552,16 @@ else
   }
 
   exports.searchMe = (req, res)->
+    if false
+      _.each [0..5], (el)->
+        jobs.create('recognizeImage', {
+          imageUrl: './user_data/clipboard.png'
+          process: process.pid
+        }).save();
+        jobs.create('test', {}).save();
+      res.send(true);
+      return
+
     searchString = req.query.search;
     dont_need_highlight = req.query.dont_need_highlight;
     if searchString
@@ -556,6 +569,7 @@ else
         res.send(results)
     else
       res.send([])
+
 
   exports.suggestMe = (req, res)->
     searchString = req.query.search;
@@ -567,6 +581,8 @@ else
       res.send(results)
 
   exports.uploadImage = (req, res)->
+    user_id = req.query.id;
+
     if req.files
       fs.readFile req.files.file.path, (err, data)->
         newPath = "user_data/sex.jpeg";
@@ -584,12 +600,53 @@ else
           answer = {
             'filelink': 'user_data/clipboard.png'
           }
-          image_service.image_make_white('user_data/clipboard.png')
+          image_service.image_make_white('user_data/clipboard.png', io.sockets.in('user_id:'+user_id))
           res.send(answer)
         else
           res.send(false)
 
 
+  users_connection = {}
+
+  io.sockets.on "connection", (socket) ->
+    user_id = undefined;
+    token = undefined;
+    console.info 'connection established socket.id = '+ socket.id
+    console.info 'socket user_list = ', io.sockets.clients().length
+
+    socket.on "disconnect", (socket) ->
+      console.info 'user_disconected'
+
+    socket.emit "who_are_you",
+      hello: "world"
+
+    socket.on 'sync_data', (data, fn)->
+      socket.get 'nickname', (err, name)->
+        logJson 'syncing user with name: ', name
+      console.info 'syncing...', data
+      exports.sync_db_universal(data, socket).then (answer)->
+        socket.volatile.emit 'sync_answer', answer;
+        fn('JOOOOOOOOOOPA!!!!!!-!!!!!!!');
+
+    socket.on "i_am_user", (data) ->
+      socket.set 'nickname', JSON.stringify(data), ()->
+        socket.emit('ready');
+        socket.join("user_id:"+data._id)
+      if data
+        user_id = '5330ff92898a2b63c2f7095f';
+        users_connection[data._id] = [] if !users_connection[data._id]
+        users_connection[data._id].push( { user_instance: data.user_instance, socket: socket } );
+        token = data;
+        console.log 'token = ', data
+      return
+
+    return
+
+
+  app.get '/api/v1/socket', (req, res)->
+    rooms = io.sockets.manager.rooms;
+    logJson 'rooms', rooms
+    res.send rooms
 
   app.post('/api/v1/sync', app.oauth.authorise(), exports.sync);
 

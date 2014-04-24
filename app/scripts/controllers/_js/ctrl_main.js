@@ -27,7 +27,11 @@
           user_instance: $scope.set.user_instance
         });
       });
-      $socket.on('need_sync', $scope, function(data) {
+      $socket.on('file_loaded', $scope, function(data) {
+        return console.info('File Loaded', data);
+      });
+      $socket.on('need_sync', $scope, function(data, fn) {
+        fn('success');
         console.info('sync_data', data);
         return syncApi.jsUpdateDb(data);
       });

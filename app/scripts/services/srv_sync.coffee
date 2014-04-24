@@ -143,7 +143,8 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
           mythis.jsUpdateDb(result.data).then ()->
             mythis.dfd_sync.resolve result.data
     if transport == 'websocket'
-      $socket.emit 'sync_data', data
+      $socket.emit 'sync_data', data, (answer)->
+        console.info 'ANSWER = ', answer
 
     mythis.dfd_sync.promise;
 
@@ -175,7 +176,7 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
         new_elements: new_elements
       }
 
-      if $socket.is_online() and false
+      if $socket.is_online()
         mythis.syncThrough('websocket', data).then ()->
           console.info 'sync_socket_ended';
           dfd.resolve();
