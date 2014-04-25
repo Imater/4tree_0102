@@ -34,7 +34,7 @@
           console.log(err);
         }
         console.info(stdout);
-        return gm(new_file_name).resize(4500, 5000).autoOrient().normalize().write(new_file_name, function(err) {
+        return gm(new_file_name).resize(2500, 3000).autoOrient().normalize().write(new_file_name, function(err) {
           if (!err) {
             console.log('done');
             return mythis.recognize(new_file_name, img_url, socket_user_id).then(function(text) {

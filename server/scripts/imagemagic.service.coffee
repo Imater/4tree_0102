@@ -33,7 +33,7 @@ image_service = {
 
       gm(new_file_name)
       #.type('Grayscale')
-      .resize(4500,5000)
+      .resize(2500,3000)
       .autoOrient()
   #    .out('rex')
       #.compose('Divide_Src')

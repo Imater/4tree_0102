@@ -1,3 +1,8 @@
+###
+# Adds two numbers
+###
+add = (a,b)->
+  a+b
 "use strict"
 angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', 'cryptApi', '$socket', 'oAuth2Api',  ($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi, cryptApi, $socket, oAuth2Api) ->
 
@@ -682,6 +687,9 @@ angular.module("4treeApp").controller "searchController", ($scope, syncApi, db_t
     if text
       $sce.trustAsHtml(text)
 
+  ###
+  This service ....
+  ###
   show_search_result = _.debounce (search_text, dont_need_highlight)->
     $scope.fn.service.db_tree.searchString(search_text, dont_need_highlight).then (results)->
       _.each Object.keys(results), (db_name)->
@@ -730,16 +738,31 @@ angular.module("4treeApp").controller "searchController", ($scope, syncApi, db_t
         $scope.show_calc = false;
 
 
+###
+This service ....
+###
+sex = (a,b)->
+  console.info a+b
+
 angular.module("4treeApp").value "fooConfig",
   config1: true
   config2: "Default config2 but it can changes"
 
 
+# Очищает строку от тегов Html
+#
+# @example Очистка строки
+#   strip_tags("<a>Привет <b>друг</b></a>", ['<b>'], ' ' ) == "Привет <b>друг</b>"
+#
+# @option [String] input входная строка
+# @option options [Array] allowed разрешённые теги в бракетах
+# @option options [String] space вставлять ли пробел на месте тегов
+# @return [String] возвращает очищенную строку
 strip_tags = (input, allowed, space) ->
-  space = "" if !space
   allowed = (((allowed or "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) or []).join("") # making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
   tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/g
   commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/g
+  # Hello
   input.replace(commentsAndPhpTags, space).replace tags, ($0, $1) ->
     (if allowed.indexOf("<" + $1.toLowerCase() + ">") > -1 then $0 else "")
 
