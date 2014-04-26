@@ -99,19 +99,20 @@
           this.dbInit();
           dfd = $.Deferred();
           this.ydnLoadFromLocal(mythis).then(function(records) {
-            if (!records.tree || Object.keys(records.tree).length === 0) {
+            if (!records.tree || Object.keys(records.tree).length === 0 || true) {
               console.info('NEED DATA FROM NET');
               return mythis.getTreeFromWeb().then(function(data) {
                 var result;
                 result = {};
-                _.each(data, function(records, db_name) {
-                  mythis.ydnSaveToLocal(db_name, records).then(function() {
-                    return console.info('SAVED TO LOCAL');
+                return async.each(Object.keys(data), function(db_name, callback) {
+                  records = data[db_name];
+                  result[db_name] = records;
+                  return mythis.ydnSaveToLocal(db_name, records).then(function() {
+                    return callback();
                   });
-                  return result[db_name] = records;
+                }, function() {
+                  return dfd.resolve(result);
                 });
-                dfd.resolve(result);
-                return result = void 0;
               });
             } else {
               console.info('ALL DATA FROM LOCAL');
@@ -127,7 +128,6 @@
           console.time('ALL DATA LOADED');
           this.getTreeFromeWebOrLocal().then(function(records) {
             var found;
-            console.info('loaded = ', records);
             _.each(records, function(data, db_name) {
               if (mythis.dont_store_to_memory.indexOf(db_name) === -1) {
                 return mythis._db[db_name] = data;
@@ -143,7 +143,6 @@
             $rootScope.$$childTail.db.main_node = [{}, found, {}, {}];
             mythis.clearCache();
             console.timeEnd('ALL DATA LOADED');
-            records = void 0;
             return dfd.resolve();
           });
           return dfd.promise;
@@ -158,7 +157,8 @@
               method: "GET",
               params: {
                 user_id: '5330ff92898a2b63c2f7095f',
-                access_token: access_token
+                access_token: access_token,
+                machine: $rootScope.$$childTail.set.machine
               }
             }).then(function(result) {
               return dfd.resolve(result.data);
@@ -216,18 +216,20 @@
           dfd = $.Deferred();
           this.dbInit();
           mythis = this;
-          this.db.clear(db_name).done(function() {
-            return async.eachLimit(Object.keys(records), 200, function(el_name, callback) {
-              var el;
-              el = records[el_name];
-              if (el.$$hashKey) {
-                delete el.$$hashKey;
-              }
-              return mythis.jsSaveElementToLocal(db_name, el).then(function() {
-                return callback();
+          this.db.clear('_diffs').done(function() {
+            return mythis.db.clear(db_name).done(function() {
+              return async.eachLimit(Object.keys(records), 200, function(el_name, callback) {
+                var el;
+                el = records[el_name];
+                if (el.$$hashKey) {
+                  delete el.$$hashKey;
+                }
+                return mythis.jsSaveElementToLocal(db_name, el).then(function() {
+                  return callback();
+                });
+              }, function(err) {
+                return dfd.resolve();
               });
-            }, function(err) {
-              return dfd.resolve();
             });
           });
           return dfd.promise();
@@ -252,7 +254,6 @@
                         return record._id === diff._id;
                       });
                       if (found && db_name === diff.db_name) {
-                        console.info('PATCH to ', diff._id, mythis.diff.patch(found, diff.patch));
                         return found = mythis.diff.patch(found, diff.patch);
                       }
                     });
@@ -264,7 +265,6 @@
                     }
                   });
                   result[db_name] = data_to_load;
-                  console.info(result);
                   return callback();
                 });
               } else {
@@ -406,9 +406,6 @@
           });
           _.each(mythis._db.tree, function(el, key) {
             var parent;
-            if (!el._id) {
-              console.info("path", el._id, el._path, key);
-            }
             parent = 'n' + el._id;
             if (mythis.db_parents[parent]) {
               el._childs = mythis.db_parents[parent].length;
@@ -1127,6 +1124,7 @@
                 user_id: '5330ff92898a2b63c2f7095f',
                 access_token: access_token,
                 search: searchString,
+                machine: $rootScope.$$childTail.set.machine,
                 dont_need_highlight: dont_need_highlight
               }
             }).then(function(result) {
@@ -1165,7 +1163,6 @@
         }),
         diff: jsondiffpatch.create({
           objectHash: function(obj) {
-            console.info("!!!", obj);
             return obj.name || obj.id || obj._id || obj._id || JSON.stringify(obj);
           }
         }),
@@ -1190,11 +1187,9 @@
           mythis = this;
           dfd = $q.defer();
           mythis.db.get('_diffs', text_id).done(function(patch_found) {
-            console.info("!1:", patch_found);
             mythis.db.get('texts', text_id).done(function(found) {
               var new_text;
               if (found) {
-                console.info("!2:", patch_found);
                 if (patch_found) {
                   new_text = mythis.diff.patch({
                     txt: found.text
@@ -1203,7 +1198,6 @@
                 if (new_text) {
                   found.text = new_text.txt.toString();
                 }
-                console.info("AFTER PATCH", new_text, found, patch_found.patch);
                 dfd.resolve(found);
               } else {
                 mythis.getTextLater(text_id).then(function(text_element) {
@@ -1244,6 +1238,9 @@
                   _id: _id,
                   patch: patch,
                   db_name: db_name,
+                  _sha3: old_element._sha3,
+                  user_id: $rootScope.$$childTail.set.user_id,
+                  machine: $rootScope.$$childTail.set.machine,
                   tm: new Date().getTime()
                 };
                 if (patch) {
@@ -1299,6 +1296,81 @@
           } else {
             dfd.resolve(found);
           }
+          return dfd.promise;
+        },
+        syncApplyResults: function(results) {
+          var dfd, mythis;
+          dfd = $q.defer();
+          mythis = this;
+          _.each(Object.keys(results), function(db_name) {
+            var db_data;
+            db_data = results[db_name];
+            return _.each(Object.keys(db_data.confirm), function(confirm_id) {
+              var confirm_element;
+              confirm_element = db_data.confirm[confirm_id];
+              console.info('CONFIRMED', confirm_id, confirm_element._sha3);
+              return mythis.getElement(db_name, confirm_id).then(function(doc) {
+                var sha3;
+                sha3 = CryptoJS.SHA3(JSON.stringify(doc), {
+                  outputLength: 128
+                }).toString();
+                if (sha3 === confirm_element._sha3) {
+                  doc._sha3 = confirm_element._sha3;
+                  mythis.db.put(db_name, doc).done(function(err) {
+                    return console.info('new data applyed', err, doc);
+                  });
+                  return mythis.db.remove('_diffs', confirm_id).done(function(err) {
+                    return console.info('diff - deleted', err);
+                  });
+                } else {
+                  return console.info('ERROR SHA3 CLIENT NOT EQUAL SERVER!');
+                }
+              });
+            });
+          });
+          dfd.resolve();
+          return dfd.promise;
+        },
+        syncDiff: function() {
+          var mythis;
+          mythis = this;
+          console.info('New syncing...');
+          return this.getDiffsForSync().then(function(diffs) {
+            return mythis.sendDiffToWeb(diffs).then(function(results) {
+              return mythis.syncApplyResults(results).then(function() {
+                return console.info('sha3 applyed');
+              });
+            });
+          });
+        },
+        sendDiffToWeb: function(diffs) {
+          var dfd, _ref;
+          console.info('Sending: ', (_ref = JSON.stringify(diffs)) != null ? _ref.length : void 0);
+          dfd = $q.defer();
+          oAuth2Api.jsGetToken().then(function(token) {
+            return $http({
+              url: '/api/v2/sync',
+              method: "POST",
+              isArray: true,
+              params: {
+                access_token: token,
+                machine: $rootScope.$$childTail.set.machine
+              },
+              data: {
+                diffs: diffs
+              }
+            }).then(function(result) {
+              return dfd.resolve(result.data);
+            });
+          });
+          return dfd.promise;
+        },
+        getDiffsForSync: function() {
+          var dfd;
+          dfd = $q.defer();
+          this.db.values('_diffs', null, 999999999).done(function(diffs) {
+            return dfd.resolve(diffs);
+          });
           return dfd.promise;
         }
       };

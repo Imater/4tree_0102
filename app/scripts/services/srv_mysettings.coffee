@@ -6,7 +6,7 @@ class MySettingsClass
   @$inject: ['$timeout']
   constructor: ($timeout)->
     $timeout ()->
-      console.info 'constructor MySettingsClass did'
+      console.info 'constructor MySettingsClass did' if false
     , 3000
   # Одно из полей настроек
   # @mixin

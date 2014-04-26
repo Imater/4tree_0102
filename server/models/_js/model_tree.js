@@ -77,6 +77,7 @@
         }
       }
     ],
+    '_sha3': String,
     'tm': Date
   });
 

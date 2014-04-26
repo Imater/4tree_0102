@@ -1,4 +1,4 @@
-angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', 'cryptApi', '$socket', 'oAuth2Api', 'mySettings', 'textDB', ($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi, cryptApi, $socket, oAuth2Api, mySettings, textDB) ->
+angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', 'cryptApi', '$socket', 'oAuth2Api', 'mySettings', ($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi, cryptApi, $socket, oAuth2Api, mySettings) ->
 
 
 
@@ -25,7 +25,6 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     console.info 'ENCRYPT', {pas1_encrypted}, cryptApi.decrypt(pas1_encrypted)
 
   $socket.on 'who_are_you', $scope, (data) ->
-    console.info 'Попросили представиться', data;
     $socket.emit('i_am_user', { _id: $scope.set.user_id, user_instance: $scope.set.user_instance} )
 
   $socket.on 'file_loaded', $scope, (data) ->
@@ -48,7 +47,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   #параметры
   $scope.set = {
     user_id: '5330ff92898a2b63c2f7095f'
-    user_instance: new ObjectId().toString();
+    machine: localStorage.getItem('mongoMachineId')
     today_date: new Date()
     focus: 1
     focus_edit: 1
@@ -158,7 +157,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     refresh: 0
     ms_show_icon_limit: 36
     mini_settings_btn_active: 0
-    mini_settings_show: true
+    mini_settings_show: false
     mini_tasks_show: false
     mini_settings_btn: [
       {id:0, title: 'Оформление', icon: 'icon-brush'}
@@ -170,7 +169,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   }
 
   $rootScope.$on 'tree_loaded', (e)->
-    console.info db_tree.diaryFind( new Date() )
+    console.info db_tree.diaryFind( new Date() ) if false
 
   #общие функции
   $scope.fn = {
@@ -675,7 +674,6 @@ angular.module("4treeApp").controller "searchController", ($scope, syncApi, db_t
 
   $scope.init = (params)->
     $scope.dont_need_highlight = params.dont_need_highlight;
-    console.info 'dont_need_highlight', $scope.dont_need_highlight;
 
   
   $scope.trust = (text)->

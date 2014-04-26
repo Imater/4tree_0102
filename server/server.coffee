@@ -698,6 +698,9 @@ else
 
   app.post('/api/v1/sync_db', app.oauth.authorise(), exports.sync_db);
 
+  app.post '/api/v2/sync', app.oauth.authorise(), (req, res)->
+    (require('../get/_js/server_sync')).get(req, res)
+
   app.post('/api/v1/uploadImage', exports.uploadImage);
 
   app.get('/api/v1/message', exports.newMessage);

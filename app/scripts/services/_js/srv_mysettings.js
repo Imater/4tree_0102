@@ -13,7 +13,9 @@
 
     function MySettingsClass($timeout) {
       $timeout(function() {
-        return console.info('constructor MySettingsClass did');
+        if (false) {
+          return console.info('constructor MySettingsClass did');
+        }
       }, 3000);
     }
 

@@ -84,7 +84,7 @@
           return console.info('Main_tree = ', err, result);
         });
         return async.eachLimit(rows, 50, function(row, callback) {
-          var new_date, one_text;
+          var new_date, one_text, sha3;
           one_note = new Tree;
           if (!objectId_to_id[row.parent_id]) {
             objectId_to_id[row.parent_id] = mongoose.Types.ObjectId();
@@ -97,10 +97,12 @@
           one_text['user_id'] = user_mongo_found._id;
           one_text['text'] = row.text;
           one_text['db_name'] = 'trees';
-          one_text['sha3'] = CryptoJS.SHA3(row.text, {
-            outputLength: 256
-          }).toString();
           if (row.parent_id !== 0) {
+            sha3 = CryptoJS.SHA3(JSON.stringify(one_note), {
+              outputLength: 128
+            }).toString();
+            console.info('sha = ', sha3);
+            one_text['_sha3'] = sha3;
             one_text.save();
           }
           one_note['_id'] = objectId_to_id[row.id];
@@ -138,6 +140,10 @@
             one_note['did'] = new_date;
           }
           if (row.parent_id !== 0) {
+            sha3 = CryptoJS.SHA3(JSON.stringify(one_note), {
+              outputLength: 128
+            }).toString();
+            one_note['_sha3'] = sha3;
             return one_note.save(function(err, result) {
               if (result) {
                 objectId_to_id[row.id] = result._id;

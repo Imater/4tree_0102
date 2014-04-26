@@ -62,16 +62,17 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     @dbInit();
     dfd = $.Deferred();
     @ydnLoadFromLocal(mythis).then (records)->
-      if !records.tree or Object.keys(records.tree).length == 0
+      if !records.tree or Object.keys(records.tree).length == 0 or true
         console.info 'NEED DATA FROM NET';
         mythis.getTreeFromWeb().then (data)->
           result = {};
-          _.each data, (records, db_name)->
-            mythis.ydnSaveToLocal(db_name, records).then ()->
-              console.info 'SAVED TO LOCAL'
+          async.each Object.keys(data), (db_name, callback)->
+            records = data[db_name]
             result[db_name] = records;
-          dfd.resolve( result );
-          result = undefined;
+            mythis.ydnSaveToLocal(db_name, records).then ()->
+              callback()
+          ,()->
+            dfd.resolve( result );
 
       else
         console.info 'ALL DATA FROM LOCAL'
@@ -82,7 +83,6 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     dfd = $q.defer();
     console.time 'ALL DATA LOADED'
     @getTreeFromeWebOrLocal().then (records)->
-      console.info 'loaded = ', records
       _.each records, (data, db_name)->
         if mythis.dont_store_to_memory.indexOf(db_name)==-1
           mythis._db[db_name] = data;
@@ -95,7 +95,6 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       $rootScope.$$childTail.db.main_node = [{},found,{},{}]        
       mythis.clearCache();
       console.timeEnd 'ALL DATA LOADED'
-      records = undefined;
       dfd.resolve();
     dfd.promise;
   getTreeFromWeb: ()->
@@ -111,6 +110,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         params: {
           user_id: '5330ff92898a2b63c2f7095f'
           access_token: access_token
+          machine: $rootScope.$$childTail.set.machine
         }
       }).then (result)->
         dfd.resolve(result.data);
@@ -161,14 +161,15 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     dfd = $.Deferred();
     @dbInit();
     mythis = @;
-    @db.clear(db_name).done ()->
-      async.eachLimit Object.keys(records), 200, (el_name, callback)->
-        el = records[el_name];
-        delete el.$$hashKey if el.$$hashKey
-        mythis.jsSaveElementToLocal(db_name, el).then ()->
-          callback();
-      , (err)->
-        dfd.resolve();
+    @db.clear('_diffs').done ()->
+      mythis.db.clear(db_name).done ()->
+        async.eachLimit Object.keys(records), 200, (el_name, callback)->
+          el = records[el_name];
+          delete el.$$hashKey if el.$$hashKey
+          mythis.jsSaveElementToLocal(db_name, el).then ()->
+            callback();
+        , (err)->
+          dfd.resolve();
     dfd.promise();
   ydnLoadFromLocal: (mythis)->
     @dbInit();
@@ -186,13 +187,11 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                 found = _.find records, (record)->
                   record._id == diff._id
                 if found and db_name == diff.db_name
-                  console.info 'PATCH to ', diff._id, mythis.diff.patch(found, diff.patch)
                   found = mythis.diff.patch(found, diff.patch);
             data_to_load = {};
             _.each records, (record)->
               data_to_load[record._id] = record if record?._id;
             result[db_name] = data_to_load;
-            console.info result
             callback();
         else 
           callback();
@@ -265,7 +264,6 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       return true
 
     _.each mythis._db.tree, (el, key)->
-      console.info "path", el._id, el._path, key if !el._id
       parent = 'n' + el._id
       if mythis.db_parents[parent]
         el._childs = mythis.db_parents[parent].length
@@ -714,6 +712,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           user_id: '5330ff92898a2b63c2f7095f'
           access_token: access_token
           search: searchString
+          machine: $rootScope.$$childTail.set.machine
           dont_need_highlight: dont_need_highlight
         }
       }).then (result)->
@@ -740,7 +739,6 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   diff: jsondiffpatch.create {
     objectHash: (obj) ->
       # try to find an id property, otherwise serialize it all
-      console.info "!!!", obj
       return obj.name || obj.id || obj._id || obj._id || JSON.stringify(obj);
   }
   dfdTextLater: $q.defer()
@@ -760,13 +758,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     mythis = @;
     dfd = $q.defer();
     mythis.db.get('_diffs', text_id).done (patch_found)->
-      console.info "!1:",patch_found;
       mythis.db.get('texts', text_id).done (found)->
         if found
-          console.info "!2:",patch_found;
           new_text = mythis.diff.patch({ txt: found.text}, patch_found.patch) if patch_found
           found.text = new_text.txt.toString() if new_text
-          console.info "AFTER PATCH", new_text, found, patch_found.patch
           dfd.resolve( found )
         else
           #Запрошу текст из LocalDB чуть позже (видимо ещё не сохранился)
@@ -798,6 +793,9 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
             _id: _id
             patch: patch
             db_name: db_name
+            _sha3: old_element._sha3
+            user_id: $rootScope.$$childTail.set.user_id
+            machine: $rootScope.$$childTail.set.machine
             tm: new Date().getTime()
           }
           if patch
@@ -843,7 +841,62 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     else 
       dfd.resolve( found )
     return dfd.promise
+  
+  syncApplyResults: (results)->
+    dfd = $q.defer();
+    mythis = @;
+    _.each Object.keys(results), (db_name)->
+      db_data = results[db_name];
+      _.each Object.keys(db_data.confirm), (confirm_id)->
+        confirm_element = db_data.confirm[confirm_id];
+        console.info 'CONFIRMED', confirm_id, confirm_element._sha3
+        mythis.getElement(db_name, confirm_id).then (doc)->
+          sha3 = CryptoJS.SHA3(JSON.stringify( doc ), { outputLength: 128 }).toString()
+          #Если контрольные суммы сервера и клиента совпали, то удаляем diff и обновляем _sha3
+          if sha3 == confirm_element._sha3
+            doc._sha3 = confirm_element._sha3
+            mythis.db.put(db_name, doc).done (err)->
+              console.info 'new data applyed', err, doc;
+            mythis.db.remove('_diffs', confirm_id).done (err)->
+              console.info 'diff - deleted', err
+          else 
+            console.info 'ERROR SHA3 CLIENT NOT EQUAL SERVER!'
 
+    dfd.resolve();
+    dfd.promise
+
+  syncDiff: ()->
+    mythis = @;
+    console.info 'New syncing...'
+    @getDiffsForSync().then (diffs)->
+      mythis.sendDiffToWeb(diffs).then (results)->
+        mythis.syncApplyResults(results).then ()->
+          console.info 'sha3 applyed';
+
+  sendDiffToWeb: (diffs)->
+    console.info 'Sending: ', JSON.stringify(diffs)?.length
+    dfd = $q.defer();
+    oAuth2Api.jsGetToken().then (token)->
+      $http({
+        url: '/api/v2/sync',
+        method: "POST",
+        isArray: true,
+        params: {
+            access_token: token
+            machine: $rootScope.$$childTail.set.machine
+        }
+        data: {
+          diffs: diffs
+        }
+      }).then (result)->
+        dfd.resolve result.data
+    dfd.promise
+  
+  getDiffsForSync: ()->
+    dfd = $q.defer()
+    @db.values('_diffs',null,999999999).done (diffs)->
+      dfd.resolve(diffs);
+    dfd.promise
 
 
 

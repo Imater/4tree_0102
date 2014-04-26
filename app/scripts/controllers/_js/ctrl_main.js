@@ -3,7 +3,7 @@
   var sex, strip_tags;
 
   angular.module("4treeApp").controller("MainCtrl", [
-    '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', 'cryptApi', '$socket', 'oAuth2Api', 'mySettings', 'textDB', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi, cryptApi, $socket, oAuth2Api, mySettings, textDB) {
+    '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', 'cryptApi', '$socket', 'oAuth2Api', 'mySettings', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi, cryptApi, $socket, oAuth2Api, mySettings) {
       var pas1_encrypted, pasA, pasB, pubKey, sendtoA, sendtoB, set_pomidors;
       if (false) {
         pasA = "sex";
@@ -20,7 +20,6 @@
         }, cryptApi.decrypt(pas1_encrypted));
       }
       $socket.on('who_are_you', $scope, function(data) {
-        console.info('Попросили представиться', data);
         return $socket.emit('i_am_user', {
           _id: $scope.set.user_id,
           user_instance: $scope.set.user_instance
@@ -44,7 +43,7 @@
       };
       $scope.set = {
         user_id: '5330ff92898a2b63c2f7095f',
-        user_instance: new ObjectId().toString(),
+        machine: localStorage.getItem('mongoMachineId'),
         today_date: new Date(),
         focus: 1,
         focus_edit: 1,
@@ -145,7 +144,7 @@
         refresh: 0,
         ms_show_icon_limit: 36,
         mini_settings_btn_active: 0,
-        mini_settings_show: true,
+        mini_settings_show: false,
         mini_tasks_show: false,
         mini_settings_btn: [
           {
@@ -172,7 +171,9 @@
         ]
       };
       $rootScope.$on('tree_loaded', function(e) {
-        return console.info(db_tree.diaryFind(new Date()));
+        if (false) {
+          return console.info(db_tree.diaryFind(new Date()));
+        }
       });
       $scope.fn = {
         service: {
@@ -576,8 +577,7 @@
     $scope.calc_history = ['2*2 = 4'];
     $scope.show_calc = false;
     $scope.init = function(params) {
-      $scope.dont_need_highlight = params.dont_need_highlight;
-      return console.info('dont_need_highlight', $scope.dont_need_highlight);
+      return $scope.dont_need_highlight = params.dont_need_highlight;
     };
     $scope.trust = function(text) {
       if (text) {

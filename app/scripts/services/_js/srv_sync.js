@@ -82,7 +82,7 @@
         },
         'jsStartSyncInWhile': _.debounce(function() {
           console.info('wait 5 sec...');
-          if (this.autosync_on && Object.keys(this.diff_journal).length) {
+          if (false && this.autosync_on && Object.keys(this.diff_journal).length) {
             return this.jsStartSync();
           }
         }, 1000),
@@ -91,6 +91,8 @@
         }, 1000),
         jsStartSync: function() {
           var mythis, to_send;
+          db_tree.syncDiff();
+          return true;
           this.syncToServer().then(function() {
             return $rootScope.$emit('sync_ended');
           });

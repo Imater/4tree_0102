@@ -8,6 +8,7 @@ treeSchema = new Schema (
   'date1': Date
   'date2': Date
   'parent_id': String
+  '_sha3': String
   '_sync': [ { key: String, diff: { 'tm': String } } ]
   'tm': Date
 )

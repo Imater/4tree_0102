@@ -1,9 +1,13 @@
 async = require('async');
 mongoose = require('mongoose')
+CryptoJS = require("crypto-js");
 
 require '../../models/_js/model_tree.js'
-
 Tree = mongoose.model('Tree');
+
+require '../../models/_js/model_diff.js'
+Diff = mongoose.model('Diff');
+
 
 exports.get = (req, res)->
   user_id = req.query.user_id
@@ -20,11 +24,10 @@ exports.get = (req, res)->
           async.eachLimit rows, 50, (row, callback)->
             row._open = false;
             row._settings = false;
-            row.title = strip_tags(row.title) if row.title
-            row.tm = new Date() if !row.tm;
             if row._sync
               delete row._sync 
             data_to_send[row._id] = row if row;
+
             callback null;
           , (err)->
             result[db_name] = data_to_send;

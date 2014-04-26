@@ -49,12 +49,19 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
     prev_obj
   'jsStartSyncInWhile': _.debounce ()->
       console.info 'wait 5 sec...'
-      @jsStartSync() if @autosync_on and Object.keys(@diff_journal).length;
+      @jsStartSync() if false and @autosync_on and Object.keys(@diff_journal).length;
     , 1000
   jsHideSyncIndicator: _.debounce ()->
       $(".sync_indicator").removeClass('active')
     , 1000
   jsStartSync: ()->
+
+    db_tree.syncDiff();
+    return true;
+
+
+    
+
     @syncToServer().then ()->
       $rootScope.$emit 'sync_ended';
     return true;
