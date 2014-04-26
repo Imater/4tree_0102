@@ -22,8 +22,6 @@ jobs = kue.createQueue();
 # @option options {String} direction the moving direction
 # @option options {Number} speed the speed in mph
 #
-sex: (sex)->
-  console.info sex
 
 if cluster.isMaster
   server = require('http').createServer()
@@ -88,6 +86,9 @@ else
   async = require('async');
   fs = require('fs');
 
+  process.on 'uncaughtException', (error)->
+     console.info '\x1b[35mERROR:\x1b[0m', error.stack
+
   kue_cleanup = require('../scripts/kue_cleanup.js')
 
   jobs.process "test", 5, (job, done)->
@@ -133,7 +134,7 @@ else
 
   image_service = require('../scripts/_js/imagemagic.service.js')
 
-  #image_service.image_make_white('user_data/clipboard.PNG')
+  #image_service.image_make_white('user_data/clipboard.jpg')
   
   #console.info image_service.image_make_white('../val.jpg')
 
@@ -189,9 +190,17 @@ else
 
   require '../models/_js/model_tree.js'
   require '../models/_js/model_task.js'
+  require '../models/_js/model_text.js'
 
   Tree = mongoose.model('Tree');
   Task = mongoose.model('Task');
+  Text = mongoose.model('Text');
+
+  global._db_models = {
+    tree: Tree
+    tasks: Task
+    texts: Text
+  }
 
   elasticsearch = require 'elasticsearch'
   es_client = new elasticsearch.Client {
@@ -223,10 +232,6 @@ else
             console.log err
 
 
-  global._db_models = {
-    tree: Tree
-    tasks: Task
-  }
 
   if false
     Task.remove {}, ()->

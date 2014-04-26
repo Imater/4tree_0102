@@ -22,6 +22,10 @@
       type: String,
       es_indexed: true
     },
+    'text_id': {
+      type: String,
+      es_indexed: true
+    },
     'folder': String,
     'parent_id': String,
     'parent': String,

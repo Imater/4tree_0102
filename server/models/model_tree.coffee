@@ -12,6 +12,7 @@ treeSchema = new Schema (
   'id': String
   'title': { type: String, es_indexed: true } 
   'text': { type: String, es_indexed: true }
+  'text_id': { type: String, es_indexed: true }
   'folder': String
   'parent_id': String #Schema.ObjectId
   'parent': String
@@ -38,6 +39,8 @@ treeSchema = new Schema (
   '_sync': [ { key: String, diff: { 'tm': String } } ]
   'tm': Date
 )
+
+#treeSchema.index({user_id: 1, title: 1}, {unique: false});
 
 mongoosastic = require('mongoosastic')
 treeSchema.plugin(mongoosastic, {index: 'trees', type:'tree'});

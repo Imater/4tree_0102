@@ -19,7 +19,9 @@ angular.module("4treeApp").factory 'datasource', ['$timeout', '$rootScope', ($ti
 ]
 
 angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', ($translate, $http, $q, $rootScope, oAuth2Api, $timeout, syncApi) ->
-  _db: {}
+  _db: {
+    texts: {}
+  }
   _cache: {}
   salt: ()->
     'Salt is a mineral substance composed'
@@ -47,48 +49,20 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     if(!@_cache)
       @_cache = {}
     if(!@_db.tree)
-      @_db.tree = [
-      ]
+      @_db.tree = {
+      }
       @refreshParentsIndex();
   clearCache: ()->
     _.each @, (fn)->
       fn.cache = {} if fn
     _.each $rootScope.$$childTail.fn.service.calendarBox, (fn)->
       fn.cache = {} if fn
-  saveAllTreeToLocal: ()->
-    mythis = @;
-    _.each mythis._db.tree, (el)->
-      localforage.setItem 'tree_'+el._id, el, (err)->
-        console.info 'saved '+el._id, err if !err
-  loadAllTreeFromLocal: ()->
-    getKeys = (i)->
-      dfd = $.Deferred();
-      localforage.key i, (key) ->
-        localforage.getItem key, (data, i)->
-#            console.info '!!!', key
-          dfd.resolve();
-        return
-      return dfd.promise();
-
-    console.time 'start_loading'
-    was = new Date().getTime();
-    dfdArray = [];
-    localforage.length (length) ->
-      i = 0
-      while i < length        
-        dfdArray.push( getKeys(i) );
-        i++
-      $.when.apply(null, dfdArray).done ()->
-        console.info ('end');
-        console.timeEnd 'start_loading'
-        alert('end'+( new Date().getTime() - was ))
-      return
   getTreeFromeWebOrLocal: ()->
     mythis = @;
     @dbInit();
     dfd = $.Deferred();
     @ydnLoadFromLocal(mythis).then (records)->
-      if records.tree.length == 0 or true
+      if !records.tree or Object.keys(records.tree).length == 0
         console.info 'NEED DATA FROM NET';
         mythis.getTreeFromWeb().then (data)->
           result = {};
@@ -97,6 +71,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
               console.info 'SAVED TO LOCAL'
             result[db_name] = records;
           dfd.resolve( result );
+          result = undefined;
+
       else
         console.info 'ALL DATA FROM LOCAL'
         dfd.resolve( records );
@@ -108,14 +84,19 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     @getTreeFromeWebOrLocal().then (records)->
       console.info 'loaded = ', records
       _.each records, (data, db_name)->
-        mythis._db[db_name] = data;
+        if mythis.dont_store_to_memory.indexOf(db_name)==-1
+          mythis._db[db_name] = data;
       mythis.refreshParentsIndex();
       $rootScope.$$childTail.set.tree_loaded = true;
       $rootScope.$$childTail.db.main_node = []
       $rootScope.$broadcast('tree_loaded');
+      found = _.find mythis._db['tree'], (el)->
+        el._id == '535b3127bfb1d3a67cca7f1e'
+      $rootScope.$$childTail.db.main_node = [{},found,{},{}]        
       mythis.clearCache();
       console.timeEnd 'ALL DATA LOADED'
-      dfd.resolve(records);
+      records = undefined;
+      dfd.resolve();
     dfd.promise;
   getTreeFromWeb: ()->
     dfd = $q.defer();
@@ -153,7 +134,18 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       keyPath: '_id', 
       autoIncrement: false
     }    
+    { 
+      name: 'texts', 
+      keyPath: '_id', 
+      autoIncrement: false
+    }    
+    {
+      name: '_diffs'
+      keyPath: '_id', 
+      autoIncrement: false
+    }
   ]
+  dont_store_to_memory: ['texts']
   dbInit: ()->
     schema = {
       stores: @store_schema
@@ -170,7 +162,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     @dbInit();
     mythis = @;
     @db.clear(db_name).done ()->
-      async.eachLimit records, 50, (el, callback)->
+      async.eachLimit Object.keys(records), 200, (el_name, callback)->
+        el = records[el_name];
         delete el.$$hashKey if el.$$hashKey
         mythis.jsSaveElementToLocal(db_name, el).then ()->
           callback();
@@ -182,14 +175,31 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     dfd = $.Deferred();
     console.time 'load_local'
     result = {};
-    async.each mythis.store_schema, (table_schema, callback)->
-      db_name = table_schema.name;
-      mythis.db.values(db_name,null,999999999).done (records)->
-        result[db_name] = records;
-        callback();
-    , ()->
-      console.timeEnd 'load_local'
-      dfd.resolve(result);
+    mythis.db.values('_diffs',null,999999999).done (diffs)->
+      async.each mythis.store_schema, (table_schema, callback)->
+        db_name = table_schema.name;
+        if mythis.dont_store_to_memory.indexOf(db_name)==-1
+          mythis.db.values(db_name,null,999999999).done (records)->
+            #Если есть патчи, применяем их (патчи будут удалены после удачной синхронизации
+            if diffs
+              _.each diffs, (diff)->
+                found = _.find records, (record)->
+                  record._id == diff._id
+                if found and db_name == diff.db_name
+                  console.info 'PATCH to ', diff._id, mythis.diff.patch(found, diff.patch)
+                  found = mythis.diff.patch(found, diff.patch);
+            data_to_load = {};
+            _.each records, (record)->
+              data_to_load[record._id] = record if record?._id;
+            result[db_name] = data_to_load;
+            console.info result
+            callback();
+        else 
+          callback();
+      , ()->
+        console.timeEnd 'load_local'
+        dfd.resolve(result);
+        result = undefined;
     dfd.promise();
 
   refreshParentsIndex: (parent_id)->
@@ -335,13 +345,14 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     parent_id: '0'
     _path: ['2']
   }
-  'jsFind': _.memoize (id)->
+  'jsFind': (id)->
     if id == 1
       return @first_element 
-    tree_by_id = _.find @_db.tree, (el)->
-      el._id == id
+    tree_by_id = _.find @_db['tree'][id] if @_db?['tree']?[id]
     return undefined if id == undefined
-    tree_by_id if tree_by_id
+    tree_by_id
+
+
   'jsGetPath': _.memoize (id) ->
     return ['100'] if id==1 or id==0
     path = [];
@@ -726,7 +737,112 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       answer = mythis.getView('tree', 'diary_by_date').result[key]
       console.info answer, date, answer.text if answer
       answer
+  diff: jsondiffpatch.create {
+    objectHash: (obj) ->
+      # try to find an id property, otherwise serialize it all
+      console.info "!!!", obj
+      return obj.name || obj.id || obj._id || obj._id || JSON.stringify(obj);
+  }
+  dfdTextLater: $q.defer()
+  getTextLater: _.throttle (text_id)->
+    mythis = @;
+    $timeout ()->
+      mythis.getText(text_id).then (text_element)->
+        if text_element
+          mythis.dfdTextLater.resolve( text_element )
+        else
+          console.info 'text_not_found';
+          mythis.dfdTextLater.resolve()
+    , 1000
+    mythis.dfdTextLater.promise
+  , 3000
+  getTextFromDB: (text_id)->
+    mythis = @;
+    dfd = $q.defer();
+    mythis.db.get('_diffs', text_id).done (patch_found)->
+      console.info "!1:",patch_found;
+      mythis.db.get('texts', text_id).done (found)->
+        if found
+          console.info "!2:",patch_found;
+          new_text = mythis.diff.patch({ txt: found.text}, patch_found.patch) if patch_found
+          found.text = new_text.txt.toString() if new_text
+          console.info "AFTER PATCH", new_text, found, patch_found.patch
+          dfd.resolve( found )
+        else
+          #Запрошу текст из LocalDB чуть позже (видимо ещё не сохранился)
+          mythis.getTextLater(text_id).then (text_element)->
+            dfd.resolve(text_element);
+        return
+      return
+    return dfd.promise;
+  getText: (text_id)->
+    mythis = @;
+    dfd = $q.defer();
+    @getElement('texts', text_id).then (text_element)->
+      dfd.resolve(text_element);
+    dfd.promise;
+  setText: (text_id, new_text)->
+    mythis = @;
+    if (found = @_db['texts'][text_id])
+      found.text = new_text
+      mythis.saveDiff('texts', text_id)
+  saveDiff: (db_name, _id)->
+    mythis = @;
+    @getElement(db_name, _id).then (new_element)->
+      mythis.getElementFromLocal(db_name, _id).then (old_element)->
+        if new_element and old_element
+          patch = mythis.diff.diff( old_element, new_element );
+          console.info 'DIFF SAVED = ', JSON.stringify(patch), (JSON.stringify patch)?.length;
 
+          el = {
+            _id: _id
+            patch: patch
+            db_name: db_name
+            tm: new Date().getTime()
+          }
+          if patch
+            mythis.db.put('_diffs', el).done ()->
+              console.info 'diff_saved'
+        return
+      return
+    return
+
+  getElementFromLocalPlusDiffs: (db_name, _id)->
+    dfd = $q.defer();
+    mythis = @;
+    @getElementFromLocal(db_name, _id).then (result)->
+      mythis.db.get('_diffs', _id).done (diff)->
+        if diff and diff._id and diff.db_name == db_name
+          result = mythis.diff.patch(result, diff.patch)
+          dfd.resolve(result);
+        else
+          dfd.resolve(result);
+        return
+      return
+    dfd.promise
+
+  getElementFromLocal: (db_name, _id)->
+    mythis = @;
+    dfd = $q.defer()
+    @db.get(db_name, _id).done (result)->
+      dfd.resolve(result);
+    return dfd.promise
+
+  getElement: (db_name, _id)->
+    mythis = @;
+    dfd = $q.defer()
+    if !_id 
+      dfd.resolve();
+      return dfd.promise
+    found = @_db?[db_name]?[_id];
+    if !found and _id
+      mythis.getElementFromLocalPlusDiffs( db_name, _id ).then (found)->
+        if found
+          mythis._db[db_name][found._id] = found
+        dfd.resolve( found );
+    else 
+      dfd.resolve( found )
+    return dfd.promise
 
 
 

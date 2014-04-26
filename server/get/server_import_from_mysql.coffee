@@ -1,17 +1,30 @@
 async = require('async')
 mongoose = require('mongoose')
 
+CryptoJS = require("crypto-js");
+
 ObjectId = mongoose.Types.ObjectId();
 
 require '../../models/_js/model_tree.js'
+require '../../models/_js/model_text.js'
 
 Tree = mongoose.model('Tree');
+Text = mongoose.model('Text');
 OAuthUsersModel = mongoose.model('OAuthUsers');
 
 
 removeCollection = (callback)->
-  collection = db.collection("trees");
-  collection.remove {}, (err, count)->
+
+  async.parallel [
+    (callback2)->
+      collection = db.collection("trees");
+      collection.remove {}, (err, count)->
+        callback2 err
+    (callback2)->
+      collection = db.collection("texts");
+      collection.remove {}, (err, count)->
+        callback2 err
+  ], (err)->
     callback err
 
 frommysql = (mysqldate, need_add_hours)->
@@ -69,10 +82,17 @@ exports.get = (req, res)->
         if !objectId_to_id[row.id]           
           objectId_to_id[row.id] = mongoose.Types.ObjectId();
 
+        one_text = new Text;
+        one_text['_id'] = objectId_to_id[row.id]
+        one_text['user_id'] = user_mongo_found._id
+        one_text['text'] = row.text
+        one_text['db_name'] = 'trees'
+        one_text['sha3'] = CryptoJS.SHA3(row.text, { outputLength: 256 }).toString()
+        if row.parent_id != 0
+          one_text.save();
 
         one_note['_id'] = objectId_to_id[row.id]
         one_note['title'] = row.title
-        one_note['text'] = row.text
         one_note['parent_id'] = objectId_to_id[row.parent_id]
         one_note['parent'] = row.parent_id
         one_note['pos'] = row.position
@@ -101,7 +121,8 @@ exports.get = (req, res)->
 
         if row.parent_id != 0
           one_note.save (err, result)->
-            objectId_to_id[row.id] = result._id;
+            if result
+              objectId_to_id[row.id] = result._id;
             callback err, rows
         else
           callback()

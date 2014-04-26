@@ -18,10 +18,11 @@
         var result;
         result = {};
         return async.each(Object.keys(global._db_models), function(db_name, callback2) {
-          var db_model;
+          var data_to_send, db_model;
           console.info('!!DB_NAME', db_name);
           db_model = global._db_models[db_name];
           console.info("USER_ID = ", user_id);
+          data_to_send = {};
           return db_model.find({
             'user_id': user_id,
             'del': 0
@@ -38,9 +39,12 @@
               if (row._sync) {
                 delete row._sync;
               }
+              if (row) {
+                data_to_send[row._id] = row;
+              }
               return callback(null);
             }, function(err) {
-              result[db_name] = rows;
+              result[db_name] = data_to_send;
               callback(err, rows);
               return callback2(err);
             });

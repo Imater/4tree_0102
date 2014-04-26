@@ -41,7 +41,9 @@
   angular.module("4treeApp").service('db_tree', [
     '$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', function($translate, $http, $q, $rootScope, oAuth2Api, $timeout, syncApi) {
       return {
-        _db: {},
+        _db: {
+          texts: {}
+        },
         _cache: {},
         salt: function() {
           return 'Salt is a mineral substance composed';
@@ -75,7 +77,7 @@
             this._cache = {};
           }
           if (!this._db.tree) {
-            this._db.tree = [];
+            this._db.tree = {};
             return this.refreshParentsIndex();
           }
         },
@@ -91,53 +93,13 @@
             }
           });
         },
-        saveAllTreeToLocal: function() {
-          var mythis;
-          mythis = this;
-          return _.each(mythis._db.tree, function(el) {
-            return localforage.setItem('tree_' + el._id, el, function(err) {
-              if (!err) {
-                return console.info('saved ' + el._id, err);
-              }
-            });
-          });
-        },
-        loadAllTreeFromLocal: function() {
-          var dfdArray, getKeys, was;
-          getKeys = function(i) {
-            var dfd;
-            dfd = $.Deferred();
-            localforage.key(i, function(key) {
-              localforage.getItem(key, function(data, i) {
-                return dfd.resolve();
-              });
-            });
-            return dfd.promise();
-          };
-          console.time('start_loading');
-          was = new Date().getTime();
-          dfdArray = [];
-          return localforage.length(function(length) {
-            var i;
-            i = 0;
-            while (i < length) {
-              dfdArray.push(getKeys(i));
-              i++;
-            }
-            $.when.apply(null, dfdArray).done(function() {
-              console.info('end');
-              console.timeEnd('start_loading');
-              return alert('end' + (new Date().getTime() - was));
-            });
-          });
-        },
         getTreeFromeWebOrLocal: function() {
           var dfd, mythis;
           mythis = this;
           this.dbInit();
           dfd = $.Deferred();
           this.ydnLoadFromLocal(mythis).then(function(records) {
-            if (records.tree.length === 0 || true) {
+            if (!records.tree || Object.keys(records.tree).length === 0) {
               console.info('NEED DATA FROM NET');
               return mythis.getTreeFromWeb().then(function(data) {
                 var result;
@@ -148,7 +110,8 @@
                   });
                   return result[db_name] = records;
                 });
-                return dfd.resolve(result);
+                dfd.resolve(result);
+                return result = void 0;
               });
             } else {
               console.info('ALL DATA FROM LOCAL');
@@ -163,17 +126,25 @@
           dfd = $q.defer();
           console.time('ALL DATA LOADED');
           this.getTreeFromeWebOrLocal().then(function(records) {
+            var found;
             console.info('loaded = ', records);
             _.each(records, function(data, db_name) {
-              return mythis._db[db_name] = data;
+              if (mythis.dont_store_to_memory.indexOf(db_name) === -1) {
+                return mythis._db[db_name] = data;
+              }
             });
             mythis.refreshParentsIndex();
             $rootScope.$$childTail.set.tree_loaded = true;
             $rootScope.$$childTail.db.main_node = [];
             $rootScope.$broadcast('tree_loaded');
+            found = _.find(mythis._db['tree'], function(el) {
+              return el._id === '535b3127bfb1d3a67cca7f1e';
+            });
+            $rootScope.$$childTail.db.main_node = [{}, found, {}, {}];
             mythis.clearCache();
             console.timeEnd('ALL DATA LOADED');
-            return dfd.resolve(records);
+            records = void 0;
+            return dfd.resolve();
           });
           return dfd.promise;
         },
@@ -216,8 +187,17 @@
             name: 'tasks',
             keyPath: '_id',
             autoIncrement: false
+          }, {
+            name: 'texts',
+            keyPath: '_id',
+            autoIncrement: false
+          }, {
+            name: '_diffs',
+            keyPath: '_id',
+            autoIncrement: false
           }
         ],
+        dont_store_to_memory: ['texts'],
         dbInit: function() {
           var options, schema;
           schema = {
@@ -237,7 +217,9 @@
           this.dbInit();
           mythis = this;
           this.db.clear(db_name).done(function() {
-            return async.eachLimit(records, 50, function(el, callback) {
+            return async.eachLimit(Object.keys(records), 200, function(el_name, callback) {
+              var el;
+              el = records[el_name];
               if (el.$$hashKey) {
                 delete el.$$hashKey;
               }
@@ -256,16 +238,43 @@
           dfd = $.Deferred();
           console.time('load_local');
           result = {};
-          async.each(mythis.store_schema, function(table_schema, callback) {
-            var db_name;
-            db_name = table_schema.name;
-            return mythis.db.values(db_name, null, 999999999).done(function(records) {
-              result[db_name] = records;
-              return callback();
+          mythis.db.values('_diffs', null, 999999999).done(function(diffs) {
+            return async.each(mythis.store_schema, function(table_schema, callback) {
+              var db_name;
+              db_name = table_schema.name;
+              if (mythis.dont_store_to_memory.indexOf(db_name) === -1) {
+                return mythis.db.values(db_name, null, 999999999).done(function(records) {
+                  var data_to_load;
+                  if (diffs) {
+                    _.each(diffs, function(diff) {
+                      var found;
+                      found = _.find(records, function(record) {
+                        return record._id === diff._id;
+                      });
+                      if (found && db_name === diff.db_name) {
+                        console.info('PATCH to ', diff._id, mythis.diff.patch(found, diff.patch));
+                        return found = mythis.diff.patch(found, diff.patch);
+                      }
+                    });
+                  }
+                  data_to_load = {};
+                  _.each(records, function(record) {
+                    if (record != null ? record._id : void 0) {
+                      return data_to_load[record._id] = record;
+                    }
+                  });
+                  result[db_name] = data_to_load;
+                  console.info(result);
+                  return callback();
+                });
+              } else {
+                return callback();
+              }
+            }, function() {
+              console.timeEnd('load_local');
+              dfd.resolve(result);
+              return result = void 0;
             });
-          }, function() {
-            console.timeEnd('load_local');
-            return dfd.resolve(result);
           });
           return dfd.promise();
         },
@@ -603,21 +612,19 @@
           parent_id: '0',
           _path: ['2']
         },
-        'jsFind': _.memoize(function(id) {
-          var tree_by_id;
+        'jsFind': function(id) {
+          var tree_by_id, _ref, _ref1;
           if (id === 1) {
             return this.first_element;
           }
-          tree_by_id = _.find(this._db.tree, function(el) {
-            return el._id === id;
-          });
+          if ((_ref = this._db) != null ? (_ref1 = _ref['tree']) != null ? _ref1[id] : void 0 : void 0) {
+            tree_by_id = _.find(this._db['tree'][id]);
+          }
           if (id === void 0) {
             return void 0;
           }
-          if (tree_by_id) {
-            return tree_by_id;
-          }
-        }),
+          return tree_by_id;
+        },
         'jsGetPath': _.memoize(function(id) {
           var el, path, prevent_recursive;
           if (id === 1 || id === 0) {
@@ -1155,7 +1162,145 @@
             console.info(answer, date, answer.text);
           }
           return answer;
-        })
+        }),
+        diff: jsondiffpatch.create({
+          objectHash: function(obj) {
+            console.info("!!!", obj);
+            return obj.name || obj.id || obj._id || obj._id || JSON.stringify(obj);
+          }
+        }),
+        dfdTextLater: $q.defer(),
+        getTextLater: _.throttle(function(text_id) {
+          var mythis;
+          mythis = this;
+          $timeout(function() {
+            return mythis.getText(text_id).then(function(text_element) {
+              if (text_element) {
+                return mythis.dfdTextLater.resolve(text_element);
+              } else {
+                console.info('text_not_found');
+                return mythis.dfdTextLater.resolve();
+              }
+            });
+          }, 1000);
+          return mythis.dfdTextLater.promise;
+        }, 3000),
+        getTextFromDB: function(text_id) {
+          var dfd, mythis;
+          mythis = this;
+          dfd = $q.defer();
+          mythis.db.get('_diffs', text_id).done(function(patch_found) {
+            console.info("!1:", patch_found);
+            mythis.db.get('texts', text_id).done(function(found) {
+              var new_text;
+              if (found) {
+                console.info("!2:", patch_found);
+                if (patch_found) {
+                  new_text = mythis.diff.patch({
+                    txt: found.text
+                  }, patch_found.patch);
+                }
+                if (new_text) {
+                  found.text = new_text.txt.toString();
+                }
+                console.info("AFTER PATCH", new_text, found, patch_found.patch);
+                dfd.resolve(found);
+              } else {
+                mythis.getTextLater(text_id).then(function(text_element) {
+                  return dfd.resolve(text_element);
+                });
+              }
+            });
+          });
+          return dfd.promise;
+        },
+        getText: function(text_id) {
+          var dfd, mythis;
+          mythis = this;
+          dfd = $q.defer();
+          this.getElement('texts', text_id).then(function(text_element) {
+            return dfd.resolve(text_element);
+          });
+          return dfd.promise;
+        },
+        setText: function(text_id, new_text) {
+          var found, mythis;
+          mythis = this;
+          if ((found = this._db['texts'][text_id])) {
+            found.text = new_text;
+            return mythis.saveDiff('texts', text_id);
+          }
+        },
+        saveDiff: function(db_name, _id) {
+          var mythis;
+          mythis = this;
+          this.getElement(db_name, _id).then(function(new_element) {
+            mythis.getElementFromLocal(db_name, _id).then(function(old_element) {
+              var el, patch, _ref;
+              if (new_element && old_element) {
+                patch = mythis.diff.diff(old_element, new_element);
+                console.info('DIFF SAVED = ', JSON.stringify(patch), (_ref = JSON.stringify(patch)) != null ? _ref.length : void 0);
+                el = {
+                  _id: _id,
+                  patch: patch,
+                  db_name: db_name,
+                  tm: new Date().getTime()
+                };
+                if (patch) {
+                  mythis.db.put('_diffs', el).done(function() {
+                    return console.info('diff_saved');
+                  });
+                }
+              }
+            });
+          });
+        },
+        getElementFromLocalPlusDiffs: function(db_name, _id) {
+          var dfd, mythis;
+          dfd = $q.defer();
+          mythis = this;
+          this.getElementFromLocal(db_name, _id).then(function(result) {
+            mythis.db.get('_diffs', _id).done(function(diff) {
+              if (diff && diff._id && diff.db_name === db_name) {
+                result = mythis.diff.patch(result, diff.patch);
+                dfd.resolve(result);
+              } else {
+                dfd.resolve(result);
+              }
+            });
+          });
+          return dfd.promise;
+        },
+        getElementFromLocal: function(db_name, _id) {
+          var dfd, mythis;
+          mythis = this;
+          dfd = $q.defer();
+          this.db.get(db_name, _id).done(function(result) {
+            return dfd.resolve(result);
+          });
+          return dfd.promise;
+        },
+        getElement: function(db_name, _id) {
+          var dfd, found, mythis, _ref, _ref1;
+          mythis = this;
+          dfd = $q.defer();
+          if (!_id) {
+            dfd.resolve();
+            return dfd.promise;
+          }
+          found = (_ref = this._db) != null ? (_ref1 = _ref[db_name]) != null ? _ref1[_id] : void 0 : void 0;
+          if (!found && _id) {
+            mythis.getElementFromLocalPlusDiffs(db_name, _id).then(function(found) {
+              if (found) {
+                mythis._db[db_name][found._id] = found;
+              }
+              return dfd.resolve(found);
+            });
+          } else {
+            dfd.resolve(found);
+          }
+          return dfd.promise;
+        }
       };
     }
   ]);

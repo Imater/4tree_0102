@@ -15,6 +15,7 @@ exports.get = (req, res)->
         console.info '!!DB_NAME', db_name
         db_model = global._db_models[db_name];
         console.info "USER_ID = ", user_id
+        data_to_send = {};
         db_model.find {'user_id':user_id, 'del':0}, (err, rows)->
           async.eachLimit rows, 50, (row, callback)->
             row._open = false;
@@ -23,9 +24,10 @@ exports.get = (req, res)->
             row.tm = new Date() if !row.tm;
             if row._sync
               delete row._sync 
+            data_to_send[row._id] = row if row;
             callback null;
           , (err)->
-            result[db_name] = rows;
+            result[db_name] = data_to_send;
             callback err, rows
             callback2 err
         , (err)->
