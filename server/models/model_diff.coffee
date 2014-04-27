@@ -9,9 +9,9 @@ diffSchema = new Schema (
   'user_id': { type: String } 
   'machine': { type: String } 
   'db_name': { type: String } 
-  '_sha3': { type: String }
+  '_sha1': { type: String }
   'del': { type: Number, default: 0 }
-  'tm': Date
+  'tm': { type: Number }
 )
 
 #mongoosastic = require('mongoosastic')

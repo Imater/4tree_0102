@@ -23,7 +23,7 @@
     'date1': Date,
     'date2': Date,
     'parent_id': String,
-    '_sha3': String,
+    '_sha1': String,
     '_sync': [
       {
         key: String,

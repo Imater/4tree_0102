@@ -37,7 +37,7 @@ treeSchema = new Schema (
   'hide_in_todo': Boolean
   'importance': { type: Number, default: 50 }
   '_sync': [ { key: String, diff: { 'tm': String } } ]
-  '_sha3': String
+  '_sha1': String
   'tm': Date
 )
 

@@ -38,10 +38,10 @@
           mythis = this;
           save_and_answer_token = function(token_data) {
             token_data.expire_time = new Date(new Date().getTime() + token_data.expires_in * 1000);
-            localStorage.setItem("oAuth2_" + mythis.user_info.username, JSON.stringify(token_data));
+            localStorage.setItem("oAuth20_" + mythis.user_info.username, JSON.stringify(token_data));
             return dfd.resolve(token_data.access_token);
           };
-          oauth_saved = localStorage.getItem("oAuth2_" + this.user_info.username);
+          oauth_saved = localStorage.getItem("oAuth20_" + this.user_info.username);
           if (!oauth_saved || (oauth_saved && (token_expired = this.jsCheckTokenExpired(oauth_saved)))) {
             if (token_expired) {
               this.jsGetRemoteTokenByRefreshToken(token_expired.refresh_token).then(save_and_answer_token);

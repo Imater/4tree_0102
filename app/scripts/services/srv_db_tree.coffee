@@ -90,6 +90,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       $rootScope.$$childTail.set.tree_loaded = true;
       $rootScope.$$childTail.db.main_node = []
       $rootScope.$broadcast('tree_loaded');
+      mythis.TestJson();
       found = _.find mythis._db['tree'], (el)->
         el._id == '535b3127bfb1d3a67cca7f1e'
       $rootScope.$$childTail.db.main_node = [{},found,{},{}]        
@@ -150,7 +151,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     schema = {
       stores: @store_schema
     }; 
-    options = {};
+    options = {
+      #mechanisms: ['indexeddb', 'websql', 'localstorage', 'sessionstorage', 'userdata', 'memory']
+      #size: 50 * 1024 * 1024
+    }
     @db = new ydn.db.Storage('_db.tree', schema, options);
     if false
       @db.search('name', 'Рабочие').done (x)->
@@ -250,7 +254,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       el.importance = if el.importance then el.importance else 50;
       el.tags = if el.tags then el.tags else [];
       el.counters = cnt if !el.counters;
-      el.panel = [{_open:false}, {_open:false}, {_open:false}, {_open:false}] if !el.panel
+      el._panel = [{_open:false}, {_open:false}, {_open:false}, {_open:false}] if !el._panel
       #el._open = false if el.parent_id != '1';
       if false
         el.dates = {
@@ -477,7 +481,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     _.each @_db.tree, (el)->
       if el._path and el._path.indexOf(id) != -1
         if !(make_open == true and el._childs>50)
-          el.panel[focus]._open = make_open if el._childs>0
+          el._panel[focus]._open = make_open if el._childs>0
         else 
           el._open = undefined
       return
@@ -593,7 +597,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       if !shift
         prev_note = db_tree.jsFindPreviusParent(main_node);
         if prev_note
-          prev_note.panel[focus]._open=true;
+          prev_note._panel[focus]._open=true;
           main_node.parent_id = prev_note._id;
           main_node.pos = db_tree.findMaxPos(prev_note._id);
           main_node._focus_me = true;
@@ -609,7 +613,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   jsFindNext: (tree, ignore_open)->
     focus = $rootScope.$$childTail.set.focus
     db_tree = $rootScope.$$childTail.fn.service.db_tree;
-    if tree and tree.panel[focus]._open and !ignore_open
+    if tree and tree._panel[focus]._open and !ignore_open
       found = db_tree.db_parents['n'+tree._id][0] if db_tree.db_parents['n'+tree._id];
       return found
     parents = db_tree.db_parents['n'+tree.parent_id];
@@ -643,14 +647,14 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       found_key = key if (value._id==tree._id)
       value._id==tree._id
     found = parents[found_key-1];
-    if found and found.panel[focus]._open
+    if found and found._panel[focus]._open
       found = db_tree.jsFindPrev(db_tree.jsFind(found._id), 'ignore_open', 'last_and_deep');
     if !found and !ignore_open and !last_and_deep
       found = db_tree.jsFind(tree.parent_id) if tree.parent_id!=$rootScope.$$childTail.set.main_parent_id[focus]
     found
   jsIsTree: ()->
     focus = $rootScope.$$childTail.set.focus
-    widget_index = $rootScope.$$childTail.set.panel[focus].active
+    widget_index = $rootScope.$$childTail.set._panel[focus].active
     if ([0].indexOf(widget_index) != -1)
       return true
     else
@@ -679,8 +683,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     if (db_tree.jsIsTree())
       event.stopPropagation();
       event.preventDefault();
-      if $rootScope.$$childTail.db.main_node[focus].panel[focus]._open
-        $rootScope.$$childTail.db.main_node[focus].panel[focus]._open = false;
+      if $rootScope.$$childTail.db.main_node[focus]._panel[focus]._open
+        $rootScope.$$childTail.db.main_node[focus]._panel[focus]._open = false;
       else
         true
   jsRightPress: (event, scope)->
@@ -689,8 +693,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     if (db_tree.jsIsTree())
       event.stopPropagation();
       event.preventDefault();
-      if !$rootScope.$$childTail.db.main_node[focus].panel[focus]._open
-        $rootScope.$$childTail.db.main_node[focus].panel[focus]._open = true;
+      if !$rootScope.$$childTail.db.main_node[focus]._panel[focus]._open
+        $rootScope.$$childTail.db.main_node[focus]._panel[focus]._open = true;
       else
         true
   jsFocus1: ()->
@@ -793,7 +797,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
             _id: _id
             patch: patch
             db_name: db_name
-            _sha3: old_element._sha3
+            _sha1: old_element._sha1
             user_id: $rootScope.$$childTail.set.user_id
             machine: $rootScope.$$childTail.set.machine
             tm: new Date().getTime()
@@ -849,18 +853,18 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       db_data = results[db_name];
       _.each Object.keys(db_data.confirm), (confirm_id)->
         confirm_element = db_data.confirm[confirm_id];
-        console.info 'CONFIRMED', confirm_id, confirm_element._sha3
+        console.info 'CONFIRMED', confirm_id, confirm_element._sha1
         mythis.getElement(db_name, confirm_id).then (doc)->
-          sha3 = CryptoJS.SHA3(JSON.stringify( doc ), { outputLength: 128 }).toString()
-          #Если контрольные суммы сервера и клиента совпали, то удаляем diff и обновляем _sha3
-          if sha3 == confirm_element._sha3
-            doc._sha3 = confirm_element._sha3
+          sha1 = mythis.JSON_stringify( doc )._sha1
+          #Если контрольные суммы сервера и клиента совпали, то удаляем diff и обновляем _sha1
+          if sha1 == confirm_element._sha1
+            doc._sha1 = confirm_element._sha1
             mythis.db.put(db_name, doc).done (err)->
               console.info 'new data applyed', err, doc;
             mythis.db.remove('_diffs', confirm_id).done (err)->
               console.info 'diff - deleted', err
           else 
-            console.info 'ERROR SHA3 CLIENT NOT EQUAL SERVER!'
+            console.info 'ERROR sha1 CLIENT NOT EQUAL SERVER!'
 
     dfd.resolve();
     dfd.promise
@@ -871,11 +875,13 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     @getDiffsForSync().then (diffs)->
       mythis.sendDiffToWeb(diffs).then (results)->
         mythis.syncApplyResults(results).then ()->
-          console.info 'sha3 applyed';
+          console.info 'sha1 applyed';
 
   sendDiffToWeb: (diffs)->
     console.info 'Sending: ', JSON.stringify(diffs)?.length
     dfd = $q.defer();
+    mythis = @;
+    sha1_sign = $rootScope.$$childTail.set.machine + mythis.JSON_stringify(diffs)._sha1;
     oAuth2Api.jsGetToken().then (token)->
       $http({
         url: '/api/v2/sync',
@@ -887,6 +893,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         }
         data: {
           diffs: diffs
+          sha1_sign: sha1_sign
         }
       }).then (result)->
         dfd.resolve result.data
@@ -897,6 +904,31 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     @db.values('_diffs',null,999999999).done (diffs)->
       dfd.resolve(diffs);
     dfd.promise
+  TestJson: ()->
+    mythis = @;
+    $timeout ()->
+      console.info 'start test JSON'
+      console.time 'JSON_test'
+      _.each ['tree', 'tasks', 'texts'], (db_name)->
+        i = 0;
+        _.each mythis._db[db_name], (element)->
+          answer = mythis.JSON_stringify element
+          if answer._sha1 != element._sha1
+            console.info 'SHA1 error ['+i+']', element, answer
+            i++;
+        console.info 'Congratulations. '+db_name+' is equal...' if i==0
+      console.timeEnd 'JSON_test'
+    , 3000
+  JSON_stringify: (json)->
+    delete_ = (key, value)->
+      if (first_letter=key[0]) == '_' or first_letter == '$'
+        return undefined 
+      else
+        return value
+    string = JSON.stringify json, delete_, 0
+    _id = json?._id;
+    _sha1 = CryptoJS.SHA1(JSON.stringify( string )).toString().substr(0,7)
+    {_id, _sha1, string}
 
 
 

@@ -6,7 +6,7 @@ textSchema = new Schema (
   'text': { type: String, es_indexed: true }
   'user_id': { type: String, es_indexed: true } 
   'db_name': { type: String, es_indexed: true } 
-  '_sha3': { type: String }
+  '_sha1': { type: String }
   'del': { type: Number, default: 0 }
   'tm': Date
 )

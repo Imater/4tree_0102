@@ -1,8 +1,6 @@
 async = require('async')
 mongoose = require('mongoose')
 
-CryptoJS = require("crypto-js");
-
 ObjectId = mongoose.Types.ObjectId();
 
 require '../../models/_js/model_tree.js'
@@ -12,6 +10,7 @@ Tree = mongoose.model('Tree');
 Text = mongoose.model('Text');
 OAuthUsersModel = mongoose.model('OAuthUsers');
 
+JSON_stringify = require '../../scripts/_js/JSON_stringify.js'
 
 removeCollection = (callback)->
 
@@ -67,6 +66,13 @@ exports.get = (req, res)->
       one_note['user_id'] = user_mongo_found._id
       one_note['del'] = 0
       one_note['folder'] = 'main'
+      one_note['tags'] = []
+      one_note['couners'] = []
+      one_note['did'] = null
+      one_note['pos'] = 0
+
+      sha1 = JSON_stringify.JSON_stringify(one_note)._sha1
+      one_note['_sha1'] = sha1;
       one_note.save (err, result)->
         console.info 'Main_tree = ',err,result
 
@@ -88,9 +94,8 @@ exports.get = (req, res)->
         one_text['text'] = row.text
         one_text['db_name'] = 'trees'
         if row.parent_id != 0
-          sha3 = CryptoJS.SHA3(JSON.stringify(one_note), { outputLength: 128 }).toString()
-          console.info 'sha = ', sha3
-          one_text['_sha3'] = sha3;
+          sha1 = JSON_stringify.JSON_stringify(one_text)._sha1
+          one_text['_sha1'] = sha1;
           one_text.save();
 
         one_note['_id'] = objectId_to_id[row.id]
@@ -122,8 +127,9 @@ exports.get = (req, res)->
           one_note['did'] = new_date 
 
         if row.parent_id != 0
-          sha3 = CryptoJS.SHA3(JSON.stringify(one_note), { outputLength: 128 }).toString()
-          one_note['_sha3'] = sha3;
+          sha1 = JSON_stringify.JSON_stringify(one_note)._sha1
+          console.info "!!!!", sha1, JSON_stringify.JSON_stringify(one_note).string if one_note.title == 'Вставить в редактор кнопку вставки чекбокса'
+          one_note['_sha1'] = sha1;
 
           one_note.save (err, result)->
             if result

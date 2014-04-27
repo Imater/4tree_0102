@@ -19,7 +19,7 @@
       type: String,
       es_indexed: true
     },
-    '_sha3': {
+    '_sha1': {
       type: String
     },
     'del': {

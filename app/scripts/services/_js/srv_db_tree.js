@@ -137,6 +137,7 @@
             $rootScope.$$childTail.set.tree_loaded = true;
             $rootScope.$$childTail.db.main_node = [];
             $rootScope.$broadcast('tree_loaded');
+            mythis.TestJson();
             found = _.find(mythis._db['tree'], function(el) {
               return el._id === '535b3127bfb1d3a67cca7f1e';
             });
@@ -378,8 +379,8 @@
             if (!el.counters) {
               el.counters = cnt;
             }
-            if (!el.panel) {
-              el.panel = [
+            if (!el._panel) {
+              el._panel = [
                 {
                   _open: false
                 }, {
@@ -801,7 +802,7 @@
             if (el._path && el._path.indexOf(id) !== -1) {
               if (!(make_open === true && el._childs > 50)) {
                 if (el._childs > 0) {
-                  el.panel[focus]._open = make_open;
+                  el._panel[focus]._open = make_open;
                 }
               } else {
                 el._open = void 0;
@@ -950,7 +951,7 @@
             if (!shift) {
               prev_note = db_tree.jsFindPreviusParent(main_node);
               if (prev_note) {
-                prev_note.panel[focus]._open = true;
+                prev_note._panel[focus]._open = true;
                 main_node.parent_id = prev_note._id;
                 main_node.pos = db_tree.findMaxPos(prev_note._id);
                 main_node._focus_me = true;
@@ -974,7 +975,7 @@
           var db_tree, focus, found, found_key, next, parents;
           focus = $rootScope.$$childTail.set.focus;
           db_tree = $rootScope.$$childTail.fn.service.db_tree;
-          if (tree && tree.panel[focus]._open && !ignore_open) {
+          if (tree && tree._panel[focus]._open && !ignore_open) {
             if (db_tree.db_parents['n' + tree._id]) {
               found = db_tree.db_parents['n' + tree._id][0];
             }
@@ -1026,7 +1027,7 @@
             return value._id === tree._id;
           });
           found = parents[found_key - 1];
-          if (found && found.panel[focus]._open) {
+          if (found && found._panel[focus]._open) {
             found = db_tree.jsFindPrev(db_tree.jsFind(found._id), 'ignore_open', 'last_and_deep');
           }
           if (!found && !ignore_open && !last_and_deep) {
@@ -1039,7 +1040,7 @@
         jsIsTree: function() {
           var focus, widget_index;
           focus = $rootScope.$$childTail.set.focus;
-          widget_index = $rootScope.$$childTail.set.panel[focus].active;
+          widget_index = $rootScope.$$childTail.set._panel[focus].active;
           if ([0].indexOf(widget_index) !== -1) {
             return true;
           } else {
@@ -1079,8 +1080,8 @@
           if (db_tree.jsIsTree()) {
             event.stopPropagation();
             event.preventDefault();
-            if ($rootScope.$$childTail.db.main_node[focus].panel[focus]._open) {
-              return $rootScope.$$childTail.db.main_node[focus].panel[focus]._open = false;
+            if ($rootScope.$$childTail.db.main_node[focus]._panel[focus]._open) {
+              return $rootScope.$$childTail.db.main_node[focus]._panel[focus]._open = false;
             } else {
               return true;
             }
@@ -1093,8 +1094,8 @@
           if (db_tree.jsIsTree()) {
             event.stopPropagation();
             event.preventDefault();
-            if (!$rootScope.$$childTail.db.main_node[focus].panel[focus]._open) {
-              return $rootScope.$$childTail.db.main_node[focus].panel[focus]._open = true;
+            if (!$rootScope.$$childTail.db.main_node[focus]._panel[focus]._open) {
+              return $rootScope.$$childTail.db.main_node[focus]._panel[focus]._open = true;
             } else {
               return true;
             }
@@ -1238,7 +1239,7 @@
                   _id: _id,
                   patch: patch,
                   db_name: db_name,
-                  _sha3: old_element._sha3,
+                  _sha1: old_element._sha1,
                   user_id: $rootScope.$$childTail.set.user_id,
                   machine: $rootScope.$$childTail.set.machine,
                   tm: new Date().getTime()
@@ -1308,14 +1309,12 @@
             return _.each(Object.keys(db_data.confirm), function(confirm_id) {
               var confirm_element;
               confirm_element = db_data.confirm[confirm_id];
-              console.info('CONFIRMED', confirm_id, confirm_element._sha3);
+              console.info('CONFIRMED', confirm_id, confirm_element._sha1);
               return mythis.getElement(db_name, confirm_id).then(function(doc) {
-                var sha3;
-                sha3 = CryptoJS.SHA3(JSON.stringify(doc), {
-                  outputLength: 128
-                }).toString();
-                if (sha3 === confirm_element._sha3) {
-                  doc._sha3 = confirm_element._sha3;
+                var sha1;
+                sha1 = mythis.JSON_stringify(doc)._sha1;
+                if (sha1 === confirm_element._sha1) {
+                  doc._sha1 = confirm_element._sha1;
                   mythis.db.put(db_name, doc).done(function(err) {
                     return console.info('new data applyed', err, doc);
                   });
@@ -1323,7 +1322,7 @@
                     return console.info('diff - deleted', err);
                   });
                 } else {
-                  return console.info('ERROR SHA3 CLIENT NOT EQUAL SERVER!');
+                  return console.info('ERROR sha1 CLIENT NOT EQUAL SERVER!');
                 }
               });
             });
@@ -1338,15 +1337,17 @@
           return this.getDiffsForSync().then(function(diffs) {
             return mythis.sendDiffToWeb(diffs).then(function(results) {
               return mythis.syncApplyResults(results).then(function() {
-                return console.info('sha3 applyed');
+                return console.info('sha1 applyed');
               });
             });
           });
         },
         sendDiffToWeb: function(diffs) {
-          var dfd, _ref;
+          var dfd, mythis, sha1_sign, _ref;
           console.info('Sending: ', (_ref = JSON.stringify(diffs)) != null ? _ref.length : void 0);
           dfd = $q.defer();
+          mythis = this;
+          sha1_sign = $rootScope.$$childTail.set.machine + mythis.JSON_stringify(diffs)._sha1;
           oAuth2Api.jsGetToken().then(function(token) {
             return $http({
               url: '/api/v2/sync',
@@ -1357,7 +1358,8 @@
                 machine: $rootScope.$$childTail.set.machine
               },
               data: {
-                diffs: diffs
+                diffs: diffs,
+                sha1_sign: sha1_sign
               }
             }).then(function(result) {
               return dfd.resolve(result.data);
@@ -1372,6 +1374,49 @@
             return dfd.resolve(diffs);
           });
           return dfd.promise;
+        },
+        TestJson: function() {
+          var mythis;
+          mythis = this;
+          return $timeout(function() {
+            console.info('start test JSON');
+            console.time('JSON_test');
+            _.each(['tree', 'tasks', 'texts'], function(db_name) {
+              var i;
+              i = 0;
+              _.each(mythis._db[db_name], function(element) {
+                var answer;
+                answer = mythis.JSON_stringify(element);
+                if (answer._sha1 !== element._sha1) {
+                  console.info('SHA1 error [' + i + ']', element, answer);
+                  return i++;
+                }
+              });
+              if (i === 0) {
+                return console.info('Congratulations. ' + db_name + ' is equal...');
+              }
+            });
+            return console.timeEnd('JSON_test');
+          }, 3000);
+        },
+        JSON_stringify: function(json) {
+          var delete_, string, _id, _sha1;
+          delete_ = function(key, value) {
+            var first_letter;
+            if ((first_letter = key[0]) === '_' || first_letter === '$') {
+              return void 0;
+            } else {
+              return value;
+            }
+          };
+          string = JSON.stringify(json, delete_, 0);
+          _id = json != null ? json._id : void 0;
+          _sha1 = CryptoJS.SHA1(JSON.stringify(string)).toString().substr(0, 7);
+          return {
+            _id: _id,
+            _sha1: _sha1,
+            string: string
+          };
         }
       };
     }

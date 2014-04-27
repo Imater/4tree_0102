@@ -25,14 +25,16 @@
     'db_name': {
       type: String
     },
-    '_sha3': {
+    '_sha1': {
       type: String
     },
     'del': {
       type: Number,
       "default": 0
     },
-    'tm': Date
+    'tm': {
+      type: Number
+    }
   });
 
   Diff = module.exports = mongoose.model("Diff", diffSchema);

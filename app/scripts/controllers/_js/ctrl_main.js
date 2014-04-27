@@ -4,7 +4,7 @@
 
   angular.module("4treeApp").controller("MainCtrl", [
     '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', 'cryptApi', '$socket', 'oAuth2Api', 'mySettings', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi, cryptApi, $socket, oAuth2Api, mySettings) {
-      var pas1_encrypted, pasA, pasB, pubKey, sendtoA, sendtoB, set_pomidors;
+      var diffpatcher, myFilter, pas1_encrypted, pasA, pasB, pubKey, sendtoA, sendtoB, set_pomidors, tree1, tree2;
       if (false) {
         pasA = "sex";
         pubKey = "lexus";
@@ -40,6 +40,38 @@
       });
       $scope.send = function(message) {
         return $socket.emit('hello', message);
+      };
+      diffpatcher = jsondiffpatch.create();
+      myFilter = function(context) {
+        console.info(context);
+        if (context.result && context.result.length) {
+          console.info(2);
+          return context.result.tm = new Date;
+        }
+      };
+      myFilter.filterName = 'set_change_time';
+      diffpatcher.processor.pipes.diff.after('trivial', myFilter);
+      diffpatcher.processor.pipes.diff.debug = true;
+      tree1 = {
+        _id: '32423',
+        title: 'Привет1',
+        tags: ['a1', 'a2'],
+        a: {
+          b: {
+            c: 'new'
+          }
+        }
+      };
+      console.info(db_tree.JSON_stringify(tree1));
+      tree2 = {
+        _id: '32423',
+        title: 'Привет2',
+        tags: ['a1', 'a2', 'a3'],
+        a: {
+          b: {
+            c: 'new'
+          }
+        }
       };
       $scope.set = {
         user_id: '5330ff92898a2b63c2f7095f',
