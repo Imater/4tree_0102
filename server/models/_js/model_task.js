@@ -28,11 +28,11 @@
       {
         key: String,
         diff: {
-          'tm': String
+          '_tm': String
         }
       }
     ],
-    'tm': Date
+    '_tm': Date
   });
 
   mongoosastic = require('mongoosastic');

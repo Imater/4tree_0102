@@ -73,12 +73,12 @@
       {
         key: String,
         diff: {
-          'tm': String
+          '_tm': String
         }
       }
     ],
     '_sha1': String,
-    'tm': Date
+    '_tm': Date
   });
 
   mongoosastic = require('mongoosastic');

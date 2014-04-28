@@ -45,38 +45,6 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
 
 
 
-  diffpatcher = jsondiffpatch.create();
-
-  myFilter = (context)->
-    console.info context
-    if context.result and context.result.length
-      console.info 2
-      context.result.tm = new Date  
-    #context.setResult(new Date).exit()
-  myFilter.filterName = 'set_change_time';
-
-  diffpatcher.processor.pipes.diff.after('trivial', myFilter);
-  diffpatcher.processor.pipes.diff.debug = true;
-
-  tree1 = {
-    _id: '32423'
-    title: 'Привет1'
-    tags: ['a1', 'a2']
-    a: { b: { c: 'new'} }
-  }
-
-  console.info db_tree.JSON_stringify tree1
-
-  tree2 = {
-    _id: '32423'
-    title: 'Привет2'
-    tags: ['a1', 'a2', 'a3']
-    a: { b: { c: 'new'} }
-  }
-
-  #delta = diffpatcher.diff( tree1, tree2 );
-  #console.info "[ANSWER]", delta
-
 
   #параметры
   $scope.set = {

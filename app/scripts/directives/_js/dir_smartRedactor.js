@@ -46,6 +46,11 @@ redactor: hash (pass in a redactor options hash)
             editor = $_element.redactor(options);
             return ngModel.$render();
           }, 10);
+          $rootScope.$on('refresh_editor', _.debounce(function(value) {
+            return db_tree.getText(ngModel.$viewValue).then(function(text_element) {
+              return $_element.redactor("set", (text_element != null ? text_element.text : void 0) || "", false);
+            });
+          }, 1));
           return ngModel.$render = function() {
             if (angular.isDefined(editor)) {
               return db_tree.getText(ngModel.$viewValue).then(function(text_element) {

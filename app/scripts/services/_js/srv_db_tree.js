@@ -139,7 +139,7 @@
             $rootScope.$broadcast('tree_loaded');
             mythis.TestJson();
             found = _.find(mythis._db['tree'], function(el) {
-              return el._id === '535b3127bfb1d3a67cca7f1e';
+              return el.title === '_НОВОЕ';
             });
             $rootScope.$$childTail.db.main_node = [{}, found, {}, {}];
             mythis.clearCache();
@@ -1165,6 +1165,9 @@
         diff: jsondiffpatch.create({
           objectHash: function(obj) {
             return obj.name || obj.id || obj._id || obj._id || JSON.stringify(obj);
+          },
+          textDiff: {
+            minLength: 3
           }
         }),
         dfdTextLater: $q.defer(),
@@ -1231,10 +1234,9 @@
           mythis = this;
           this.getElement(db_name, _id).then(function(new_element) {
             mythis.getElementFromLocal(db_name, _id).then(function(old_element) {
-              var el, patch, _ref;
+              var el, patch;
               if (new_element && old_element) {
                 patch = mythis.diff.diff(old_element, new_element);
-                console.info('DIFF SAVED = ', JSON.stringify(patch), (_ref = JSON.stringify(patch)) != null ? _ref.length : void 0);
                 el = {
                   _id: _id,
                   patch: patch,
@@ -1242,7 +1244,7 @@
                   _sha1: old_element._sha1,
                   user_id: $rootScope.$$childTail.set.user_id,
                   machine: $rootScope.$$childTail.set.machine,
-                  tm: new Date().getTime()
+                  _tm: new Date().getTime()
                 };
                 if (patch) {
                   mythis.db.put('_diffs', el).done(function() {
@@ -1306,26 +1308,49 @@
           _.each(Object.keys(results), function(db_name) {
             var db_data;
             db_data = results[db_name];
-            return _.each(Object.keys(db_data.confirm), function(confirm_id) {
-              var confirm_element;
-              confirm_element = db_data.confirm[confirm_id];
-              console.info('CONFIRMED', confirm_id, confirm_element._sha1);
-              return mythis.getElement(db_name, confirm_id).then(function(doc) {
-                var sha1;
-                sha1 = mythis.JSON_stringify(doc)._sha1;
-                if (sha1 === confirm_element._sha1) {
-                  doc._sha1 = confirm_element._sha1;
-                  mythis.db.put(db_name, doc).done(function(err) {
-                    return console.info('new data applyed', err, doc);
-                  });
-                  return mythis.db.remove('_diffs', confirm_id).done(function(err) {
-                    return console.info('diff - deleted', err);
-                  });
-                } else {
-                  return console.info('ERROR sha1 CLIENT NOT EQUAL SERVER!');
-                }
+            if (db_data.new_data) {
+              _.each(db_data.new_data, function(new_doc) {
+                mythis._db[db_name][new_doc._id] = new_doc;
+                return mythis.db.put(db_name, mythis._db[db_name][new_doc._id]).done(function(err) {
+                  console.info('NEW_data applyed');
+                  return $rootScope.$emit('refresh_editor');
+                });
               });
-            });
+            }
+            if (db_data.merged) {
+              _.each(Object.keys(db_data.merged), function(merged_id) {
+                var merged_element;
+                merged_element = db_data.merged[merged_id].combined;
+                mythis._db[db_name][merged_id] = merged_element;
+                return mythis.db.put(db_name, mythis._db[db_name][merged_id]).done(function(err) {
+                  console.info('MERGED data applyed', err, merged_element);
+                  return $rootScope.$emit('refresh_editor');
+                });
+              });
+            }
+            if (db_data.confirm) {
+              return _.each(Object.keys(db_data.confirm), function(confirm_id) {
+                var confirm_element;
+                confirm_element = db_data.confirm[confirm_id];
+                console.info('CONFIRMED', confirm_id, confirm_element._sha1);
+                return mythis.getElement(db_name, confirm_id).then(function(doc) {
+                  var sha1;
+                  sha1 = mythis.JSON_stringify(doc)._sha1;
+                  if (sha1 === confirm_element._sha1) {
+                    doc._sha1 = confirm_element._sha1;
+                    doc._tm = confirm_element._tm;
+                    mythis.db.put(db_name, doc).done(function(err) {
+                      return console.info('new data applyed', err, doc);
+                    });
+                    return mythis.db.remove('_diffs', confirm_id).done(function(err) {
+                      return console.info('diff - deleted', err);
+                    });
+                  } else {
+                    return console.info('ERROR sha1 CLIENT NOT EQUAL SERVER!');
+                  }
+                });
+              });
+            }
           });
           dfd.resolve();
           return dfd.promise;
@@ -1342,30 +1367,65 @@
             });
           });
         },
+        getLastSyncTime: function() {
+          var dfd, max_element, max_time, mythis;
+          dfd = $q.defer();
+          max_time = new Date(2013, 3, 1);
+          max_element = new Date(2013, 3, 1);
+          mythis = this;
+          async.each(mythis.store_schema, function(table_schema, callback) {
+            var db_name;
+            db_name = table_schema.name;
+            if (db_name[0] !== '_') {
+              console.info({
+                db_name: db_name
+              });
+              max_element = _.max(mythis._db[db_name], function(el) {
+                if (el._tm) {
+                  return new Date(el._tm);
+                } else {
+                  return 0;
+                }
+              });
+              if (new Date(max_element._tm) > max_time) {
+                max_time = new Date(max_element._tm);
+              }
+              return callback();
+            } else {
+              return callback();
+            }
+          }, function() {
+            return dfd.resolve(max_time);
+          });
+          return dfd.promise;
+        },
         sendDiffToWeb: function(diffs) {
           var dfd, mythis, sha1_sign, _ref;
           console.info('Sending: ', (_ref = JSON.stringify(diffs)) != null ? _ref.length : void 0);
           dfd = $q.defer();
           mythis = this;
           sha1_sign = $rootScope.$$childTail.set.machine + mythis.JSON_stringify(diffs)._sha1;
-          oAuth2Api.jsGetToken().then(function(token) {
-            return $http({
-              url: '/api/v2/sync',
-              method: "POST",
-              isArray: true,
-              params: {
-                access_token: token,
-                machine: $rootScope.$$childTail.set.machine
-              },
-              data: {
-                diffs: diffs,
-                sha1_sign: sha1_sign
-              }
-            }).then(function(result) {
-              return dfd.resolve(result.data);
+          return mythis.getLastSyncTime().then(function(last_sync_time) {
+            oAuth2Api.jsGetToken().then(function(token) {
+              return $http({
+                url: '/api/v2/sync',
+                method: "POST",
+                isArray: true,
+                params: {
+                  access_token: token,
+                  machine: $rootScope.$$childTail.set.machine,
+                  last_sync_time: last_sync_time
+                },
+                data: {
+                  diffs: diffs,
+                  sha1_sign: sha1_sign
+                }
+              }).then(function(result) {
+                return dfd.resolve(result.data);
+              });
             });
+            return dfd.promise;
           });
-          return dfd.promise;
         },
         getDiffsForSync: function() {
           var dfd;

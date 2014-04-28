@@ -84,6 +84,7 @@
         one_note['couners'] = [];
         one_note['did'] = null;
         one_note['pos'] = 0;
+        one_note['_tm'] = new Date();
         sha1 = JSON_stringify.JSON_stringify(one_note)._sha1;
         one_note['_sha1'] = sha1;
         one_note.save(function(err, result) {
@@ -103,6 +104,7 @@
           one_text['user_id'] = user_mongo_found._id;
           one_text['text'] = row.text;
           one_text['db_name'] = 'trees';
+          one_text['_tm'] = new Date();
           if (row.parent_id !== 0) {
             sha1 = JSON_stringify.JSON_stringify(one_text)._sha1;
             one_text['_sha1'] = sha1;
@@ -123,6 +125,7 @@
           if (row.smth) {
             one_note['old_tag'] = row.smth;
           }
+          one_note['_tm'] = new Date();
           if (row.parent_id === 1 || row.parent_id === '1') {
             console.info("P = ", one_note.parent_id, one_note._id);
           }

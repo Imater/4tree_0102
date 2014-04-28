@@ -92,7 +92,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       $rootScope.$broadcast('tree_loaded');
       mythis.TestJson();
       found = _.find mythis._db['tree'], (el)->
-        el._id == '535b3127bfb1d3a67cca7f1e'
+        el.title == '_НОВОЕ'
       $rootScope.$$childTail.db.main_node = [{},found,{},{}]        
       mythis.clearCache();
       console.timeEnd 'ALL DATA LOADED'
@@ -744,6 +744,9 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     objectHash: (obj) ->
       # try to find an id property, otherwise serialize it all
       return obj.name || obj.id || obj._id || obj._id || JSON.stringify(obj);
+    textDiff: {
+        minLength: 3
+    }
   }
   dfdTextLater: $q.defer()
   getTextLater: _.throttle (text_id)->
@@ -791,7 +794,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       mythis.getElementFromLocal(db_name, _id).then (old_element)->
         if new_element and old_element
           patch = mythis.diff.diff( old_element, new_element );
-          console.info 'DIFF SAVED = ', JSON.stringify(patch), (JSON.stringify patch)?.length;
+          #console.info 'DIFF SAVED = ', JSON.stringify(patch), (JSON.stringify patch)?.length;
 
           el = {
             _id: _id
@@ -800,7 +803,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
             _sha1: old_element._sha1
             user_id: $rootScope.$$childTail.set.user_id
             machine: $rootScope.$$childTail.set.machine
-            tm: new Date().getTime()
+            _tm: new Date().getTime()
           }
           if patch
             mythis.db.put('_diffs', el).done ()->
@@ -851,20 +854,37 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     mythis = @;
     _.each Object.keys(results), (db_name)->
       db_data = results[db_name];
-      _.each Object.keys(db_data.confirm), (confirm_id)->
-        confirm_element = db_data.confirm[confirm_id];
-        console.info 'CONFIRMED', confirm_id, confirm_element._sha1
-        mythis.getElement(db_name, confirm_id).then (doc)->
-          sha1 = mythis.JSON_stringify( doc )._sha1
-          #Если контрольные суммы сервера и клиента совпали, то удаляем diff и обновляем _sha1
-          if sha1 == confirm_element._sha1
-            doc._sha1 = confirm_element._sha1
-            mythis.db.put(db_name, doc).done (err)->
-              console.info 'new data applyed', err, doc;
-            mythis.db.remove('_diffs', confirm_id).done (err)->
-              console.info 'diff - deleted', err
-          else 
-            console.info 'ERROR sha1 CLIENT NOT EQUAL SERVER!'
+      if db_data.new_data
+        _.each db_data.new_data, (new_doc)->
+          mythis._db[db_name][new_doc._id] = new_doc;
+          mythis.db.put(db_name, mythis._db[db_name][new_doc._id] ).done (err)->
+            console.info 'NEW_data applyed';
+            $rootScope.$emit 'refresh_editor'
+
+      if db_data.merged
+        _.each Object.keys(db_data.merged), (merged_id)->
+          merged_element = db_data.merged[merged_id].combined;
+          mythis._db[db_name][merged_id] = merged_element;
+          mythis.db.put(db_name, mythis._db[db_name][merged_id] ).done (err)->
+            console.info 'MERGED data applyed', err, merged_element;
+            $rootScope.$emit 'refresh_editor'
+
+      if db_data.confirm
+        _.each Object.keys(db_data.confirm), (confirm_id)->
+          confirm_element = db_data.confirm[confirm_id];
+          console.info 'CONFIRMED', confirm_id, confirm_element._sha1
+          mythis.getElement(db_name, confirm_id).then (doc)->
+            sha1 = mythis.JSON_stringify( doc )._sha1
+            #Если контрольные суммы сервера и клиента совпали, то удаляем diff и обновляем _sha1
+            if sha1 == confirm_element._sha1
+              doc._sha1 = confirm_element._sha1
+              doc._tm = confirm_element._tm
+              mythis.db.put(db_name, doc).done (err)->
+                console.info 'new data applyed', err, doc;
+              mythis.db.remove('_diffs', confirm_id).done (err)->
+                console.info 'diff - deleted', err
+            else 
+              console.info 'ERROR sha1 CLIENT NOT EQUAL SERVER!'
 
     dfd.resolve();
     dfd.promise
@@ -877,27 +897,51 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         mythis.syncApplyResults(results).then ()->
           console.info 'sha1 applyed';
 
+  getLastSyncTime: ()->
+    dfd = $q.defer();
+    max_time = new Date(2013,3,1);
+    max_element = new Date(2013,3,1);
+    mythis = @;
+    async.each mythis.store_schema, (table_schema, callback)->
+      db_name = table_schema.name;
+      if db_name[0]!='_'
+        console.info { db_name }
+        max_element = _.max mythis._db[db_name], (el)->
+          if el._tm
+            return new Date(el._tm)
+          else 
+            return 0
+        max_time = new Date(max_element._tm) if new Date(max_element._tm) > max_time;          
+        callback()
+      else
+        callback()
+    , ()->
+      dfd.resolve( max_time )
+    dfd.promise;
+
   sendDiffToWeb: (diffs)->
     console.info 'Sending: ', JSON.stringify(diffs)?.length
     dfd = $q.defer();
     mythis = @;
     sha1_sign = $rootScope.$$childTail.set.machine + mythis.JSON_stringify(diffs)._sha1;
-    oAuth2Api.jsGetToken().then (token)->
-      $http({
-        url: '/api/v2/sync',
-        method: "POST",
-        isArray: true,
-        params: {
-            access_token: token
-            machine: $rootScope.$$childTail.set.machine
-        }
-        data: {
-          diffs: diffs
-          sha1_sign: sha1_sign
-        }
-      }).then (result)->
-        dfd.resolve result.data
-    dfd.promise
+    mythis.getLastSyncTime().then (last_sync_time)->
+      oAuth2Api.jsGetToken().then (token)->
+        $http({
+          url: '/api/v2/sync',
+          method: "POST",
+          isArray: true,
+          params: {
+              access_token: token
+              machine: $rootScope.$$childTail.set.machine
+              last_sync_time: last_sync_time
+          }
+          data: {
+            diffs: diffs
+            sha1_sign: sha1_sign
+          }
+        }).then (result)->
+          dfd.resolve result.data
+      dfd.promise
   
   getDiffsForSync: ()->
     dfd = $q.defer()

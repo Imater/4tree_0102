@@ -9,8 +9,8 @@ treeSchema = new Schema (
   'date2': Date
   'parent_id': String
   '_sha1': String
-  '_sync': [ { key: String, diff: { 'tm': String } } ]
-  'tm': Date
+  '_sync': [ { key: String, diff: { '_tm': String } } ]
+  '_tm': Date
 )
 
 mongoosastic = require('mongoosastic')

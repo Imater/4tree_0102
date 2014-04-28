@@ -8,7 +8,7 @@ textSchema = new Schema (
   'db_name': { type: String, es_indexed: true } 
   '_sha1': { type: String }
   'del': { type: Number, default: 0 }
-  'tm': Date
+  '_tm': Date
 )
 
 mongoosastic = require('mongoosastic')

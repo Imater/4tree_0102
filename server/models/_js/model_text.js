@@ -26,7 +26,7 @@
       type: Number,
       "default": 0
     },
-    'tm': Date
+    '_tm': Date
   });
 
   mongoosastic = require('mongoosastic');

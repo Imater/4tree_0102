@@ -86,6 +86,8 @@ else
   async = require('async');
   fs = require('fs');
 
+
+
   process.on 'uncaughtException', (error)->
      console.info '\x1b[35mERROR:\x1b[0m', error.stack
 
@@ -428,7 +430,7 @@ else
         one_new_element = new_elements[db_name][item_name]
         console.info 'need_to_create '+item_name, one_new_element
         model = new global._db_models[db_name](one_new_element)
-        model.tm = new Date(start_sync_time)
+        model._tm = new Date(start_sync_time)
         model.save ()->
           saving_complete = true;
           console.info 'Сохранил новый элемент '+item_name;
@@ -452,10 +454,10 @@ else
                 found = _.find doc._sync, (el)->
                   el.key == item_diff
                 if !found
-                  doc._sync.push ({key: item_diff, diff: { 'tm': df.tm } })
+                  doc._sync.push ({key: item_diff, diff: { '_tm': df._tm } })
                 else
-                  time_of_sever_change = found.diff.tm;
-                  time_of_client_change = df.tm;
+                  time_of_sever_change = found.diff._tm;
+                  time_of_client_change = df._tm;
                   console.info 'tm_server', time_of_sever_change, 'tm_client', time_of_client_change
                   if time_of_sever_change > time_of_client_change
                     #данные обновлять нельзя, так как они изменены раньше, чем отправил кто-то другой
@@ -466,11 +468,11 @@ else
                     #сохранение разрешено
                     saving_complete = true;
                     console.info 'Сохраняю в базу', doc.title
-                    found.diff.tm = df.tm;
-                    doc.tm = new Date(start_sync_time); #Сохраняю время изменения, для последующих отборов
+                    found.diff._tm = df._tm;
+                    doc._tm = new Date(start_sync_time); #Сохраняю время изменения, для последующих отборов
                     diff.apply([df], doc, true);
                     confirm_about_sync_success_for_client[db_name] = [] if !confirm_about_sync_success_for_client[db_name]
-                    confirm_about_sync_success_for_client[db_name].push( {_id:doc._id, tm: doc.tm } )
+                    confirm_about_sync_success_for_client[db_name].push( {_id:doc._id, tm: doc._tm } )
                 #console.info '_sync=', doc._sync, 'dif=', item_diff, 'df=', df;
                 
               #logJson "doc=", doc
@@ -700,6 +702,9 @@ else
 
   app.post '/api/v2/sync', app.oauth.authorise(), (req, res)->
     (require('../get/_js/server_sync')).get(req, res)
+
+  app.get '/api/v2/sync', (req, res)->
+    (require('../get/_js/server_sync')).get2(req, res)
 
   app.post('/api/v1/uploadImage', exports.uploadImage);
 

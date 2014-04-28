@@ -112,7 +112,7 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
       return if !old_value or !new_value or mythis.sync_now
       diffs = diffApi.diff( old_value, new_value, new Date().getTime() );
       _.each diffs, (diff)->
-        if diff.key[0][0] != '_' and diff.key[diff.key.length-1][0] != '$' and diff.key[diff.key.length-1][0] != '_' and diff.key[0] != 'tm'
+        if diff.key[0][0] != '_' and diff.key[diff.key.length-1][0] != '$' and diff.key[diff.key.length-1][0] != '_' and diff.key[0] != '_tm'
           key = diff.type+':'+diff.key.join('.');
           mythis.diff_journal[db_name] = {} if !mythis.diff_journal[db_name]
           mythis.diff_journal[db_name][old_value._id] = {} if !mythis.diff_journal[db_name][old_value._id]
@@ -126,11 +126,11 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
         console.info 'saved_local';
   getLastSyncTime: ()->
     max_element = _.max db_tree._db.tree, (el)->
-      if el.tm
-        return new Date(el.tm)
+      if el._tm
+        return new Date(el._tm)
       else 
         return 0
-    max_element.tm
+    max_element._tm
   dfd_sync: $q.defer();
   syncThrough: (transport, data)->
     mythis = @;
@@ -237,9 +237,9 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
       found = _.find db_tree._db[db_name], (el, key)->
         el._id == confirm_element._id
       if found
-        console.info 'confirm_times', found.tm, confirm_element.tm, mythis.sync_now;
+        console.info 'confirm_times', found._tm, confirm_element._tm, mythis.sync_now;
         i_need_refresh = true;
-        found.tm = confirm_element.tm;
+        found._tm = confirm_element._tm;
         found._new = false;
         delete mythis.diff_journal[db_name][confirm_element._id] if mythis.diff_journal?[db_name]?[confirm_element._id]
 

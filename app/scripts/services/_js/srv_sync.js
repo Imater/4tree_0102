@@ -160,7 +160,7 @@
             diffs = diffApi.diff(old_value, new_value, new Date().getTime());
             _.each(diffs, function(diff) {
               var key;
-              if (diff.key[0][0] !== '_' && diff.key[diff.key.length - 1][0] !== '$' && diff.key[diff.key.length - 1][0] !== '_' && diff.key[0] !== 'tm') {
+              if (diff.key[0][0] !== '_' && diff.key[diff.key.length - 1][0] !== '$' && diff.key[diff.key.length - 1][0] !== '_' && diff.key[0] !== '_tm') {
                 key = diff.type + ':' + diff.key.join('.');
                 if (!mythis.diff_journal[db_name]) {
                   mythis.diff_journal[db_name] = {};
@@ -183,13 +183,13 @@
         getLastSyncTime: function() {
           var max_element;
           max_element = _.max(db_tree._db.tree, function(el) {
-            if (el.tm) {
-              return new Date(el.tm);
+            if (el._tm) {
+              return new Date(el._tm);
             } else {
               return 0;
             }
           });
-          return max_element.tm;
+          return max_element._tm;
         },
         dfd_sync: $q.defer(),
         syncThrough: function(transport, data) {
@@ -316,9 +316,9 @@
               return el._id === confirm_element._id;
             });
             if (found) {
-              console.info('confirm_times', found.tm, confirm_element.tm, mythis.sync_now);
+              console.info('confirm_times', found._tm, confirm_element._tm, mythis.sync_now);
               i_need_refresh = true;
-              found.tm = confirm_element.tm;
+              found._tm = confirm_element._tm;
               found._new = false;
               if ((_ref = mythis.diff_journal) != null ? (_ref1 = _ref[db_name]) != null ? _ref1[confirm_element._id] : void 0 : void 0) {
                 return delete mythis.diff_journal[db_name][confirm_element._id];

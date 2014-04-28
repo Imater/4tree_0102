@@ -36,9 +36,9 @@ treeSchema = new Schema (
   'counters': [ { 'cnt_today': Number, 'title': String, 'days': [] } ]
   'hide_in_todo': Boolean
   'importance': { type: Number, default: 50 }
-  '_sync': [ { key: String, diff: { 'tm': String } } ]
+  '_sync': [ { key: String, diff: { '_tm': String } } ]
   '_sha1': String
-  'tm': Date
+  '_tm': Date
 )
 
 #treeSchema.index({user_id: 1, title: 1}, {unique: false});

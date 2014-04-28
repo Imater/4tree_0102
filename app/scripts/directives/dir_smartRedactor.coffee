@@ -34,6 +34,8 @@
             imageUpload: '/api/v1/uploadImage/?id='+$rootScope.$$childTail.set.user_id
             clipboardUploadUrl: '/api/v1/uploadImage/?id='+$rootScope.$$childTail.set.user_id
           }
+
+
           additionalOptions = (if attrs.smartRedactor then scope.$eval(attrs.smartRedactor) else {})
           editor = undefined
           $_element = angular.element(element)
@@ -45,6 +47,11 @@
             editor = $_element.redactor(options)
             ngModel.$render()
           , 10
+
+          $rootScope.$on 'refresh_editor', _.debounce (value)->
+              db_tree.getText( ngModel.$viewValue ).then (text_element)->
+                $_element.redactor "set", text_element?.text or "", false
+            , 1
 
           ngModel.$render = ->
             if angular.isDefined(editor)
