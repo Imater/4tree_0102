@@ -41,10 +41,14 @@
       var dfd, mythis;
       dfd = $.Deferred();
       mythis = this;
-      console.info('apply patch to ' + args.diff.db_name, args.old_row);
+      if (false) {
+        console.info('apply patch to ' + args.diff.db_name, args.old_row);
+      }
       args.new_row = jsondiffpatch.patch(JSON.parse(JSON.stringify(args.old_row)), args.diff.patch);
       args.new_row._sha1 = JSON_stringify.JSON_stringify(args.new_row)._sha1;
-      logJson('new_row', args.new_row);
+      if (false) {
+        logJson('new_row', args.new_row);
+      }
       async.parallel([
         function(callback) {
           return mythis.save_diff(args).then(function() {
@@ -67,7 +71,9 @@
     save_diff: function(args) {
       var dfd, new_diff;
       dfd = $.Deferred();
-      console.info('save_diff', args.old_row, args.new_row);
+      if (false) {
+        console.info('save_diff', args.old_row, args.new_row);
+      }
       new_diff = new Diff();
       new_diff.db_id = args.diff._id;
       new_diff.patch = args.diff.patch;
@@ -94,7 +100,9 @@
       }, args.new_row, {
         upsert: false
       }, function(err, doc) {
-        console.info('db_saved', err, doc);
+        if (false) {
+          console.info('db_saved', err, doc);
+        }
         return dfd.resolve(err);
       });
       return dfd.promise();
@@ -112,10 +120,11 @@
         var answer;
         answer = rows[0].body;
         return async.eachSeries(rows, function(dif, callback) {
+          logJson('body was = ', answer);
           answer = jsondiffpatch.patch(answer, dif.patch);
-          answer._sha1 = JSON_stringify.JSON_stringify(answer)._sha1;
+          logJson('body now = ', answer);
           logJson('dif = ', dif.patch);
-          logJson('dif = ', dif._tm);
+          answer._sha1 = JSON_stringify.JSON_stringify(answer)._sha1;
           return callback();
         }, function() {
           return dfd.resolve(answer);
@@ -154,18 +163,24 @@
     confirm_count = 0;
     sha1_sign = req.query.machine + JSON_stringify.JSON_stringify(diffs)._sha1;
     if (sha1_sign !== req.body.sha1_sign) {
-      console.info('Error of signing sync http: ' + req.body.sha1_sign + ' != ' + sha1_sign);
+      if (false) {
+        console.info('Error of signing sync http: ' + req.body.sha1_sign + ' != ' + sha1_sign);
+      }
       res.send();
     } else {
       send_to_client = {};
       async.eachLimit(diffs, 50, function(diff, callback) {
-        logJson('diff ' + diff._id, diff);
+        if (false) {
+          logJson('diff ' + diff._id, diff);
+        }
         return global._db_models[diff.db_name].findOne({
           '_sha1': diff._sha1,
           '_id': diff._id
         }, void 0, function(err, row) {
           if (row) {
-            console.info('found in db ', row);
+            if (false) {
+              console.info('found in db ', row);
+            }
             return sync.apply_patch({
               old_row: row,
               diff: diff
@@ -187,7 +202,9 @@
               '_sha1': diff._sha1,
               'db_id': diff._id
             }, void 0, function(err, row) {
-              logJson('dont found in db, but found in diffs', row.body);
+              if (false) {
+                logJson('dont found in db, but found in diffs', row.body);
+              }
               return sync.apply_patch({
                 old_row: row,
                 diff: diff
@@ -195,6 +212,9 @@
                 return sync.combineDiffsByTime(args.new_row.db_id).then(function(combined) {
                   var tm;
                   logJson('combined = ', combined);
+                  if (combined) {
+                    logJson('stoping diff', diff);
+                  }
                   tm = new Date();
                   if (!send_to_client[args.new_row.db_name]) {
                     send_to_client[diff.db_name] = {
@@ -223,14 +243,18 @@
                       old_row: now_doc,
                       diff: empty_diff
                     }, 'dont_save_to_db').then(function(args) {
-                      console.info('saved_original', args);
+                      if (false) {
+                        console.info('saved_original', args);
+                      }
                       combined._tm = new Date();
                       return global._db_models[args.diff.db_name].update({
                         _id: args.diff._id
                       }, combined, {
                         upsert: false
                       }, function(err, doc) {
-                        console.info('saved from diff', err, doc);
+                        if (false) {
+                          console.info('saved from diff', err, doc);
+                        }
                         return callback();
                       });
                     });
@@ -244,11 +268,13 @@
         return async.each(Object.keys(global._db_models), function(db_name, callback) {
           var tm;
           tm = new Date(JSON.parse(last_sync_time)).toISOString();
-          console.info('FIND', {
-            _tm: {
-              $gt: tm
-            }
-          });
+          if (false) {
+            console.info('FIND', {
+              _tm: {
+                $gt: tm
+              }
+            });
+          }
           return global._db_models[db_name].find({
             _tm: {
               $gt: tm
@@ -263,9 +289,11 @@
               }
               return callback2(need);
             }, function(docs_filtered) {
-              console.info({
-                docs_filtered: docs_filtered
-              });
+              if (false) {
+                console.info({
+                  docs_filtered: docs_filtered
+                });
+              }
               if (docs_filtered.length) {
                 if (!send_to_client[db_name]) {
                   send_to_client[db_name] = {};

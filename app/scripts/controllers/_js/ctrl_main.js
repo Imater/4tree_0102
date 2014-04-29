@@ -47,7 +47,7 @@
       $scope.set = {
         user_id: '5330ff92898a2b63c2f7095f',
         machine: localStorage.getItem('mongoMachineId'),
-        autosync_on: true,
+        autosync_on: false,
         today_date: new Date(),
         focus: 1,
         focus_edit: 1,
@@ -74,7 +74,6 @@
             active: 0
           }
         ],
-        autosync_on: true,
         from_today_index: 0,
         side_views_menu: [
           {

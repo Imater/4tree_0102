@@ -22,6 +22,9 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   _db: {
     texts: {}
   }
+  _tmp: {
+    _diffs: {}
+  }
   _cache: {}
   salt: ()->
     'Salt is a mineral substance composed'
@@ -62,7 +65,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     @dbInit();
     dfd = $.Deferred();
     @ydnLoadFromLocal(mythis).then (records)->
-      if !records.tree or Object.keys(records.tree).length == 0 or true
+      if !records.tree or Object.keys(records.tree).length == 0 #or true
         console.info 'NEED DATA FROM NET';
         mythis.getTreeFromWeb().then (data)->
           result = {};
@@ -165,6 +168,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     dfd = $.Deferred();
     @dbInit();
     mythis = @;
+    mythis._tmp._diffs = {}
     @db.clear('_diffs').done ()->
       mythis.db.clear(db_name).done ()->
         async.eachLimit Object.keys(records), 200, (el_name, callback)->
@@ -181,6 +185,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     console.time 'load_local'
     result = {};
     mythis.db.values('_diffs',null,999999999).done (diffs)->
+      _.each diffs, (diff)->
+        mythis._tmp._diffs[diff._id] = diffs
       async.each mythis.store_schema, (table_schema, callback)->
         db_name = table_schema.name;
         if mythis.dont_store_to_memory.indexOf(db_name)==-1
@@ -764,18 +770,18 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   getTextFromDB: (text_id)->
     mythis = @;
     dfd = $q.defer();
-    mythis.db.get('_diffs', text_id).done (patch_found)->
-      mythis.db.get('texts', text_id).done (found)->
-        if found
-          new_text = mythis.diff.patch({ txt: found.text}, patch_found.patch) if patch_found
-          found.text = new_text.txt.toString() if new_text
-          dfd.resolve( found )
-        else
-          #Запрошу текст из LocalDB чуть позже (видимо ещё не сохранился)
-          mythis.getTextLater(text_id).then (text_element)->
-            dfd.resolve(text_element);
-        return
+    patch_found = mythis._tmp._diffs[text_id]
+    mythis.db.get('texts', text_id).done (found)->
+      if found
+        new_text = mythis.diff.patch({ txt: found.text}, patch_found.patch) if patch_found
+        found.text = new_text.txt.toString() if new_text
+        dfd.resolve( found )
+      else
+        #Запрошу текст из LocalDB чуть позже (видимо ещё не сохранился)
+        mythis.getTextLater(text_id).then (text_element)->
+          dfd.resolve(text_element);
       return
+    return
     return dfd.promise;
   getText: (text_id)->
     mythis = @;
@@ -789,11 +795,13 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       found.text = new_text
       mythis.saveDiff('texts', text_id)
   'jsStartSyncInWhile': _.debounce ()->
-      console.info 'wait 5 sec...'
+      console.info 'wait 5 sec...'+$rootScope.$$childTail.set.autosync_on
       @syncDiff() if false or $rootScope.$$childTail.set.autosync_on
     , 100
+  saving_diff_busy: false
   saveDiff: (db_name, _id)->
     mythis = @;
+    dfd = $q.defer();
     @getElement(db_name, _id).then (new_element)->
       mythis.getElementFromLocal(db_name, _id).then (old_element)->
         if new_element and old_element
@@ -810,24 +818,33 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
             _tm: new Date().getTime()
           }
           if patch
-            mythis.db.put('_diffs', el).done ()->
-              mythis.jsStartSyncInWhile()
-              console.info 'diff_saved'
+            #если синхронизация уже идёт, то изменения пока не сохраняем
+            if mythis.saving_diff_busy
+              console.info '########Запрет на сохранение. Идёт синхронизация.###########', patch
+              return
+            else
+              mythis.saving_diff_busy = true
+              mythis._tmp._diffs[el._id] = el
+              mythis.db.put('_diffs', el).done ()->
+                mythis.saving_diff_busy = false
+                console.info 'diff_saved'
+                dfd.resolve()
+                mythis.jsStartSyncInWhile()
         return
       return
-    return
+    dfd.promise
 
   getElementFromLocalPlusDiffs: (db_name, _id)->
     dfd = $q.defer();
     mythis = @;
     @getElementFromLocal(db_name, _id).then (result)->
-      mythis.db.get('_diffs', _id).done (diff)->
-        if diff and diff._id and diff.db_name == db_name
-          result = mythis.diff.patch(result, diff.patch)
-          dfd.resolve(result);
-        else
-          dfd.resolve(result);
-        return
+      diff = mythis._tmp._diffs[ _id ]
+
+      if diff and diff._id and diff.db_name == db_name
+        result = mythis.diff.patch(result, diff.patch)
+        dfd.resolve(result);
+      else
+        dfd.resolve(result);
       return
     dfd.promise
 
@@ -857,6 +874,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   syncApplyResults: (results)->
     dfd = $q.defer();
     mythis = @;
+    console.info 'backup_elements_before_sync', mythis.backup_elements_before_sync
+
     _.each Object.keys(results), (db_name)->
       db_data = results[db_name];
       if db_data.new_data
@@ -878,6 +897,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         _.each Object.keys(db_data.confirm), (confirm_id)->
           confirm_element = db_data.confirm[confirm_id];
           console.info 'CONFIRMED', confirm_id, confirm_element._sha1
+          # тут нужно учесть, вдруг во время синхронизации элемент изменился
+          # TODO
           mythis.getElement(db_name, confirm_id).then (doc)->
             sha1 = mythis.JSON_stringify( doc )._sha1
             #Если контрольные суммы сервера и клиента совпали, то удаляем diff и обновляем _sha1
@@ -886,12 +907,47 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
               doc._tm = confirm_element._tm
               mythis.db.put(db_name, doc).done (err)->
                 console.info 'new data applyed', err, doc;
+              delete mythis._tmp._diffs[confirm_id] if mythis._tmp._diffs[confirm_id]
               mythis.db.remove('_diffs', confirm_id).done (err)->
                 console.info 'diff - deleted', err
+                dfd.resolve();
             else 
-              console.info 'ERROR sha1 CLIENT NOT EQUAL SERVER!'
+              console.info '!!!!!!!ERROR sha1 CLIENT NOT EQUAL SERVER!!!!!!!!!!!!!!'
+              old_doc = mythis.backup_elements_before_sync[doc._id];
+              console.info 'doc_new', doc
+              console.info 'doc_old', old_doc
+              old_doc._sha1 = mythis.JSON_stringify(old_doc)._sha1
+              doc._sha1 = old_doc._sha1
+              patch = mythis.diff.diff( old_doc, doc );
+              console.info 'PATCH = ', patch
+              mythis._db[db_name][confirm_id] = old_doc;
+              mythis.db.put(db_name, old_doc).done (err)->
+                el = {
+                  _id: confirm_id
+                  patch: patch
+                  db_name: db_name
+                  _sha1: old_doc._sha1
+                  user_id: $rootScope.$$childTail.set.user_id
+                  machine: $rootScope.$$childTail.set.machine
+                  _tm: new Date().getTime()
+                }
+                if patch
+                  #если синхронизация уже идёт, то изменения пока не сохраняем
+                  mythis.saving_diff_busy = true
+                  mythis._tmp._diffs[el._id] = el
+                  mythis.db.put('_diffs', el).done ()->
+                    mythis.saving_diff_busy = false
+                    console.info 'diff_saved NEW'
+                    dfd.resolve();
+                else
+                  dfd.resolve();
 
-    dfd.resolve();
+
+
+
+
+
+
     dfd.promise
 
 
@@ -918,20 +974,26 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     , ()->
       dfd.resolve( max_time )
     dfd.promise;
-
+  sync_now: false
   syncDiff: ()->
     mythis = @;
-    console.info 'New syncing...'
+    if !mythis.sync_now
+      mythis.sync_now = true
+      console.info 'New syncing...'
 
-    @getDiffsForSync().then (diffs)->
-      if $socket.is_online() and false
-        mythis.syncThrough('websocket', data).then ()->
-          console.info 'sync_socket_ended';
-          dfd.resolve();
-      else
-        mythis.sendDiffToWeb(diffs).then (results)->
-          mythis.syncApplyResults(results).then ()->
-            console.info 'sha1 applyed';
+      @getDiffsForSync().then (diffs)->
+        if $socket.is_online() and false
+          mythis.syncThrough('websocket', data).then ()->
+            console.info 'sync_socket_ended';
+            dfd.resolve();
+        else
+          mythis.sendDiffToWeb(diffs).then (results)->
+            mythis.syncApplyResults(results).then ()->
+              console.info 'sha1 applyed';
+              console.info 'STOP syncing...'
+              mythis.sync_now = false
+    else
+      console.info 'cant sync now, already syncing...................'
 
   sendDiffToWeb: (diffs)->
     console.info 'Sending: ', JSON.stringify(diffs)?.length
@@ -957,11 +1019,18 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         }).then (result)->
           dfd.resolve result.data
       dfd.promise
-  
+  backup_elements_before_sync: {}
   getDiffsForSync: ()->
     dfd = $q.defer()
+    mythis = @
     @db.values('_diffs',null,999999999).done (diffs)->
-      dfd.resolve(diffs);
+      mythis.backup_elements_before_sync = {}
+      _.each diffs, (dif)->
+        console.info 'dif = ', dif
+        mythis.getElement(dif.db_name, dif._id).then (now_element)->
+          mythis.backup_elements_before_sync[dif._id] = JSON.parse( JSON.stringify( now_element ) )
+          console.info 'backup = ',now_element.text
+          dfd.resolve(diffs);
     dfd.promise
   TestJson: ()->
     mythis = @;

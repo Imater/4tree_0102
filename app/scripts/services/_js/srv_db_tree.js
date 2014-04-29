@@ -44,6 +44,9 @@
         _db: {
           texts: {}
         },
+        _tmp: {
+          _diffs: {}
+        },
         _cache: {},
         salt: function() {
           return 'Salt is a mineral substance composed';
@@ -99,7 +102,7 @@
           this.dbInit();
           dfd = $.Deferred();
           this.ydnLoadFromLocal(mythis).then(function(records) {
-            if (!records.tree || Object.keys(records.tree).length === 0 || true) {
+            if (!records.tree || Object.keys(records.tree).length === 0) {
               console.info('NEED DATA FROM NET');
               return mythis.getTreeFromWeb().then(function(data) {
                 var result;
@@ -217,6 +220,7 @@
           dfd = $.Deferred();
           this.dbInit();
           mythis = this;
+          mythis._tmp._diffs = {};
           this.db.clear('_diffs').done(function() {
             return mythis.db.clear(db_name).done(function() {
               return async.eachLimit(Object.keys(records), 200, function(el_name, callback) {
@@ -242,6 +246,9 @@
           console.time('load_local');
           result = {};
           mythis.db.values('_diffs', null, 999999999).done(function(diffs) {
+            _.each(diffs, function(diff) {
+              return mythis._tmp._diffs[diff._id] = diffs;
+            });
             return async.each(mythis.store_schema, function(table_schema, callback) {
               var db_name;
               db_name = table_schema.name;
@@ -1187,29 +1194,29 @@
           return mythis.dfdTextLater.promise;
         }, 3000),
         getTextFromDB: function(text_id) {
-          var dfd, mythis;
+          var dfd, mythis, patch_found;
           mythis = this;
           dfd = $q.defer();
-          mythis.db.get('_diffs', text_id).done(function(patch_found) {
-            mythis.db.get('texts', text_id).done(function(found) {
-              var new_text;
-              if (found) {
-                if (patch_found) {
-                  new_text = mythis.diff.patch({
-                    txt: found.text
-                  }, patch_found.patch);
-                }
-                if (new_text) {
-                  found.text = new_text.txt.toString();
-                }
-                dfd.resolve(found);
-              } else {
-                mythis.getTextLater(text_id).then(function(text_element) {
-                  return dfd.resolve(text_element);
-                });
+          patch_found = mythis._tmp._diffs[text_id];
+          mythis.db.get('texts', text_id).done(function(found) {
+            var new_text;
+            if (found) {
+              if (patch_found) {
+                new_text = mythis.diff.patch({
+                  txt: found.text
+                }, patch_found.patch);
               }
-            });
+              if (new_text) {
+                found.text = new_text.txt.toString();
+              }
+              dfd.resolve(found);
+            } else {
+              mythis.getTextLater(text_id).then(function(text_element) {
+                return dfd.resolve(text_element);
+              });
+            }
           });
+          return;
           return dfd.promise;
         },
         getText: function(text_id) {
@@ -1230,14 +1237,16 @@
           }
         },
         'jsStartSyncInWhile': _.debounce(function() {
-          console.info('wait 5 sec...');
+          console.info('wait 5 sec...' + $rootScope.$$childTail.set.autosync_on);
           if (false || $rootScope.$$childTail.set.autosync_on) {
             return this.syncDiff();
           }
         }, 100),
+        saving_diff_busy: false,
         saveDiff: function(db_name, _id) {
-          var mythis;
+          var dfd, mythis;
           mythis = this;
+          dfd = $q.defer();
           this.getElement(db_name, _id).then(function(new_element) {
             mythis.getElementFromLocal(db_name, _id).then(function(old_element) {
               var el, patch;
@@ -1253,28 +1262,38 @@
                   _tm: new Date().getTime()
                 };
                 if (patch) {
-                  mythis.db.put('_diffs', el).done(function() {
-                    mythis.jsStartSyncInWhile();
-                    return console.info('diff_saved');
-                  });
+                  if (mythis.saving_diff_busy) {
+                    console.info('########Запрет на сохранение. Идёт синхронизация.###########', patch);
+                    return;
+                  } else {
+                    mythis.saving_diff_busy = true;
+                    mythis._tmp._diffs[el._id] = el;
+                    mythis.db.put('_diffs', el).done(function() {
+                      mythis.saving_diff_busy = false;
+                      console.info('diff_saved');
+                      dfd.resolve();
+                      return mythis.jsStartSyncInWhile();
+                    });
+                  }
                 }
               }
             });
           });
+          return dfd.promise;
         },
         getElementFromLocalPlusDiffs: function(db_name, _id) {
           var dfd, mythis;
           dfd = $q.defer();
           mythis = this;
           this.getElementFromLocal(db_name, _id).then(function(result) {
-            mythis.db.get('_diffs', _id).done(function(diff) {
-              if (diff && diff._id && diff.db_name === db_name) {
-                result = mythis.diff.patch(result, diff.patch);
-                dfd.resolve(result);
-              } else {
-                dfd.resolve(result);
-              }
-            });
+            var diff;
+            diff = mythis._tmp._diffs[_id];
+            if (diff && diff._id && diff.db_name === db_name) {
+              result = mythis.diff.patch(result, diff.patch);
+              dfd.resolve(result);
+            } else {
+              dfd.resolve(result);
+            }
           });
           return dfd.promise;
         },
@@ -1312,6 +1331,7 @@
           var dfd, mythis;
           dfd = $q.defer();
           mythis = this;
+          console.info('backup_elements_before_sync', mythis.backup_elements_before_sync);
           _.each(Object.keys(results), function(db_name) {
             var db_data;
             db_data = results[db_name];
@@ -1341,7 +1361,7 @@
                 confirm_element = db_data.confirm[confirm_id];
                 console.info('CONFIRMED', confirm_id, confirm_element._sha1);
                 return mythis.getElement(db_name, confirm_id).then(function(doc) {
-                  var sha1;
+                  var old_doc, patch, sha1;
                   sha1 = mythis.JSON_stringify(doc)._sha1;
                   if (sha1 === confirm_element._sha1) {
                     doc._sha1 = confirm_element._sha1;
@@ -1349,17 +1369,51 @@
                     mythis.db.put(db_name, doc).done(function(err) {
                       return console.info('new data applyed', err, doc);
                     });
+                    if (mythis._tmp._diffs[confirm_id]) {
+                      delete mythis._tmp._diffs[confirm_id];
+                    }
                     return mythis.db.remove('_diffs', confirm_id).done(function(err) {
-                      return console.info('diff - deleted', err);
+                      console.info('diff - deleted', err);
+                      return dfd.resolve();
                     });
                   } else {
-                    return console.info('ERROR sha1 CLIENT NOT EQUAL SERVER!');
+                    console.info('!!!!!!!ERROR sha1 CLIENT NOT EQUAL SERVER!!!!!!!!!!!!!!');
+                    old_doc = mythis.backup_elements_before_sync[doc._id];
+                    console.info('doc_new', doc);
+                    console.info('doc_old', old_doc);
+                    old_doc._sha1 = mythis.JSON_stringify(old_doc)._sha1;
+                    doc._sha1 = old_doc._sha1;
+                    patch = mythis.diff.diff(old_doc, doc);
+                    console.info('PATCH = ', patch);
+                    mythis._db[db_name][confirm_id] = old_doc;
+                    return mythis.db.put(db_name, old_doc).done(function(err) {
+                      var el;
+                      el = {
+                        _id: confirm_id,
+                        patch: patch,
+                        db_name: db_name,
+                        _sha1: old_doc._sha1,
+                        user_id: $rootScope.$$childTail.set.user_id,
+                        machine: $rootScope.$$childTail.set.machine,
+                        _tm: new Date().getTime()
+                      };
+                      if (patch) {
+                        mythis.saving_diff_busy = true;
+                        mythis._tmp._diffs[el._id] = el;
+                        return mythis.db.put('_diffs', el).done(function() {
+                          mythis.saving_diff_busy = false;
+                          console.info('diff_saved NEW');
+                          return dfd.resolve();
+                        });
+                      } else {
+                        return dfd.resolve();
+                      }
+                    });
                   }
                 });
               });
             }
           });
-          dfd.resolve();
           return dfd.promise;
         },
         getLastSyncTime: function() {
@@ -1394,24 +1448,32 @@
           });
           return dfd.promise;
         },
+        sync_now: false,
         syncDiff: function() {
           var mythis;
           mythis = this;
-          console.info('New syncing...');
-          return this.getDiffsForSync().then(function(diffs) {
-            if ($socket.is_online() && false) {
-              return mythis.syncThrough('websocket', data).then(function() {
-                console.info('sync_socket_ended');
-                return dfd.resolve();
-              });
-            } else {
-              return mythis.sendDiffToWeb(diffs).then(function(results) {
-                return mythis.syncApplyResults(results).then(function() {
-                  return console.info('sha1 applyed');
+          if (!mythis.sync_now) {
+            mythis.sync_now = true;
+            console.info('New syncing...');
+            return this.getDiffsForSync().then(function(diffs) {
+              if ($socket.is_online() && false) {
+                return mythis.syncThrough('websocket', data).then(function() {
+                  console.info('sync_socket_ended');
+                  return dfd.resolve();
                 });
-              });
-            }
-          });
+              } else {
+                return mythis.sendDiffToWeb(diffs).then(function(results) {
+                  return mythis.syncApplyResults(results).then(function() {
+                    console.info('sha1 applyed');
+                    console.info('STOP syncing...');
+                    return mythis.sync_now = false;
+                  });
+                });
+              }
+            });
+          } else {
+            return console.info('cant sync now, already syncing...................');
+          }
         },
         sendDiffToWeb: function(diffs) {
           var dfd, mythis, sha1_sign, _ref;
@@ -1442,11 +1504,21 @@
             return dfd.promise;
           });
         },
+        backup_elements_before_sync: {},
         getDiffsForSync: function() {
-          var dfd;
+          var dfd, mythis;
           dfd = $q.defer();
+          mythis = this;
           this.db.values('_diffs', null, 999999999).done(function(diffs) {
-            return dfd.resolve(diffs);
+            mythis.backup_elements_before_sync = {};
+            return _.each(diffs, function(dif) {
+              console.info('dif = ', dif);
+              return mythis.getElement(dif.db_name, dif._id).then(function(now_element) {
+                mythis.backup_elements_before_sync[dif._id] = JSON.parse(JSON.stringify(now_element));
+                console.info('backup = ', now_element.text);
+                return dfd.resolve(diffs);
+              });
+            });
           });
           return dfd.promise;
         },

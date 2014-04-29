@@ -53,7 +53,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   $scope.set = {
     user_id: '5330ff92898a2b63c2f7095f'
     machine: localStorage.getItem('mongoMachineId')
-    autosync_on: true
+    autosync_on: false
     today_date: new Date()
     focus: 1
     focus_edit: 1
@@ -75,7 +75,6 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       {active: 5} #2
       {active: 0} #3
     ]
-    autosync_on: true
     from_today_index: 0
     side_views_menu: [
       {

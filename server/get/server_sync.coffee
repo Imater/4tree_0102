@@ -32,10 +32,10 @@ sync = {
     ###
     dfd = $.Deferred()
     mythis = @;
-    console.info 'apply patch to '+args.diff.db_name, args.old_row
+    console.info 'apply patch to '+args.diff.db_name, args.old_row if false
     args.new_row = jsondiffpatch.patch( JSON.parse( JSON.stringify(args.old_row) ), args.diff.patch)
     args.new_row._sha1 = JSON_stringify.JSON_stringify( args.new_row )._sha1
-    logJson 'new_row', args.new_row 
+    logJson 'new_row', args.new_row if false
     async.parallel [
       (callback)->
         mythis.save_diff(args).then ()->
@@ -51,7 +51,7 @@ sync = {
     dfd.promise();
   save_diff: (args)->
     dfd = $.Deferred()
-    console.info 'save_diff', args.old_row, args.new_row
+    console.info 'save_diff', args.old_row, args.new_row if false
     new_diff = new Diff()
     new_diff.db_id =  args.diff._id
     new_diff.patch = args.diff.patch
@@ -71,7 +71,7 @@ sync = {
     dfd = $.Deferred()
     args.new_row._tm = new Date()
     global._db_models[args.diff.db_name].update {_id: args.diff._id}, args.new_row, {upsert: false}, (err, doc)->
-      console.info 'db_saved', err, doc
+      console.info 'db_saved', err, doc if false
       dfd.resolve(err)
     dfd.promise();
   combineDiffsByTime: (_id)->
@@ -79,10 +79,11 @@ sync = {
     Diff.find {'db_id':_id}, undefined, {sort: {tm:1}}, (err, rows)->
       answer = rows[0].body;
       async.eachSeries rows, (dif, callback)->
+        logJson 'body was = ', answer
         answer = jsondiffpatch.patch(answer, dif.patch)
-        answer._sha1 = JSON_stringify.JSON_stringify( answer )._sha1
+        logJson 'body now = ', answer
         logJson 'dif = ', dif.patch
-        logJson 'dif = ', dif._tm
+        answer._sha1 = JSON_stringify.JSON_stringify( answer )._sha1
         callback()
       , ()->
         dfd.resolve(answer);
@@ -114,16 +115,16 @@ exports.fullSyncUniversal = (req, res)->
 
   sha1_sign = req.query.machine + JSON_stringify.JSON_stringify(diffs)._sha1
   if sha1_sign != req.body.sha1_sign
-    console.info 'Error of signing sync http: '+req.body.sha1_sign+' != '+sha1_sign
+    console.info 'Error of signing sync http: '+req.body.sha1_sign+' != '+sha1_sign if false
     res.send();
   else
     send_to_client = {};
     async.eachLimit diffs, 50, (diff, callback)->
-      logJson 'diff '+diff._id, diff
+      logJson 'diff '+diff._id, diff if false
 
       global._db_models[diff.db_name].findOne {'_sha1':diff._sha1, '_id':diff._id}, undefined, (err, row)->
         if row
-          console.info 'found in db ', row
+          console.info 'found in db ', row if false
           sync.apply_patch({ 
             old_row: row
             diff: diff
@@ -134,13 +135,15 @@ exports.fullSyncUniversal = (req, res)->
             callback()
         else
           Diff.findOne {'_sha1':diff._sha1, 'db_id':diff._id}, undefined, (err, row)->
-            logJson 'dont found in db, but found in diffs', row.body
+            logJson 'dont found in db, but found in diffs', row.body if false
             sync.apply_patch({ 
               old_row: row
               diff: diff
             }, 'dont_save_to_db').then (args)->
               sync.combineDiffsByTime(args.new_row.db_id).then (combined)->
                 logJson 'combined = ', combined
+                if combined
+                  logJson 'stoping diff', diff
                 tm = new Date();
                 send_to_client[diff.db_name] = { confirm: {}, merged: {} } if !send_to_client[args.new_row.db_name]
                 send_to_client[diff.db_name]['merged'][combined._id] = { combined }
@@ -156,17 +159,17 @@ exports.fullSyncUniversal = (req, res)->
                     old_row: now_doc
                     diff: empty_diff
                   }, 'dont_save_to_db').then (args)->
-                    console.info 'saved_original', args
+                    console.info 'saved_original', args if false
                     combined._tm = new Date();
                     ##забекапить в дифах
                     global._db_models[args.diff.db_name].update {_id: args.diff._id}, combined, {upsert: false}, (err, doc)->
-                      console.info 'saved from diff', err, doc
+                      console.info 'saved from diff', err, doc if false
                       callback() 
 
     , ()->
       async.each Object.keys(global._db_models), (db_name, callback)->
         tm = new Date( JSON.parse(last_sync_time) ).toISOString();
-        console.info 'FIND', { _tm: { $gt: tm } }
+        console.info 'FIND', { _tm: { $gt: tm } } if false
         global._db_models[db_name].find { _tm: { $gt: tm } }, (err, docs)->
           async.filter docs, (doc, callback2)->
             if send_to_client?[db_name]?['confirm']?[ doc._id ]?._sha1 == doc._sha1
@@ -175,7 +178,7 @@ exports.fullSyncUniversal = (req, res)->
               need = true
             callback2(need);
           , (docs_filtered)->
-            console.info { docs_filtered }
+            console.info { docs_filtered } if false
             if docs_filtered.length
               send_to_client[db_name] = {} if !send_to_client[db_name]
               send_to_client[db_name].new_data = docs_filtered

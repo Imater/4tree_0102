@@ -139,7 +139,7 @@
         <li class="divider"></li>
         <li>
           <span ng-click="$event.stopPropagation();" class="replace_a">
-            <input type="checkbox" id="autosync_on" ng-model="fn.service.syncApi.autosync_on" ng-change="fn.service.syncApi.jsStartSync();"> 
+            <input type="checkbox" id="autosync_on" ng-model="set.autosync_on" ng-change="fn.service.tree_db.sendDiff();"> 
             <label for="autosync_on">Автосинхронизация</label>
           </span>
         </li>
