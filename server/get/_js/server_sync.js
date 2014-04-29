@@ -139,16 +139,26 @@
   };
 
   exports.get = function(req, res) {
-    var diffs, last_sync_time, send_to_client, sha1_sign;
+    return exports.fullSyncUniversal(req, res).then(function(data_to_client) {
+      return res.send(data_to_client);
+    });
+  };
+
+  exports.fullSyncUniversal = function(req, res) {
+    var confirm_count, dfd, diffs, last_sync_time, machine, send_to_client, sha1_sign, user_id;
+    dfd = new $.Deferred();
     diffs = req.body.diffs;
+    user_id = req.body.user_id;
     last_sync_time = req.query.last_sync_time;
+    machine = req.query.machine;
+    confirm_count = 0;
     sha1_sign = req.query.machine + JSON_stringify.JSON_stringify(diffs)._sha1;
     if (sha1_sign !== req.body.sha1_sign) {
       console.info('Error of signing sync http: ' + req.body.sha1_sign + ' != ' + sha1_sign);
-      return res.send();
+      res.send();
     } else {
       send_to_client = {};
-      return async.eachLimit(diffs, 50, function(diff, callback) {
+      async.eachLimit(diffs, 50, function(diff, callback) {
         logJson('diff ' + diff._id, diff);
         return global._db_models[diff.db_name].findOne({
           '_sha1': diff._sha1,
@@ -169,6 +179,7 @@
                 _sha1: args.new_row._sha1,
                 _tm: args.new_row._tm
               };
+              confirm_count++;
               return callback();
             });
           } else {
@@ -188,8 +199,7 @@
                   if (!send_to_client[args.new_row.db_name]) {
                     send_to_client[diff.db_name] = {
                       confirm: {},
-                      merged: {},
-                      _tm: 'sex'
+                      merged: {}
                     };
                   }
                   send_to_client[diff.db_name]['merged'][combined._id] = {
@@ -199,6 +209,7 @@
                     _sha1: combined._sha1,
                     _tm: combined._tm
                   };
+                  confirm_count++;
                   return global._db_models[args.diff.db_name].findOne({
                     _id: args.diff._id
                   }, void 0, function(err, now_doc) {
@@ -243,18 +254,54 @@
               $gt: tm
             }
           }, function(err, docs) {
-            if (!send_to_client[db_name]) {
-              send_to_client[db_name] = {};
-            }
-            send_to_client[db_name].new_data = docs;
-            return callback();
+            return async.filter(docs, function(doc, callback2) {
+              var need, _ref, _ref1, _ref2;
+              if ((send_to_client != null ? (_ref = send_to_client[db_name]) != null ? (_ref1 = _ref['confirm']) != null ? (_ref2 = _ref1[doc._id]) != null ? _ref2._sha1 : void 0 : void 0 : void 0 : void 0) === doc._sha1) {
+                need = false;
+              } else {
+                need = true;
+              }
+              return callback2(need);
+            }, function(docs_filtered) {
+              console.info({
+                docs_filtered: docs_filtered
+              });
+              if (docs_filtered.length) {
+                if (!send_to_client[db_name]) {
+                  send_to_client[db_name] = {};
+                }
+                send_to_client[db_name].new_data = docs_filtered;
+              }
+              return callback();
+            });
           });
         }, function() {
-          send_to_client.now_time = new Date();
-          return res.send(send_to_client);
+          var clients;
+          send_to_client.server_time = new Date();
+          send_to_client.confirm_count = confirm_count;
+          dfd.resolve(send_to_client);
+          if (confirm_count > 0) {
+            clients = global.io.sockets.clients('user_id:' + user_id);
+            if (clients) {
+              return async.each(Object.keys(clients), function(client_i, callback3) {
+                var client;
+                client = clients[client_i];
+                client.get('nickname', function(err, nickname) {
+                  nickname = JSON.parse(nickname);
+                  if (nickname && nickname.machine !== machine) {
+                    return client.emit('need_sync_now');
+                  }
+                });
+                return callback3();
+              }, function() {
+                return console.info('info sended by socket');
+              });
+            }
+          }
         });
       });
     }
+    return dfd.promise();
   };
 
 }).call(this);

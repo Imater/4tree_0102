@@ -22,7 +22,7 @@
       $socket.on('who_are_you', $scope, function(data) {
         return $socket.emit('i_am_user', {
           _id: $scope.set.user_id,
-          user_instance: $scope.set.user_instance
+          machine: $rootScope.$$childTail.set.machine
         });
       });
       $socket.on('file_loaded', $scope, function(data) {
@@ -32,6 +32,9 @@
         fn('success');
         console.info('sync_data', data);
         return syncApi.jsUpdateDb(data);
+      });
+      $socket.on('need_sync_now', $scope, function(data) {
+        return db_tree.syncDiff();
       });
       $socket.on('sync_answer', $scope, function(data) {
         return syncApi.jsUpdateDb(data).then(function() {
@@ -44,6 +47,7 @@
       $scope.set = {
         user_id: '5330ff92898a2b63c2f7095f',
         machine: localStorage.getItem('mongoMachineId'),
+        autosync_on: true,
         today_date: new Date(),
         focus: 1,
         focus_edit: 1,

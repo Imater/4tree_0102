@@ -18,7 +18,7 @@ angular.module("4treeApp").factory 'datasource', ['$timeout', '$rootScope', ($ti
   scope2: $rootScope
 ]
 
-angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', ($translate, $http, $q, $rootScope, oAuth2Api, $timeout, syncApi) ->
+angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', '$socket', ($translate, $http, $q, $rootScope, oAuth2Api, $timeout, $socket) ->
   _db: {
     texts: {}
   }
@@ -788,6 +788,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     if (found = @_db['texts'][text_id])
       found.text = new_text
       mythis.saveDiff('texts', text_id)
+  'jsStartSyncInWhile': _.debounce ()->
+      console.info 'wait 5 sec...'
+      @syncDiff() if false or $rootScope.$$childTail.set.autosync_on
+    , 100
   saveDiff: (db_name, _id)->
     mythis = @;
     @getElement(db_name, _id).then (new_element)->
@@ -807,6 +811,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           }
           if patch
             mythis.db.put('_diffs', el).done ()->
+              mythis.jsStartSyncInWhile()
               console.info 'diff_saved'
         return
       return
@@ -889,13 +894,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     dfd.resolve();
     dfd.promise
 
-  syncDiff: ()->
-    mythis = @;
-    console.info 'New syncing...'
-    @getDiffsForSync().then (diffs)->
-      mythis.sendDiffToWeb(diffs).then (results)->
-        mythis.syncApplyResults(results).then ()->
-          console.info 'sha1 applyed';
+
+
 
   getLastSyncTime: ()->
     dfd = $q.defer();
@@ -919,6 +919,20 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       dfd.resolve( max_time )
     dfd.promise;
 
+  syncDiff: ()->
+    mythis = @;
+    console.info 'New syncing...'
+
+    @getDiffsForSync().then (diffs)->
+      if $socket.is_online() and false
+        mythis.syncThrough('websocket', data).then ()->
+          console.info 'sync_socket_ended';
+          dfd.resolve();
+      else
+        mythis.sendDiffToWeb(diffs).then (results)->
+          mythis.syncApplyResults(results).then ()->
+            console.info 'sha1 applyed';
+
   sendDiffToWeb: (diffs)->
     console.info 'Sending: ', JSON.stringify(diffs)?.length
     dfd = $q.defer();
@@ -938,6 +952,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           data: {
             diffs: diffs
             sha1_sign: sha1_sign
+            user_id: $rootScope.$$childTail.set.user_id
           }
         }).then (result)->
           dfd.resolve result.data

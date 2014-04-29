@@ -39,7 +39,7 @@
   ]);
 
   angular.module("4treeApp").service('db_tree', [
-    '$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', function($translate, $http, $q, $rootScope, oAuth2Api, $timeout, syncApi) {
+    '$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', '$socket', function($translate, $http, $q, $rootScope, oAuth2Api, $timeout, $socket) {
       return {
         _db: {
           texts: {}
@@ -1229,6 +1229,12 @@
             return mythis.saveDiff('texts', text_id);
           }
         },
+        'jsStartSyncInWhile': _.debounce(function() {
+          console.info('wait 5 sec...');
+          if (false || $rootScope.$$childTail.set.autosync_on) {
+            return this.syncDiff();
+          }
+        }, 100),
         saveDiff: function(db_name, _id) {
           var mythis;
           mythis = this;
@@ -1248,6 +1254,7 @@
                 };
                 if (patch) {
                   mythis.db.put('_diffs', el).done(function() {
+                    mythis.jsStartSyncInWhile();
                     return console.info('diff_saved');
                   });
                 }
@@ -1355,18 +1362,6 @@
           dfd.resolve();
           return dfd.promise;
         },
-        syncDiff: function() {
-          var mythis;
-          mythis = this;
-          console.info('New syncing...');
-          return this.getDiffsForSync().then(function(diffs) {
-            return mythis.sendDiffToWeb(diffs).then(function(results) {
-              return mythis.syncApplyResults(results).then(function() {
-                return console.info('sha1 applyed');
-              });
-            });
-          });
-        },
         getLastSyncTime: function() {
           var dfd, max_element, max_time, mythis;
           dfd = $q.defer();
@@ -1399,6 +1394,25 @@
           });
           return dfd.promise;
         },
+        syncDiff: function() {
+          var mythis;
+          mythis = this;
+          console.info('New syncing...');
+          return this.getDiffsForSync().then(function(diffs) {
+            if ($socket.is_online() && false) {
+              return mythis.syncThrough('websocket', data).then(function() {
+                console.info('sync_socket_ended');
+                return dfd.resolve();
+              });
+            } else {
+              return mythis.sendDiffToWeb(diffs).then(function(results) {
+                return mythis.syncApplyResults(results).then(function() {
+                  return console.info('sha1 applyed');
+                });
+              });
+            }
+          });
+        },
         sendDiffToWeb: function(diffs) {
           var dfd, mythis, sha1_sign, _ref;
           console.info('Sending: ', (_ref = JSON.stringify(diffs)) != null ? _ref.length : void 0);
@@ -1418,7 +1432,8 @@
                 },
                 data: {
                   diffs: diffs,
-                  sha1_sign: sha1_sign
+                  sha1_sign: sha1_sign,
+                  user_id: $rootScope.$$childTail.set.user_id
                 }
               }).then(function(result) {
                 return dfd.resolve(result.data);

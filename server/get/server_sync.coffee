@@ -98,9 +98,19 @@ sync = {
 exports.get2 = (req, res)->
   sync.combineAllDiffs(req, res)
 
+
 exports.get = (req, res)->
+  exports.fullSyncUniversal(req, res).then (data_to_client)->
+    res.send(data_to_client);
+
+exports.fullSyncUniversal = (req, res)->
+  dfd = new $.Deferred();
   diffs = req.body.diffs;
+  user_id = req.body.user_id;
   last_sync_time = req.query.last_sync_time;
+  machine = req.query.machine;
+
+  confirm_count = 0;
 
   sha1_sign = req.query.machine + JSON_stringify.JSON_stringify(diffs)._sha1
   if sha1_sign != req.body.sha1_sign
@@ -120,6 +130,7 @@ exports.get = (req, res)->
           }).then (args)->
             send_to_client[diff.db_name] = { confirm: {} } if !send_to_client[args.new_row.db_name]
             send_to_client[diff.db_name]['confirm'][args.new_row._id] = { _sha1: args.new_row._sha1, _tm: args.new_row._tm }
+            confirm_count++;
             callback()
         else
           Diff.findOne {'_sha1':diff._sha1, 'db_id':diff._id}, undefined, (err, row)->
@@ -131,9 +142,10 @@ exports.get = (req, res)->
               sync.combineDiffsByTime(args.new_row.db_id).then (combined)->
                 logJson 'combined = ', combined
                 tm = new Date();
-                send_to_client[diff.db_name] = { confirm: {}, merged: {}, _tm: 'sex' } if !send_to_client[args.new_row.db_name]
+                send_to_client[diff.db_name] = { confirm: {}, merged: {} } if !send_to_client[args.new_row.db_name]
                 send_to_client[diff.db_name]['merged'][combined._id] = { combined }
                 send_to_client[diff.db_name]['confirm'][combined._id] = { _sha1: combined._sha1, _tm: combined._tm }
+                confirm_count++
                 global._db_models[args.diff.db_name].findOne {_id:args.diff._id}, undefined, (err, now_doc)->
                   empty_diff = JSON.parse( JSON.stringify(diff) )
                   empty_diff._sha1 = now_doc._sha1
@@ -156,13 +168,37 @@ exports.get = (req, res)->
         tm = new Date( JSON.parse(last_sync_time) ).toISOString();
         console.info 'FIND', { _tm: { $gt: tm } }
         global._db_models[db_name].find { _tm: { $gt: tm } }, (err, docs)->
-          send_to_client[db_name] = {} if !send_to_client[db_name]
-          send_to_client[db_name].new_data = docs
-          callback();
+          async.filter docs, (doc, callback2)->
+            if send_to_client?[db_name]?['confirm']?[ doc._id ]?._sha1 == doc._sha1
+              need = false
+            else
+              need = true
+            callback2(need);
+          , (docs_filtered)->
+            console.info { docs_filtered }
+            if docs_filtered.length
+              send_to_client[db_name] = {} if !send_to_client[db_name]
+              send_to_client[db_name].new_data = docs_filtered
+            callback();
       , ()->
-        send_to_client.now_time = new Date()
-        res.send(send_to_client)
+        send_to_client.server_time = new Date()
+        send_to_client.confirm_count = confirm_count;
+        dfd.resolve(send_to_client);
+
+        if confirm_count > 0
+          clients = global.io.sockets.clients('user_id:'+user_id)
+          if clients
+            async.each Object.keys(clients), (client_i, callback3)->
+              client = clients[client_i]
+              client.get 'nickname', (err, nickname)->
+                nickname = JSON.parse(nickname)
+                if nickname and nickname.machine != machine
+                  client.emit('need_sync_now')
+              callback3()
+            ,()->
+              console.info 'info sended by socket'
         #logJson 'send_to_client', send_to_client
+  dfd.promise();
 
 
 

@@ -346,12 +346,12 @@ else
   publisher.on "error", (e) ->
     console.log "publisher", e.stack
 
-  io = require('socket.io').listen(server, {
+  global.io = require('socket.io').listen(server, {
     log: false
   })
 
 
-  io.set('store', new RedisStore({
+  global.io.set('store', new RedisStore({
     redisPub: redis.createClient()
     redisSub: redis.createClient()
     redisClient: redis.createClient()
@@ -656,17 +656,31 @@ else
 
   users_connection = {}
 
-  io.sockets.on "connection", (socket) ->
+  global.io.sockets.on "connection", (socket) ->
     user_id = undefined;
     token = undefined;
     console.info 'connection established socket.id = '+ socket.id
-    console.info 'socket user_list = ', io.sockets.clients().length
+    console.info 'socket user_list = ', global.io.sockets.clients().length
 
     socket.on "disconnect", (socket) ->
       console.info 'user_disconected'
 
     socket.emit "who_are_you",
       hello: "world"
+
+    socket.on 'sync_data_full', (data, fn)->
+      req = {
+        last_sync_time: data.last_sync_time
+        body: {
+          sha1_sign: data.sha1_sign
+          diff: data.diff
+        }
+        query: {
+          machine: data.machine
+        }
+      }
+      require('../get/_js/server_sync').fullSyncUniversal(req, res).then (data_to_client)->
+        fn(data_to_client)
 
     socket.on 'sync_data', (data, fn)->
       socket.get 'nickname', (err, name)->
@@ -680,19 +694,13 @@ else
       socket.set 'nickname', JSON.stringify(data), ()->
         socket.emit('ready');
         socket.join("user_id:"+data._id)
-      if data
-        user_id = '5330ff92898a2b63c2f7095f';
-        users_connection[data._id] = [] if !users_connection[data._id]
-        users_connection[data._id].push( { user_instance: data.user_instance, socket: socket } );
-        token = data;
-        console.log 'token = ', data
       return
 
     return
 
 
   app.get '/api/v1/socket', (req, res)->
-    rooms = io.sockets.manager.rooms;
+    rooms = global.io.sockets.manager.rooms;
     logJson 'rooms', rooms
     res.send rooms
 

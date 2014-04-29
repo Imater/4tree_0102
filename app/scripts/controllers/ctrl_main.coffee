@@ -25,7 +25,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     console.info 'ENCRYPT', {pas1_encrypted}, cryptApi.decrypt(pas1_encrypted)
 
   $socket.on 'who_are_you', $scope, (data) ->
-    $socket.emit('i_am_user', { _id: $scope.set.user_id, user_instance: $scope.set.user_instance} )
+    $socket.emit('i_am_user', { _id: $scope.set.user_id, machine: $rootScope.$$childTail.set.machine } )
 
   $socket.on 'file_loaded', $scope, (data) ->
     console.info 'File Loaded', data
@@ -35,6 +35,9 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     console.info 'sync_data', data
     syncApi.jsUpdateDb(data);
     #syncApi.syncToServer()
+
+  $socket.on 'need_sync_now', $scope, (data)->
+    db_tree.syncDiff();
 
   $socket.on 'sync_answer', $scope, (data) ->
     syncApi.jsUpdateDb(data).then ()->
@@ -50,6 +53,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   $scope.set = {
     user_id: '5330ff92898a2b63c2f7095f'
     machine: localStorage.getItem('mongoMachineId')
+    autosync_on: true
     today_date: new Date()
     focus: 1
     focus_edit: 1
