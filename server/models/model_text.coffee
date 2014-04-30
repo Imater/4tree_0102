@@ -11,6 +11,15 @@ textSchema = new Schema (
   '_tm': Date
 )
 
+textSchema.post 'save', (doc)->
+  console.info 'saving... doc... ', doc
+
+
+textSchema.pre 'save', (next)->
+  console.info 'post saving... doc... ', @
+  next()
+
+
 mongoosastic = require('mongoosastic')
 textSchema.plugin(mongoosastic, {index: 'texts', type:'text'});
 

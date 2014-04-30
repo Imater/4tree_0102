@@ -13,6 +13,7 @@ jsondiffpatch = require('jsondiffpatch').create {
 require '../../models/_js/model_diff.js'
 
 Diff = mongoose.model('Diff');
+Text = mongoose.model('Text');
 
 
 sync = {
@@ -100,7 +101,11 @@ sync = {
 }
 
 exports.get2 = (req, res)->
-  sync.combineAllDiffs(req, res)
+  #sync.combineAllDiffs(req, res)
+  Text.findOne { _id: req.query._id }, undefined, (err, row)->
+    row._tm = new Date();
+    row.save();
+    res.send(row)
 
 
 exports.get = (req, res)->

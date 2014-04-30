@@ -29,6 +29,15 @@
     '_tm': Date
   });
 
+  textSchema.post('save', function(doc) {
+    return console.info('saving... doc... ', doc);
+  });
+
+  textSchema.pre('save', function(next) {
+    console.info('post saving... doc... ', this);
+    return next();
+  });
+
   mongoosastic = require('mongoosastic');
 
   textSchema.plugin(mongoosastic, {
