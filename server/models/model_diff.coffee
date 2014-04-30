@@ -13,6 +13,7 @@ diffSchema = new Schema (
   '_sha1': { type: String }
   'del': { type: Number, default: 0 }
   '_tm': { type: Date }
+  'EMPTY_BAD': { type: String } 
 )
 
 #mongoosastic = require('mongoosastic')

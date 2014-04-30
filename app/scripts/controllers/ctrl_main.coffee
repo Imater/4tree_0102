@@ -37,7 +37,8 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     #syncApi.syncToServer()
 
   $socket.on 'need_sync_now', $scope, (data)->
-    db_tree.syncDiff();
+    #db_tree.syncDiff();
+    console.info 'ignoring...'
 
   $socket.on 'sync_answer', $scope, (data) ->
     syncApi.jsUpdateDb(data).then ()->

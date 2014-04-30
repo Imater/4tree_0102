@@ -102,7 +102,7 @@
           this.dbInit();
           dfd = $.Deferred();
           this.ydnLoadFromLocal(mythis).then(function(records) {
-            if (!records.tree || Object.keys(records.tree).length === 0) {
+            if (!records.tree || Object.keys(records.tree).length === 0 || true) {
               console.info('NEED DATA FROM NET');
               return mythis.getTreeFromWeb().then(function(data) {
                 var result;
@@ -1242,10 +1242,10 @@
             return this.syncDiff();
           }
         }, 100),
-        saving_diff_busy: false,
         saveDiff: function(db_name, _id) {
           var dfd, mythis;
           mythis = this;
+          console.info('save_diff starting...' + _id);
           dfd = $q.defer();
           this.getElement(db_name, _id).then(function(new_element) {
             mythis.getElementFromLocal(db_name, _id).then(function(old_element) {
@@ -1262,19 +1262,12 @@
                   _tm: new Date().getTime()
                 };
                 if (patch) {
-                  if (mythis.saving_diff_busy) {
-                    console.info('########Запрет на сохранение. Идёт синхронизация.###########', patch);
-                    return;
-                  } else {
-                    mythis.saving_diff_busy = true;
-                    mythis._tmp._diffs[el._id] = el;
-                    mythis.db.put('_diffs', el).done(function() {
-                      mythis.saving_diff_busy = false;
-                      console.info('diff_saved');
-                      dfd.resolve();
-                      return mythis.jsStartSyncInWhile();
-                    });
-                  }
+                  mythis._tmp._diffs[el._id] = el;
+                  mythis.db.put('_diffs', el).done(function() {
+                    console.info('diff_saved');
+                    dfd.resolve();
+                    return mythis.jsStartSyncInWhile();
+                  });
                 }
               }
             });
@@ -1327,11 +1320,24 @@
           }
           return dfd.promise;
         },
+        tmp_set: function(_id) {
+          var dfd, mythis;
+          mythis = this;
+          dfd = $q.defer();
+          mythis.getElement('texts', _id).then(function(result) {
+            mythis._db['texts'][_id].text = result.text + '<p>' + Math.round(Math.random() * 100) + '</p>';
+            console.info('ADDED ', mythis._db['texts'][_id].text);
+            return mythis.saveDiff('texts', _id).then(function() {
+              return dfd.resolve();
+            });
+          });
+          return dfd.promise;
+        },
         syncApplyResults: function(results) {
           var dfd, mythis;
           dfd = $q.defer();
           mythis = this;
-          console.info('backup_elements_before_sync', mythis.backup_elements_before_sync);
+          console.info('backup_elements_before_sync', JSON.stringify(mythis.backup_elements_before_sync));
           _.each(Object.keys(results), function(db_name) {
             var db_data;
             db_data = results[db_name];
@@ -1361,7 +1367,7 @@
                 confirm_element = db_data.confirm[confirm_id];
                 console.info('CONFIRMED', confirm_id, confirm_element._sha1);
                 return mythis.getElement(db_name, confirm_id).then(function(doc) {
-                  var old_doc, patch, sha1;
+                  var el, old_doc, patch, sha1;
                   sha1 = mythis.JSON_stringify(doc)._sha1;
                   if (sha1 === confirm_element._sha1) {
                     doc._sha1 = confirm_element._sha1;
@@ -1382,38 +1388,37 @@
                     console.info('doc_new', doc);
                     console.info('doc_old', old_doc);
                     old_doc._sha1 = mythis.JSON_stringify(old_doc)._sha1;
-                    doc._sha1 = old_doc._sha1;
                     patch = mythis.diff.diff(old_doc, doc);
+                    if (patch._sha1) {
+                      delete patch._sha1;
+                    }
                     console.info('PATCH = ', patch);
-                    mythis._db[db_name][confirm_id] = old_doc;
-                    return mythis.db.put(db_name, old_doc).done(function(err) {
-                      var el;
-                      el = {
-                        _id: confirm_id,
-                        patch: patch,
-                        db_name: db_name,
-                        _sha1: old_doc._sha1,
-                        user_id: $rootScope.$$childTail.set.user_id,
-                        machine: $rootScope.$$childTail.set.machine,
-                        _tm: new Date().getTime()
-                      };
-                      if (patch) {
-                        mythis.saving_diff_busy = true;
-                        mythis._tmp._diffs[el._id] = el;
-                        return mythis.db.put('_diffs', el).done(function() {
-                          mythis.saving_diff_busy = false;
-                          console.info('diff_saved NEW');
-                          return dfd.resolve();
-                        });
-                      } else {
-                        return dfd.resolve();
-                      }
+                    mythis.db.put(db_name, old_doc).done(function(err) {
+                      return console.info('old_saved');
                     });
+                    el = {
+                      _id: confirm_id,
+                      patch: patch,
+                      db_name: db_name,
+                      _sha1: old_doc._sha1,
+                      user_id: $rootScope.$$childTail.set.user_id,
+                      machine: $rootScope.$$childTail.set.machine,
+                      _tm: new Date().getTime()
+                    };
+                    if (patch) {
+                      mythis.saving_diff_busy = true;
+                      mythis._tmp._diffs[el._id] = el;
+                      return mythis.db.put('_diffs', el).done(function() {
+                        mythis.saving_diff_busy = false;
+                        return console.info('diff_saved NEW');
+                      });
+                    }
                   }
                 });
               });
             }
           });
+          dfd.resolve();
           return dfd.promise;
         },
         getLastSyncTime: function() {
@@ -1450,30 +1455,32 @@
         },
         sync_now: false,
         syncDiff: function() {
-          var mythis;
+          var dfd, mythis;
+          dfd = $q.defer();
           mythis = this;
           if (!mythis.sync_now) {
-            mythis.sync_now = true;
             console.info('New syncing...');
-            return this.getDiffsForSync().then(function(diffs) {
+            this.getDiffsForSync().then(function(diffs) {
               if ($socket.is_online() && false) {
                 return mythis.syncThrough('websocket', data).then(function() {
                   console.info('sync_socket_ended');
                   return dfd.resolve();
                 });
               } else {
+                mythis.sync_now = false;
                 return mythis.sendDiffToWeb(diffs).then(function(results) {
                   return mythis.syncApplyResults(results).then(function() {
+                    dfd.resolve();
                     console.info('sha1 applyed');
-                    console.info('STOP syncing...');
-                    return mythis.sync_now = false;
+                    return console.info('STOP syncing...');
                   });
                 });
               }
             });
           } else {
-            return console.info('cant sync now, already syncing...................');
+            console.info('cant sync now, already syncing...................');
           }
+          return dfd.promise;
         },
         sendDiffToWeb: function(diffs) {
           var dfd, mythis, sha1_sign, _ref;
@@ -1506,20 +1513,27 @@
         },
         backup_elements_before_sync: {},
         getDiffsForSync: function() {
-          var dfd, mythis;
+          var dfd, diffs, mythis;
           dfd = $q.defer();
           mythis = this;
-          this.db.values('_diffs', null, 999999999).done(function(diffs) {
-            mythis.backup_elements_before_sync = {};
-            return _.each(diffs, function(dif) {
+          diffs = mythis._tmp._diffs;
+          mythis.backup_elements_before_sync = {};
+          if (!!diffs) {
+            async.each(Object.keys(diffs), function(dif_id, callback) {
+              var dif;
+              dif = diffs[dif_id];
               console.info('dif = ', dif);
               return mythis.getElement(dif.db_name, dif._id).then(function(now_element) {
                 mythis.backup_elements_before_sync[dif._id] = JSON.parse(JSON.stringify(now_element));
                 console.info('backup = ', now_element.text);
-                return dfd.resolve(diffs);
+                return callback();
               });
+            }, function() {
+              return dfd.resolve(diffs);
             });
-          });
+          } else {
+            dfd.resolve();
+          }
           return dfd.promise;
         },
         TestJson: function() {

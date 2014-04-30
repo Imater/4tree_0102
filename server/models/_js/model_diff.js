@@ -37,6 +37,9 @@
     },
     '_tm': {
       type: Date
+    },
+    'EMPTY_BAD': {
+      type: String
     }
   });
 

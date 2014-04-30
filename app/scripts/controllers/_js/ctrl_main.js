@@ -34,7 +34,7 @@
         return syncApi.jsUpdateDb(data);
       });
       $socket.on('need_sync_now', $scope, function(data) {
-        return db_tree.syncDiff();
+        return console.info('ignoring...');
       });
       $socket.on('sync_answer', $scope, function(data) {
         return syncApi.jsUpdateDb(data).then(function() {

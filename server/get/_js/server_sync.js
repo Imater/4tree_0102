@@ -87,6 +87,7 @@
       new_diff._sha1 = args.diff._sha1;
       new_diff.del = 0;
       new_diff.save(function(err, doc) {
+        logJson('save_to_diff', doc);
         return dfd.resolve(doc);
       });
       return dfd.promise();
@@ -118,6 +119,9 @@
         }
       }, function(err, rows) {
         var answer;
+        if (!rows[0]) {
+          console.info('NOT FOUND IN DIFFS - ' + _id);
+        }
         answer = rows[0].body;
         return async.eachSeries(rows, function(dif, callback) {
           logJson('body was = ', answer);
@@ -169,165 +173,175 @@
       res.send();
     } else {
       send_to_client = {};
-      async.eachLimit(diffs, 50, function(diff, callback) {
-        if (false) {
-          logJson('diff ' + diff._id, diff);
-        }
-        return global._db_models[diff.db_name].findOne({
-          '_sha1': diff._sha1,
-          '_id': diff._id
-        }, void 0, function(err, row) {
-          if (row) {
-            if (false) {
-              console.info('found in db ', row);
-            }
-            return sync.apply_patch({
-              old_row: row,
-              diff: diff
-            }).then(function(args) {
-              if (!send_to_client[args.new_row.db_name]) {
-                send_to_client[diff.db_name] = {
-                  confirm: {}
-                };
-              }
-              send_to_client[diff.db_name]['confirm'][args.new_row._id] = {
-                _sha1: args.new_row._sha1,
-                _tm: args.new_row._tm
-              };
-              confirm_count++;
-              return callback();
-            });
-          } else {
-            return Diff.findOne({
-              '_sha1': diff._sha1,
-              'db_id': diff._id
-            }, void 0, function(err, row) {
+      if (diffs) {
+        async.eachLimit(Object.keys(diffs), 50, function(diff_id, callback) {
+          var diff;
+          diff = diffs[diff_id];
+          if (false) {
+            logJson('diff ' + diff._id, diff);
+          }
+          return global._db_models[diff.db_name].findOne({
+            '_sha1': diff._sha1,
+            '_id': diff._id
+          }, void 0, function(err, row) {
+            if (row) {
               if (false) {
-                logJson('dont found in db, but found in diffs', row.body);
+                console.info('found in db ', row);
               }
               return sync.apply_patch({
                 old_row: row,
                 diff: diff
-              }, 'dont_save_to_db').then(function(args) {
-                return sync.combineDiffsByTime(args.new_row.db_id).then(function(combined) {
-                  var tm;
-                  logJson('combined = ', combined);
-                  if (combined) {
-                    logJson('stoping diff', diff);
-                  }
-                  tm = new Date();
-                  if (!send_to_client[args.new_row.db_name]) {
-                    send_to_client[diff.db_name] = {
-                      confirm: {},
-                      merged: {}
+              }).then(function(args) {
+                if (!send_to_client[args.new_row.db_name]) {
+                  send_to_client[diff.db_name] = {
+                    confirm: {}
+                  };
+                }
+                send_to_client[diff.db_name]['confirm'][args.new_row._id] = {
+                  _sha1: args.new_row._sha1,
+                  _tm: args.new_row._tm
+                };
+                confirm_count++;
+                return callback();
+              });
+            } else {
+              return Diff.findOne({
+                '_sha1': diff._sha1,
+                'db_id': diff._id
+              }, void 0, function(err, row) {
+                logJson('dont found in db, but found in diffs', row);
+                return sync.apply_patch({
+                  old_row: row.new_body,
+                  diff: diff
+                }, 'dont_save_to_db').then(function(args) {
+                  console.info('ERROR args.new_row.db_id', args.new_row);
+                  return sync.combineDiffsByTime(args.new_row.db_id).then(function(combined) {
+                    var tm;
+                    logJson('combined = ', combined);
+                    if (combined) {
+                      logJson('stoping diff', diff);
+                    }
+                    tm = new Date();
+                    if (!send_to_client[args.new_row.db_name]) {
+                      send_to_client[diff.db_name] = {
+                        confirm: {},
+                        merged: {}
+                      };
+                    }
+                    send_to_client[diff.db_name]['merged'][combined._id] = {
+                      combined: combined
                     };
-                  }
-                  send_to_client[diff.db_name]['merged'][combined._id] = {
-                    combined: combined
-                  };
-                  send_to_client[diff.db_name]['confirm'][combined._id] = {
-                    _sha1: combined._sha1,
-                    _tm: combined._tm
-                  };
-                  confirm_count++;
-                  return global._db_models[args.diff.db_name].findOne({
-                    _id: args.diff._id
-                  }, void 0, function(err, now_doc) {
-                    var empty_diff;
-                    empty_diff = JSON.parse(JSON.stringify(diff));
-                    empty_diff._sha1 = now_doc._sha1;
-                    empty_diff.machine = 'server';
-                    empty_diff.patch = void 0;
-                    empty_diff._tm = empty_diff._tm + 500;
-                    return sync.apply_patch({
-                      old_row: now_doc,
-                      diff: empty_diff
-                    }, 'dont_save_to_db').then(function(args) {
-                      if (false) {
-                        console.info('saved_original', args);
-                      }
-                      combined._tm = new Date();
-                      return global._db_models[args.diff.db_name].update({
-                        _id: args.diff._id
-                      }, combined, {
-                        upsert: false
-                      }, function(err, doc) {
-                        if (false) {
-                          console.info('saved from diff', err, doc);
+                    send_to_client[diff.db_name]['confirm'][combined._id] = {
+                      _sha1: combined._sha1,
+                      _tm: combined._tm
+                    };
+                    confirm_count++;
+                    return global._db_models[args.diff.db_name].findOne({
+                      _id: args.diff._id
+                    }, void 0, function(err, now_doc) {
+                      var empty_diff;
+                      empty_diff = JSON.parse(JSON.stringify(diff));
+                      empty_diff._sha1 = now_doc._sha1;
+                      empty_diff.machine = 'server';
+                      empty_diff.patch = void 0;
+                      empty_diff._tm = empty_diff._tm + 500;
+                      empty_diff.EMPTY_BAD = "BAD";
+                      console.info("APPLY");
+                      logJson('now_doc', now_doc);
+                      logJson('empty_diff', empty_diff);
+                      return sync.apply_patch({
+                        old_row: now_doc,
+                        diff: empty_diff
+                      }, 'dont_save_to_db').then(function(args) {
+                        if (true) {
+                          logJson('!!!!!!saved_original!!!', args);
                         }
-                        return callback();
+                        combined._tm = new Date();
+                        return global._db_models[args.diff.db_name].update({
+                          _id: args.diff._id
+                        }, combined, {
+                          upsert: false
+                        }, function(err, doc) {
+                          if (false) {
+                            console.info('saved from diff', err, doc);
+                          }
+                          return callback();
+                        });
                       });
                     });
                   });
                 });
               });
-            });
-          }
-        });
-      }, function() {
-        return async.each(Object.keys(global._db_models), function(db_name, callback) {
-          var tm;
-          tm = new Date(JSON.parse(last_sync_time)).toISOString();
-          if (false) {
-            console.info('FIND', {
+            }
+          });
+        }, function() {
+          return async.each(Object.keys(global._db_models), function(db_name, callback) {
+            var tm;
+            tm = new Date(JSON.parse(last_sync_time)).toISOString();
+            if (false) {
+              console.info('FIND', {
+                _tm: {
+                  $gt: tm
+                }
+              });
+            }
+            return global._db_models[db_name].find({
               _tm: {
                 $gt: tm
               }
-            });
-          }
-          return global._db_models[db_name].find({
-            _tm: {
-              $gt: tm
-            }
-          }, function(err, docs) {
-            return async.filter(docs, function(doc, callback2) {
-              var need, _ref, _ref1, _ref2;
-              if ((send_to_client != null ? (_ref = send_to_client[db_name]) != null ? (_ref1 = _ref['confirm']) != null ? (_ref2 = _ref1[doc._id]) != null ? _ref2._sha1 : void 0 : void 0 : void 0 : void 0) === doc._sha1) {
-                need = false;
-              } else {
-                need = true;
-              }
-              return callback2(need);
-            }, function(docs_filtered) {
-              if (false) {
-                console.info({
-                  docs_filtered: docs_filtered
-                });
-              }
-              if (docs_filtered.length) {
-                if (!send_to_client[db_name]) {
-                  send_to_client[db_name] = {};
+            }, function(err, docs) {
+              return async.filter(docs, function(doc, callback2) {
+                var need, _ref, _ref1, _ref2;
+                if ((send_to_client != null ? (_ref = send_to_client[db_name]) != null ? (_ref1 = _ref['confirm']) != null ? (_ref2 = _ref1[doc._id]) != null ? _ref2._sha1 : void 0 : void 0 : void 0 : void 0) === doc._sha1) {
+                  need = false;
+                } else {
+                  need = true;
                 }
-                send_to_client[db_name].new_data = docs_filtered;
-              }
-              return callback();
-            });
-          });
-        }, function() {
-          var clients;
-          send_to_client.server_time = new Date();
-          send_to_client.confirm_count = confirm_count;
-          dfd.resolve(send_to_client);
-          if (confirm_count > 0) {
-            clients = global.io.sockets.clients('user_id:' + user_id);
-            if (clients) {
-              return async.each(Object.keys(clients), function(client_i, callback3) {
-                var client;
-                client = clients[client_i];
-                client.get('nickname', function(err, nickname) {
-                  nickname = JSON.parse(nickname);
-                  if (nickname && nickname.machine !== machine) {
-                    return client.emit('need_sync_now');
+                return callback2(need);
+              }, function(docs_filtered) {
+                if (false) {
+                  console.info({
+                    docs_filtered: docs_filtered
+                  });
+                }
+                if (docs_filtered.length) {
+                  if (!send_to_client[db_name]) {
+                    send_to_client[db_name] = {};
                   }
-                });
-                return callback3();
-              }, function() {
-                return console.info('info sended by socket');
+                  send_to_client[db_name].new_data = docs_filtered;
+                }
+                return callback();
               });
+            });
+          }, function() {
+            var clients;
+            send_to_client.server_time = new Date();
+            send_to_client.confirm_count = confirm_count;
+            logJson('send_to_client', send_to_client);
+            dfd.resolve(send_to_client);
+            if (confirm_count > 0) {
+              clients = global.io.sockets.clients('user_id:' + user_id);
+              if (clients) {
+                return async.each(Object.keys(clients), function(client_i, callback3) {
+                  var client;
+                  client = clients[client_i];
+                  client.get('nickname', function(err, nickname) {
+                    nickname = JSON.parse(nickname);
+                    if (nickname && nickname.machine !== machine) {
+                      return client.emit('need_sync_now');
+                    }
+                  });
+                  return callback3();
+                }, function() {
+                  return console.info('info sended by socket');
+                });
+              }
             }
-          }
+          });
         });
-      });
+      } else {
+        dfd.resolve();
+      }
     }
     return dfd.promise();
   };
