@@ -34,13 +34,10 @@ sync = {
     dfd = $.Deferred()
     mythis = @;
     console.info 'apply patch to '+args.diff.db_name, args.old_row if false
-    args.new_row = jsondiffpatch.patch( JSON.parse( JSON.stringify(args.old_row) ), args.diff.patch)
-    args.new_row._sha1 = JSON_stringify.JSON_stringify( args.new_row )._sha1
+    args.old_row = jsondiffpatch.patch( args.old_row, args.diff.patch)
+    args.old_row._sha1 = JSON_stringify.JSON_stringify( args.old_row )._sha1
     logJson 'new_row', args.new_row if false
     async.parallel [
-      (callback)->
-        mythis.save_diff(args).then ()->
-          callback()
       (callback)->
         if !dont_save_to_db
           mythis.save_to_db(args).then ()->
@@ -50,31 +47,16 @@ sync = {
     ], ()->
       dfd.resolve(args);
     dfd.promise();
-  save_diff: (args)->
-    dfd = $.Deferred()
-    console.info 'save_diff', args.old_row, args.new_row if false
-    new_diff = new Diff()
-    new_diff.db_id =  args.diff._id
-    new_diff.patch = args.diff.patch
-    new_diff._tm = args.diff._tm
-    new_diff.body = args.old_row
-    new_diff.new_body = args.new_row
-    new_diff.new_sha1 = JSON_stringify.JSON_stringify( args.new_row )._sha1
-    new_diff.user_id = args.diff.user_id
-    new_diff.machine = args.diff.machine
-    new_diff.db_name = args.diff.db_name
-    new_diff._sha1 = args.diff._sha1
-    new_diff.del = 0
-    new_diff.save (err, doc)->
-      logJson 'save_to_diff', doc
-      dfd.resolve(doc);
-    dfd.promise();
   save_to_db: (args)->
     dfd = $.Deferred()
-    args.new_row._tm = new Date()
-    global._db_models[args.diff.db_name].update {_id: args.diff._id}, args.new_row, {upsert: false}, (err, doc)->
-      console.info 'db_saved', err, doc if false
+    args.old_row._tm = new Date()
+    args.old_row.save (err)->
+      console.info { err }
       dfd.resolve(err)
+
+    if false
+      global._db_models[args.diff.db_name].update {_id: args.diff._id}, args.new_row, {upsert: false}, (err, doc)->
+        console.info 'db_saved', err, doc if false
     dfd.promise();
   combineDiffsByTime: (_id)->
     dfd = $.Deferred()
