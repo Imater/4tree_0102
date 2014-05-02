@@ -15,6 +15,9 @@
   jsondiffpatch = require('jsondiffpatch').create({
     objectHash: function(obj) {
       return obj.name || obj.id || obj._id || obj._id || JSON.stringify(obj);
+    },
+    textDiff: {
+      minLength: 3
     }
   });
 
@@ -23,11 +26,32 @@
   };
 
   exports.saveDiff = function(db_name, new_data, old_data) {
-    var dfd;
+    var dfd, dif, patch;
     dfd = new $.Deferred();
-    console.info('new', new_data, 'old', old_data);
+    console.info('new', new_data, 'old', old_data, '_diff', new_data._diff);
     new_data._sha1 = JSON_stringify.JSON_stringify(new_data)._sha1;
-    console.info("PATCH", jsondiffpatch.diff(new_data.toObject(), old_data));
+    patch = jsondiffpatch.diff(old_data, new_data.toObject());
+    if (patch != null ? patch._sha1 : void 0) {
+      delete patch._sha1;
+    }
+    if (patch != null ? patch._tm : void 0) {
+      delete patch._tm;
+    }
+    dif = {
+      db_id: new_data._id,
+      patch: patch,
+      old_body: old_data,
+      new_body: new_data,
+      machine: new_data._diff.machine,
+      user_id: new_data._diff.user_id,
+      _sha1: new_data._sha1,
+      del: 0,
+      _tm: new_data._tm
+    };
+    new Diff(dif).save(function(err, doc) {
+      return console.info('DIFF SAVED', err, doc);
+    });
+    console.info("PATCH = ", patch, '!!!!!!!!', new_data._machine);
     dfd.resolve();
     return dfd.promise();
   };

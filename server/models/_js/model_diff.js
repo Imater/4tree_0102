@@ -13,7 +13,7 @@
     'patch': {
       type: Object
     },
-    'body': {
+    'old_body': {
       type: Object
     },
     'new_body': {

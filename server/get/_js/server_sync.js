@@ -26,20 +26,6 @@
 
   sync = {
     apply_patch: function(args, dont_save_to_db) {
-      /*
-      args = {
-        old_row
-        diff: {
-          patch
-          db_name
-          _sha1
-          user_id
-          machine
-          tm
-        }
-      }
-      */
-
       var dfd, mythis;
       dfd = $.Deferred();
       mythis = this;
@@ -51,42 +37,11 @@
       if (false) {
         logJson('new_row', args.new_row);
       }
-      async.parallel([
-        function(callback) {
-          if (!dont_save_to_db) {
-            return mythis.save_to_db(args).then(function() {
-              return callback();
-            });
-          } else {
-            return callback();
-          }
-        }
-      ], function() {
+      args.old_row._tm = new Date();
+      args.old_row._diff = args.diff;
+      args.old_row.save(function(err) {
         return dfd.resolve(args);
       });
-      return dfd.promise();
-    },
-    save_to_db: function(args) {
-      var dfd;
-      dfd = $.Deferred();
-      args.old_row._tm = new Date();
-      args.old_row.save(function(err) {
-        console.info({
-          err: err
-        });
-        return dfd.resolve(err);
-      });
-      if (false) {
-        global._db_models[args.diff.db_name].update({
-          _id: args.diff._id
-        }, args.new_row, {
-          upsert: false
-        }, function(err, doc) {
-          if (false) {
-            return console.info('db_saved', err, doc);
-          }
-        });
-      }
       return dfd.promise();
     },
     combineDiffsByTime: function(_id) {
@@ -179,86 +134,21 @@
                 old_row: row,
                 diff: diff
               }).then(function(args) {
-                if (!send_to_client[args.new_row.db_name]) {
+                if (!send_to_client[diff.db_name]) {
                   send_to_client[diff.db_name] = {
                     confirm: {}
                   };
                 }
-                send_to_client[diff.db_name]['confirm'][args.new_row._id] = {
-                  _sha1: args.new_row._sha1,
-                  _tm: args.new_row._tm
+                send_to_client[diff.db_name]['confirm'][args.old_row._id] = {
+                  _sha1: args.old_row._sha1,
+                  _tm: args.old_row._tm
                 };
                 confirm_count++;
                 return callback();
               });
             } else {
-              return Diff.findOne({
-                '_sha1': diff._sha1,
-                'db_id': diff._id
-              }, void 0, function(err, row) {
-                logJson('dont found in db, but found in diffs', row);
-                return sync.apply_patch({
-                  old_row: row.new_body,
-                  diff: diff
-                }, 'dont_save_to_db').then(function(args) {
-                  console.info('ERROR args.new_row.db_id', args.new_row);
-                  return sync.combineDiffsByTime(args.new_row.db_id).then(function(combined) {
-                    var tm;
-                    logJson('combined = ', combined);
-                    if (combined) {
-                      logJson('stoping diff', diff);
-                    }
-                    tm = new Date();
-                    if (!send_to_client[args.new_row.db_name]) {
-                      send_to_client[diff.db_name] = {
-                        confirm: {},
-                        merged: {}
-                      };
-                    }
-                    send_to_client[diff.db_name]['merged'][combined._id] = {
-                      combined: combined
-                    };
-                    send_to_client[diff.db_name]['confirm'][combined._id] = {
-                      _sha1: combined._sha1,
-                      _tm: combined._tm
-                    };
-                    confirm_count++;
-                    return global._db_models[args.diff.db_name].findOne({
-                      _id: args.diff._id
-                    }, void 0, function(err, now_doc) {
-                      var empty_diff;
-                      empty_diff = JSON.parse(JSON.stringify(diff));
-                      empty_diff._sha1 = now_doc._sha1;
-                      empty_diff.machine = 'server';
-                      empty_diff.patch = void 0;
-                      empty_diff._tm = empty_diff._tm + 500;
-                      empty_diff.EMPTY_BAD = "BAD";
-                      console.info("APPLY");
-                      logJson('now_doc', now_doc);
-                      logJson('empty_diff', empty_diff);
-                      return sync.apply_patch({
-                        old_row: now_doc,
-                        diff: empty_diff
-                      }, 'dont_save_to_db').then(function(args) {
-                        if (true) {
-                          logJson('!!!!!!saved_original!!!', args);
-                        }
-                        combined._tm = new Date();
-                        return global._db_models[args.diff.db_name].update({
-                          _id: args.diff._id
-                        }, combined, {
-                          upsert: false
-                        }, function(err, doc) {
-                          if (false) {
-                            console.info('saved from diff', err, doc);
-                          }
-                          return callback();
-                        });
-                      });
-                    });
-                  });
-                });
-              });
+              console.info('Error, dont found, need seek DIFF');
+              return callback();
             }
           });
         }, function() {

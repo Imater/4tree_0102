@@ -14,7 +14,7 @@ redactor: hash (pass in a redactor options hash)
         restrict: "A",
         require: "ngModel",
         link: function(scope, element, attrs, ngModel) {
-          var $_element, additionalOptions, editor, options, resizecontent, updateModel;
+          var $_element, additionalOptions, editor, getCurrent, options, resizecontent, setCurrent, updateModel;
           updateModel = function(value) {
             return scope.$apply(function() {
               var text_id;
@@ -46,9 +46,68 @@ redactor: hash (pass in a redactor options hash)
             editor = $_element.redactor(options);
             return ngModel.$render();
           }, 10);
+          getCurrent = function() {
+            var current, first_parent, parent, path;
+            path = [];
+            parent = $($_element.redactor("getParent"));
+            first_parent = parent;
+            current = $($_element.redactor("getCurrent"));
+            path.push({
+              element: parent,
+              index: parent.index()
+            });
+            while (parent.length && !parent.hasClass('redactor_editor')) {
+              parent = parent.parent();
+              if (parent.length) {
+                path.push({
+                  element: parent,
+                  index: parent.index()
+                });
+                console.info('?'.parent);
+              }
+            }
+            return {
+              first_parent: first_parent,
+              current: current,
+              path: path
+            };
+          };
+          setCurrent = function(old_position) {
+            var path_reverse;
+            path_reverse = old_position.path.reverse();
+            element = $('body');
+            _.each(path_reverse, function(path) {
+              if (path.element[0].length) {
+                element = element.find(path.element[0]);
+              } else {
+                if ($(path.element[0]).hasClass('redactor_editor')) {
+                  element = $(path.element[0]);
+                } else {
+                  element = element.find(path.element[0].localName + ':eq(' + path.index + ')');
+                }
+              }
+              return console.info('!', path.element[0], path.index);
+            });
+            return element;
+          };
           $rootScope.$on('refresh_editor', _.debounce(function(value) {
             return db_tree.getText(ngModel.$viewValue).then(function(text_element) {
-              return $_element.redactor("set", (text_element != null ? text_element.text : void 0) || "", false);
+              var offset, old_element, old_position;
+              old_position = getCurrent();
+              if (old_position.first_parent && old_position.first_parent.length) {
+                offset = $_element.redactor("getCaretOffset", old_position.first_parent[0]);
+              } else {
+                offset = 0;
+              }
+              $_element.redactor("set", (text_element != null ? text_element.text : void 0) || "", false);
+              old_element = setCurrent(old_position);
+              console.info('&&&&&&&', old_element.html().length, offset);
+              if (offset > old_element.html().length) {
+                offset = old_element.html().length;
+              }
+              if (old_element.length) {
+                return $_element.redactor("setCaret", old_element, offset);
+              }
             });
           }, 1));
           return ngModel.$render = function() {

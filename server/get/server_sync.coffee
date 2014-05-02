@@ -18,45 +18,17 @@ Text = mongoose.model('Text');
 
 sync = {
   apply_patch: (args, dont_save_to_db)->
-    ###
-    args = {
-      old_row
-      diff: {
-        patch
-        db_name
-        _sha1
-        user_id
-        machine
-        tm
-      }
-    }
-    ###
     dfd = $.Deferred()
     mythis = @;
     console.info 'apply patch to '+args.diff.db_name, args.old_row if false
     args.old_row = jsondiffpatch.patch( args.old_row, args.diff.patch)
     args.old_row._sha1 = JSON_stringify.JSON_stringify( args.old_row )._sha1
     logJson 'new_row', args.new_row if false
-    async.parallel [
-      (callback)->
-        if !dont_save_to_db
-          mythis.save_to_db(args).then ()->
-            callback()
-        else
-          callback()
-    ], ()->
-      dfd.resolve(args);
-    dfd.promise();
-  save_to_db: (args)->
-    dfd = $.Deferred()
     args.old_row._tm = new Date()
-    args.old_row.save (err)->
-      console.info { err }
-      dfd.resolve(err)
-
-    if false
-      global._db_models[args.diff.db_name].update {_id: args.diff._id}, args.new_row, {upsert: false}, (err, doc)->
-        console.info 'db_saved', err, doc if false
+    args.old_row._diff = args.diff;
+    #при этом сохранится бекап в базе diff
+    args.old_row.save (err)-> 
+      dfd.resolve(args);
     dfd.promise();
   combineDiffsByTime: (_id)->
     dfd = $.Deferred()
@@ -121,48 +93,14 @@ exports.fullSyncUniversal = (req, res)->
               old_row: row
               diff: diff
             }).then (args)->
-              send_to_client[diff.db_name] = { confirm: {} } if !send_to_client[args.new_row.db_name]
-              send_to_client[diff.db_name]['confirm'][args.new_row._id] = { _sha1: args.new_row._sha1, _tm: args.new_row._tm }
+              send_to_client[diff.db_name] = { confirm: {} } if !send_to_client[diff.db_name]
+              send_to_client[diff.db_name]['confirm'][args.old_row._id] = { _sha1: args.old_row._sha1, _tm: args.old_row._tm }
               confirm_count++;
               callback()
           else
             #тут нужно разобраться
-            Diff.findOne {'_sha1':diff._sha1, 'db_id':diff._id}, undefined, (err, row)->
-              logJson 'dont found in db, but found in diffs', row
-              sync.apply_patch({ 
-                old_row: row.new_body
-                diff: diff
-              }, 'dont_save_to_db').then (args)->
-                console.info 'ERROR args.new_row.db_id', args.new_row
-                sync.combineDiffsByTime(args.new_row.db_id).then (combined)->
-                  logJson 'combined = ', combined
-                  if combined
-                    logJson 'stoping diff', diff
-                  tm = new Date();
-                  send_to_client[diff.db_name] = { confirm: {}, merged: {} } if !send_to_client[args.new_row.db_name]
-                  send_to_client[diff.db_name]['merged'][combined._id] = { combined }
-                  send_to_client[diff.db_name]['confirm'][combined._id] = { _sha1: combined._sha1, _tm: combined._tm }
-                  confirm_count++
-                  global._db_models[args.diff.db_name].findOne {_id:args.diff._id}, undefined, (err, now_doc)->
-                    empty_diff = JSON.parse( JSON.stringify(diff) )
-                    empty_diff._sha1 = now_doc._sha1
-                    empty_diff.machine = 'server'
-                    empty_diff.patch = undefined
-                    empty_diff._tm = empty_diff._tm+500
-                    empty_diff.EMPTY_BAD = "BAD"
-                    console.info "APPLY"
-                    logJson 'now_doc', now_doc
-                    logJson 'empty_diff', empty_diff
-                    sync.apply_patch({ 
-                      old_row: now_doc
-                      diff: empty_diff
-                    }, 'dont_save_to_db').then (args)->
-                      logJson '!!!!!!saved_original!!!', args if true
-                      combined._tm = new Date();
-                      ##забекапить в дифах
-                      global._db_models[args.diff.db_name].update {_id: args.diff._id}, combined, {upsert: false}, (err, doc)->
-                        console.info 'saved from diff', err, doc if false
-                        callback() 
+            console.info 'Error, dont found, need seek DIFF'
+            callback() 
 
       , ()->
         async.each Object.keys(global._db_models), (db_name, callback)->

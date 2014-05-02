@@ -900,7 +900,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
       if db_data.confirm
         _.each Object.keys(db_data.confirm), (confirm_id)->
-          #mythis.tmp_set(confirm_id).then ()->
+          mythis.tmp_set(confirm_id).then ()->
             confirm_element = db_data.confirm[confirm_id];
             console.info 'CONFIRMED', confirm_id, confirm_element._sha1
             # тут нужно учесть, вдруг во время синхронизации элемент изменился
@@ -943,6 +943,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                   #если синхронизация уже идёт, то изменения пока не сохраняем
                   mythis.saving_diff_busy = true
                   mythis._tmp._diffs[el._id] = el
+                  $rootScope.$emit 'refresh_editor'
                   mythis.db.put('_diffs', el).done ()->
                     mythis.saving_diff_busy = false
                     console.info 'diff_saved NEW'
@@ -980,18 +981,19 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     dfd = $q.defer();
     mythis = @;
     if !mythis.sync_now
-      #mythis.sync_now = true
+      mythis.sync_now = true
       console.info 'New syncing...'
 
       @getDiffsForSync().then (diffs)->
         if $socket.is_online() and false
           mythis.syncThrough('websocket', data).then ()->
             console.info 'sync_socket_ended';
+            mythis.sync_now = false
             dfd.resolve();
         else
-          mythis.sync_now = false
           mythis.sendDiffToWeb(diffs).then (results)->
             mythis.syncApplyResults(results).then ()->
+              mythis.sync_now = false
               dfd.resolve();
               console.info 'sha1 applyed';
               console.info 'STOP syncing...'
