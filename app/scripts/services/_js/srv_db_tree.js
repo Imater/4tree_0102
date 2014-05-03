@@ -1341,6 +1341,63 @@
           _.each(Object.keys(results), function(db_name) {
             var db_data;
             db_data = results[db_name];
+            if (db_data.confirm) {
+              _.each(Object.keys(db_data.confirm), function(confirm_id) {
+                var confirm_element;
+                confirm_element = db_data.confirm[confirm_id];
+                console.info('CONFIRMED', confirm_id, confirm_element._sha1);
+                return mythis.getElement(db_name, confirm_id).then(function(doc) {
+                  var el, old_doc, patch, sha1;
+                  sha1 = mythis.JSON_stringify(doc)._sha1;
+                  if (sha1 === confirm_element._sha1) {
+                    doc._sha1 = confirm_element._sha1;
+                    doc._tm = confirm_element._tm;
+                    mythis.db.put(db_name, doc).done(function(err) {
+                      return console.info('new data applyed', err, doc);
+                    });
+                    if (mythis._tmp._diffs[confirm_id]) {
+                      delete mythis._tmp._diffs[confirm_id];
+                    }
+                    return mythis.db.remove('_diffs', confirm_id).done(function(err) {
+                      console.info('diff - deleted', err);
+                      return dfd.resolve();
+                    });
+                  } else {
+                    console.info('!!!!!!!ERROR sha1 CLIENT NOT EQUAL SERVER!!!!!!!!!!!!!!');
+                    old_doc = mythis.backup_elements_before_sync[doc._id];
+                    console.info('doc_new', doc);
+                    console.info('doc_old', old_doc);
+                    old_doc._sha1 = mythis.JSON_stringify(old_doc)._sha1;
+                    patch = mythis.diff.diff(old_doc, doc);
+                    if (patch._sha1) {
+                      delete patch._sha1;
+                    }
+                    console.info('PATCH = ', patch);
+                    mythis.db.put(db_name, old_doc).done(function(err) {
+                      return console.info('old_saved');
+                    });
+                    el = {
+                      _id: confirm_id,
+                      patch: patch,
+                      db_name: db_name,
+                      _sha1: old_doc._sha1,
+                      user_id: $rootScope.$$childTail.set.user_id,
+                      machine: $rootScope.$$childTail.set.machine,
+                      _tm: new Date().getTime()
+                    };
+                    if (patch) {
+                      mythis.saving_diff_busy = true;
+                      mythis._tmp._diffs[el._id] = el;
+                      $rootScope.$emit('refresh_editor');
+                      return mythis.db.put('_diffs', el).done(function() {
+                        mythis.saving_diff_busy = false;
+                        return console.info('diff_saved NEW');
+                      });
+                    }
+                  }
+                });
+              });
+            }
             if (db_data.new_data) {
               _.each(db_data.new_data, function(new_doc) {
                 mythis._db[db_name][new_doc._id] = new_doc;
@@ -1351,72 +1408,13 @@
               });
             }
             if (db_data.merged) {
-              _.each(Object.keys(db_data.merged), function(merged_id) {
+              return _.each(Object.keys(db_data.merged), function(merged_id) {
                 var merged_element;
                 merged_element = db_data.merged[merged_id].combined;
                 mythis._db[db_name][merged_id] = merged_element;
                 return mythis.db.put(db_name, mythis._db[db_name][merged_id]).done(function(err) {
                   console.info('MERGED data applyed', err, merged_element);
                   return $rootScope.$emit('refresh_editor');
-                });
-              });
-            }
-            if (db_data.confirm) {
-              return _.each(Object.keys(db_data.confirm), function(confirm_id) {
-                return mythis.tmp_set(confirm_id).then(function() {
-                  var confirm_element;
-                  confirm_element = db_data.confirm[confirm_id];
-                  console.info('CONFIRMED', confirm_id, confirm_element._sha1);
-                  return mythis.getElement(db_name, confirm_id).then(function(doc) {
-                    var el, old_doc, patch, sha1;
-                    sha1 = mythis.JSON_stringify(doc)._sha1;
-                    if (sha1 === confirm_element._sha1) {
-                      doc._sha1 = confirm_element._sha1;
-                      doc._tm = confirm_element._tm;
-                      mythis.db.put(db_name, doc).done(function(err) {
-                        return console.info('new data applyed', err, doc);
-                      });
-                      if (mythis._tmp._diffs[confirm_id]) {
-                        delete mythis._tmp._diffs[confirm_id];
-                      }
-                      return mythis.db.remove('_diffs', confirm_id).done(function(err) {
-                        console.info('diff - deleted', err);
-                        return dfd.resolve();
-                      });
-                    } else {
-                      console.info('!!!!!!!ERROR sha1 CLIENT NOT EQUAL SERVER!!!!!!!!!!!!!!');
-                      old_doc = mythis.backup_elements_before_sync[doc._id];
-                      console.info('doc_new', doc);
-                      console.info('doc_old', old_doc);
-                      old_doc._sha1 = mythis.JSON_stringify(old_doc)._sha1;
-                      patch = mythis.diff.diff(old_doc, doc);
-                      if (patch._sha1) {
-                        delete patch._sha1;
-                      }
-                      console.info('PATCH = ', patch);
-                      mythis.db.put(db_name, old_doc).done(function(err) {
-                        return console.info('old_saved');
-                      });
-                      el = {
-                        _id: confirm_id,
-                        patch: patch,
-                        db_name: db_name,
-                        _sha1: old_doc._sha1,
-                        user_id: $rootScope.$$childTail.set.user_id,
-                        machine: $rootScope.$$childTail.set.machine,
-                        _tm: new Date().getTime()
-                      };
-                      if (patch) {
-                        mythis.saving_diff_busy = true;
-                        mythis._tmp._diffs[el._id] = el;
-                        $rootScope.$emit('refresh_editor');
-                        return mythis.db.put('_diffs', el).done(function() {
-                          mythis.saving_diff_busy = false;
-                          return console.info('diff_saved NEW');
-                        });
-                      }
-                    }
-                  });
                 });
               });
             }
@@ -1462,7 +1460,6 @@
           dfd = $q.defer();
           mythis = this;
           if (!mythis.sync_now) {
-            mythis.sync_now = true;
             console.info('New syncing...');
             this.getDiffsForSync().then(function(diffs) {
               if ($socket.is_online() && false) {

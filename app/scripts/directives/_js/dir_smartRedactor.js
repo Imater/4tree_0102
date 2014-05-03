@@ -56,7 +56,7 @@ redactor: hash (pass in a redactor options hash)
               element: parent,
               index: parent.index()
             });
-            while (parent.length && !parent.hasClass('redactor_editor')) {
+            while (parent && parent.length && !parent.hasClass('redactor_editor')) {
               parent = parent.parent();
               if (parent.length) {
                 path.push({
@@ -77,7 +77,7 @@ redactor: hash (pass in a redactor options hash)
             path_reverse = old_position.path.reverse();
             element = $('body');
             _.each(path_reverse, function(path) {
-              if (path.element[0].length) {
+              if (path.element && path.element[0].length) {
                 element = element.find(path.element[0]);
               } else {
                 if ($(path.element[0]).hasClass('redactor_editor')) {

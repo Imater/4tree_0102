@@ -54,7 +54,7 @@
             first_parent = parent;
             current = $( $_element.redactor "getCurrent" );
             path.push({ element: parent, index: parent.index() });
-            while parent.length and !parent.hasClass('redactor_editor')
+            while parent and parent.length and !parent.hasClass('redactor_editor')
               parent = parent.parent();
               if parent.length
                 path.push({element: parent, index: parent.index()});
@@ -65,7 +65,7 @@
             path_reverse = old_position.path.reverse();
             element = $('body');
             _.each path_reverse, (path)->
-              if path.element[0].length
+              if path.element and path.element[0].length
                 element = element.find(path.element[0])
               else
                 if $(path.element[0]).hasClass('redactor_editor')

@@ -883,24 +883,9 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
     _.each Object.keys(results), (db_name)->
       db_data = results[db_name];
-      if db_data.new_data
-        _.each db_data.new_data, (new_doc)->
-          mythis._db[db_name][new_doc._id] = new_doc;
-          mythis.db.put(db_name, mythis._db[db_name][new_doc._id] ).done (err)->
-            console.info 'NEW_data applyed';
-            $rootScope.$emit 'refresh_editor'
-
-      if db_data.merged
-        _.each Object.keys(db_data.merged), (merged_id)->
-          merged_element = db_data.merged[merged_id].combined;
-          mythis._db[db_name][merged_id] = merged_element;
-          mythis.db.put(db_name, mythis._db[db_name][merged_id] ).done (err)->
-            console.info 'MERGED data applyed', err, merged_element;
-            $rootScope.$emit 'refresh_editor'
-
       if db_data.confirm
         _.each Object.keys(db_data.confirm), (confirm_id)->
-          mythis.tmp_set(confirm_id).then ()->
+          #mythis.tmp_set(confirm_id).then ()->
             confirm_element = db_data.confirm[confirm_id];
             console.info 'CONFIRMED', confirm_id, confirm_element._sha1
             # тут нужно учесть, вдруг во время синхронизации элемент изменился
@@ -949,6 +934,23 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                     console.info 'diff_saved NEW'
 
 
+      if db_data.new_data
+        _.each db_data.new_data, (new_doc)->
+          mythis._db[db_name][new_doc._id] = new_doc;
+          mythis.db.put(db_name, mythis._db[db_name][new_doc._id] ).done (err)->
+            console.info 'NEW_data applyed';
+            $rootScope.$emit 'refresh_editor'
+
+      if db_data.merged
+        _.each Object.keys(db_data.merged), (merged_id)->
+          merged_element = db_data.merged[merged_id].combined;
+          mythis._db[db_name][merged_id] = merged_element;
+          mythis.db.put(db_name, mythis._db[db_name][merged_id] ).done (err)->
+            console.info 'MERGED data applyed', err, merged_element;
+            $rootScope.$emit 'refresh_editor'
+
+
+
     dfd.resolve();
     dfd.promise
 
@@ -981,7 +983,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     dfd = $q.defer();
     mythis = @;
     if !mythis.sync_now
-      mythis.sync_now = true
+      #mythis.sync_now = true
       console.info 'New syncing...'
 
       @getDiffsForSync().then (diffs)->
