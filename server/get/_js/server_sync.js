@@ -286,7 +286,7 @@
                   });
                   return callback3();
                 }, function() {
-                  return console.info('info sended by socket');
+                  return console.info('info sended by socket...');
                 });
               }
             }
@@ -300,3 +300,7 @@
   };
 
 }).call(this);
+
+/*
+//@ sourceMappingURL=server_sync.map
+*/

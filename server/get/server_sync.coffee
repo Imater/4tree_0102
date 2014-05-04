@@ -174,7 +174,7 @@ exports.fullSyncUniversal = (req, res)->
                     client.emit('need_sync_now')
                 callback3()
               ,()->
-                console.info 'info sended by socket'
+                console.info 'info sended by socket...'
           #logJson 'send_to_client', send_to_client
     else
       dfd.resolve()
