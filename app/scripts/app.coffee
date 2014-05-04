@@ -82,6 +82,8 @@ angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($tra
       '7': "sun"
     }
 
+
+
   $translateProvider.translations "ru",
     TREE: "Дерево"
     CALENDAR: "Календарь"

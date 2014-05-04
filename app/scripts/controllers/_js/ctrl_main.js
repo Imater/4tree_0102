@@ -112,7 +112,7 @@
         ],
         main_views_menu: [
           {
-            title: 'Дерево',
+            title: 'Дерево!',
             icon: 'icon-flow-cascade',
             template: 'views/subviews/view_main/view_tree.html'
           }, {
@@ -688,3 +688,7 @@
   };
 
 }).call(this);
+
+/*
+//@ sourceMappingURL=ctrl_main.map
+*/

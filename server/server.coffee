@@ -47,7 +47,7 @@ if cluster.isMaster
   workers = {}
   allWorkers = {}
 
-  numCPUs = 1;
+  numCPUs = 0;
 
   debug = process.execArgv[0].indexOf('--debug') != -1;
   console.info 'debug', debug, process.execArgv, process.execArgv.indexOf('--debug')
