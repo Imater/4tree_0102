@@ -635,7 +635,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       focus = $rootScope.$$childTail.set.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;
       if tree and tree._panel[focus]._open and !ignore_open
-        found = db_tree.db_parents['n' + tree._id][0] if db_tree.db_parents['n' + tree._id];
+        found = db_tree.db_parents['n' + tree._id][0] if db_tree.db_parents['n' + tree._id]
         return found
       parents = db_tree.db_parents['n' + tree.parent_id];
       parents = _.sortBy parents, (value)->
@@ -648,7 +648,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       if !found
         console.info 'need_to_parent'
         next = db_tree.jsFind(tree.parent_id);
-        found = db_tree.jsFindNext(next, 'ignore_open') if next;
+        found = db_tree.jsFindNext(next, 'ignore_open') if next
       found
     jsFindPrev: (tree, ignore_open, last_and_deep)->
       focus = $rootScope.$$childTail.set.focus
