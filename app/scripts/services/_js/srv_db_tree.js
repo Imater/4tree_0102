@@ -57,6 +57,9 @@
         constructor: function() {
           var mythis;
           mythis = this;
+          $rootScope.$on('jsFindAndSaveDiff', function(event, db_name, new_value, old_value) {
+            return mythis.saveDiff(db_name, new_value._id);
+          });
           $rootScope.$on('my-sorted', function(event, data) {
             return $timeout(function() {
               var element, new_value, old_value;
@@ -1241,8 +1244,8 @@
           if (false || $rootScope.$$childTail.set.autosync_on) {
             return this.syncDiff();
           }
-        }, 100),
-        saveDiff: function(db_name, _id) {
+        }, 1000),
+        saveDiff: _.debounce(function(db_name, _id) {
           var dfd, mythis;
           mythis = this;
           console.info('save_diff starting...' + _id);
@@ -1252,6 +1255,12 @@
               var el, patch;
               if (new_element && old_element) {
                 patch = mythis.diff.diff(old_element, new_element);
+                if (patch && patch._sha1) {
+                  delete patch._sha1;
+                }
+                if (patch && patch._tm) {
+                  delete patch._tm;
+                }
                 el = {
                   _id: _id,
                   patch: patch,
@@ -1261,7 +1270,7 @@
                   machine: $rootScope.$$childTail.set.machine,
                   _tm: new Date().getTime()
                 };
-                if (patch) {
+                if (patch && Object.keys(patch)) {
                   mythis._tmp._diffs[el._id] = el;
                   mythis.db.put('_diffs', el).done(function() {
                     console.info('diff_saved');
@@ -1273,7 +1282,7 @@
             });
           });
           return dfd.promise;
-        },
+        }, 50),
         getElementFromLocalPlusDiffs: function(db_name, _id) {
           var dfd, mythis;
           dfd = $q.defer();
@@ -1338,16 +1347,17 @@
           dfd = $q.defer();
           mythis = this;
           console.info('backup_elements_before_sync', JSON.stringify(mythis.backup_elements_before_sync));
+          mythis.clearCache();
           _.each(Object.keys(results), function(db_name) {
             var db_data;
             db_data = results[db_name];
-            if (db_data.confirm) {
-              _.each(Object.keys(db_data.confirm), function(confirm_id) {
+            if (db_data && _.isObject(db_data.confirm)) {
+              return _.each(Object.keys(db_data.confirm), function(confirm_id) {
                 var confirm_element;
                 confirm_element = db_data.confirm[confirm_id];
                 console.info('CONFIRMED', confirm_id, confirm_element._sha1);
                 return mythis.getElement(db_name, confirm_id).then(function(doc) {
-                  var el, old_doc, patch, sha1;
+                  var old_doc, patch, sha1;
                   sha1 = mythis.JSON_stringify(doc)._sha1;
                   if (sha1 === confirm_element._sha1) {
                     doc._sha1 = confirm_element._sha1;
@@ -1365,56 +1375,58 @@
                   } else {
                     console.info('!!!!!!!ERROR sha1 CLIENT NOT EQUAL SERVER!!!!!!!!!!!!!!');
                     old_doc = mythis.backup_elements_before_sync[doc._id];
-                    console.info('doc_new', doc);
-                    console.info('doc_old', old_doc);
-                    old_doc._sha1 = mythis.JSON_stringify(old_doc)._sha1;
-                    patch = mythis.diff.diff(old_doc, doc);
-                    if (patch._sha1) {
-                      delete patch._sha1;
+                    if (confirm_element._doc) {
+                      doc = confirm_element._doc;
+                      if (!old_doc) {
+                        mythis._db[db_name][confirm_id] = doc;
+                        mythis.db.put(db_name, doc).done(function(err) {
+                          console.info('new data applyed', err, doc);
+                          return $timeout(function() {
+                            return $rootScope.$emit('refresh_editor');
+                          }, 100);
+                        });
+                      }
+                      console.info('doc from server', doc);
                     }
-                    console.info('PATCH = ', patch);
-                    mythis.db.put(db_name, old_doc).done(function(err) {
-                      return console.info('old_saved');
-                    });
-                    el = {
-                      _id: confirm_id,
-                      patch: patch,
-                      db_name: db_name,
-                      _sha1: old_doc._sha1,
-                      user_id: $rootScope.$$childTail.set.user_id,
-                      machine: $rootScope.$$childTail.set.machine,
-                      _tm: new Date().getTime()
-                    };
-                    if (patch) {
-                      mythis.saving_diff_busy = true;
-                      mythis._tmp._diffs[el._id] = el;
-                      $rootScope.$emit('refresh_editor');
-                      return mythis.db.put('_diffs', el).done(function() {
-                        mythis.saving_diff_busy = false;
-                        return console.info('diff_saved NEW');
+                    if (old_doc) {
+                      console.info('doc_new', doc);
+                      console.info('doc_old', old_doc);
+                      patch = mythis.diff.diff(old_doc, doc);
+                      if (patch && patch._sha1) {
+                        delete patch._sha1;
+                      }
+                      if (patch && patch._tm) {
+                        delete patch._tm;
+                      }
+                      console.info('PATCH = ', patch);
+                      return mythis.db.put(db_name, old_doc).done(function(err) {
+                        var el;
+                        mythis._db[db_name][confirm_id] = doc;
+                        console.info('old_saved');
+                        if (patch) {
+                          el = {
+                            _id: confirm_id,
+                            patch: patch,
+                            db_name: db_name,
+                            _sha1: doc._sha1,
+                            user_id: $rootScope.$$childTail.set.user_id,
+                            machine: $rootScope.$$childTail.set.machine,
+                            _tm: new Date().getTime()
+                          };
+                          console.info('!!!!!!!!!!!SHA1!!!!!!', doc._sha1, doc);
+                          mythis.saving_diff_busy = true;
+                          mythis._tmp._diffs[el._id] = el;
+                          return mythis.db.put('_diffs', el).done(function() {
+                            $timeout(function() {
+                              return $rootScope.$emit('refresh_editor');
+                            }, 100);
+                            mythis.saving_diff_busy = false;
+                            return console.info('diff_saved NEW');
+                          });
+                        }
                       });
                     }
                   }
-                });
-              });
-            }
-            if (db_data.new_data) {
-              _.each(db_data.new_data, function(new_doc) {
-                mythis._db[db_name][new_doc._id] = new_doc;
-                return mythis.db.put(db_name, mythis._db[db_name][new_doc._id]).done(function(err) {
-                  console.info('NEW_data applyed');
-                  return $rootScope.$emit('refresh_editor');
-                });
-              });
-            }
-            if (db_data.merged) {
-              return _.each(Object.keys(db_data.merged), function(merged_id) {
-                var merged_element;
-                merged_element = db_data.merged[merged_id].combined;
-                mythis._db[db_name][merged_id] = merged_element;
-                return mythis.db.put(db_name, mythis._db[db_name][merged_id]).done(function(err) {
-                  console.info('MERGED data applyed', err, merged_element);
-                  return $rootScope.$emit('refresh_editor');
                 });
               });
             }
@@ -1460,6 +1472,7 @@
           dfd = $q.defer();
           mythis = this;
           if (!mythis.sync_now) {
+            mythis.sync_now = true;
             console.info('New syncing...');
             this.getDiffsForSync().then(function(diffs) {
               if ($socket.is_online() && false) {
@@ -1563,7 +1576,32 @@
           }, 3000);
         },
         JSON_stringify: function(json) {
-          var delete_, string, _id, _sha1;
+          var copyObjectWithSortedKeys, delete_, isArray, isObject, json2, string, _id, _sha1;
+          isObject = function(a) {
+            return Object.prototype.toString.call(a) === "[object Object]";
+          };
+          isArray = function(a) {
+            return Object.prototype.toString.call(a) === "[object Array]";
+          };
+          copyObjectWithSortedKeys = function(object) {
+            var i, key, keysSorted, newObj;
+            if (isObject(object)) {
+              newObj = {};
+              keysSorted = Object.keys(object).sort();
+              key = void 0;
+              for (i in keysSorted) {
+                key = keysSorted[i];
+                if (_.has(object, key)) {
+                  newObj[key] = copyObjectWithSortedKeys(object[key]);
+                }
+              }
+              return newObj;
+            } else if (isArray(object)) {
+              return object.map(copyObjectWithSortedKeys);
+            } else {
+              return object;
+            }
+          };
           delete_ = function(key, value) {
             var first_letter;
             if ((first_letter = key[0]) === '_' || first_letter === '$') {
@@ -1572,7 +1610,8 @@
               return value;
             }
           };
-          string = JSON.stringify(json, delete_, 0);
+          json2 = copyObjectWithSortedKeys(JSON.parse(JSON.stringify(json, delete_)));
+          string = JSON.stringify(json2, delete_, 0);
           _id = json != null ? json._id : void 0;
           _sha1 = CryptoJS.SHA1(JSON.stringify(string)).toString().substr(0, 7);
           return {
@@ -1586,3 +1625,7 @@
   ]);
 
 }).call(this);
+
+/*
+//@ sourceMappingURL=srv_db_tree.map
+*/
