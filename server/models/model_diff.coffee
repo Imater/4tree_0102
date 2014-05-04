@@ -4,8 +4,8 @@ Schema = mongoose.Schema
 
 diffSchema = new Schema (
   'db_id': { type: String } 
-  'patch': { type: Object }
-  'old_body': { type: Object }
+  #'patch': { type: Object }
+  #'old_body': { type: Object }
   'new_body': { type: Object }
   'user_id': { type: String } 
   'machine': { type: String } 

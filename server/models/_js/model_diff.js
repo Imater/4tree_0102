@@ -10,12 +10,6 @@
     'db_id': {
       type: String
     },
-    'patch': {
-      type: Object
-    },
-    'old_body': {
-      type: Object
-    },
     'new_body': {
       type: Object
     },

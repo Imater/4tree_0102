@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="Generated files" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.js" />
+        <item url="file://$PROJECT_DIR$/server/_js/server.js" />
+        <item url="file://$PROJECT_DIR$/app/scripts/_js/app.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.js" />
+      <root url="file://$PROJECT_DIR$/server/_js/server.js" />
+      <root url="file://$PROJECT_DIR$/app/scripts/_js/app.js" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>

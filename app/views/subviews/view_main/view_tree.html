@@ -92,7 +92,7 @@
         <div class="col3">
             <div class="title">
                  <span contenteditable="true" class="contenteditable" ng-model="tree.title" focus-me="tree._focus_me" hotkey="{'Enter':fn.service.db_tree.jsEnterPress,'Esc':fn.service.db_tree.jsEscPress}" ng-blur="fn.service.db_tree.jsBlur($event, undefined, tree)" tabindex="-1"></span>
-                 <span class="cnt" ng-if="tree._childs">({{tree._childs}})</span>
+                 <span class="cnt" ng-if="tree._childs">({{tree._childs}}) {{tree.color}}</span>
             </div>    
         </div>        
         <div class="col4" ng-click="fn.service.db_tree.jsAddNote(tree); $event.stopPropagation();">

@@ -107,7 +107,7 @@ angular.module("4treeApp").service 'syncApi', ['$translate','db_tree', '$q', '$h
   sync_now: false;
   constructor: ()->
     mythis = @;
-    $rootScope.$on 'jsFindAndSaveDiff', (event, db_name, new_value, old_value)->
+    $rootScope.$on 'jsFindAndSaveDiff2', (event, db_name, new_value, old_value)->
       console.info 'watch', mythis.sync_now
       return if !old_value or !new_value or mythis.sync_now
       diffs = diffApi.diff( old_value, new_value, new Date().getTime() );

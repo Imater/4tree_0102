@@ -358,6 +358,8 @@ else
   }))
 
 
+  console.info "Hello John!12"
+
   app.configure ->
     app.use express.compress()
 

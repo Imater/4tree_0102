@@ -77,16 +77,16 @@ redactor: hash (pass in a redactor options hash)
             path_reverse = old_position.path.reverse();
             element = $('body');
             _.each(path_reverse, function(path) {
-              if (path.element && path.element[0].length) {
-                element = element.find(path.element[0]);
+              var _ref, _ref1, _ref2;
+              if (path.element && ((_ref = path.element[0]) != null ? _ref.length : void 0)) {
+                return element = element.find(path.element[0]);
               } else {
                 if ($(path.element[0]).hasClass('redactor_editor')) {
-                  element = $(path.element[0]);
+                  return element = $(path.element[0]);
                 } else {
-                  element = element.find(path.element[0].localName + ':eq(' + path.index + ')');
+                  return element = element.find(((_ref1 = path.element) != null ? (_ref2 = _ref1[0]) != null ? _ref2.localName : void 0 : void 0) + ':eq(' + path.index + ')');
                 }
               }
-              return console.info('!', path.element[0], path.index);
             });
             return element;
           };
@@ -101,12 +101,17 @@ redactor: hash (pass in a redactor options hash)
               }
               $_element.redactor("set", (text_element != null ? text_element.text : void 0) || "", false);
               old_element = setCurrent(old_position);
-              console.info('&&&&&&&', old_element.html().length, offset);
-              if (offset > old_element.html().length) {
-                offset = old_element.html().length;
-              }
-              if (old_element.length) {
-                return $_element.redactor("setCaret", old_element, offset);
+              if (old_element && old_element.html()) {
+                if (offset > old_element.html().length) {
+                  offset = old_element.html().length;
+                }
+                try {
+                  if (old_element.length) {
+                    return $_element.redactor("setCaret", old_element, offset);
+                  }
+                } catch (_error) {
+                  return console.info('error of caret');
+                }
               }
             });
           }, 1));

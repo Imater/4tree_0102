@@ -89,14 +89,18 @@
     Merge: function(diff) {
       var delta1, dfd;
       dfd = new $.Deferred();
-      logJson('diff = ', diff);
+      if (false) {
+        logJson('diff = ', diff);
+      }
       delta1 = diff.patch;
       Diff.findOne({
         _sha1: diff._sha1,
         db_id: diff._id
       }, void 0, function(err, doc0) {
         var doc1;
-        logJson('doc0new', doc0.new_body);
+        if (false) {
+          logJson('doc0new', doc0.new_body);
+        }
         doc1 = jsondiffpatch.patch(doc0.new_body, delta1);
         logJson('doc1', doc1);
         return global._db_models[diff.db_name].findOne({
@@ -115,8 +119,12 @@
           doc3 = jsondiffpatch.patch(doc1, delta2);
           doc3 = jsondiffpatch.patch(doc3, delta1);
           main_diff = jsondiffpatch.diff(doc2.toObject(), doc3);
-          logJson('DOC3', doc3);
-          logJson('MAIN_DIFF', main_diff);
+          if (false) {
+            logJson('DOC3', doc3);
+          }
+          if (false) {
+            logJson('MAIN_DIFF', main_diff);
+          }
           doc2 = _.extend(doc2, doc3);
           console.info('doc2', doc2);
           doc2._diff = diff;
@@ -132,12 +140,14 @@
   };
 
   exports.get2 = function(req, res) {
-    return Text.findOne({
+    return global._db_models['tree'].findOne({
       _id: req.query._id
     }, void 0, function(err, row) {
-      row._tm = new Date();
-      row.save();
-      return res.send(row);
+      var answer;
+      console.info(row);
+      answer = JSON_stringify.JSON_stringify(row);
+      console.info(answer);
+      return res.send(answer);
     });
   };
 
@@ -195,7 +205,7 @@
                 return callback();
               });
             } else {
-              console.info('Error, dont found, need seek DIFF');
+              console.info('Error, dont found ' + diff._sha1 + ', need seek DIFF');
               return sync.Merge(diff).then(function(doc) {
                 if (doc) {
                   if (!send_to_client[diff.db_name]) {
@@ -205,7 +215,9 @@
                   }
                   send_to_client[diff.db_name]['confirm'][doc._id] = {
                     _sha1: doc._sha1,
-                    _tm: doc._tm
+                    _tm: doc._tm,
+                    _doc: doc,
+                    merged: true
                   };
                   confirm_count++;
                 }
@@ -229,26 +241,28 @@
                 $gt: tm
               }
             }, function(err, docs) {
-              return async.filter(docs, function(doc, callback2) {
-                var need, _ref, _ref1, _ref2;
-                if ((send_to_client != null ? (_ref = send_to_client[db_name]) != null ? (_ref1 = _ref['confirm']) != null ? (_ref2 = _ref1[doc._id]) != null ? _ref2._sha1 : void 0 : void 0 : void 0 : void 0) === doc._sha1) {
-                  need = false;
-                } else {
-                  need = true;
-                }
-                return callback2(need);
-              }, function(docs_filtered) {
-                if (false) {
-                  console.info({
-                    docs_filtered: docs_filtered
-                  });
-                }
-                if (docs_filtered.length) {
-                  if (!send_to_client[db_name]) {
-                    send_to_client[db_name] = {};
+              return async.each(docs, function(doc, callback2) {
+                var confirm, _ref, _ref1;
+                if ((confirm = send_to_client != null ? (_ref = send_to_client[db_name]) != null ? (_ref1 = _ref['confirm']) != null ? _ref1[doc._id] : void 0 : void 0 : void 0)) {
+                  if (confirm._sha1 !== doc._sha1) {
+                    confirm._doc = doc;
+                    confirm.becouse_new = true;
                   }
-                  send_to_client[db_name].new_data = docs_filtered;
+                } else {
+                  if (!send_to_client[db_name]) {
+                    send_to_client[db_name] = {
+                      confirm: {}
+                    };
+                  }
+                  send_to_client[db_name]['confirm'][doc._id] = {
+                    _sha1: doc._sha1,
+                    _tm: doc._tm,
+                    _doc: doc,
+                    just_new: true
+                  };
                 }
+                return callback2();
+              }, function(docs_filtered) {
                 return callback();
               });
             });

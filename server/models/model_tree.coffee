@@ -1,4 +1,5 @@
 mongoose = require("mongoose")
+saveDiff = require('../../models/_js/saveDiff.js');
 
 Schema = mongoose.Schema
 
@@ -43,6 +44,12 @@ treeSchema = new Schema (
 
 #treeSchema.index({user_id: 1, title: 1}, {unique: false});
 
+treeSchema.post 'init', ()->
+  this._original = this.toObject();
+
+
+
+
 mongoosastic = require('mongoosastic')
 treeSchema.plugin(mongoosastic, {index: 'trees', type:'tree'});
 
@@ -50,3 +57,8 @@ Tree = module.exports = mongoose.model("Tree", treeSchema)
 
 Tree.createMapping (err, mapping)->
   console.info 'mapping', mapping if false
+
+treeSchema.pre 'save', (next)->
+  #console.info 'post saving... doc... ', @, 'was: ',this._original
+  saveDiff.saveDiff(Tree, @, this._original).then ()->
+    next()

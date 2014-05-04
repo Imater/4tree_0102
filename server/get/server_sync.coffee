@@ -58,11 +58,11 @@ sync = {
     answer = {};
   Merge: (diff)->
     dfd = new $.Deferred();
-    logJson 'diff = ', diff
+    logJson 'diff = ', diff if false
     delta1 = diff.patch
     #Находим старый текст с такой же контрольной суммой
     Diff.findOne {_sha1: diff._sha1, db_id: diff._id}, undefined, (err, doc0)->      
-      logJson 'doc0new', doc0.new_body
+      logJson 'doc0new', doc0.new_body if false
       doc1 = jsondiffpatch.patch( doc0.new_body, delta1)
       logJson 'doc1', doc1
       global._db_models[diff.db_name].findOne { _id: diff._id }, undefined, (err, doc2)->
@@ -74,8 +74,8 @@ sync = {
         doc3 = jsondiffpatch.patch( doc1, delta2 )
         doc3 = jsondiffpatch.patch( doc3, delta1 )
         main_diff = jsondiffpatch.diff(doc2.toObject(), doc3)
-        logJson 'DOC3', doc3
-        logJson 'MAIN_DIFF', main_diff
+        logJson 'DOC3', doc3 if false
+        logJson 'MAIN_DIFF', main_diff if false
         doc2 = _.extend( doc2, doc3)
         console.info 'doc2', doc2
         doc2._diff = diff
@@ -89,10 +89,11 @@ sync = {
 
 exports.get2 = (req, res)->
   #sync.combineAllDiffs(req, res)
-  Text.findOne { _id: req.query._id }, undefined, (err, row)->
-    row._tm = new Date();
-    row.save();
-    res.send(row)
+  global._db_models['tree'].findOne { _id: req.query._id }, undefined, (err, row)->
+    console.info row
+    answer = JSON_stringify.JSON_stringify( row )
+    console.info answer
+    res.send(answer)
 
 
 exports.get = (req, res)->
@@ -132,11 +133,11 @@ exports.fullSyncUniversal = (req, res)->
               callback()
           else
             #тут нужно разобраться
-            console.info 'Error, dont found, need seek DIFF'
+            console.info 'Error, dont found '+diff._sha1+', need seek DIFF'
             sync.Merge(diff).then (doc)->
               if doc
                 send_to_client[diff.db_name] = { confirm: {} } if !send_to_client[diff.db_name]
-                send_to_client[diff.db_name]['confirm'][doc._id] = { _sha1: doc._sha1, _tm: doc._tm }              
+                send_to_client[diff.db_name]['confirm'][doc._id] = { _sha1: doc._sha1, _tm: doc._tm, _doc: doc, merged: true }              
                 confirm_count++;
               callback() 
 
@@ -145,17 +146,16 @@ exports.fullSyncUniversal = (req, res)->
           tm = new Date( JSON.parse(last_sync_time) ).toISOString();
           console.info 'FIND', { _tm: { $gt: tm } } if false
           global._db_models[db_name].find { _tm: { $gt: tm } }, (err, docs)->
-            async.filter docs, (doc, callback2)->
-              if send_to_client?[db_name]?['confirm']?[ doc._id ]?._sha1 == doc._sha1
-                need = false
+            async.each docs, (doc, callback2)->
+              if (confirm = send_to_client?[db_name]?['confirm']?[ doc._id ])
+                if confirm._sha1 != doc._sha1
+                  confirm._doc = doc
+                  confirm.becouse_new = true
               else
-                need = true
-              callback2(need);
+                send_to_client[db_name] = { confirm: {} } if !send_to_client[db_name]
+                send_to_client[db_name]['confirm'][doc._id] = { _sha1: doc._sha1, _tm: doc._tm, _doc: doc, just_new: true }
+              callback2();
             , (docs_filtered)->
-              console.info { docs_filtered } if false
-              if docs_filtered.length
-                send_to_client[db_name] = {} if !send_to_client[db_name]
-                send_to_client[db_name].new_data = docs_filtered
               callback();
         , ()->
           send_to_client.server_time = new Date()

@@ -151,7 +151,7 @@
         constructor: function() {
           var mythis;
           mythis = this;
-          return $rootScope.$on('jsFindAndSaveDiff', function(event, db_name, new_value, old_value) {
+          return $rootScope.$on('jsFindAndSaveDiff2', function(event, db_name, new_value, old_value) {
             var diffs;
             console.info('watch', mythis.sync_now);
             if (!old_value || !new_value || mythis.sync_now) {
