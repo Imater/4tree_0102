@@ -336,7 +336,7 @@ var Parser = (function (scope) {
     return b;
   }
 
-  // TODO: use hypot that doesn't overflow
+  // TO-DO: use hypot that doesn't overflow
   function pyt(a, b) {
     return Math.sqrt(a * a + b * b);
   }

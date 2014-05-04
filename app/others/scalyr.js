@@ -376,7 +376,7 @@ defineScalyrAngularModule('slyEvaluate', ['gatedScope'])
  * from being evaluated unless the specified expression evaluates to a different object.
  * Currently, the value assigned to the 'slyEvaluateOnlyWhen' must evaluate to an object.
  * Also, reference equality is used to determine if the expression has changed.
- * TODO: Make this more versatile, similar to $watch.  For now, this is all we need.
+ * TO-DO: Make this more versatile, similar to $watch.  For now, this is all we need.
  */
 .directive('slyEvaluateOnlyWhen', ['$parse', function ($parse) {
   return {

@@ -197,7 +197,7 @@ angular.module("4treeApp").directive "clickAnywhereButHere", [
 
 # fn(original,newOne,anotherNewOne,...)
 
-# TODO: make this work for more than one newObj
+# TO-DO: make this work for more than one newObj
 # var newObjects = _.toArray(arguments).shift();
 
 # If the new value is a non-object or array, 
@@ -207,7 +207,7 @@ angular.module("4treeApp").directive "clickAnywhereButHere", [
 
 # fn(original,newOne,anotherNewOne,...)
 
-# TODO: make this work for more than one newObj
+# TO-DO: make this work for more than one newObj
 # var newObjects = _.toArray(arguments).shift();
 
 # If the new value is a non-object or array, 

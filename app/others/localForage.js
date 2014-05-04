@@ -893,7 +893,7 @@ requireModule('promise/polyfill').polyfill();
                 //
                 // This can be removed once we no longer care about IE 8, for
                 // what that's worth.
-                // TODO: Write a test against this? Maybe IE in general? Also,
+                // TO-DO: Write a test against this? Maybe IE in general? Also,
                 // make sure the minify step doesn't optimise this to `.delete`,
                 // though it currently doesn't.
                 var req = store['delete'](key);
@@ -1280,7 +1280,7 @@ requireModule('promise/polyfill').polyfill();
         // Cannot use `value instanceof ArrayBuffer` or such here, as these
         // checks fail when running the tests using casper.js...
         //
-        // TODO: See why those tests fail and use a better solution.
+        // TO-DO: See why those tests fail and use a better solution.
         if (value && (value.toString() === '[object ArrayBuffer]' ||
                       value.buffer && value.buffer.toString() === '[object ArrayBuffer]')) {
             // Convert binary arrays to a string and prefix the string with
@@ -1553,7 +1553,7 @@ requireModule('promise/polyfill').polyfill();
     }
 
     // Deletes every item in the table.
-    // TODO: Find out if this resets the AUTO_INCREMENT number.
+    // TO-DO: Find out if this resets the AUTO_INCREMENT number.
     function clear(callback) {
         var _this = this;
         return new Promise(function(resolve) {
@@ -1599,7 +1599,7 @@ requireModule('promise/polyfill').polyfill();
     // inconsistent, because we do `INSERT OR REPLACE INTO` on `setItem()`, so
     // the ID of each key will change every time it's updated. Perhaps a stored
     // procedure for the `setItem()` SQL would solve this problem?
-    // TODO: Don't change ID on `setItem()`.
+    // TO-DO: Don't change ID on `setItem()`.
     function key(n, callback) {
         var _this = this;
         return new Promise(function(resolve) {
@@ -1737,7 +1737,7 @@ requireModule('promise/polyfill').polyfill();
         // Cannot use `value instanceof ArrayBuffer` or such here, as these
         // checks fail when running the tests using casper.js...
         //
-        // TODO: See why those tests fail and use a better solution.
+        // TO-DO: See why those tests fail and use a better solution.
         if (value && (value.toString() === '[object ArrayBuffer]' ||
                       value.buffer && value.buffer.toString() === '[object ArrayBuffer]')) {
             // Convert binary arrays to a string and prefix the string with

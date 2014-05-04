@@ -904,7 +904,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
             confirm_element = db_data.confirm[confirm_id];
             console.info 'CONFIRMED', confirm_id, confirm_element._sha1
             # тут нужно учесть, вдруг во время синхронизации элемент изменился
-            # TODO
+            # TODO Нужно учесть, вдруг элемент изменился
             mythis.getElement(db_name, confirm_id).then (doc)->
               sha1 = mythis.JSON_stringify(doc)._sha1
               #Если контрольные суммы сервера и клиента совпали, то удаляем diff и обновляем _sha1
