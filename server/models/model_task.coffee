@@ -11,6 +11,7 @@ treeSchema = new Schema (
   'date2': Date
   'parent_id': String
   '_sha1': String
+  'did': Boolean
   '_sync': [ { key: String, diff: { '_tm': String } } ]
   '_tm': Date
 )

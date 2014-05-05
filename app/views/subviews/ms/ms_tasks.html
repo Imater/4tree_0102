@@ -9,7 +9,7 @@
 <!-- Begin Templates -->
 <script type="text/ng-template" id="views/subviews/task_one_line1.html">
 
-	<div class="one_task" ng-class="{did:task.did}">
+	<div class="one_task" ng-class="{did:task.did}" ng-controller="save_task_db_simple">
 		<div class="left_part">
 			<input type="checkbox" ng-model="task.did" ng-checked="task.did">
 		</div>

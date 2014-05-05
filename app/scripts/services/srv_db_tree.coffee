@@ -368,9 +368,9 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     'jsFind': (id)->
       if id == 1
         return @first_element
-      tree_by_id = _.find @_db['tree'][id] if @_db?['tree']?[id]
+      found = @_db['tree'][id] if @_db?['tree']?[id]
       return undefined if id == undefined
-      tree_by_id
+      found
 
 
     'jsGetPath': _.memoize (id) ->
@@ -545,7 +545,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       new_note._focus_me = true;
       new_note.user_id = $rootScope.$$childTail.set.user_id;
       new_note.pos = tree.pos + @diffForSort(tree);
-      @_db.tree.push(new_note)
+      @_db.tree[new_note._id] = new_note
       if !make_child
         new_note.parent_id = tree.parent_id;
         @refreshParentsIndex(tree.parent_id);
@@ -912,63 +912,73 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
             # тут нужно учесть, вдруг во время синхронизации элемент изменился
             # TODO Нужно учесть, вдруг элемент изменился
             mythis.getElement(db_name, confirm_id).then (doc)->
-              sha1 = mythis.JSON_stringify(doc)._sha1
-              #Если контрольные суммы сервера и клиента совпали, то удаляем diff и обновляем _sha1
-              if sha1 == confirm_element._sha1
-                doc._sha1 = confirm_element._sha1
-                doc._tm = confirm_element._tm
-                mythis.db.put(db_name, doc).done (err)->
-                  console.info 'new data applyed', err, doc;
-                delete mythis._tmp._diffs[confirm_id] if mythis._tmp._diffs[confirm_id]
-                mythis.db.remove('_diffs', confirm_id).done (err)->
-                  console.info 'diff - deleted', err
-                  dfd.resolve();
-              else
-                console.info '!!!!!!!ERROR sha1 CLIENT NOT EQUAL SERVER!!!!!!!!!!!!!!'
-                old_doc = mythis.backup_elements_before_sync[doc._id];
-                if confirm_element._doc
-                  doc = confirm_element._doc;
-                  if !old_doc
-                    mythis.copyObject(mythis._db[db_name][confirm_id], doc);
-                    mythis.db.put(db_name, doc).done (err)->
-                      console.info 'new data applyed', err, doc;
-                      $timeout ()->
-                        $rootScope.$emit 'refresh_editor'
-                      , 100
-                  console.info 'doc from server', doc
-                #Если данные в кеше и изменились
-                if old_doc
-                  console.info 'doc_new', doc
-                  console.info 'doc_old', old_doc
-                  #old_doc._sha1 = mythis.JSON_stringify(old_doc)._sha1
-                  #doc._sha1 = old_doc._sha1
-                  patch = mythis.diff.diff(old_doc, doc);
-                  delete patch._sha1 if patch and patch._sha1
-                  delete patch._tm if patch and patch._tm
-                  console.info 'PATCH = ', patch
-                  mythis.db.put(db_name, old_doc).done (err)->
-                    mythis._db[db_name][confirm_id] = doc;
-                    console.info 'old_saved'
-                    if patch
-                      el = {
-                        _id: confirm_id
-                        patch: patch
-                        db_name: db_name
-                        _sha1: doc._sha1
-                        user_id: $rootScope.$$childTail.set.user_id
-                        machine: $rootScope.$$childTail.set.machine
-                        _tm: new Date().getTime()
-                      }
-                      console.info '!!!!!!!!!!!SHA1!!!!!!', doc._sha1, doc
-                      #если синхронизация уже идёт, то изменения пока не сохраняем
-                      mythis.saving_diff_busy = true
-                      mythis._tmp._diffs[el._id] = el
-                      mythis.db.put('_diffs', el).done ()->
+              if doc
+                if doc._new
+                  doc._new = false
+                sha1 = mythis.JSON_stringify(doc)._sha1
+                #Если контрольные суммы сервера и клиента совпали, то удаляем diff и обновляем _sha1
+                if sha1 == confirm_element._sha1
+                  doc._sha1 = confirm_element._sha1
+                  doc._tm = confirm_element._tm
+                  mythis.db.put(db_name, doc).done (err)->
+                    console.info 'new data applyed', err, doc;
+                  delete mythis._tmp._diffs[confirm_id] if mythis._tmp._diffs[confirm_id]
+                  mythis.db.remove('_diffs', confirm_id).done (err)->
+                    console.info 'diff - deleted', err
+                    dfd.resolve();
+                else
+                  console.info '!!!!!!!ERROR sha1 CLIENT NOT EQUAL SERVER!!!!!!!!!!!!!!'
+                  old_doc = mythis.backup_elements_before_sync[doc._id];
+                  if confirm_element._doc
+                    doc = confirm_element._doc;
+                    if !old_doc
+                      mythis.copyObject(mythis._db[db_name][confirm_id], doc);
+                      mythis.db.put(db_name, doc).done (err)->
+                        console.info 'new data applyed', err, doc;
                         $timeout ()->
                           $rootScope.$emit 'refresh_editor'
                         , 100
-                        mythis.saving_diff_busy = false
-                        console.info 'diff_saved NEW'
+                    console.info 'doc from server', doc
+                  #Если данные в кеше и изменились
+                  if old_doc
+                    console.info 'doc_new', doc
+                    console.info 'doc_old', old_doc
+                    #old_doc._sha1 = mythis.JSON_stringify(old_doc)._sha1
+                    #doc._sha1 = old_doc._sha1
+                    patch = mythis.diff.diff(old_doc, doc);
+                    delete patch._sha1 if patch and patch._sha1
+                    delete patch._tm if patch and patch._tm
+                    console.info 'PATCH = ', patch
+                    mythis.db.put(db_name, old_doc).done (err)->
+                      mythis._db[db_name][confirm_id] = doc;
+                      console.info 'old_saved'
+                      if patch
+                        el = {
+                          _id: confirm_id
+                          patch: patch
+                          db_name: db_name
+                          _sha1: doc._sha1
+                          user_id: $rootScope.$$childTail.set.user_id
+                          machine: $rootScope.$$childTail.set.machine
+                          _tm: new Date().getTime()
+                        }
+                        console.info '!!!!!!!!!!!SHA1!!!!!!', doc._sha1, doc
+                        #если синхронизация уже идёт, то изменения пока не сохраняем
+                        mythis.saving_diff_busy = true
+                        mythis._tmp._diffs[el._id] = el
+                        mythis.db.put('_diffs', el).done ()->
+                          $timeout ()->
+                            $rootScope.$emit 'refresh_editor'
+                          , 100
+                          mythis.saving_diff_busy = false
+                          console.info 'diff_saved NEW'
+              else
+                #добавление нового элемента в базу
+                if confirm_element._doc
+                  mythis._db[db_name][confirm_element._doc._id] = confirm_element._doc
+                  mythis.clearCache();
+                  mythis.db.put(db_name, confirm_element._doc).done (err)->
+                    console.info 'saved_to_db ', err
 
 
       dfd.resolve();
@@ -1008,6 +1018,9 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       mythis = @;
       if !mythis.sync_now
         mythis.sync_now = true
+        $timeout ()->
+          mythis.sync_now = false
+        , 2000
         console.info 'New syncing...'
 
         @getDiffsForSync().then (diffs)->

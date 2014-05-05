@@ -158,7 +158,7 @@
   };
 
   exports.fullSyncUniversal = function(req, res) {
-    var confirm_count, dfd, diffs, last_sync_time, machine, new_db_elements, sha1_sign, user_id;
+    var confirm_count, dfd, diffs, last_sync_time, machine, new_db_elements, send_to_client, sha1_sign, user_id;
     dfd = new $.Deferred();
     diffs = req.body.diffs;
     new_db_elements = req.body.new_db_elements;
@@ -176,6 +176,7 @@
       }
       res.send();
     } else {
+      send_to_client = {};
       async.series([
         function(callback_main) {
           if (new_db_elements) {
@@ -188,12 +189,27 @@
                   doc = new_elements[doc_id];
                   console.info('need_save ' + doc_id, doc);
                   DB_MODEL = global._db_models[db_name];
+                  doc._tm = new Date();
                   db_model = new DB_MODEL(doc);
                   return db_model.save(function(err, saved) {
+                    confirm_count++;
                     console.info('saved', err, saved);
+                    if (saved && false) {
+                      if (!send_to_client[db_name]) {
+                        send_to_client[db_name] = {
+                          confirm: {}
+                        };
+                      }
+                      send_to_client[db_name]['confirm'][saved._id] = {
+                        _sha1: saved._sha1,
+                        _tm: saved._tm
+                      };
+                    }
                     return callback2();
                   });
-                }, function() {});
+                }, function() {
+                  return callback();
+                });
               } else {
                 return callback();
               }
@@ -204,8 +220,6 @@
             return callback_main();
           }
         }, function(callback_main) {
-          var send_to_client;
-          send_to_client = {};
           if (diffs) {
             return async.eachLimit(Object.keys(diffs), 50, function(diff_id, callback) {
               var diff;
@@ -300,37 +314,35 @@
                   });
                 });
               }, function() {
-                var clients;
-                send_to_client.server_time = new Date();
-                send_to_client.confirm_count = confirm_count;
-                logJson('send_to_client', send_to_client);
-                dfd.resolve(send_to_client);
-                if (confirm_count > 0) {
-                  clients = global.io.sockets.clients('user_id:' + user_id);
-                  if (clients) {
-                    async.each(Object.keys(clients), function(client_i, callback3) {
-                      var client;
-                      client = clients[client_i];
-                      client.get('nickname', function(err, nickname) {
-                        nickname = JSON.parse(nickname);
-                        if (nickname && nickname.machine !== machine) {
-                          return client.emit('need_sync_now');
-                        }
-                      });
-                      return callback3();
-                    }, function() {
-                      return console.info('info sended by socket...');
-                    });
-                  }
-                }
                 return callback_main();
               });
             });
-          } else {
-            return dfd.resolve();
           }
         }
       ], function() {
+        var clients;
+        send_to_client.server_time = new Date();
+        send_to_client.confirm_count = confirm_count;
+        logJson('send_to_client', send_to_client);
+        dfd.resolve(send_to_client);
+        if (confirm_count > 0) {
+          clients = global.io.sockets.clients('user_id:' + user_id);
+          if (clients) {
+            async.each(Object.keys(clients), function(client_i, callback3) {
+              var client;
+              client = clients[client_i];
+              client.get('nickname', function(err, nickname) {
+                nickname = JSON.parse(nickname);
+                if (nickname && nickname.machine !== machine) {
+                  return client.emit('need_sync_now');
+                }
+              });
+              return callback3();
+            }, function() {
+              return console.info('info sended by socket...');
+            });
+          }
+        }
         return console.info('SYNC ENDED!!!');
       });
     }

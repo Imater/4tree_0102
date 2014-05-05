@@ -185,6 +185,10 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       calendarBox: calendarBox
       syncApi: syncApi
     }
+    jsOpenTree: (tree, panel_id)->
+      tree._panel = {} if !tree.panel
+      tree._panel[panel_id] = {} if !tree._panel[panel_id]
+      tree._panel[panel_id]._open=!tree._panel[panel_id]._open
     getFormId: (name)->
       name + '_' + new ObjectId().toString();
     datediff: _.memoize (dates)->
@@ -671,6 +675,13 @@ angular.module("4treeApp").controller "save_task_db", ($scope, syncApi, db_tree,
   $scope.$watchCollection "set.set_task", (new_value, old_value)->
     if !_.isEqual( new_value, old_value )
       $rootScope.$emit("jsFindAndSaveDiff",'tasks', new_value, old_value);
+
+angular.module("4treeApp").controller "save_task_db_simple", ($scope, syncApi, db_tree, $rootScope)->
+
+  $scope.$watchCollection "task", (new_value, old_value)->
+    if !_.isEqual( new_value, old_value )
+      $rootScope.$emit("jsFindAndSaveDiff",'tasks', new_value, old_value);
+
 
 angular.module("4treeApp").controller "searchController", ($scope, syncApi, db_tree, $rootScope, $sce, $timeout)->
   $scope.search_notes_result = {};

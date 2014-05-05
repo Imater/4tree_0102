@@ -185,6 +185,15 @@
           calendarBox: calendarBox,
           syncApi: syncApi
         },
+        jsOpenTree: function(tree, panel_id) {
+          if (!tree.panel) {
+            tree._panel = {};
+          }
+          if (!tree._panel[panel_id]) {
+            tree._panel[panel_id] = {};
+          }
+          return tree._panel[panel_id]._open = !tree._panel[panel_id]._open;
+        },
         getFormId: function(name) {
           return name + '_' + new ObjectId().toString();
         },
@@ -568,6 +577,14 @@
 
   angular.module("4treeApp").controller("save_task_db", function($scope, syncApi, db_tree, $rootScope) {
     return $scope.$watchCollection("set.set_task", function(new_value, old_value) {
+      if (!_.isEqual(new_value, old_value)) {
+        return $rootScope.$emit("jsFindAndSaveDiff", 'tasks', new_value, old_value);
+      }
+    });
+  });
+
+  angular.module("4treeApp").controller("save_task_db_simple", function($scope, syncApi, db_tree, $rootScope) {
+    return $scope.$watchCollection("task", function(new_value, old_value) {
       if (!_.isEqual(new_value, old_value)) {
         return $rootScope.$emit("jsFindAndSaveDiff", 'tasks', new_value, old_value);
       }

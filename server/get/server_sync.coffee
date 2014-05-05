@@ -115,6 +115,7 @@ exports.fullSyncUniversal = (req, res)->
     console.info 'Error of signing sync http: '+req.body.sha1_sign+' != '+sha1_sign if false
     res.send();
   else
+    send_to_client = {};
     async.series [
       #Обрабатываю все новые элементы
       (callback_main)->
@@ -126,11 +127,17 @@ exports.fullSyncUniversal = (req, res)->
                 doc = new_elements[doc_id]
                 console.info 'need_save '+doc_id, doc
                 DB_MODEL = global._db_models[db_name];
+                doc._tm = new Date();
                 db_model = new DB_MODEL(doc)
                 db_model.save (err, saved)->
+                  confirm_count++;
                   console.info 'saved', err, saved
+                  if saved and false
+                    send_to_client[db_name] = { confirm: {} } if !send_to_client[db_name]
+                    send_to_client[db_name]['confirm'][saved._id] = { _sha1: saved._sha1, _tm: saved._tm }
                   callback2();
               , ()->
+                callback();
             else
               callback();
 
@@ -140,7 +147,6 @@ exports.fullSyncUniversal = (req, res)->
           callback_main();
       #Обрабатываю все изменения
       (callback_main)->
-        send_to_client = {};
         if diffs
           async.eachLimit Object.keys(diffs), 50, (diff_id, callback)->
             diff = diffs[diff_id];
@@ -184,28 +190,26 @@ exports.fullSyncUniversal = (req, res)->
                 , (docs_filtered)->
                   callback();
             , ()->
-              send_to_client.server_time = new Date()
-              send_to_client.confirm_count = confirm_count;
-              logJson 'send_to_client', send_to_client
-              dfd.resolve(send_to_client);
-
-              if confirm_count > 0
-                clients = global.io.sockets.clients('user_id:'+user_id)
-                if clients
-                  async.each Object.keys(clients), (client_i, callback3)->
-                    client = clients[client_i]
-                    client.get 'nickname', (err, nickname)->
-                      nickname = JSON.parse(nickname)
-                      if nickname and nickname.machine != machine
-                        client.emit('need_sync_now')
-                    callback3()
-                  ,()->
-                    console.info 'info sended by socket...'
               callback_main()
           #logJson 'send_to_client', send_to_client
-        else
-          dfd.resolve()
     ], ()->
+      send_to_client.server_time = new Date()
+      send_to_client.confirm_count = confirm_count;
+      logJson 'send_to_client', send_to_client
+      dfd.resolve(send_to_client);
+
+      if confirm_count > 0
+        clients = global.io.sockets.clients('user_id:'+user_id)
+        if clients
+          async.each Object.keys(clients), (client_i, callback3)->
+            client = clients[client_i]
+            client.get 'nickname', (err, nickname)->
+              nickname = JSON.parse(nickname)
+              if nickname and nickname.machine != machine
+                client.emit('need_sync_now')
+            callback3()
+          ,()->
+            console.info 'info sended by socket...'
       console.info 'SYNC ENDED!!!'
 
   dfd.promise();

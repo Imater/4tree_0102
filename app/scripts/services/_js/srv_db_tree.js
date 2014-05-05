@@ -621,17 +621,17 @@
           _path: ['2']
         },
         'jsFind': function(id) {
-          var tree_by_id, _ref, _ref1;
+          var found, _ref, _ref1;
           if (id === 1) {
             return this.first_element;
           }
           if ((_ref = this._db) != null ? (_ref1 = _ref['tree']) != null ? _ref1[id] : void 0 : void 0) {
-            tree_by_id = _.find(this._db['tree'][id]);
+            found = this._db['tree'][id];
           }
           if (id === void 0) {
             return void 0;
           }
-          return tree_by_id;
+          return found;
         },
         'jsGetPath': _.memoize(function(id) {
           var el, path, prevent_recursive;
@@ -869,7 +869,7 @@
           new_note._focus_me = true;
           new_note.user_id = $rootScope.$$childTail.set.user_id;
           new_note.pos = tree.pos + this.diffForSort(tree);
-          this._db.tree.push(new_note);
+          this._db.tree[new_note._id] = new_note;
           if (!make_child) {
             new_note.parent_id = tree.parent_id;
             this.refreshParentsIndex(tree.parent_id);
@@ -1368,72 +1368,85 @@
                 console.info('CONFIRMED', confirm_id, confirm_element._sha1);
                 return mythis.getElement(db_name, confirm_id).then(function(doc) {
                   var old_doc, patch, sha1;
-                  sha1 = mythis.JSON_stringify(doc)._sha1;
-                  if (sha1 === confirm_element._sha1) {
-                    doc._sha1 = confirm_element._sha1;
-                    doc._tm = confirm_element._tm;
-                    mythis.db.put(db_name, doc).done(function(err) {
-                      return console.info('new data applyed', err, doc);
-                    });
-                    if (mythis._tmp._diffs[confirm_id]) {
-                      delete mythis._tmp._diffs[confirm_id];
+                  if (doc) {
+                    if (doc._new) {
+                      doc._new = false;
                     }
-                    return mythis.db.remove('_diffs', confirm_id).done(function(err) {
-                      console.info('diff - deleted', err);
-                      return dfd.resolve();
-                    });
-                  } else {
-                    console.info('!!!!!!!ERROR sha1 CLIENT NOT EQUAL SERVER!!!!!!!!!!!!!!');
-                    old_doc = mythis.backup_elements_before_sync[doc._id];
-                    if (confirm_element._doc) {
-                      doc = confirm_element._doc;
-                      if (!old_doc) {
-                        mythis.copyObject(mythis._db[db_name][confirm_id], doc);
-                        mythis.db.put(db_name, doc).done(function(err) {
-                          console.info('new data applyed', err, doc);
-                          return $timeout(function() {
-                            return $rootScope.$emit('refresh_editor');
-                          }, 100);
-                        });
+                    sha1 = mythis.JSON_stringify(doc)._sha1;
+                    if (sha1 === confirm_element._sha1) {
+                      doc._sha1 = confirm_element._sha1;
+                      doc._tm = confirm_element._tm;
+                      mythis.db.put(db_name, doc).done(function(err) {
+                        return console.info('new data applyed', err, doc);
+                      });
+                      if (mythis._tmp._diffs[confirm_id]) {
+                        delete mythis._tmp._diffs[confirm_id];
                       }
-                      console.info('doc from server', doc);
-                    }
-                    if (old_doc) {
-                      console.info('doc_new', doc);
-                      console.info('doc_old', old_doc);
-                      patch = mythis.diff.diff(old_doc, doc);
-                      if (patch && patch._sha1) {
-                        delete patch._sha1;
-                      }
-                      if (patch && patch._tm) {
-                        delete patch._tm;
-                      }
-                      console.info('PATCH = ', patch);
-                      return mythis.db.put(db_name, old_doc).done(function(err) {
-                        var el;
-                        mythis._db[db_name][confirm_id] = doc;
-                        console.info('old_saved');
-                        if (patch) {
-                          el = {
-                            _id: confirm_id,
-                            patch: patch,
-                            db_name: db_name,
-                            _sha1: doc._sha1,
-                            user_id: $rootScope.$$childTail.set.user_id,
-                            machine: $rootScope.$$childTail.set.machine,
-                            _tm: new Date().getTime()
-                          };
-                          console.info('!!!!!!!!!!!SHA1!!!!!!', doc._sha1, doc);
-                          mythis.saving_diff_busy = true;
-                          mythis._tmp._diffs[el._id] = el;
-                          return mythis.db.put('_diffs', el).done(function() {
-                            $timeout(function() {
+                      return mythis.db.remove('_diffs', confirm_id).done(function(err) {
+                        console.info('diff - deleted', err);
+                        return dfd.resolve();
+                      });
+                    } else {
+                      console.info('!!!!!!!ERROR sha1 CLIENT NOT EQUAL SERVER!!!!!!!!!!!!!!');
+                      old_doc = mythis.backup_elements_before_sync[doc._id];
+                      if (confirm_element._doc) {
+                        doc = confirm_element._doc;
+                        if (!old_doc) {
+                          mythis.copyObject(mythis._db[db_name][confirm_id], doc);
+                          mythis.db.put(db_name, doc).done(function(err) {
+                            console.info('new data applyed', err, doc);
+                            return $timeout(function() {
                               return $rootScope.$emit('refresh_editor');
                             }, 100);
-                            mythis.saving_diff_busy = false;
-                            return console.info('diff_saved NEW');
                           });
                         }
+                        console.info('doc from server', doc);
+                      }
+                      if (old_doc) {
+                        console.info('doc_new', doc);
+                        console.info('doc_old', old_doc);
+                        patch = mythis.diff.diff(old_doc, doc);
+                        if (patch && patch._sha1) {
+                          delete patch._sha1;
+                        }
+                        if (patch && patch._tm) {
+                          delete patch._tm;
+                        }
+                        console.info('PATCH = ', patch);
+                        return mythis.db.put(db_name, old_doc).done(function(err) {
+                          var el;
+                          mythis._db[db_name][confirm_id] = doc;
+                          console.info('old_saved');
+                          if (patch) {
+                            el = {
+                              _id: confirm_id,
+                              patch: patch,
+                              db_name: db_name,
+                              _sha1: doc._sha1,
+                              user_id: $rootScope.$$childTail.set.user_id,
+                              machine: $rootScope.$$childTail.set.machine,
+                              _tm: new Date().getTime()
+                            };
+                            console.info('!!!!!!!!!!!SHA1!!!!!!', doc._sha1, doc);
+                            mythis.saving_diff_busy = true;
+                            mythis._tmp._diffs[el._id] = el;
+                            return mythis.db.put('_diffs', el).done(function() {
+                              $timeout(function() {
+                                return $rootScope.$emit('refresh_editor');
+                              }, 100);
+                              mythis.saving_diff_busy = false;
+                              return console.info('diff_saved NEW');
+                            });
+                          }
+                        });
+                      }
+                    }
+                  } else {
+                    if (confirm_element._doc) {
+                      mythis._db[db_name][confirm_element._doc._id] = confirm_element._doc;
+                      mythis.clearCache();
+                      return mythis.db.put(db_name, confirm_element._doc).done(function(err) {
+                        return console.info('saved_to_db ', err);
                       });
                     }
                   }
@@ -1493,6 +1506,9 @@
           mythis = this;
           if (!mythis.sync_now) {
             mythis.sync_now = true;
+            $timeout(function() {
+              return mythis.sync_now = false;
+            }, 2000);
             console.info('New syncing...');
             this.getDiffsForSync().then(function(diffs) {
               if ($socket.is_online() && false) {
