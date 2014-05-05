@@ -1247,7 +1247,7 @@
             return this.syncDiff();
           }
         }, 300),
-        saveDiff: _.debounce(function(db_name, _id) {
+        saveDiff: _.throttle(function(db_name, _id) {
           var dfd, mythis;
           mythis = this;
           console.info('save_diff starting.....' + _id);
@@ -1263,6 +1263,13 @@
                 if (patch && patch._tm) {
                   delete patch._tm;
                 }
+                if (patch) {
+                  _.each(Object.keys(patch), function(key) {
+                    if (patch[key] && (key[0] === '_' || key[0] === '$')) {
+                      return delete patch[key];
+                    }
+                  });
+                }
                 el = {
                   _id: _id,
                   patch: patch,
@@ -1272,7 +1279,7 @@
                   machine: $rootScope.$$childTail.set.machine,
                   _tm: new Date().getTime()
                 };
-                if (patch && Object.keys(patch)) {
+                if (patch && !_.isEmpty(patch)) {
                   mythis._tmp._diffs[el._id] = el;
                   mythis.db.put('_diffs', el).done(function() {
                     console.info('diff_saved');
@@ -1520,6 +1527,7 @@
               } else {
                 return mythis.sendDiffToWeb(diffs).then(function(results) {
                   return mythis.syncApplyResults(results).then(function() {
+                    mythis.refreshParentsIndex();
                     mythis.sync_now = false;
                     dfd.resolve();
                     console.info('sha1 applyed');

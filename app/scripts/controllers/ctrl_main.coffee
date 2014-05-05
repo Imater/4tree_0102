@@ -186,9 +186,9 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       syncApi: syncApi
     }
     jsOpenTree: (tree, panel_id)->
-      tree._panel = {} if !tree.panel
+      tree._panel = {} if !tree._panel
       tree._panel[panel_id] = {} if !tree._panel[panel_id]
-      tree._panel[panel_id]._open=!tree._panel[panel_id]._open
+      tree._panel[panel_id]['_open'] = !(tree._panel[panel_id]['_open'])
     getFormId: (name)->
       name + '_' + new ObjectId().toString();
     datediff: _.memoize (dates)->

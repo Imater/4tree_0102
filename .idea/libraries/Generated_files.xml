@@ -2,6 +2,7 @@
   <library name="Generated files" type="javaScript">
     <properties>
       <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_droppable.js" />
         <item url="file://$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_main.js" />
         <item url="file://$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.js" />
         <item url="file://$PROJECT_DIR$/server/_js/server.js" />
@@ -14,6 +15,7 @@
     <CLASSES>
       <root url="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.js" />
       <root url="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.js" />
+      <root url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_droppable.js" />
       <root url="file://$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.js" />
       <root url="file://$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_main.js" />
       <root url="file://$PROJECT_DIR$/server/get/_js/server_sync.js" />

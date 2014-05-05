@@ -186,13 +186,13 @@
           syncApi: syncApi
         },
         jsOpenTree: function(tree, panel_id) {
-          if (!tree.panel) {
+          if (!tree._panel) {
             tree._panel = {};
           }
           if (!tree._panel[panel_id]) {
             tree._panel[panel_id] = {};
           }
-          return tree._panel[panel_id]._open = !tree._panel[panel_id]._open;
+          return tree._panel[panel_id]['_open'] = !tree._panel[panel_id]['_open'];
         },
         getFormId: function(name) {
           return name + '_' + new ObjectId().toString();

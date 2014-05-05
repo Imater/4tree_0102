@@ -811,7 +811,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       console.info 'wait 5 sec...' + $rootScope.$$childTail.set.autosync_on
       @syncDiff() if false or $rootScope.$$childTail.set.autosync_on
     , 300
-    saveDiff: _.debounce (db_name, _id)->
+    saveDiff: _.throttle (db_name, _id)->
       mythis = @;
       console.info 'save_diff starting.....' + _id;
       dfd = $q.defer();
@@ -821,6 +821,9 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
             patch = mythis.diff.diff(old_element, new_element);
             delete patch._sha1 if patch and patch._sha1
             delete patch._tm if patch and patch._tm
+            if patch
+              _.each Object.keys(patch), (key)->
+                delete patch[key] if patch[key] and (key[0] == '_' or key[0] == '$')
             #console.info 'DIFF SAVED = ', JSON.stringify(patch), (JSON.stringify patch)?.length;
             el = {
               _id: _id
@@ -831,7 +834,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
               machine: $rootScope.$$childTail.set.machine
               _tm: new Date().getTime()
             }
-            if patch and Object.keys(patch)
+            if patch and !_.isEmpty(patch)
               #если синхронизация уже идёт, то изменения пока не сохраняем
               mythis._tmp._diffs[el._id] = el
               mythis.db.put('_diffs', el).done ()->
@@ -1032,6 +1035,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           else
             mythis.sendDiffToWeb(diffs).then (results)->
               mythis.syncApplyResults(results).then ()->
+                mythis.refreshParentsIndex();
                 mythis.sync_now = false
                 dfd.resolve();
                 console.info 'sha1 applyed';
