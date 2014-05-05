@@ -19,7 +19,7 @@ require '../../models/_js/model_diff.js'
 Diff = mongoose.model('Diff');
 Text = mongoose.model('Text');
 
-#SERVICE
+#SERVICE git@github.com:Imater/4tree_01022014.git
 sync = {
   apply_patch: (args, dont_save_to_db)->
     dfd = $.Deferred()
