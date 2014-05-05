@@ -107,7 +107,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           {}
         ]
         mythis.clearCache();
-        console.timeEnd 'ALL DATA LOADED'
+        console.timeEnd 'ALL DATA LOADED!'
         dfd.resolve();
       dfd.promise;
     getTreeFromWeb: ()->
@@ -282,7 +282,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           }
         parent = 'n' + el.parent_id
 
-        mythis.db_parents[parent] = [] if !mythis.db_parents[parent];
+        mythis.db_parents[parent] = [] if !mythis.db_parents[parent]
         mythis.db_parents[parent].push(el);
         return true
 
@@ -299,12 +299,12 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
 
       mymap = (doc, emit)->
-        emit(doc.date, doc.title, doc) if doc.text and doc.text.indexOf('жопа') != -1;
+        emit(doc.date, doc.title, doc) if doc.text and doc.text.indexOf('жопа') != -1
 
       #@newView('tree', 'by_date', mymap);
 
       mymap_calendar = (doc, emit)->
-        emit(doc.date2, doc, doc) if doc?.date2;
+        emit(doc.date2, doc, doc) if doc?.date2
 
       myreduce_calendar = (memo, values)->
         key = values.key;
@@ -379,7 +379,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       prevent_recursive = 1000;
       while (el = @jsFind(id)) and (prevent_recursive--)
         id = el.parent_id
-        path.push(el._id) if el.parent_id;
+        path.push(el._id) if el.parent_id
       path.push($rootScope.$$childTail.set.top_parent_id);
       path.reverse();
     jsView: ()->
@@ -570,7 +570,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         new_task.user_id = $rootScope.$$childTail.set.user_id;
         old_value = _.clone(new_task); #clone
         new_task.title = scope.new_task_title;
-        mythis._db.tasks.push(new_task)
+        mythis._db.tasks[new_task._id] = new_task if !mythis._db.tasks[new_task._id]
         console.info 'pushed new task', new_task;
         scope.new_task_title = "";
         mythis.clearCache();
@@ -745,7 +745,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     diaryFind: _.memoize (date)->
       mythis = @;
       mymap_diary = (doc, emit)->
-        emit(doc.diary, doc, doc) if doc?.diary;
+        emit(doc.diary, doc, doc) if doc?.diary
 
       myreduce_diary = (memo, values)->
         key = values.key;
@@ -810,10 +810,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     'jsStartSyncInWhile': _.debounce ()->
       console.info 'wait 5 sec...' + $rootScope.$$childTail.set.autosync_on
       @syncDiff() if false or $rootScope.$$childTail.set.autosync_on
-    , 1000
+    , 300
     saveDiff: _.debounce (db_name, _id)->
       mythis = @;
-      console.info 'save_diff starting...' + _id;
+      console.info 'save_diff starting.....' + _id;
       dfd = $q.defer();
       @getElement(db_name, _id).then (new_element)->
         mythis.getElementFromLocal(db_name, _id).then (old_element)->
@@ -890,7 +890,13 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           dfd.resolve()
       dfd.promise
 
+    copyObject: (source, obj)->
+      newObj = source;
+      for key of obj
+        newObj[key] = obj[key];
+      return newObj;
 
+    #Применяем результат синхронизации
     syncApplyResults: (results)->
       dfd = $q.defer();
       mythis = @;
@@ -923,7 +929,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                 if confirm_element._doc
                   doc = confirm_element._doc;
                   if !old_doc
-                    mythis._db[db_name][confirm_id] = doc;
+                    mythis.copyObject(mythis._db[db_name][confirm_id], doc);
                     mythis.db.put(db_name, doc).done (err)->
                       console.info 'new data applyed', err, doc;
                       $timeout ()->
@@ -976,21 +982,25 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       max_time = new Date(2013, 3, 1);
       max_element = new Date(2013, 3, 1);
       mythis = @;
+      new_db_elements = {};
       async.each mythis.store_schema, (table_schema, callback)->
         db_name = table_schema.name;
         if db_name[0] != '_'
           console.info { db_name }
           max_element = _.max mythis._db[db_name], (el)->
+            if el._new
+              new_db_elements[db_name] = {} if !new_db_elements[db_name]
+              new_db_elements[db_name][el._id] = el
             if el._tm
               return new Date(el._tm)
             else
               return 0
-          max_time = new Date(max_element._tm) if new Date(max_element._tm) > max_time;
+          max_time = new Date(max_element._tm) if new Date(max_element._tm) > max_time
           callback()
         else
           callback()
       , ()->
-        dfd.resolve(max_time)
+        dfd.resolve { last_sync_time: max_time, new_db_elements }
       dfd.promise;
     sync_now: false
     syncDiff: ()->
@@ -1021,8 +1031,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       console.info 'Sending: ', JSON.stringify(diffs)?.length
       dfd = $q.defer();
       mythis = @;
-      sha1_sign = $rootScope.$$childTail.set.machine + mythis.JSON_stringify(diffs)._sha1;
-      mythis.getLastSyncTime().then (last_sync_time)->
+      mythis.getLastSyncTime().then (last_sync_time_and_new)->
+        last_sync_time = last_sync_time_and_new.last_sync_time;
+        new_db_elements = last_sync_time_and_new.new_db_elements;
+        sha1_sign = $rootScope.$$childTail.set.machine + mythis.JSON_stringify({diffs, new_db_elements})._sha1;
         oAuth2Api.jsGetToken().then (token)->
           $http({
             url: '/api/v2/sync',
@@ -1034,6 +1046,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
               last_sync_time: last_sync_time
             data:
               diffs: diffs
+              new_db_elements: new_db_elements
               sha1_sign: sha1_sign
               user_id: $rootScope.$$childTail.set.user_id
           }).then (result)->
@@ -1071,7 +1084,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
             if answer._sha1 != element._sha1
               console.info 'SHA1 error [' + i + ']', element, answer
               i++;
-          console.info 'Congratulations. ' + db_name + ' is equal...' if i == 0
+          console.info 'Congratulations.. ' + db_name + ' is equal...' if i == 0
         console.timeEnd 'JSON_test'
       , 3000
     JSON_stringify: (json)->

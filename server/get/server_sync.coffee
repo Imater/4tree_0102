@@ -103,81 +103,93 @@ exports.get = (req, res)->
 exports.fullSyncUniversal = (req, res)->
   dfd = new $.Deferred();
   diffs = req.body.diffs;
+  new_db_elements = req.body.new_db_elements;
   user_id = req.body.user_id;
   last_sync_time = req.query.last_sync_time;
   machine = req.query.machine;
 
   confirm_count = 0;
 
-  sha1_sign = req.query.machine + JSON_stringify.JSON_stringify(diffs)._sha1
+  sha1_sign = req.query.machine + JSON_stringify.JSON_stringify({diffs, new_db_elements})._sha1
   if sha1_sign != req.body.sha1_sign
     console.info 'Error of signing sync http: '+req.body.sha1_sign+' != '+sha1_sign if false
     res.send();
   else
-    send_to_client = {};
-    if diffs
-      async.eachLimit Object.keys(diffs), 50, (diff_id, callback)->
-        diff = diffs[diff_id];
-        logJson 'diff '+diff._id, diff if false
+    async.series [
+      #Обрабатываю все новые элементы
+      (callback_main)->
+        console.info 'ok';
+        callback_main();
+      #Обрабатываю все изменения
+      (callback_main)->
+        send_to_client = {};
+        if diffs
+          async.eachLimit Object.keys(diffs), 50, (diff_id, callback)->
+            diff = diffs[diff_id];
+            logJson 'diff '+diff._id, diff if false
 
-        global._db_models[diff.db_name].findOne {'_sha1':diff._sha1, '_id':diff._id}, undefined, (err, row)->
-          if row
-            console.info 'found in db ', row if false
-            sync.apply_patch({ 
-              old_row: row
-              diff: diff
-            }).then (args)->
-              send_to_client[diff.db_name] = { confirm: {} } if !send_to_client[diff.db_name]
-              send_to_client[diff.db_name]['confirm'][args.old_row._id] = { _sha1: args.old_row._sha1, _tm: args.old_row._tm }
-              confirm_count++;
-              callback()
-          else
-            #тут нужно разобраться
-            console.info 'Error, dont found '+diff._sha1+', need seek DIFF'
-            sync.Merge(diff).then (doc)->
-              if doc
-                send_to_client[diff.db_name] = { confirm: {} } if !send_to_client[diff.db_name]
-                send_to_client[diff.db_name]['confirm'][doc._id] = { _sha1: doc._sha1, _tm: doc._tm, _doc: doc, merged: true }              
-                confirm_count++;
-              callback() 
-
-      , ()->
-        async.each Object.keys(global._db_models), (db_name, callback)->
-          tm = new Date( JSON.parse(last_sync_time) ).toISOString();
-          console.info 'FIND', { _tm: { $gt: tm } } if false
-          global._db_models[db_name].find { _tm: { $gt: tm } }, (err, docs)->
-            async.each docs, (doc, callback2)->
-              if (confirm = send_to_client?[db_name]?['confirm']?[ doc._id ])
-                if confirm._sha1 != doc._sha1
-                  confirm._doc = doc
-                  confirm.becouse_new = true
+            global._db_models[diff.db_name].findOne {'_sha1':diff._sha1, '_id':diff._id}, undefined, (err, row)->
+              if row
+                console.info 'found in db ', row if false
+                sync.apply_patch({
+                  old_row: row
+                  diff: diff
+                }).then (args)->
+                  send_to_client[diff.db_name] = { confirm: {} } if !send_to_client[diff.db_name]
+                  send_to_client[diff.db_name]['confirm'][args.old_row._id] = { _sha1: args.old_row._sha1, _tm: args.old_row._tm }
+                  confirm_count++;
+                  callback()
               else
-                send_to_client[db_name] = { confirm: {} } if !send_to_client[db_name]
-                send_to_client[db_name]['confirm'][doc._id] = { _sha1: doc._sha1, _tm: doc._tm, _doc: doc, just_new: true }
-              callback2();
-            , (docs_filtered)->
-              callback();
-        , ()->
-          send_to_client.server_time = new Date()
-          send_to_client.confirm_count = confirm_count;
-          logJson 'send_to_client', send_to_client
-          dfd.resolve(send_to_client);
+                #тут нужно разобраться
+                console.info 'Error, dont found '+diff._sha1+', need seek DIFF'
+                sync.Merge(diff).then (doc)->
+                  if doc
+                    send_to_client[diff.db_name] = { confirm: {} } if !send_to_client[diff.db_name]
+                    send_to_client[diff.db_name]['confirm'][doc._id] = { _sha1: doc._sha1, _tm: doc._tm, _doc: doc, merged: true }
+                    confirm_count++;
+                  callback()
 
-          if confirm_count > 0
-            clients = global.io.sockets.clients('user_id:'+user_id)
-            if clients
-              async.each Object.keys(clients), (client_i, callback3)->
-                client = clients[client_i]
-                client.get 'nickname', (err, nickname)->
-                  nickname = JSON.parse(nickname)
-                  if nickname and nickname.machine != machine
-                    client.emit('need_sync_now')
-                callback3()
-              ,()->
-                console.info 'info sended by socket...'
+          , ()->
+            async.each Object.keys(global._db_models), (db_name, callback)->
+              tm = new Date( JSON.parse(last_sync_time) ).toISOString();
+              console.info 'FIND', { _tm: { $gt: tm } } if false
+              global._db_models[db_name].find { _tm: { $gt: tm } }, (err, docs)->
+                async.each docs, (doc, callback2)->
+                  if (confirm = send_to_client?[db_name]?['confirm']?[ doc._id ])
+                    if confirm._sha1 != doc._sha1
+                      confirm._doc = doc
+                      confirm.becouse_new = true
+                  else
+                    send_to_client[db_name] = { confirm: {} } if !send_to_client[db_name]
+                    send_to_client[db_name]['confirm'][doc._id] = { _sha1: doc._sha1, _tm: doc._tm, _doc: doc, just_new: true }
+                  callback2();
+                , (docs_filtered)->
+                  callback();
+            , ()->
+              send_to_client.server_time = new Date()
+              send_to_client.confirm_count = confirm_count;
+              logJson 'send_to_client', send_to_client
+              dfd.resolve(send_to_client);
+
+              if confirm_count > 0
+                clients = global.io.sockets.clients('user_id:'+user_id)
+                if clients
+                  async.each Object.keys(clients), (client_i, callback3)->
+                    client = clients[client_i]
+                    client.get 'nickname', (err, nickname)->
+                      nickname = JSON.parse(nickname)
+                      if nickname and nickname.machine != machine
+                        client.emit('need_sync_now')
+                    callback3()
+                  ,()->
+                    console.info 'info sended by socket...'
+              callback_main()
           #logJson 'send_to_client', send_to_client
-    else
-      dfd.resolve()
+        else
+          dfd.resolve()
+    ], ()->
+      console.info 'SYNC ENDED!!!'
+
   dfd.promise();
 
 

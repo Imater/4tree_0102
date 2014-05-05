@@ -54,7 +54,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   $scope.set = {
     user_id: '5330ff92898a2b63c2f7095f'
     machine: localStorage.getItem('mongoMachineId')
-    autosync_on: false
+    autosync_on: true
     today_date: new Date()
     focus: 1
     focus_edit: 1
@@ -121,7 +121,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     ]
     main_views_menu: [
       {
-        title: 'Дерево!'
+        title: 'Дерево'
         icon: 'icon-flow-cascade'
         template: 'views/subviews/view_main/view_tree.html'
       }

@@ -358,7 +358,7 @@ else
   }))
 
 
-  console.info "Hello John!12"
+  console.info "Hello John! #19"
 
   app.configure ->
     app.use express.compress()
@@ -690,7 +690,7 @@ else
       console.info 'syncing...', data
       exports.sync_db_universal(data, socket).then (answer)->
         socket.volatile.emit 'sync_answer', answer;
-        fn('JOOOOOOOOOOPA!!!!!!-!!!!!!!');
+        fn('Hello from server!');
 
     socket.on "i_am_user", (data) ->
       socket.set 'nickname', JSON.stringify(data), ()->
