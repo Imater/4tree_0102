@@ -1,4 +1,6 @@
 mongoose = require("mongoose")
+saveDiff = require('../../models/_js/saveDiff.js');
+
 Schema = mongoose.Schema
 treeSchema = new Schema (
   'tree_id': String
@@ -17,3 +19,14 @@ mongoosastic = require('mongoosastic')
 treeSchema.plugin(mongoosastic);
 
 Task = module.exports = mongoose.model("Task", treeSchema)
+
+
+
+treeSchema.post 'init', ()->
+  this._original = this.toObject();
+
+
+treeSchema.pre 'save', (next)->
+  #console.info 'post saving... doc... ', @, 'was: ',this._original
+  saveDiff.saveDiff(Task, @, this._original).then ()->
+    next()

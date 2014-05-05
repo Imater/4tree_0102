@@ -118,8 +118,26 @@ exports.fullSyncUniversal = (req, res)->
     async.series [
       #Обрабатываю все новые элементы
       (callback_main)->
-        console.info 'ok';
-        callback_main();
+        if new_db_elements
+          async.eachLimit Object.keys(new_db_elements), 50, (db_name, callback)->
+            new_elements = new_db_elements[db_name];
+            if new_elements
+              async.eachLimit Object.keys(new_elements), 50, (doc_id, callback2)->
+                doc = new_elements[doc_id]
+                console.info 'need_save '+doc_id, doc
+                DB_MODEL = global._db_models[db_name];
+                db_model = new DB_MODEL(doc)
+                db_model.save (err, saved)->
+                  console.info 'saved', err, saved
+                  callback2();
+              , ()->
+            else
+              callback();
+
+          , ()->
+            callback_main();
+        else
+          callback_main();
       #Обрабатываю все изменения
       (callback_main)->
         send_to_client = {};

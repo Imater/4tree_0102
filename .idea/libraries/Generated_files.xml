@@ -3,25 +3,24 @@
     <properties>
       <sourceFilesUrls>
         <item url="file://$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_main.js" />
-        <item url="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.js" />
         <item url="file://$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.js" />
-        <item url="file://$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_main.js" />
         <item url="file://$PROJECT_DIR$/server/_js/server.js" />
         <item url="file://$PROJECT_DIR$/server/get/_js/server_sync.js" />
         <item url="file://$PROJECT_DIR$/app/scripts/_js/app.js" />
+        <item url="file://$PROJECT_DIR$/server/models/_js/model_task.js" />
         <item url="file://$PROJECT_DIR$/tests/_js/test1.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
       <root url="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.js" />
       <root url="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.js" />
-      <root url="file://$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_main.js" />
-      <root url="file://$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_main.js" />
       <root url="file://$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.js" />
+      <root url="file://$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_main.js" />
       <root url="file://$PROJECT_DIR$/server/get/_js/server_sync.js" />
       <root url="file://$PROJECT_DIR$/server/_js/server.js" />
       <root url="file://$PROJECT_DIR$/app/scripts/_js/app.js" />
       <root url="file://$PROJECT_DIR$/tests/_js/test1.js" />
+      <root url="file://$PROJECT_DIR$/server/models/_js/model_task.js" />
     </CLASSES>
     <SOURCES />
   </library>

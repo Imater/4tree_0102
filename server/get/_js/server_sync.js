@@ -178,8 +178,31 @@
     } else {
       async.series([
         function(callback_main) {
-          console.info('ok');
-          return callback_main();
+          if (new_db_elements) {
+            return async.eachLimit(Object.keys(new_db_elements), 50, function(db_name, callback) {
+              var new_elements;
+              new_elements = new_db_elements[db_name];
+              if (new_elements) {
+                return async.eachLimit(Object.keys(new_elements), 50, function(doc_id, callback2) {
+                  var DB_MODEL, db_model, doc;
+                  doc = new_elements[doc_id];
+                  console.info('need_save ' + doc_id, doc);
+                  DB_MODEL = global._db_models[db_name];
+                  db_model = new DB_MODEL(doc);
+                  return db_model.save(function(err, saved) {
+                    console.info('saved', err, saved);
+                    return callback2();
+                  });
+                }, function() {});
+              } else {
+                return callback();
+              }
+            }, function() {
+              return callback_main();
+            });
+          } else {
+            return callback_main();
+          }
         }, function(callback_main) {
           var send_to_client;
           send_to_client = {};
