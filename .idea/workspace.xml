@@ -2,11 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/models/model_task.coffee" afterPath="$PROJECT_DIR$/server/models/model_task.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/models/_js/model_task.js" afterPath="$PROJECT_DIR$/server/models/_js/model_task.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/get/server_sync.coffee" afterPath="$PROJECT_DIR$/server/get/server_sync.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/get/_js/server_sync.js" afterPath="$PROJECT_DIR$/server/get/_js/server_sync.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="56ee746e-8f1d-4d4a-a92c-f05706cc2e69" name="Rejected commit: Default" comment="Пробую сделать коммит" />
@@ -141,6 +136,11 @@
     </FindUsagesManager>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="imater" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
@@ -944,7 +944,11 @@
       <created>1399270619208</created>
       <updated>1399270619208</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Новые дела добавляются в базу">
+      <created>1399272154471</created>
+      <updated>1399272154471</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -1017,7 +1021,8 @@
     <MESSAGE value="Настраиваю WebStorm" />
     <MESSAGE value="Научился работать с моча - тесты" />
     <MESSAGE value="Синхронизация заработала" />
-    <option name="LAST_COMMIT_MESSAGE" value="Синхронизация заработала" />
+    <MESSAGE value="Новые дела добавляются в базу" />
+    <option name="LAST_COMMIT_MESSAGE" value="Новые дела добавляются в базу" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
