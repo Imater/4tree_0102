@@ -98,42 +98,46 @@
         db_id: diff._id
       }, void 0, function(err, doc0) {
         var doc1;
-        if (false) {
-          logJson('doc0new', doc0.new_body);
-        }
-        doc1 = jsondiffpatch.patch(doc0.new_body, delta1);
-        logJson('doc1', doc1);
-        return global._db_models[diff.db_name].findOne({
-          _id: diff._id
-        }, void 0, function(err, doc2) {
-          var delta2, doc3, main_diff;
-          logJson('doc2', doc2);
-          delta2 = jsondiffpatch.diff(doc0.new_body, doc2.toObject());
-          if (delta2['_sha1']) {
-            delta2['_sha1'] = void 0;
-          }
-          if (delta2['_tm']) {
-            delta2['_tm'] = void 0;
-          }
-          logJson('delta2', delta2);
-          doc3 = jsondiffpatch.patch(doc1, delta2);
-          doc3 = jsondiffpatch.patch(doc3, delta1);
-          main_diff = jsondiffpatch.diff(doc2.toObject(), doc3);
+        if (doc0) {
           if (false) {
-            logJson('DOC3', doc3);
+            logJson('doc0new', doc0.new_body);
           }
-          if (false) {
-            logJson('MAIN_DIFF', main_diff);
-          }
-          doc2 = _.extend(doc2, doc3);
-          console.info('doc2', doc2);
-          doc2._diff = diff;
-          doc2._tm = new Date();
-          return doc2.save(function(err, doc) {
-            console.info('merged saved', err, doc);
-            return dfd.resolve(doc);
+          doc1 = jsondiffpatch.patch(doc0.new_body, delta1);
+          logJson('doc1', doc1);
+          return global._db_models[diff.db_name].findOne({
+            _id: diff._id
+          }, void 0, function(err, doc2) {
+            var delta2, doc3, main_diff;
+            logJson('doc2', doc2);
+            delta2 = jsondiffpatch.diff(doc0.new_body, doc2.toObject());
+            if (delta2['_sha1']) {
+              delta2['_sha1'] = void 0;
+            }
+            if (delta2['_tm']) {
+              delta2['_tm'] = void 0;
+            }
+            logJson('delta2', delta2);
+            doc3 = jsondiffpatch.patch(doc1, delta2);
+            doc3 = jsondiffpatch.patch(doc3, delta1);
+            main_diff = jsondiffpatch.diff(doc2.toObject(), doc3);
+            if (false) {
+              logJson('DOC3', doc3);
+            }
+            if (false) {
+              logJson('MAIN_DIFF', main_diff);
+            }
+            doc2 = _.extend(doc2, doc3);
+            console.info('doc2', doc2);
+            doc2._diff = diff;
+            doc2._tm = new Date();
+            return doc2.save(function(err, doc) {
+              console.info('merged saved', err, doc);
+              return dfd.resolve(doc);
+            });
           });
-        });
+        } else {
+          return dfd.resolve();
+        }
       });
       return dfd.promise();
     }
@@ -253,23 +257,27 @@
                   });
                 } else {
                   console.info('Error, dont found ' + diff._sha1 + ', need seek DIFF');
-                  return sync.Merge(diff).then(function(doc) {
-                    if (doc) {
-                      if (!send_to_client[diff.db_name]) {
-                        send_to_client[diff.db_name] = {
-                          confirm: {}
+                  if (diff) {
+                    return sync.Merge(diff).then(function(doc) {
+                      if (doc) {
+                        if (!send_to_client[diff.db_name]) {
+                          send_to_client[diff.db_name] = {
+                            confirm: {}
+                          };
+                        }
+                        send_to_client[diff.db_name]['confirm'][doc._id] = {
+                          _sha1: doc._sha1,
+                          _tm: doc._tm,
+                          _doc: doc,
+                          merged: true
                         };
+                        confirm_count++;
                       }
-                      send_to_client[diff.db_name]['confirm'][doc._id] = {
-                        _sha1: doc._sha1,
-                        _tm: doc._tm,
-                        _doc: doc,
-                        merged: true
-                      };
-                      confirm_count++;
-                    }
+                      return callback();
+                    });
+                  } else {
                     return callback();
-                  });
+                  }
                 }
               });
             }, function() {

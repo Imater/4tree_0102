@@ -44,6 +44,7 @@ angular.module("4treeApp").service 'oAuth2Api', ['$q', '$http', ($q, $http) ->
       dfd.resolve( token_data_saved.access_token )
 
     dfd.promise;
+  #запрашиваю токен в сети
   jsGetRemoteTokenByRefreshToken: (refresh_token)->
     dfd = $q.defer();
 

@@ -61,28 +61,31 @@ sync = {
     logJson 'diff = ', diff if false
     delta1 = diff.patch
     #Находим старый текст с такой же контрольной суммой
-    Diff.findOne {_sha1: diff._sha1, db_id: diff._id}, undefined, (err, doc0)->      
-      logJson 'doc0new', doc0.new_body if false
-      doc1 = jsondiffpatch.patch( doc0.new_body, delta1)
-      logJson 'doc1', doc1
-      global._db_models[diff.db_name].findOne { _id: diff._id }, undefined, (err, doc2)->
-        logJson 'doc2', doc2
-        delta2 = jsondiffpatch.diff( doc0.new_body, doc2.toObject() )
-        delta2['_sha1'] = undefined if delta2['_sha1']
-        delta2['_tm'] = undefined if delta2['_tm']
-        logJson 'delta2', delta2
-        doc3 = jsondiffpatch.patch( doc1, delta2 )
-        doc3 = jsondiffpatch.patch( doc3, delta1 )
-        main_diff = jsondiffpatch.diff(doc2.toObject(), doc3)
-        logJson 'DOC3', doc3 if false
-        logJson 'MAIN_DIFF', main_diff if false
-        doc2 = _.extend( doc2, doc3)
-        console.info 'doc2', doc2
-        doc2._diff = diff
-        doc2._tm = new Date()
-        doc2.save (err, doc)->
-          console.info 'merged saved', err, doc
-          dfd.resolve(doc);
+    Diff.findOne {_sha1: diff._sha1, db_id: diff._id}, undefined, (err, doc0)->
+      if (doc0)
+        logJson 'doc0new', doc0.new_body if false
+        doc1 = jsondiffpatch.patch( doc0.new_body, delta1)
+        logJson 'doc1', doc1
+        global._db_models[diff.db_name].findOne { _id: diff._id }, undefined, (err, doc2)->
+          logJson 'doc2', doc2
+          delta2 = jsondiffpatch.diff( doc0.new_body, doc2.toObject() )
+          delta2['_sha1'] = undefined if delta2['_sha1']
+          delta2['_tm'] = undefined if delta2['_tm']
+          logJson 'delta2', delta2
+          doc3 = jsondiffpatch.patch( doc1, delta2 )
+          doc3 = jsondiffpatch.patch( doc3, delta1 )
+          main_diff = jsondiffpatch.diff(doc2.toObject(), doc3)
+          logJson 'DOC3', doc3 if false
+          logJson 'MAIN_DIFF', main_diff if false
+          doc2 = _.extend( doc2, doc3)
+          console.info 'doc2', doc2
+          doc2._diff = diff
+          doc2._tm = new Date()
+          doc2.save (err, doc)->
+            console.info 'merged saved', err, doc
+            dfd.resolve(doc);
+      else
+        dfd.resolve();
     dfd.promise();
 
 }
@@ -166,11 +169,14 @@ exports.fullSyncUniversal = (req, res)->
               else
                 #тут нужно разобраться
                 console.info 'Error, dont found '+diff._sha1+', need seek DIFF'
-                sync.Merge(diff).then (doc)->
-                  if doc
-                    send_to_client[diff.db_name] = { confirm: {} } if !send_to_client[diff.db_name]
-                    send_to_client[diff.db_name]['confirm'][doc._id] = { _sha1: doc._sha1, _tm: doc._tm, _doc: doc, merged: true }
-                    confirm_count++;
+                if diff
+                  sync.Merge(diff).then (doc)->
+                    if doc
+                      send_to_client[diff.db_name] = { confirm: {} } if !send_to_client[diff.db_name]
+                      send_to_client[diff.db_name]['confirm'][doc._id] = { _sha1: doc._sha1, _tm: doc._tm, _doc: doc, merged: true }
+                      confirm_count++;
+                    callback()
+                else
                   callback()
 
           , ()->

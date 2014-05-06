@@ -13,7 +13,7 @@
     "karma-phantomjs-launcher": "~0.1.1",
     "karma": "~0.10.9",
     "grunt-karma": "~0.6.2",
-    "jquery": "~2.1.0",
+    "jquery": "^2.1.1",
     "socket.io": "~0.9.16",
     "express": "~3.4.8",
     "underscore": "~1.5.2",
@@ -33,7 +33,7 @@
     "jsondiffpatch": ">=0",
     "mongoosastic": ">=0",
     "elasticsearch": ">=0",
-    "node-oauth2-server": ">=0",
+    "node-oauth2-server": "2.0.2",
     "crypto-js": ">=0"
   },
   "devDependencies": {
