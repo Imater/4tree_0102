@@ -63,6 +63,7 @@ class TextDB
     dfd = @q.defer();
     dfd.resolve( @textDB[text_id] )
     dfd.promise;
+  #Сохранение текста в базу
   setText: (text_id, new_text)->
     mythis = @;
     @getText(text_id).then (text_element)->

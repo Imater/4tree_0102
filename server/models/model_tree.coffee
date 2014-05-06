@@ -24,7 +24,7 @@ treeSchema = new Schema (
   'color': String
   'icon_color': String
   'del': { type: Number, default: 0 }
-  'did': { type: Date, default: '' }
+  'did': { type: Boolean, default: false }
   'old_tag': String
   'date1': Date
   'date2': Date

@@ -804,9 +804,27 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       dfd.promise;
     setText: (text_id, new_text)->
       mythis = @;
-      if (found = @_db['texts'][text_id])
+      found = @_db['texts'][text_id]
+      if (found)
         found.text = new_text
         mythis.saveDiff('texts', text_id)
+      else
+        if text_id and new_text.length
+          doc = {
+            _id: text_id
+            _tm: new Date()
+            db_name: 'trees'
+            text: new_text
+            user_id: $rootScope.$$childTail.set.user_id
+            del: 0
+            _new: true
+          }
+          doc._sha1 = mythis.JSON_stringify(doc)._sha1
+          @_db['texts'][text_id] = doc
+          mythis.db.put('texts', doc).done ()->
+            console.info 'text '+text_id+' saved', doc
+
+
     'jsStartSyncInWhile': _.debounce ()->
       console.info 'wait 5 sec...' + $rootScope.$$childTail.set.autosync_on
       @syncDiff() if false or $rootScope.$$childTail.set.autosync_on
@@ -841,6 +859,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                 console.info 'diff_saved'
                 dfd.resolve()
                 mythis.jsStartSyncInWhile()
+          else
+            if new_element and new_element._new == true
+              dfd.resolve()
+              mythis.jsStartSyncInWhile()
           return
         return
       dfd.promise

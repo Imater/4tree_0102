@@ -1234,11 +1234,29 @@
           return dfd.promise;
         },
         setText: function(text_id, new_text) {
-          var found, mythis;
+          var doc, found, mythis;
           mythis = this;
-          if ((found = this._db['texts'][text_id])) {
+          found = this._db['texts'][text_id];
+          if (found) {
             found.text = new_text;
             return mythis.saveDiff('texts', text_id);
+          } else {
+            if (text_id && new_text.length) {
+              doc = {
+                _id: text_id,
+                _tm: new Date(),
+                db_name: 'trees',
+                text: new_text,
+                user_id: $rootScope.$$childTail.set.user_id,
+                del: 0,
+                _new: true
+              };
+              doc._sha1 = mythis.JSON_stringify(doc)._sha1;
+              this._db['texts'][text_id] = doc;
+              return mythis.db.put('texts', doc).done(function() {
+                return console.info('text ' + text_id + ' saved', doc);
+              });
+            }
           }
         },
         'jsStartSyncInWhile': _.debounce(function() {
@@ -1286,6 +1304,11 @@
                     dfd.resolve();
                     return mythis.jsStartSyncInWhile();
                   });
+                }
+              } else {
+                if (new_element && new_element._new === true) {
+                  dfd.resolve();
+                  mythis.jsStartSyncInWhile();
                 }
               }
             });
