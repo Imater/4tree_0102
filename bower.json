@@ -2,24 +2,30 @@
   "name": "4tree",
   "version": "0.0.0",
   "dependencies": {
-    "angular": "1.2.6",
+    "angular": ">=1.2.6",
     "json3": "~3.2.6",
     "es5-shim": "~2.1.0",
-    "jquery": "~2.1.0",
+    "jquery": ">=2.1.0",
     "sass-bootstrap": "~3.0.2",
-    "angular-resource": "1.2.6",
-    "angular-cookies": "1.2.6",
-    "angular-sanitize": "1.2.6",
-    "angular-route": "1.2.6",
+    "angular-resource": "~1.2.6",
+    "angular-cookies": "~1.2.6",
+    "angular-sanitize": "~1.2.6",
+    "angular-route": "~1.2.6",
     "underscore": "~1.5.2",
     "angular-translate": "~1.1.1",
     "angular-nanoscroller": "~0.1.1",
     "angular-virtual-scroll": "~0.6.0",
     "ngAnimate-animate.css": "~0.1.1",
-    "angular-clearable": "~0.1.2"
+    "angular-clearable": "~0.1.2",
+    "animate.css": ">=0",
+    "sass-bootstrap": ">=0",
+    "nanoscroller": ">=0",
+    "angular-rangeslider": ">=0.0.7",
+    "angular-strap": ">=0",
+    "bootstrap-datepicker": ">=0"
   },
   "devDependencies": {
-    "angular-mocks": "1.2.6",
-    "angular-scenario": "1.2.6"
+    "angular-mocks": "~1.2.6",
+    "angular-scenario": "~1.2.6"
   }
 }
