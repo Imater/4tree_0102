@@ -2,6 +2,21 @@
 (function() {
   var mytmpl;
 
+  angular.module("4treeApp").directive("windowDraggable", function() {
+    return {
+      link: function(scope, el, attrs) {
+        el.draggable({
+          appendTo: "#w_main",
+          distance: 10,
+          handle: '.drag-handle',
+          stop: function(event, ui) {
+            return console.info('draggable stop', ui);
+          }
+        });
+      }
+    };
+  });
+
   angular.module("4treeApp").directive("myDraggable", function() {
     return {
       link: function(scope, el, attrs) {

@@ -15,7 +15,7 @@
 		</div>
 		<div class="right_part">
 			<a ng-if="dt = fn.service.calendarBox.getDays(task.date1)"></a>
-			<div class="task_date {{dt.class}}" style="{{dt.image}}">{{dt.text}}</div>
+			<div ng-click="set.set_task = task" class="task_date {{dt.class}}" style="{{dt.image}}">{{dt.text}}</div>
 			<div class="title" contenteditable="true" ng-model="task.title"></div>
 		</div>
 	</div>

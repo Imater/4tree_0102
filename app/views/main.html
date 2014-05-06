@@ -6,7 +6,8 @@
         }"
         >
 
-    <hotkey2 bind="{'Tab':fn.service.db_tree.jsTabPress, 'shift + tab':fn.service.db_tree.jsTabPress, 'down':fn.service.db_tree.jsDownPress, 'up':fn.service.db_tree.jsUpPress, 'right':fn.service.db_tree.jsRightPress, 'left':fn.service.db_tree.jsLeftPress}"></hotkey2>
+    <hotkey2
+            bind="{'Tab':fn.service.db_tree.jsTabPress, 'shift + tab':fn.service.db_tree.jsTabPress, 'down':fn.service.db_tree.jsDownPress, 'up':fn.service.db_tree.jsUpPress, 'right':fn.service.db_tree.jsRightPress, 'left':fn.service.db_tree.jsLeftPress}"></hotkey2>
 
     <hotkey bind="{'Alt + 0':fn.service.db_tree.jsFocus1,'Alt + 1':fn.service.db_tree.jsFocus2,'Alt + 2':fn.service.db_tree.jsFocus3,'Alt + 3':fn.service.db_tree.jsFocus4}"
 
@@ -16,25 +17,29 @@
     </div>
 
     <div id="w_content_main">
-        
+
         <!-- LEFT PANEL 0 -->
         <div id="p_left_side_wrap" ng-if="set.p_left_side_open" class="panel_id_0">
             <div class="p_inside_wrap" ng-click="set.focus=0">
                 <div class="p_inside_header">
-                    <span ng-click="set.show_left_menu = !set.show_left_menu" class="title drop margin_left" ng-class="{make_white:set.focus==0}">{{set.side_views_menu[set.panel[0].active].title}}</span>
+                    <span ng-click="set.show_left_menu = !set.show_left_menu" class="title drop margin_left"
+                          ng-class="{make_white:set.focus==0}">{{set.side_views_menu[set.panel[0].active].title}}</span>
                 </div>
 
                 <div class="p_inside_header2">
                 </div>
 
-                <div class="p_inside_content vertical_scroll"  scrollable="{alwaysVisible:'true'}">
+                <div class="p_inside_content vertical_scroll" scrollable="{alwaysVisible:'true'}">
                     <ul class="side_menu slide_left" ng-if="set.show_left_menu">
-                        <li sly-repeat="item in set.side_views_menu" ng-class="{active:$index==set.panel[0].active}" ng-click="set.panel[0].active=$index;"><i class="{{item.icon}}"></i><b>{{item.title}}</b></li>
+                        <li sly-repeat="item in set.side_views_menu" ng-class="{active:$index==set.panel[0].active}"
+                            ng-click="set.panel[0].active=$index;"><i class="{{item.icon}}"></i><b>{{item.title}}</b>
+                        </li>
                     </ul>
                     <div class="right_menu_button_w">
                         <i class="icon-th-list r_menu_button"></i>
-                    </div>                
-                    <div ng-repeat="panel_id in [0]" ng-include="set.side_views_menu[set.panel[0].active].template"></div>
+                    </div>
+                    <div ng-repeat="panel_id in [0]"
+                         ng-include="set.side_views_menu[set.panel[0].active].template"></div>
                 </div>
             </div>
         </div>
@@ -43,28 +48,35 @@
     set.p_left_side_open=!set.p_left_side_open">
         </div>
 
-        <div  ng-click="
-    set.p_left_side_open=!set.p_left_side_open" class="btn-group left_toggle_button" ng-class="{opened:set.p_left_side_open}">
-          <div class="left_label"><i class="icon-right-open-1 arrow"></i><span class="title">Поиск</span></div>
+        <div ng-click="
+    set.p_left_side_open=!set.p_left_side_open" class="btn-group left_toggle_button"
+             ng-class="{opened:set.p_left_side_open}">
+            <div class="left_label"><i class="icon-right-open-1 arrow"></i><span class="title">Поиск</span></div>
         </div>
 
 
         <!-- CENTER PANEL -->
-        <div id="p_center_wrap" ng-class="{'left_hide':set.main_views_menu[set.panel[1].active].off, 'right_hide':set.main_views_menu[set.panel[2].active].off}">
+        <div id="p_center_wrap"
+             ng-class="{'left_hide':set.main_views_menu[set.panel[1].active].off, 'right_hide':set.main_views_menu[set.panel[2].active].off}">
 
             <!-- PANEL 1 -->
             <div id="p_left_wrap" class="panel_id_1">
                 <div class="p_inside_wrap" ng-click="set.focus=1">
                     <div class="p_inside_header">
                         <div class="btn-group main_menu">
-                            <span class="title drop" bindonce data-toggle="dropdown" ng-class="{make_white:set.focus==1}">{{set.main_views_menu[set.panel[1].active].title}}</span>
+                            <span class="title drop" bindonce data-toggle="dropdown"
+                                  ng-class="{make_white:set.focus==1}">{{set.main_views_menu[set.panel[1].active].title}}</span>
                             <ul class="dropdown-menu" role="menu">
-                                <li sly-repeat="item in set.main_views_menu" ng-class="{divider:item.title=='divider', active:$index==set.left_panel_active}" ng-click="set.panel[1].active=$index;"><a><i class="{{item.icon}}"></i><b>{{item.title}}</b></a></li>
+                                <li sly-repeat="item in set.main_views_menu"
+                                    ng-class="{divider:item.title=='divider', active:$index==set.left_panel_active}"
+                                    ng-click="set.panel[1].active=$index;"><a><i class="{{item.icon}}"></i><b>{{item.title}}</b></a>
+                                </li>
                             </ul>
                         </div>
 
                     </div>
-                    <div  ng-repeat="panel_id in [1]" ng-include="set.main_views_menu[set.panel[1].active].template"></div>
+                    <div ng-repeat="panel_id in [1]"
+                         ng-include="set.main_views_menu[set.panel[1].active].template"></div>
                 </div>
             </div>
 
@@ -74,14 +86,19 @@
                     <div class="p_inside_header">
 
                         <div class="btn-group main_menu">
-                            <span class="title drop" bindonce data-toggle="dropdown" ng-class="{make_white:set.focus==2}">{{set.main_views_menu[set.panel[2].active].title}}</span>
+                            <span class="title drop" bindonce data-toggle="dropdown"
+                                  ng-class="{make_white:set.focus==2}">{{set.main_views_menu[set.panel[2].active].title}}</span>
                             <ul class="dropdown-menu" role="menu">
-                                <li sly-repeat="item in set.main_views_menu" ng-class="{divider:item.title=='divider', active:$index==set.panel[2].active}" ng-click="set.panel[2].active=$index;"><a><i class="{{item.icon}}"></i><b>{{item.title}}</b></a></li>
+                                <li sly-repeat="item in set.main_views_menu"
+                                    ng-class="{divider:item.title=='divider', active:$index==set.panel[2].active}"
+                                    ng-click="set.panel[2].active=$index;"><a><i class="{{item.icon}}"></i><b>{{item.title}}</b></a>
+                                </li>
                             </ul>
                         </div>
 
                     </div>
-                    <div ng-repeat="panel_id in [2]" ng-include="set.main_views_menu[set.panel[2].active].template"></div>
+                    <div ng-repeat="panel_id in [2]"
+                         ng-include="set.main_views_menu[set.panel[2].active].template"></div>
                 </div>
             </div>
 
@@ -96,7 +113,8 @@
         <div id="p_right_side_wrap" ng-if="set.p_plan_of_day_open">
             <div class="p_inside_wrap" ng-click="set.focus=3">
                 <div class="p_inside_header">
-                    <span ng-click="set.show_right_menu = !set.show_right_menu" class="title drop margin_left" ng-class="{make_white:set.focus==3}">{{set.side_views_menu[set.panel[3].active].title}}</span>
+                    <span ng-click="set.show_right_menu = !set.show_right_menu" class="title drop margin_left"
+                          ng-class="{make_white:set.focus==3}">{{set.side_views_menu[set.panel[3].active].title}}</span>
                 </div>
 
                 <div class="p_inside_header2">
@@ -104,12 +122,15 @@
 
                 <div class="p_inside_content vertical_scroll" scrollable="{alwaysVisible:'true'}">
                     <ul class="side_menu slide_left" ng-if="set.show_right_menu">
-                        <li sly-repeat="item in set.side_views_menu" ng-class="{active:$index==set.panel[3].active}" ng-click="set.panel[3].active=$index;"><i class="{{item.icon}}"></i><b>{{item.title}}</b></li>
+                        <li sly-repeat="item in set.side_views_menu" ng-class="{active:$index==set.panel[3].active}"
+                            ng-click="set.panel[3].active=$index;"><i class="{{item.icon}}"></i><b>{{item.title}}</b>
+                        </li>
                     </ul>
                     <div class="right_menu_button_w">
                         <i class="icon-th-list r_menu_button"></i>
-                    </div>                
-                    <div ng-repeat="panel_id in [3]" ng-include="set.side_views_menu[set.panel[3].active].template"></div>
+                    </div>
+                    <div ng-repeat="panel_id in [3]"
+                         ng-include="set.side_views_menu[set.panel[3].active].template"></div>
                 </div>
             </div>
         </div>
@@ -125,14 +146,17 @@
             </div>
         </div>
 
+        <div class="settings_task" ng-if="set.set_task" window-draggable ng-controller="save_task_db">
+            <div class="drag-handle"></div>
+            <div class="pull-right" ng-click="set.set_task = undefined">x</div>
+            <div class="title" contenteditable="true" ng-model="set.set_task.title"></div>
+            <div class="dates_block">
+                <label>Дата начала:</label>
+                <date-time-input ng-model="set.set_task.date1"></date-time-input>
+                <label>Дата окончания:</label>
+                <date-time-input ng-model="set.set_task.date2"></date-time-input>
+            </div>
+        </div>
 
-    </div>
-    <div class="settings_task" ng-if="set.set_task||false" ng-controller="save_task_db">
-      <div class="pull-right" ng-click="set.set_task = undefined">закрыть</div>
-      <br>
-      <date-time-input ng-model="set.set_task.date1"></date-time-input>
-      <date-time-input ng-model="set.set_task.date2"></date-time-input>
-
-      <div contenteditable="true" ng-model="set.set_task.title"></div>
     </div>
 </div>

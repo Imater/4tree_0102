@@ -322,16 +322,47 @@
         }
     }
     .settings_task {
-        position: absolute;
+        position: relative;
         top: 100px;
         left: 100px;
         width: 450px;
         height: 350px;
-        background: #ebffe1;
+        z-index: 1;
+        background: rgba(#ffffdd,0.9);
+        border: 1px solid $main_color;
         @include box_shadow();
-        padding: $grid;
-        .pull-right {
+        padding: $grid/2 round($grid/1.5);
+        padding-left: $grid;
+        .drag-handle {
+          background: $main_color;
+          position: absolute;
+          left: 0px;
+          bottom: 0px;
+          top: 0px;
+          width: $grid/2;
+          cursor: move;
+        }
+        .title {
+          display: inline-block;
+          font-weight: normal;
+          outline: none;
+          min-width: $grid;
+        }
+        .dates_block {
+          text-align: center;
+          background: #FFF;
+          margin: $grid 0;
+          border: 1px solid #b4b27e;
+          display: block;
+          padding: round($grid/2) $grid*2;
+          label {
+            color: #b4b27e;
             font-weight: bold;
+          }
+        }
+        .pull-right {
+            font-weight: normal;
+          cursor: pointer;
         }
     }
 }

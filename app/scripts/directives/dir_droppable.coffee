@@ -1,3 +1,16 @@
+angular.module("4treeApp").directive "windowDraggable", ->
+  link: (scope, el, attrs) ->
+    el.draggable
+      appendTo: "#w_main"
+      distance: 10
+      handle: '.drag-handle'
+    #cancel: '.contenteditable,.title'
+      stop: (event, ui)->
+        console.info 'draggable stop', ui
+    #containment: "window"
+    #el.disableSelection()
+    return
+
 angular.module("4treeApp").directive "myDraggable", ->
   link: (scope, el, attrs) ->
     el.draggable
