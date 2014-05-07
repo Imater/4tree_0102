@@ -758,14 +758,29 @@
         getTasks: function() {
           return this._db.tasks;
         },
+        sortTasks: function(answer, order_type) {
+          if (order_type == null) {
+            order_type = 'by_priority_and_date';
+          }
+          if (order_type === 'by_priority_and_date') {
+            answer = _.sortBy(answer, function(el) {
+              var sort_answer;
+              if (el && el.date1) {
+                sort_answer = (el.importance != null) + new Date(el.date1).getTime();
+              } else {
+                sort_answer = (el.importance != null) + new Date().getTime();
+              }
+              return sort_answer;
+            });
+          }
+          return answer;
+        },
         getTasksByTreeId: _.memoize(function(tree_id, only_next) {
           var answer, answer1;
           answer = _.filter(this._db.tasks, function(el) {
             return el.tree_id === tree_id;
           });
-          answer = _.sortBy(answer, function(el) {
-            return el.date1;
-          });
+          answer = this.sortTasks(answer);
           if (only_next === true) {
             answer1 = _.find(answer, function(el) {
               return el.date1 && !el.did;

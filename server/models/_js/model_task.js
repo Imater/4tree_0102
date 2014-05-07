@@ -37,6 +37,10 @@
       }
     ],
     'created': Date,
+    'importance': {
+      type: Number,
+      "default": 50
+    },
     '_tm': Date
   });
 

@@ -54,7 +54,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   $scope.set = {
     user_id: '5330ff92898a2b63c2f7095f'
     machine: localStorage.getItem('mongoMachineId')
-    autosync_on: true
+    autosync_on: false
     today_date: new Date()
     focus: 1
     focus_edit: 1
@@ -681,6 +681,10 @@ angular.module("4treeApp").controller "save_task_db_simple", ($scope, syncApi, d
   $scope.$watchCollection "task", (new_value, old_value)->
     if !_.isEqual( new_value, old_value )
       $rootScope.$emit("jsFindAndSaveDiff",'tasks', new_value, old_value);
+
+angular.module("4treeApp").controller "editor_tasks", ($scope, db_tree, $rootScope)->
+  $scope.getTasks = ()->
+    db_tree.getTasksByTreeId($scope.db.main_node[ $scope.set.focus_edit ]._id, $scope.set.mini_tasks_show)
 
 
 angular.module("4treeApp").controller "searchController", ($scope, syncApi, db_tree, $rootScope, $sce, $timeout)->

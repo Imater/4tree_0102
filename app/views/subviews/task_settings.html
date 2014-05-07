@@ -12,6 +12,13 @@
     </div>
     <input type="checkbox" id="remind_me"> <label for="show_to_do1">Напомнить...</label><br>
     <h10 class="open">Настройки</h10>
+    <div range-slider
+         min="0"
+         max="100"
+         model-max="task.importance"
+         pin-handle="min"
+         show-values="false">
+    </div>
     <input type="checkbox" checked id="show_to_do"> <label for="show_to_do">показывать в To-do</label><br>
     <input type="checkbox" id="show_to_do1"> <label for="show_to_do1">не распознавать дату</label><br>
     <input type="checkbox" id="show_to_do2"> <label for="show_to_do2">дело лягушка</label><br>

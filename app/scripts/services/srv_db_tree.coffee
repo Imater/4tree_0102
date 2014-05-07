@@ -462,12 +462,23 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         fn.cache = {} if fn
     getTasks: ()->
       @_db.tasks;
-    getTasksByTreeId: _.memoize (tree_id, only_next)->
+
+    getTasksByTreeId: (tree_id, only_next)->
+      console.info 'hello!', tree_id
+      sortTasks = (answer, order_type = 'by_priority_and_date')->
+        if order_type == 'by_priority_and_date'
+          answer = _.sortBy answer, (el)->
+            if el and el.date1
+              sort_answer = el.importance? + new Date(el.date1).getTime()
+            else
+              sort_answer = el.importance? + new Date().getTime()
+            console.info 'sort', sort_answer
+            return sort_answer
+        answer
+
       answer = _.filter @_db.tasks, (el)->
         el.tree_id == tree_id
-      answer = _.sortBy answer, (el)->
-        el.date1
-
+      answer = sortTasks(answer);
       if only_next == true
         answer1 = _.find answer, (el)->
           el.date1 && !el.did;

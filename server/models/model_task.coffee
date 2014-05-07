@@ -15,6 +15,7 @@ treeSchema = new Schema (
   'color': String
   '_sync': [ { key: String, diff: { '_tm': String } } ]
   'created': Date
+  'importance': { type: Number, default: 50 }
   '_tm': Date
 )
 
