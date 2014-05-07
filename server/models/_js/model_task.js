@@ -27,6 +27,7 @@
     'parent_id': String,
     '_sha1': String,
     'did': Boolean,
+    'color': String,
     '_sync': [
       {
         key: String,

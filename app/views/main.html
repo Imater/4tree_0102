@@ -149,13 +149,25 @@
         <div class="settings_task" ng-if="set.set_task" window-draggable ng-controller="save_task_db">
             <div class="drag-handle"></div>
             <div class="pull-right" ng-click="set.set_task = undefined">x</div>
+            <input class="st_checkbox" type="checkbox" ng-model="set.set_task.did">
             <div class="title" contenteditable="true" ng-model="set.set_task.title"></div>
+            <h10 class="open">Даты</h10>
             <div class="dates_block">
-                <label>Дата начала:</label>
-                <date-time-input ng-model="set.set_task.date1"></date-time-input>
-                <label>Дата окончания:</label>
-                <date-time-input ng-model="set.set_task.date2"></date-time-input>
+
+                <date-time-input class="st_date" ng-model="set.set_task.date1"></date-time-input>
+                <b> — </b>
+                <date-time-input class="st_date" ng-model="set.set_task.date2"></date-time-input>
             </div>
+            <input type="checkbox" id="remind_me"> <label for="show_to_do1">Напомнить...</label><br>
+            <h10 class="open">Настройки</h10>
+            <input type="checkbox" checked id="show_to_do"> <label for="show_to_do">показывать в To-do</label><br>
+            <input type="checkbox" id="show_to_do1"> <label for="show_to_do1">не распознавать дату</label><br>
+            <input type="checkbox" id="show_to_do2"> <label for="show_to_do2">дело лягушка</label><br>
+            <input type="color" name="" id="" ng-model="set.set_task.color"/>
+            <h10 class="open">Описание</h10>
+            <div class="task_editor">Я вам пишу, чего же более, что я ещё могу сказать</div>
+
+
         </div>
 
     </div>

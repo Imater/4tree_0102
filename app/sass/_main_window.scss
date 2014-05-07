@@ -325,16 +325,17 @@
         position: relative;
         top: 100px;
         left: 100px;
-        width: 450px;
-        height: 350px;
+        width: 400px;
+        min-height: 200px;
         z-index: 1;
-        background: rgba(#ffffdd,0.9);
-        border: 1px solid $main_color;
+        background: rgba(#ffffee,0.98);
+        border: 1px solid rgba($main_color,0.6);
         @include box_shadow();
         padding: $grid/2 round($grid/1.5);
-        padding-left: $grid;
+        padding-left: $grid+$padding*2;
+        padding-bottom: $grid;
         .drag-handle {
-          background: $main_color;
+          background: rgba($main_color,0.6);
           position: absolute;
           left: 0px;
           bottom: 0px;
@@ -344,21 +345,39 @@
         }
         .title {
           display: inline-block;
-          font-weight: normal;
+          font-weight: bold;
+          font-size: 1.2em;
+          margin-left: 3px;
           outline: none;
           min-width: $grid;
         }
+        .st_checkbox {
+          position: absolute;
+          left: $grid;
+        }
+        label {
+          color: $dark_gray;
+          font-weight: normal;
+        }
         .dates_block {
-          text-align: center;
-          background: #FFF;
-          margin: $grid 0;
-          border: 1px solid #b4b27e;
+          margin: $padding 0;
           display: block;
-          padding: round($grid/2) $grid*2;
-          label {
-            color: #b4b27e;
-            font-weight: bold;
+          .st_date {
+            display: inline-block;
+            vertical-align: middle;
           }
+          b {
+            padding: $padding;
+          }
+        }
+        .task_editor {
+          outline: none;
+          margin-top: $padding;
+          min-height: 2*$grid;
+          padding: $padding;
+          border: 1px solid rgba($main_color, 0.5);
+          width: 100%;
+          background: #FFF;
         }
         .pull-right {
             font-weight: normal;
