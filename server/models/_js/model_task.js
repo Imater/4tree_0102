@@ -36,6 +36,7 @@
         }
       }
     ],
+    'created': Date,
     '_tm': Date
   });
 

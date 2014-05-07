@@ -567,6 +567,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         new_task.tree_id = tree_id;
         new_task.parent_id = tree_id;
         new_task._new = true;
+        new_task.created = new Date();
         new_task.user_id = $rootScope.$$childTail.set.user_id;
         old_value = _.clone(new_task); #clone
         new_task.title = scope.new_task_title;

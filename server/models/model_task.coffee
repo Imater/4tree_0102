@@ -14,6 +14,7 @@ treeSchema = new Schema (
   'did': Boolean
   'color': String
   '_sync': [ { key: String, diff: { '_tm': String } } ]
+  'created': Date
   '_tm': Date
 )
 
@@ -31,4 +32,5 @@ treeSchema.post 'init', ()->
 treeSchema.pre 'save', (next)->
   #console.info 'post saving... doc... ', @, 'was: ',this._original
   saveDiff.saveDiff(Task, @, this._original).then ()->
+
     next()

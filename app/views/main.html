@@ -146,7 +146,9 @@
             </div>
         </div>
 
-        <div class="settings_task" ng-if="set.set_task" window-draggable ng-controller="save_task_db">
+        <task-settings ng-model="set.set_task"></task-settings>
+
+        <div class="settings_task" ng-if="set.set_task&&false" window-draggable ng-controller="save_task_db">
             <div class="drag-handle"></div>
             <div class="pull-right" ng-click="set.set_task = undefined">x</div>
             <input class="st_checkbox" type="checkbox" ng-model="set.set_task.did">

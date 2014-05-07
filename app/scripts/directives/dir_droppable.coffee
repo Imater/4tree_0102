@@ -54,7 +54,7 @@ angular.module("4treeApp").directive "renderTime", ($timeout)->
   link: (scope, el, attr) ->
     console.time 'renderTimeALL'
     $timeout ()->
-      console.timeEnd 'renderTimeALL'
+      console.timeEnd 'renderTimeALL'¢
 
 
 angular.module("4treeApp").directive "mySortable", ->
@@ -73,6 +73,7 @@ angular.module("4treeApp").directive "mySortable", ->
     el.on "sortbeforestop", (event, ui) -> #deactivate
       event.stopPropagation();
       event.preventDefault();
+
       from_data_id = $(this).data().sort_id;
       $(".tree_tmpl[data-id='"+$(this).data().sort_id+"']").removeClass('drag_now')      
       from = angular.element(ui.item).scope().$index
