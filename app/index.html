@@ -2,7 +2,7 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js-false" manifest="manifest.appcache"> <!--<![endif]-->
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,32 +12,33 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
-    <link rel="stylesheet" href="bower_components/sass-bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="bower_components/nanoscroller/bin/css/nanoscroller.css" />
-    <link rel="stylesheet" href="bower_components/redactor9201/redactor/redactor.css" />
-    <link rel="stylesheet" href="bower_components/angular-range-slider/angular.rangeSlider.css" />
-    <link rel="stylesheet" href="bower_components/angular-strap/vendor/bootstrap-datepicker.css" />
-    <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css" />
-    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.css" />
-    <link rel="stylesheet" href="stylesheets/theme1.css" />
+    <link rel="stylesheet" href="./bower_components/animate.css/animate.css" />
+    <link rel="stylesheet" href="./bower_components/sass-bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="./bower_components/nanoscroller/bin/css/nanoscroller.css" />
+    <link rel="stylesheet" href="./bower_components/redactor9201/redactor/redactor.css" />
+    <link rel="stylesheet" href="./bower_components/angular-range-slider/angular.rangeSlider.css" />
+    <link rel="stylesheet" href="./bower_components/angular-strap/vendor/bootstrap-datepicker.css" />
+    <link rel="stylesheet" href="./bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+    <link rel="stylesheet" href="./bower_components/ng-tags-input/ng-tags-input.css" />
 
 
-    <link rel="stylesheet" href="others/fontello/css/fontello.css" />
+
+    <link rel="stylesheet" href="./others/fontello/css/fontello.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
-    <!--<link rel="stylesheet" href="styles/main.css">-->
+    <link rel="stylesheet" href="./stylesheets/theme1.css" />
+    <!--<link rel="stylesheet" href="./styles/main.css">-->
     <!-- endbuild -->
   </head>
-  
+
   <!--
-  <script2>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+  <script2>document.write('<script src="./http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
   -->
 
   <body ng-app="4treeApp">
     <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="./http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <!-- Add your site or application content here -->
@@ -57,102 +58,100 @@
     -->
 
     <!--[if lt IE 9]>
-    <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <script src="./bower_components/es5-shim/es5-shim.js"></script>
+    <script src="./bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
+
+    <script src="./others/socket.io.min.js"></script>
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="others/lodash.underscore.js"></script>
-    <script src="others/lunrjs.js"></script>
-    <script src="others/lunr.ru.js"></script>
-    <script src="bower_components/ydn.db/ydn.db-isw-core-qry-dev.js"></script>
-    <script src="socket.io/socket.io.js"></script>
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular/langs/angular-locale_ru-ru.js"></script>
-    <script src="bower_components/sass-bootstrap/dist/js/bootstrap.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <!-- <script src="bower_components/angular-animate/angular-animate.js"></script> -->
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-redactor/_js/angular-redactor.js"></script>
-    <script src="bower_components/redactor9201/redactor/redactor.js"></script>
-    <script src="bower_components/angular-strap/dist/angular-strap.js"></script>
-    <script src="bower_components/ng-clip-master/dest/ng-clip.js"></script>
-    <script src="bower_components/zeroclipboard/ZeroClipboard.js"></script>
+    <script src="./bower_components/jquery/dist/jquery.js"></script>
+    <script src="./bower_components/angular/angular.js"></script>
+    <script src="./others/lodash.underscore.js"></script>
+    <script src="./bower_components/momentjs/moment.js"></script>
+    <script src="./bower_components/momentjs/lang/ru.js"></script>
+    <script src="./bower_components/diff_match_patch_20121119/javascript/diff_match_patch_uncompressed.js"></script>
+    <script src="./bower_components/jsondiffpatch-master/build/bundle-full.js"></script>
+    <script src="./bower_components/ydn.db/ydn.db-isw-core-qry-dev.js"></script>
+    <script src="./bower_components/jquery-ui/ui/jquery-ui.js"></script>
+    <script src="./bower_components/angular/langs/angular-locale_ru-ru.js"></script>
+    <script src="./bower_components/sass-bootstrap/dist/js/bootstrap.js"></script>
+    <script src="./bower_components/angular-resource/angular-resource.js"></script>
+    <script src="./bower_components/angular-animate/angular-animate.js"></script>
+    <script src="./bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="./bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="./bower_components/angular-route/angular-route.js"></script>
+    <script src="./bower_components/angular-redactor/_js/angular-redactor.js"></script>
+    <script src="./bower_components/redactor9201/redactor/redactor.js"></script>
+    <script src="./bower_components/angular-strap/dist/angular-strap.js"></script>
+    <script src="./bower_components/ng-clip-master/dest/ng-clip.js"></script>
+    <script src="./bower_components/zeroclipboard/ZeroClipboard.js"></script>
 
-    <script src="bower_components/CryptoJS-v3.1.2-2/rollups/sha1.js"></script>
-    <script src="bower_components/CryptoJS-v3.1.2-2/rollups/sha3.js"></script>
-    <script src="bower_components/CryptoJS-v3.1.2-2/rollups/aes.js"></script>
-    <script src="bower_components/CryptoJS-v3.1.2-2/rollups/rabbit.js"></script>
-    <script src="bower_components/CryptoJS-v3.1.2-2/rollups/rc4.js"></script>
-    <script src="bower_components/CryptoJS-v3.1.2-2/rollups/tripledes.js"></script>
+    <script src="./bower_components/CryptoJS-v3.1.2-2/rollups/sha1.js"></script>
+    <script src="./bower_components/CryptoJS-v3.1.2-2/rollups/sha3.js"></script>
+    <script src="./bower_components/CryptoJS-v3.1.2-2/rollups/aes.js"></script>
+    <script src="./bower_components/CryptoJS-v3.1.2-2/rollups/rabbit.js"></script>
+    <script src="./bower_components/CryptoJS-v3.1.2-2/rollups/rc4.js"></script>
+    <script src="./bower_components/CryptoJS-v3.1.2-2/rollups/tripledes.js"></script>
 
-    <script src="bower_components/ng-bs-daterangepicker/src/ng-bs-daterangepicker.js"></script>
+    <script src="./bower_components/ng-bs-daterangepicker/src/ng-bs-daterangepicker.js"></script>
 
-    <script src="bower_components/momentjs/moment.js"></script>
-    <script src="bower_components/momentjs/lang/ru.js"></script>
-
-    <script src="bower_components/angular-strap/vendor/bootstrap-datepicker.js"></script>
-    <script src="bower_components/angular-strap/vendor/bootstrap-timepicker.js"></script>
-    <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="./bower_components/angular-strap/vendor/bootstrap-datepicker.js"></script>
+    <script src="./bower_components/angular-strap/vendor/bootstrap-timepicker.js"></script>
+    <script src="./bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 
 
-    <!-- <script src="bower_components/underscore/underscore.js"></script> -->
-    <script src="bower_components/angular-translate/angular-translate.js"></script>
-    <script src="bower_components/nanoscroller/bin/javascripts/jquery.nanoscroller.js"></script>
-    <script src="bower_components/nanoscroller/bin/javascripts/jquery.nanoscroller.min.js"></script>
-    <script src="bower_components/angular-range-slider/angular.rangeSlider.js"></script>
+    <!-- <script src="./bower_components/underscore/underscore.js"></script> -->
+    <script src="./bower_components/angular-translate/angular-translate.js"></script>
+    <script src="./bower_components/nanoscroller/bin/javascripts/jquery.nanoscroller.js"></script>
+    <script src="./bower_components/nanoscroller/bin/javascripts/jquery.nanoscroller.min.js"></script>
 
-    <script src="bower_components/angular-nanoscroller/scrollable.js"></script>
-    <!-- <script src="bower_components/angular-virtual-scroll/angular-virtual-scroll.js"></script>  -->
-    <script src="bower_components/angular-ui-scroll/angular-ui-scroll.js"></script>    
-    <script src="bower_components/ng-tags-input/ng-tags-input.js"></script>
-    <script src="bower_components/bootstrap-datepicker/js/locales/bootstrap-datepicker.ru.js"></script>
-    <script src="bower_components/angular-hotkeys-master/angular-hotkeys.js"></script>
-    <script src="bower_components/jsPlumb/dist/js/jquery.jsPlumb-1.5.5.js"></script>
-    <script src="bower_components/angular-treeRepeat/app/js/directives.js"></script>
-    <script src="bower_components/diff_match_patch_20121119/javascript/diff_match_patch_uncompressed.js"></script>
-    <script src="bower_components/jsondiffpatch-master/build/bundle-full.js"></script>
+    <script src="./bower_components/angular-nanoscroller/scrollable.js"></script>
+    <!-- <script src="./bower_components/angular-virtual-scroll/angular-virtual-scroll.js"></script>  -->
+    <script src="./bower_components/angular-ui-scroll/angular-ui-scroll.js"></script>
+    <script src="./bower_components/bootstrap-datepicker/js/locales/bootstrap-datepicker.ru.js"></script>
+    <script src="./bower_components/angular-hotkeys-master/angular-hotkeys.js"></script>
+    <script src="./bower_components/jsPlumb/dist/js/jquery.jsPlumb-1.5.5.js"></script>
 
 
-        
+
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="others/bindonce.js"></script>
-        <!-- <script src="others/angular-touch.js"></script> -->
-        <script src="others/scalyr.js"></script>
-        <script src="others/parser.calc.js"></script>
-        <script src="others/localForage.js"></script>
-        <script src="others/_js/ngSocket.js"></script>
-        <script src="others/watchCollectionFix.js"></script>
-        <script src="others/async.js"></script>
-        <script src="others/mongo-objectid.js"></script>
-        <script src="scripts/_js/app.js"></script>
-        <script src="scripts/services/_js/srv_calendar_box.js"></script>
-        <script src="scripts/services/_js/srv_oauth2api.js"></script>
-        <script src="scripts/services/_js/srv_db_tree.js"></script>
-        <script src="scripts/services/_js/srv_db_tasks.js"></script>
-        <script src="scripts/services/_js/srv_sync.js"></script>
-        <script src="scripts/services/_js/srv_diff.js"></script>
-        <script src="scripts/services/_js/srv_crypt.js"></script>
-        <script src="scripts/services/_js/srv_mysettings.js"></script>
-        <script src="scripts/services/_js/srv_textdb.js"></script>
-        <script src="scripts/controllers/_js/ctrl_main.js"></script>
-        <script src="scripts/controllers/_js/ctrl_text.js"></script>
-        <script src="scripts/directives/_js/dir_jq_show_effect.js"></script>
-        <script src="scripts/directives/_js/dir_smartRedactor.js"></script>
-        <script src="scripts/directives/_js/dir_task_settings.js"></script>
-        <script src="scripts/directives/_js/dir_contenteditable.js"></script>
-        <script src="scripts/directives/_js/dir_mindmap.js"></script>
-        <script src="scripts/directives/_js/dir_droppable.js"></script>
-        <script src="scripts/directives/_js/dir_focus_me.js"></script>
-        <script src="scripts/directives/_js/dir_datetime.js"></script>
+        <script src="./bower_components/angular-range-slider/angular.rangeSlider.js"></script>
+        <script src="./bower_components/angular-treeRepeat/app/js/directives.js"></script>
+        <script src="./bower_components/ng-tags-input/ng-tags-input.js"></script>
+        <script src="./others/bindonce.js"></script>
+        <!-- <script src="./others/angular-touch.js"></script> -->
+        <script src="./others/scalyr.js"></script>
+        <script src="./others/parser.calc.js"></script>
+        <script src="./others/localForage.js"></script>
+        <script src="./others/_js/ngSocket.js"></script>
+        <script src="./others/watchCollectionFix.js"></script>
+        <script src="./others/async.js"></script>
+        <script src="./others/mongo-objectid.js"></script>
+        <script src="./scripts/_js/app.js"></script>
+        <script src="./scripts/services/_js/srv_calendar_box.js"></script>
+        <script src="./scripts/services/_js/srv_oauth2api.js"></script>
+        <script src="./scripts/services/_js/srv_db_tree.js"></script>
+        <script src="./scripts/services/_js/srv_db_tasks.js"></script>
+        <script src="./scripts/services/_js/srv_sync.js"></script>
+        <script src="./scripts/services/_js/srv_diff.js"></script>
+        <script src="./scripts/services/_js/srv_crypt.js"></script>
+        <script src="./scripts/services/_js/srv_mysettings.js"></script>
+        <script src="./scripts/services/_js/srv_textdb.js"></script>
+        <script src="./scripts/controllers/_js/ctrl_main.js"></script>
+        <script src="./scripts/controllers/_js/ctrl_text.js"></script>
+        <script src="./scripts/directives/_js/dir_jq_show_effect.js"></script>
+        <script src="./scripts/directives/_js/dir_smartRedactor.js"></script>
+        <script src="./scripts/directives/_js/dir_task_settings.js"></script>
+        <script src="./scripts/directives/_js/dir_contenteditable.js"></script>
+        <script src="./scripts/directives/_js/dir_mindmap.js"></script>
+        <script src="./scripts/directives/_js/dir_droppable.js"></script>
+        <script src="./scripts/directives/_js/dir_focus_me.js"></script>
+        <script src="./scripts/directives/_js/dir_datetime.js"></script>
 
 
         <!-- endbuild -->

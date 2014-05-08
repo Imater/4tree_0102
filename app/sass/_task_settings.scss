@@ -7,7 +7,7 @@
   z-index: 1;
   background: rgba(#ffffee,0.98);
   border: 1px solid rgba($main_color,0.6);
-  @include box_shadow();
+  @include box-shadow();
   padding: $grid/2 round($grid/1.5);
   padding-left: $grid+$padding*2;
   padding-bottom: $grid;

@@ -1,23 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" line="40" mnemonic="9" />
     <bookmark url="file://$PROJECT_DIR$/app/scripts/directives/dir_droppable.coffee" line="86" mnemonic="8" />
     <bookmark url="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" />
-    <bookmark url="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" line="585" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/others/socket.io.js" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/scripts/_js/app.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/scripts/_js/app.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/_js/server.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/_js/server.map" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/404.html" afterPath="$PROJECT_DIR$/app/404.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gruntfile.js" afterPath="$PROJECT_DIR$/Gruntfile.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/sass/_one_task.scss" afterPath="$PROJECT_DIR$/app/sass/_one_task.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/sass/_task_settings.scss" afterPath="$PROJECT_DIR$/app/sass/_task_settings.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower.json" afterPath="$PROJECT_DIR$/bower.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/ctrl_main.coffee" afterPath="$PROJECT_DIR$/app/scripts/controllers/ctrl_main.coffee" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_main.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/models/model_task.coffee" afterPath="$PROJECT_DIR$/server/models/model_task.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/models/_js/model_task.js" afterPath="$PROJECT_DIR$/server/models/_js/model_task.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/directives/dir_task_settings.coffee" afterPath="$PROJECT_DIR$/app/scripts/directives/dir_task_settings.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/index.html" afterPath="$PROJECT_DIR$/app/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/main.html" afterPath="$PROJECT_DIR$/app/views/main.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/subviews/ms/ms_tasks.html" afterPath="$PROJECT_DIR$/app/views/subviews/ms/ms_tasks.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/others/ngSocket.coffee" afterPath="$PROJECT_DIR$/app/others/ngSocket.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/others/_js/ngSocket.js" afterPath="$PROJECT_DIR$/app/others/_js/ngSocket.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/server.coffee" afterPath="$PROJECT_DIR$/server/server.coffee" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" afterPath="$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.js" afterPath="$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.map" afterPath="$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/subviews/task_settings.html" afterPath="$PROJECT_DIR$/app/views/subviews/task_settings.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/subviews/ms/view_ms_1.html" afterPath="$PROJECT_DIR$/app/views/subviews/ms/view_ms_1.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/srv_oauth2api.coffee" afterPath="$PROJECT_DIR$/app/scripts/services/srv_oauth2api.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/_js/srv_oauth2api.js" afterPath="$PROJECT_DIR$/app/scripts/services/_js/srv_oauth2api.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="56ee746e-8f1d-4d4a-a92c-f05706cc2e69" name="Rejected commit: Default" comment="Пробую сделать коммит" />
@@ -3939,54 +3954,44 @@
     </favorites_list>
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="vertical" split-proportion="0.5818674">
+    <splitter split-orientation="vertical" split-proportion="0.5504967">
       <split-first>
         <leaf>
-          <file leaf-file-name="_global.scss" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/sass/_global.scss">
+          <file leaf-file-name="ctrl_main.coffee" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/scripts/controllers/ctrl_main.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-26.153847" vertical-offset="1054" max-vertical-offset="4403">
-                  <caret line="102" column="32" selection-start-line="102" selection-start-column="32" selection-end-line="102" selection-end-column="32" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="697" max-vertical-offset="13821">
+                  <caret line="26" column="45" selection-start-line="26" selection-start-column="45" selection-end-line="26" selection-end-column="45" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="_main.scss" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/sass/_main.scss">
+          <file leaf-file-name="ngSocket.coffee" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/others/ngSocket.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-22.615385" vertical-offset="619" max-vertical-offset="2074">
-                  <caret line="71" column="22" selection-start-line="71" selection-start-column="22" selection-end-line="71" selection-end-column="22" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1275">
+                  <caret line="17" column="28" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="_main_window.scss" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/sass/_main_window.scss">
+          <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/dist/index.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-0.65384614" vertical-offset="5083" max-vertical-offset="12920">
-                  <caret line="300" column="0" selection-start-line="300" selection-start-column="0" selection-end-line="300" selection-end-column="0" />
+                <state vertical-scroll-proportion="-11.115385" vertical-offset="0" max-vertical-offset="391">
+                  <caret line="17" column="46" selection-start-line="17" selection-start-column="111" selection-end-line="17" selection-end-column="166" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="_task_settings.scss" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/sass/_task_settings.scss">
+          <file leaf-file-name="server.coffee" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/server/server.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-9.461538" vertical-offset="791" max-vertical-offset="1360">
-                  <caret line="61" column="14" selection-start-line="61" selection-start-column="14" selection-end-line="61" selection-end-column="14" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="dir_smartRedactor.coffee" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/scripts/directives/dir_smartRedactor.coffee">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="761" max-vertical-offset="2057">
-                  <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+                <state vertical-scroll-proportion="-10.115385" vertical-offset="4225" max-vertical-offset="12903">
+                  <caret line="264" column="16" selection-start-line="264" selection-start-column="16" selection-end-line="264" selection-end-column="16" />
                   <folding />
                 </state>
               </provider>
@@ -3995,40 +4000,8 @@
           <file leaf-file-name="dir_task_settings.coffee" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/scripts/directives/dir_task_settings.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-238.0" vertical-offset="0" max-vertical-offset="595">
-                  <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="main.html" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/views/main.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-11.461538" vertical-offset="2218" max-vertical-offset="3077">
-                  <caret line="148" column="46" selection-start-line="148" selection-start-column="46" selection-end-line="148" selection-end-column="46" />
-                  <folding>
-                    <marker date="1399439843000" expanded="true" signature="27:268" placeholder="{...}" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="model_task.coffee" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/server/models/model_task.coffee">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="731">
-                  <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="model_tree.coffee" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/server/models/model_tree.coffee">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1190">
-                  <caret line="46" column="28" selection-start-line="46" selection-start-column="28" selection-end-line="46" selection-end-column="28" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="612">
+                  <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
                   <folding />
                 </state>
               </provider>
@@ -4037,28 +4010,40 @@
           <file leaf-file-name="ms_tasks.html" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/views/subviews/ms/ms_tasks.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-0.65384614" vertical-offset="0" max-vertical-offset="510">
-                  <caret line="1" column="25" selection-start-line="1" selection-start-column="25" selection-end-line="1" selection-end-column="25" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="595">
+                  <caret line="14" column="37" selection-start-line="14" selection-start-column="37" selection-end-line="14" selection-end-column="37" />
+                  <folding>
+                    <marker date="1399457830000" expanded="true" signature="473:683" placeholder="{...}" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="_one_task.scss" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/sass/_one_task.scss">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="884" max-vertical-offset="2142">
+                  <caret line="87" column="0" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="srv_db_tree.coffee" pinned="true" current="false" current-in-tab="false">
+          <file leaf-file-name="srv_db_tree.coffee" pinned="true" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="7254" max-vertical-offset="20553">
-                  <caret line="465" column="20" selection-start-line="465" selection-start-column="4" selection-end-line="465" selection-end-column="20" />
+                <state vertical-scroll-proportion="0.3140496" vertical-offset="1012" max-vertical-offset="20655">
+                  <caret line="64" column="23" selection-start-line="64" selection-start-column="23" selection-end-line="64" selection-end-column="23" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="ctrl_main.coffee" pinned="false" current="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/app/scripts/controllers/ctrl_main.coffee">
+          <file leaf-file-name="srv_oauth2api.coffee" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/scripts/services/srv_oauth2api.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.33333334" vertical-offset="200" max-vertical-offset="13736">
-                  <caret line="27" column="66" selection-start-line="27" selection-start-column="66" selection-end-line="27" selection-end-column="88" />
+                <state vertical-scroll-proportion="-19.923077" vertical-offset="570" max-vertical-offset="1734">
+                  <caret line="64" column="18" selection-start-line="64" selection-start-column="18" selection-end-line="64" selection-end-column="18" />
                   <folding />
                 </state>
               </provider>
@@ -4067,7 +4052,7 @@
           <file leaf-file-name="task_settings.html" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/views/subviews/task_settings.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-11.115385" vertical-offset="0" max-vertical-offset="629">
+                <state vertical-scroll-proportion="0.0" vertical-offset="289" max-vertical-offset="629">
                   <caret line="17" column="36" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
                   <folding />
                 </state>
@@ -4077,8 +4062,8 @@
           <file leaf-file-name="view_ms_0.html" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/views/subviews/ms/view_ms_0.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-1.3076923" vertical-offset="0" max-vertical-offset="289">
-                  <caret line="2" column="47" selection-start-line="2" selection-start-column="47" selection-end-line="2" selection-end-column="61" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="187" max-vertical-offset="289">
+                  <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
                   <folding />
                 </state>
               </provider>
@@ -4087,8 +4072,18 @@
           <file leaf-file-name="view_ms_1.html" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/views/subviews/ms/view_ms_1.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-4.4423075" vertical-offset="194" max-vertical-offset="1377">
+                <state vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="1343">
                   <caret line="25" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Gruntfile.js" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Gruntfile.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="-8.769231" vertical-offset="7609" max-vertical-offset="9435">
+                  <caret line="461" column="28" selection-start-line="461" selection-start-column="28" selection-end-line="461" selection-end-column="28" />
                   <folding />
                 </state>
               </provider>
@@ -4098,11 +4093,187 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="ctrl_main.coffee" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="ctrl_main.coffee" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/scripts/controllers/ctrl_main.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.33211678" vertical-offset="11480" max-vertical-offset="13736">
-                  <caret line="686" column="0" selection-start-line="686" selection-start-column="0" selection-end-line="686" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="11611" max-vertical-offset="13821">
+                  <caret line="683" column="39" selection-start-line="683" selection-start-column="39" selection-end-line="683" selection-end-column="39" />
+                  <folding>
+                    <marker date="1399528493000" expanded="true" signature="50:19440" placeholder="[...]" />
+                    <marker date="1399528493000" expanded="true" signature="389:19430" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="1695:5073" placeholder="user_id: '5330ff92898a2b63c2f7095f'..." />
+                    <marker date="1399528493000" expanded="true" signature="2291:2456" placeholder="[...]" />
+                    <marker date="1399528493000" expanded="true" signature="2502:3620" placeholder="[...]" />
+                    <marker date="1399528493000" expanded="true" signature="2510:2642" placeholder="title: 'План дня'..." />
+                    <marker date="1399528493000" expanded="true" signature="2649:2773" placeholder="title: 'To-do'..." />
+                    <marker date="1399528493000" expanded="true" signature="2780:2904" placeholder="title: 'Новости'..." />
+                    <marker date="1399528493000" expanded="true" signature="2911:3054" placeholder="title: 'Мой сайт'..." />
+                    <marker date="1399528493000" expanded="true" signature="3061:3206" placeholder="title: 'Контакты'..." />
+                    <marker date="1399528493000" expanded="true" signature="3213:3349" placeholder="title: 'Теги'..." />
+                    <marker date="1399528493000" expanded="true" signature="3356:3480" placeholder="title: 'Обзор'..." />
+                    <marker date="1399528493000" expanded="true" signature="3487:3614" placeholder="title: 'Поиск'..." />
+                    <marker date="1399528493000" expanded="true" signature="3642:4641" placeholder="[...]" />
+                    <marker date="1399528493000" expanded="true" signature="3650:3777" placeholder="title: 'Дерево'..." />
+                    <marker date="1399528493000" expanded="true" signature="3784:3906" placeholder="title: 'Карточки'..." />
+                    <marker date="1399528493000" expanded="true" signature="3913:4053" placeholder="title: 'Mindmap'..." />
+                    <marker date="1399528493000" expanded="true" signature="4060:4094" placeholder="title: 'divider'..." />
+                    <marker date="1399528493000" expanded="true" signature="4101:4233" placeholder="title: 'Календарь'..." />
+                    <marker date="1399528493000" expanded="true" signature="4240:4367" placeholder="title: 'Редактор'..." />
+                    <marker date="1399528493000" expanded="true" signature="4374:4488" placeholder="title: '— — —'..." />
+                    <marker date="1399528493000" expanded="true" signature="4495:4635" placeholder="title: 'Неделя'..." />
+                    <marker date="1399528493000" expanded="true" signature="4796:5069" placeholder="[...]" />
+                    <marker date="1399528493000" expanded="true" signature="5203:10517" placeholder="service: {&#10;      db_tasks: db_tasks&#10;      db_tree: db_tree&#10;      calendarBox: calendarBox&#10;      syncApi: syncApi&#10;    }..." />
+                    <marker date="1399528493000" expanded="true" signature="5218:5327" placeholder="db_tasks: db_tasks..." />
+                    <marker date="1399528493000" expanded="true" signature="5369:5533" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="5644:5744" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="5810:5950" placeholder="[...]" />
+                    <marker date="1399528493000" expanded="true" signature="6196:6308" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="6339:6463" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="6498:6603" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="6537:6603" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="6635:6814" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="6670:6814" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="6856:7148" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="6899:6974" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="6995:7069" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="7327:7460" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="7492:7587" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="7621:7774" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="7814:9432" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="7864:9419" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="8152:9419" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="8313:8729" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="8371:8599" placeholder="tag : &quot;notify-pomidor&quot; + $scope.db.pomidors.now + new Date()..." />
+                    <marker date="1399528493000" expanded="true" signature="8664:8729" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="8804:9419" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="9014:9218" placeholder="tag : &quot;notify-pomidor&quot; + $scope.db.pomidors.now + new Date()..." />
+                    <marker date="1399528493000" expanded="true" signature="9373:9419" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="9472:10513" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="9519:9608" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="9738:9921" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="10577:18736" placeholder="main_text: &quot;Текст&quot;..." />
+                    <marker date="1399528493000" expanded="true" signature="10709:11031" placeholder="active: false..." />
+                    <marker date="1399528493000" expanded="true" signature="10861:11025" placeholder="[...]" />
+                    <marker date="1399528493000" expanded="true" signature="11046:11320" placeholder="[...]" />
+                    <marker date="1399528493000" expanded="true" signature="11336:11604" placeholder="[...]" />
+                    <marker date="1399528493000" expanded="true" signature="11623:12058" placeholder="[...]" />
+                    <marker date="1399528493000" expanded="true" signature="12079:12558" placeholder="[...]" />
+                    <marker date="1399528493000" expanded="true" signature="12574:12761" placeholder="[...]" />
+                    <marker date="1399528493000" expanded="true" signature="12774:14298" placeholder="[...]" />
+                    <marker date="1399528493000" expanded="true" signature="14322:18141" placeholder="[...]" />
+                    <marker date="1399528493000" expanded="true" signature="18171:18732" placeholder="[...]" />
+                    <marker date="1399528493000" expanded="true" signature="19546:19755" placeholder="### $scope.$watch &quot;db.main_node[set.focus_edit]&quot;, ()-&gt;... ###" />
+                    <marker date="1399528493000" expanded="true" signature="19759:20019" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="19834:20010" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="20120:20328" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="20171:20319" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="20429:20610" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="20498:20610" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="20717:20890" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="20778:20890" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="20980:21228" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="21042:21095" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="21348:23724" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="21569:21654" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="21658:21687" placeholder="### This service ....... ###" />
+                    <marker date="1399528493000" expanded="true" signature="21763:22024" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="21859:22024" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="21908:22024" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="22093:22266" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="22166:22266" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="22327:23724" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="22359:23724" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="22500:22566" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="22605:22753" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="22842:22934" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="22954:23574" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="23089:23146" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="23601:23724" placeholder="..." />
+                    <marker date="1399528493000" expanded="true" signature="23727:23752" placeholder="### This service ....... ###" />
+                    <marker date="1399528493000" expanded="true" signature="23835:23896" placeholder="config1: true..." />
+                    <marker date="1399528493000" expanded="true" signature="24302:24741" placeholder="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/app/index.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.7010309" vertical-offset="0" max-vertical-offset="2805">
+                  <caret line="8" column="27" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="manifest.appcache" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/dist/manifest.appcache">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1241">
+                  <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="bower.json" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/bower.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="629">
+                  <caret line="3" column="16" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="main.html" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/views/main.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="3077">
+                  <caret line="16" column="10" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
+                  <folding>
+                    <marker date="1399518117000" expanded="true" signature="27:268" placeholder="{...}" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="_task_settings.scss" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/sass/_task_settings.scss">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="170" max-vertical-offset="1360">
+                  <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="_mymixins.scss" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/sass/_mymixins.scss">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="2559" max-vertical-offset="5083">
+                  <caret line="160" column="14" selection-start-line="160" selection-start-column="7" selection-end-line="160" selection-end-column="14" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="_global.scss" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/sass/_global.scss">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="396" max-vertical-offset="4403">
+                  <caret line="41" column="24" selection-start-line="41" selection-start-column="24" selection-end-line="41" selection-end-column="24" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="404.html" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/404.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="-16.923077" vertical-offset="1022" max-vertical-offset="2771">
+                  <caret line="86" column="21" selection-start-line="86" selection-start-column="21" selection-end-line="86" selection-end-column="21" />
                   <folding />
                 </state>
               </provider>
@@ -4142,18 +4313,14 @@
         <option value="$PROJECT_DIR$/app/others/parser.calc.js" />
         <option value="$PROJECT_DIR$/app/others/scalyr.js" />
         <option value="$PROJECT_DIR$/app/others/jquery.jsscrollpane.js" />
-        <option value="$PROJECT_DIR$/app/scripts/app.coffee" />
         <option value="$PROJECT_DIR$/app/sass/_global.scss" />
         <option value="/" />
-        <option value="$PROJECT_DIR$/server/server.coffee" />
         <option value="$PROJECT_DIR$/tests/test1.coffee" />
         <option value="/chrome-extension://iooic…ghjclgihfjdjhj/content.js" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_main.js" />
         <option value="$PROJECT_DIR$/app/sass/_settings.scss" />
         <option value="$PROJECT_DIR$/app/views/subviews/view_main/view_tree.html" />
-        <option value="$PROJECT_DIR$/bower.json" />
         <option value="$PROJECT_DIR$/node_modules/jquery/package.json" />
-        <option value="$PROJECT_DIR$/app/scripts/services/srv_oauth2api.coffee" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/server/get/server_sync.coffee" />
         <option value="$PROJECT_DIR$/app/scripts/services/srv_textdb.coffee" />
@@ -4165,16 +4332,27 @@
         <option value="$PROJECT_DIR$/app/sass/_main.scss" />
         <option value="$PROJECT_DIR$/app/scripts/directives/dir_droppable.coffee" />
         <option value="$PROJECT_DIR$/app/scripts/directives/tast_settings.coffee" />
-        <option value="$PROJECT_DIR$/app/index.html" />
-        <option value="$PROJECT_DIR$/app/views/main.html" />
-        <option value="$PROJECT_DIR$/app/scripts/directives/dir_task_settings.coffee" />
-        <option value="$PROJECT_DIR$/app/sass/_task_settings.scss" />
         <option value="$PROJECT_DIR$/app/views/subviews/ms/view_ms_1.html" />
         <option value="$PROJECT_DIR$/app/views/subviews/task_settings.html" />
         <option value="$PROJECT_DIR$/server/models/model_task.coffee" />
-        <option value="$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" />
         <option value="$PROJECT_DIR$/app/views/subviews/ms/ms_tasks.html" />
+        <option value="$PROJECT_DIR$/app/scripts/directives/dir_task_settings.coffee" />
+        <option value="$PROJECT_DIR$/app/sass/_one_task.scss" />
+        <option value="$PROJECT_DIR$/app/404.html" />
+        <option value="$PROJECT_DIR$/app/sass/_task_settings.scss" />
+        <option value="$PROJECT_DIR$/bower.json" />
+        <option value="$PROJECT_DIR$/app/views/main.html" />
+        <option value="$PROJECT_DIR$/app/scripts/app.coffee" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/ctrl_main.coffee" />
+        <option value="$PROJECT_DIR$/app/others/ngSocket.coffee" />
+        <option value="$PROJECT_DIR$/app/others/socket.io.js" />
+        <option value="$PROJECT_DIR$/app/scripts/services/srv_oauth2api.coffee" />
+        <option value="$PROJECT_DIR$/dist/index.html" />
+        <option value="$PROJECT_DIR$/server/server.coffee" />
+        <option value="$PROJECT_DIR$/dist/manifest.appcache" />
+        <option value="$PROJECT_DIR$/Gruntfile.js" />
+        <option value="$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" />
+        <option value="$PROJECT_DIR$/app/index.html" />
       </list>
     </option>
   </component>
@@ -4187,6 +4365,7 @@
       <GruntfileState>
         <alias-tasks>
           <alias-task value="build" />
+          <alias-task value="build_part" />
           <alias-task value="default" />
           <alias-task value="pro" />
           <alias-task value="test" />
@@ -4235,6 +4414,9 @@
           </GruntMultiTaskState>
           <GruntMultiTaskState>
             <name>concat</name>
+            <targets>
+              <target value="dist" />
+            </targets>
           </GruntMultiTaskState>
           <GruntMultiTaskState>
             <name>concurrent</name>
@@ -4256,6 +4438,9 @@
           </GruntMultiTaskState>
           <GruntMultiTaskState>
             <name>cssmin</name>
+            <targets>
+              <target value="dist" />
+            </targets>
           </GruntMultiTaskState>
           <GruntMultiTaskState>
             <name>htmlmin</name>
@@ -4280,6 +4465,12 @@
             <targets>
               <target value="unit" />
               <target value="server" />
+            </targets>
+          </GruntMultiTaskState>
+          <GruntMultiTaskState>
+            <name>manifest</name>
+            <targets>
+              <target value="generate" />
             </targets>
           </GruntMultiTaskState>
           <GruntMultiTaskState>
@@ -4329,6 +4520,9 @@
           </GruntMultiTaskState>
           <GruntMultiTaskState>
             <name>uglify</name>
+            <targets>
+              <target value="dist" />
+            </targets>
           </GruntMultiTaskState>
           <GruntMultiTaskState>
             <name>usemin</name>
@@ -4362,10 +4556,9 @@
     <data>$USER_HOME$/npm/lib/node_modules/mocha</data>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1680" />
-    <option name="y" value="-291" />
+    <option name="y" value="22" />
     <option name="width" value="1200" />
-    <option name="height" value="1894" />
+    <option name="height" value="1178" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -4415,7 +4608,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -4458,11 +4650,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="models" />
+              <option name="myItemId" value="dist" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -4476,59 +4664,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
+              <option name="myItemId" value="dist" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="subviews" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="4tree" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="4tree_0102" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="subviews" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ms" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="4tree" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="4tree_0102" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
+              <option name="myItemId" value="others" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -4560,88 +4700,23 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="4tree" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="4tree_0102" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="directives" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="4tree" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="4tree_0102" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="4tree" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="4tree_0102" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
+              <option name="myItemId" value="others" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="editor.preferences.tabs" />
+    <property name="options.lastSelected" value="preferences.pluginManager" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/config.rb" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="LayoutCode.rearrangeEntriesCoffeeScript" value="false" />
     <property name="FullScreen" value="false" />
@@ -4665,7 +4740,7 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
   </component>
-  <component name="RunManager" selected="JavaScript Debug.4treeLE JavaScript">
+  <component name="RunManager" selected="Node.js.4treeLE">
     <configuration default="false" name="index.html (1)" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" uri="http://localhost:8888/index.html">
       <RunnerSettings RunnerId="JavascriptDebugRunner" />
       <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
@@ -4723,6 +4798,9 @@
     <configuration default="true" type="JavaScriptTraceType" factoryName="Spy-js" node="" config="" has-config="false" system-proxy="true" proxy-port="3546">
       <method />
     </configuration>
+    <configuration default="true" type="codeOrchestra.colt.js" factoryName="COLT JavaScript" coltProjectPath="">
+      <method />
+    </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
       <method />
     </configuration>
@@ -4745,7 +4823,7 @@
       <ConfigurationWrapper RunnerId="Basic" />
       <method />
     </configuration>
-    <configuration default="false" name="4treeLE JavaScript" type="JavascriptDebugType" factoryName="JavaScript Debug" uri="http://localhost:8888/">
+    <configuration default="false" name="4treeLE JavaScript" type="JavascriptDebugType" factoryName="JavaScript Debug" engineId="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" uri="http://localhost:8888/">
       <mapping url="http://localhost:8888" local-file="$PROJECT_DIR$/app" />
       <RunnerSettings RunnerId="JavascriptDebugRunner" />
       <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
@@ -4772,7 +4850,7 @@
       <method />
     </configuration>
     <configuration default="false" name="4treeLE" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="/usr/local/bin/node" path-to-js-file="_js/server.js" node-parameters="--debug" working-dir="$PROJECT_DIR$/server" coffeescript-path="$PROJECT_DIR$/server/server.coffee">
-      <browser name="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" start="true" with-js-debugger="true" url="http://localhost:8888/" />
+      <browser name="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" start="true" url="http://localhost:8888/" />
       <RunnerSettings RunnerId="NodeJS.debug" />
       <RunnerSettings RunnerId="NodeJS.run" />
       <ConfigurationWrapper RunnerId="NodeJS.debug" />
@@ -4785,15 +4863,16 @@
       <ConfigurationWrapper RunnerId="NodeJS.debug" />
       <method />
     </configuration>
-    <list size="8">
-      <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.4treeLE JavaScript" />
-      <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.index.html" />
-      <item index="2" class="java.lang.String" itemvalue="Mocha.4tree-server-test" />
-      <item index="3" class="java.lang.String" itemvalue="Node.js.4treeLE" />
-      <item index="4" class="java.lang.String" itemvalue="Node.js Remote Debug.4treeRD" />
-      <item index="5" class="java.lang.String" itemvalue="JavaScript Debug.index.html (1)" />
-      <item index="6" class="java.lang.String" itemvalue="JavaScript Debug.index.html (2)" />
-      <item index="7" class="java.lang.String" itemvalue="JavaScript Debug.index.html (3)" />
+    <list size="9">
+      <item index="0" class="java.lang.String" itemvalue="COLT JavaScript.autogenerated" />
+      <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.4treeLE JavaScript" />
+      <item index="2" class="java.lang.String" itemvalue="JavaScript Debug.index.html" />
+      <item index="3" class="java.lang.String" itemvalue="Mocha.4tree-server-test" />
+      <item index="4" class="java.lang.String" itemvalue="Node.js.4treeLE" />
+      <item index="5" class="java.lang.String" itemvalue="Node.js Remote Debug.4treeRD" />
+      <item index="6" class="java.lang.String" itemvalue="JavaScript Debug.index.html (1)" />
+      <item index="7" class="java.lang.String" itemvalue="JavaScript Debug.index.html (2)" />
+      <item index="8" class="java.lang.String" itemvalue="JavaScript Debug.index.html (3)" />
     </list>
     <recent_temporary>
       <list size="3">
@@ -4905,7 +4984,11 @@
       <created>1399446321933</created>
       <updated>1399446321933</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Делаю сортировку дел">
+      <created>1399454367552</created>
+      <updated>1399454367552</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TodoView" selected-index="2">
@@ -4929,27 +5012,27 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1680" y="-291" width="1200" height="1894" extended-state="6" />
+    <frame x="0" y="22" width="1200" height="1178" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16943522" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" x="742" y="431" width="1178" height="594" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39957264" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24417314" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="9" y="586" width="1229" height="465" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24390244" sideWeight="0.5004241" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25804663" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40441176" sideWeight="0.4995759" order="4" side_tool="false" content_ui="tabs" x="9" y="586" width="1229" height="465" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35027727" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" x="1249" y="22" width="415" height="1028" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32902032" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963374" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329863" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.32963374" sideWeight="0.4995759" order="13" side_tool="false" content_ui="tabs" x="608" y="444" width="1049" height="594" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963374" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24936387" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="true" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.28" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="1213" y="22" width="462" height="1028" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39529914" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="699" y="598" width="1200" height="596" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22222222" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="1213" y="22" width="462" height="1024" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13580932" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="699" y="598" width="1200" height="596" />
       <window_info id="Pomodoro" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2585837" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Mongo Runner" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32963374" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329863" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32994455" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298791" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -4957,6 +5040,32 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="JsTestDriver Server" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977587" sideWeight="0.5" order="14" side_tool="true" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16943522" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" x="742" y="431" width="1178" height="594" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39957264" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2585837" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24417314" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="9" y="586" width="1229" height="465" />
+      <window_info id="Mongo Runner" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32963374" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35027727" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" x="1249" y="22" width="415" height="1028" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32902032" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963374" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329863" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="SVN Repositories" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32994455" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963374" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24936387" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298791" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="true" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.28" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="1213" y="22" width="462" height="1024" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39957264" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39529914" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="699" y="598" width="1200" height="596" />
+      <window_info id="Pomodoro" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="JsTestDriver Server" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977587" sideWeight="0.5" order="15" side_tool="true" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -4994,7 +5103,8 @@
     <MESSAGE value="Сделал draggable для окна настроек дела." />
     <MESSAGE value="Настраиваю панель управления делами" />
     <MESSAGE value="Делаю настройки дел" />
-    <option name="LAST_COMMIT_MESSAGE" value="Делаю настройки дел" />
+    <MESSAGE value="Делаю сортировку дел" />
+    <option name="LAST_COMMIT_MESSAGE" value="Делаю сортировку дел" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -5017,7 +5127,7 @@
           </selected-grouping-rules>
         </breakpoints-dialog>
       </breakpoints-dialog>
-      <option name="time" value="128" />
+      <option name="time" value="131" />
     </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
@@ -5033,86 +5143,6 @@
     </PATH>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/others/parser.calc.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="5221" max-vertical-offset="15572">
-          <caret line="338" column="8" selection-start-line="338" selection-start-column="8" selection-end-line="338" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/others/scalyr.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="6037" max-vertical-offset="15793">
-          <caret line="378" column="6" selection-start-line="378" selection-start-column="6" selection-end-line="378" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/others/jquery.jsscrollpane.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1396" max-vertical-offset="24616">
-          <caret line="111" column="16" selection-start-line="111" selection-start-column="16" selection-end-line="111" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/test1.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3327511" vertical-offset="22824" max-vertical-offset="27829">
-          <caret line="1365" column="57" selection-start-line="1365" selection-start-column="52" selection-end-line="1365" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31938514" vertical-offset="1547" max-vertical-offset="11866">
-          <caret line="113" column="11" selection-start-line="113" selection-start-column="11" selection-end-line="113" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.map">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.11906615" vertical-offset="0" max-vertical-offset="1285">
-          <caret line="9" column="1" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
-        </state>
-      </provider>
-      <provider editor-type-id="sourcemapFileViewerProvider">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/app.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2950" max-vertical-offset="4556">
-          <caret line="209" column="5" selection-start-line="209" selection-start-column="5" selection-end-line="209" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/services/srv_db_tasks.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2295">
-          <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/subviews/view_main/view_text.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="612">
-          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/subviews/view_main/view_tree.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1147" max-vertical-offset="3043">
-          <caret line="87" column="54" selection-start-line="87" selection-start-column="54" selection-end-line="87" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/models/model_text.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="714">
@@ -5152,20 +5182,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1716" max-vertical-offset="6256">
           <caret line="120" column="13" selection-start-line="120" selection-start-column="13" selection-end-line="120" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/services/srv_oauth2api.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4382716" vertical-offset="438" max-vertical-offset="1734">
-          <caret line="55" column="23" selection-start-line="55" selection-start-column="23" selection-end-line="55" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3312666" vertical-offset="0" max-vertical-offset="1129">
-          <caret line="22" column="35" selection-start-line="22" selection-start-column="35" selection-end-line="22" selection-end-column="35" />
         </state>
       </provider>
     </entry>
@@ -5254,46 +5270,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/sass/_one_task.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.730769" vertical-offset="477" max-vertical-offset="1683">
-          <caret line="46" column="20" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/server.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6685499" vertical-offset="5765" max-vertical-offset="12614">
-          <caret line="360" column="31" selection-start-line="360" selection-start-column="31" selection-end-line="360" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/_js/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.63949275" vertical-offset="1585" max-vertical-offset="13651">
-          <caret line="114" column="28" selection-start-line="114" selection-start-column="28" selection-end-line="114" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7015209" vertical-offset="2113" max-vertical-offset="2822">
-          <caret line="146" column="14" selection-start-line="146" selection-start-column="14" selection-end-line="146" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/scripts/directives/dir_droppable.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.52355075" vertical-offset="459" max-vertical-offset="1887">
           <caret line="44" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
-          <folding>
-            <marker date="1399435278000" expanded="false" signature="-1:-1" placeholder="..." />
-            <marker date="1399435278000" expanded="false" signature="-1:-1" placeholder="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -5301,25 +5282,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.65384614" vertical-offset="5083" max-vertical-offset="12920">
           <caret line="300" column="0" selection-start-line="300" selection-start-column="0" selection-end-line="300" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/sass/_task_settings.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.461538" vertical-offset="791" max-vertical-offset="1360">
-          <caret line="61" column="14" selection-start-line="61" selection-start-column="14" selection-end-line="61" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/main.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.461538" vertical-offset="2218" max-vertical-offset="3077">
-          <caret line="148" column="46" selection-start-line="148" selection-start-column="46" selection-end-line="148" selection-end-column="46" />
-          <folding>
-            <marker date="1399439843000" expanded="true" signature="27:268" placeholder="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -5327,30 +5289,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="761" max-vertical-offset="2057">
           <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/directives/dir_task_settings.coffee">
+    <entry file="file://$PROJECT_DIR$/server/models/model_tree.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-238.0" vertical-offset="0" max-vertical-offset="595">
-          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/subviews/ms/view_ms_1.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.4423075" vertical-offset="194" max-vertical-offset="1377">
-          <caret line="25" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/subviews/ms/view_ms_0.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.3076923" vertical-offset="0" max-vertical-offset="289">
-          <caret line="2" column="47" selection-start-line="2" selection-start-column="47" selection-end-line="2" selection-end-column="61" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="1190">
+          <caret line="46" column="28" selection-start-line="46" selection-start-column="28" selection-end-line="46" selection-end-column="28" />
           <folding />
         </state>
       </provider>
@@ -5363,58 +5308,228 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/models/model_tree.coffee">
+    <entry file="file://$PROJECT_DIR$/app/sass/_main.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="1190">
-          <caret line="46" column="28" selection-start-line="46" selection-start-column="28" selection-end-line="46" selection-end-column="28" />
-          <folding />
+        <state vertical-scroll-proportion="0.5502392" vertical-offset="619" max-vertical-offset="2074">
+          <caret line="77" column="30" selection-start-line="77" selection-start-column="30" selection-end-line="77" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/subviews/task_settings.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.115385" vertical-offset="0" max-vertical-offset="629">
+        <state vertical-scroll-proportion="0.0" vertical-offset="289" max-vertical-offset="629">
           <caret line="17" column="36" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/sass/_global.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-26.153847" vertical-offset="1054" max-vertical-offset="4403">
-          <caret line="102" column="32" selection-start-line="102" selection-start-column="32" selection-end-line="102" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/sass/_main.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-22.615385" vertical-offset="619" max-vertical-offset="2074">
-          <caret line="71" column="22" selection-start-line="71" selection-start-column="22" selection-end-line="71" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="7254" max-vertical-offset="20553">
-          <caret line="465" column="20" selection-start-line="465" selection-start-column="4" selection-end-line="465" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/subviews/ms/ms_tasks.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.65384614" vertical-offset="0" max-vertical-offset="510">
-          <caret line="1" column="25" selection-start-line="1" selection-start-column="25" selection-end-line="1" selection-end-column="25" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="595">
+          <caret line="14" column="37" selection-start-line="14" selection-start-column="37" selection-end-line="14" selection-end-column="37" />
+          <folding>
+            <marker date="1399457830000" expanded="true" signature="473:683" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/directives/dir_task_settings.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="612">
+          <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/sass/_one_task.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="884" max-vertical-offset="2142">
+          <caret line="87" column="0" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/subviews/ms/view_ms_1.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="1343">
+          <caret line="25" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/subviews/ms/view_ms_0.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="187" max-vertical-offset="289">
+          <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39749607" vertical-offset="2517" max-vertical-offset="29580">
+          <caret line="163" column="10" selection-start-line="163" selection-start-column="10" selection-end-line="163" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/sass/_global.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="396" max-vertical-offset="4403">
+          <caret line="41" column="24" selection-start-line="41" selection-start-column="24" selection-end-line="41" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/sass/_mymixins.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2559" max-vertical-offset="5083">
+          <caret line="160" column="14" selection-start-line="160" selection-start-column="7" selection-end-line="160" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/sass/_task_settings.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="170" max-vertical-offset="1360">
+          <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="629">
+          <caret line="3" column="16" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/main.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="3077">
+          <caret line="16" column="10" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
+          <folding>
+            <marker date="1399518117000" expanded="true" signature="27:268" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/bower_components/angular-cookies/angular-cookies.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18085106" vertical-offset="289" max-vertical-offset="3536">
+          <caret line="25" column="36" selection-start-line="25" selection-start-column="36" selection-end-line="25" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/others/lunr.ru.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3441358" vertical-offset="9382" max-vertical-offset="10030">
+          <caret line="565" column="39" selection-start-line="565" selection-start-column="39" selection-end-line="565" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/app.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5320417" vertical-offset="0" max-vertical-offset="4556">
+          <caret line="21" column="15" selection-start-line="21" selection-start-column="15" selection-end-line="21" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.tmp/concat/scripts/vendor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.385449" vertical-offset="451135" max-vertical-offset="1625676">
+          <caret line="26666" column="4" selection-start-line="26666" selection-start-column="4" selection-end-line="26666" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/others/ngSocket.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1275">
+          <caret line="17" column="28" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/404.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-16.923077" vertical-offset="1022" max-vertical-offset="2771">
+          <caret line="86" column="21" selection-start-line="86" selection-start-column="21" selection-end-line="86" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/others/socket.io.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6087613" vertical-offset="51906" max-vertical-offset="56644">
+          <caret line="3077" column="22" selection-start-line="3077" selection-start-column="22" selection-end-line="3077" selection-end-column="22" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/scripts/controllers/ctrl_main.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33211678" vertical-offset="11480" max-vertical-offset="13736">
-          <caret line="686" column="0" selection-start-line="686" selection-start-column="0" selection-end-line="686" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="697" max-vertical-offset="13821">
+          <caret line="26" column="45" selection-start-line="26" selection-start-column="45" selection-end-line="26" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/services/srv_oauth2api.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-19.923077" vertical-offset="570" max-vertical-offset="1734">
+          <caret line="64" column="18" selection-start-line="64" selection-start-column="18" selection-end-line="64" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.115385" vertical-offset="0" max-vertical-offset="391">
+          <caret line="17" column="46" selection-start-line="17" selection-start-column="111" selection-end-line="17" selection-end-column="166" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/server.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.115385" vertical-offset="4225" max-vertical-offset="12903">
+          <caret line="264" column="16" selection-start-line="264" selection-start-column="16" selection-end-line="264" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/manifest.appcache">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1190">
+          <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Gruntfile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.769231" vertical-offset="7609" max-vertical-offset="9435">
+          <caret line="461" column="28" selection-start-line="461" selection-start-column="28" selection-end-line="461" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7010309" vertical-offset="0" max-vertical-offset="2805">
+          <caret line="8" column="27" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3140496" vertical-offset="1012" max-vertical-offset="20655">
+          <caret line="64" column="23" selection-start-line="64" selection-start-column="23" selection-end-line="64" selection-end-column="23" />
           <folding />
         </state>
       </provider>

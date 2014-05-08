@@ -9,7 +9,11 @@
 <!-- Begin Templates -->
 <script type="text/ng-template" id="views/subviews/task_one_line1.html">
 
-	<div class="one_task" ng-class="{did:task.did}" ng-controller="save_task_db_simple">
+	<div class="one_task"
+         ng-class="{did:task.did, active:(task._id==set.set_task._id),
+                    most_important:(task.importance>90&&task.importance<95),
+                    most_important100:(task.importance>=95)
+                    }" ng-controller="save_task_db_simple">
 		<div class="left_part">
 			<input type="checkbox" ng-model="task.did" ng-checked="task.did">
 		</div>
@@ -17,6 +21,7 @@
 			<a ng-if="dt = fn.service.calendarBox.getDays(task.date1)"></a>
 			<div ng-click="set.set_task = task" class="task_date {{dt.class}}" style="{{dt.image}}">{{dt.text}}</div>
 			<div class="title" contenteditable="true" ng-model="task.title" style="color:{{task.color}}"></div>
+            <div class="importance" ng-if="task.importance!=50">{{task.importance}}%</div>
 		</div>
 	</div>
 

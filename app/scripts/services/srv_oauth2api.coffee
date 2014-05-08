@@ -6,7 +6,7 @@
 ###
 
 
-angular.module("4treeApp").service 'oAuth2Api', ['$q', '$http', ($q, $http) ->
+angular.module("4treeApp").service 'oAuth2Api', ['$q', '$http', '$rootScope', ($q, $http, $rootScope) ->
   user_info: {
     client_id: '4tree_client'
     client_secret: '4tree_secret'
@@ -50,7 +50,7 @@ angular.module("4treeApp").service 'oAuth2Api', ['$q', '$http', ($q, $http) ->
 
     console.info "REFRESH TOKEN = ", refresh_token
     $http({
-      url: '/oauth/token'
+      url: $rootScope.$$childTail.set.server+'/oauth/token'
       method: "POST"
       isArray: true
       #dataType: 'json'
@@ -74,7 +74,7 @@ angular.module("4treeApp").service 'oAuth2Api', ['$q', '$http', ($q, $http) ->
     dfd = $q.defer();
 
     $http({
-      url: '/oauth/token'
+      url: $rootScope.$$childTail.set.server+'/oauth/token'
       method: "POST"
       isArray: true
       #dataType: 'json'

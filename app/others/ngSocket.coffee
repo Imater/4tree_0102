@@ -15,7 +15,7 @@ angular.module("ngSocket", []).factory "$socket", [
   ($rootScope) ->
     
     #Check if socket is undefined
-    socket = io.connect()  if typeof socket is "undefined"
+    socket = io.connect( '//localhost:8888' )  if typeof socket is "undefined"
     
     #
     angularCallback = (callback) ->

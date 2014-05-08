@@ -58,7 +58,9 @@
           var mythis;
           mythis = this;
           $rootScope.$on('jsFindAndSaveDiff', function(event, db_name, new_value, old_value) {
-            return mythis.saveDiff(db_name, new_value._id);
+            if (new_value && new_value._id) {
+              return mythis.saveDiff(db_name, new_value._id);
+            }
           });
           $rootScope.$on('my-sorted', function(event, data) {
             return $timeout(function() {
@@ -105,7 +107,7 @@
           this.dbInit();
           dfd = $.Deferred();
           this.ydnLoadFromLocal(mythis).then(function(records) {
-            if (!records.tree || Object.keys(records.tree).length === 0 || true) {
+            if (!records.tree || Object.keys(records.tree).length === 0 || false) {
               console.info('NEED DATA FROM NET');
               return mythis.getTreeFromWeb().then(function(data) {
                 var result;
@@ -143,7 +145,9 @@
             $rootScope.$$childTail.set.tree_loaded = true;
             $rootScope.$$childTail.db.main_node = [];
             $rootScope.$broadcast('tree_loaded');
-            mythis.TestJson();
+            if (false) {
+              mythis.TestJson();
+            }
             found = _.find(mythis._db['tree'], function(el) {
               return el.title === '_НОВОЕ';
             });
@@ -160,7 +164,7 @@
           mythis = this;
           oAuth2Api.jsGetToken().then(function(access_token) {
             return $http({
-              url: '/api/v2/tree',
+              url: $rootScope.$$childTail.set.server + '/api/v2/tree',
               method: "GET",
               params: {
                 user_id: '5330ff92898a2b63c2f7095f',
@@ -759,24 +763,36 @@
           return this._db.tasks;
         },
         sortTasks: function(answer, order_type) {
+          var now, pad;
           if (order_type == null) {
             order_type = 'by_priority_and_date';
           }
+          now = new Date().getTime();
+          pad = function(str, max) {
+            str = str.toString();
+            if (str.length < max) {
+              return pad("0" + str, max);
+            } else {
+              return str;
+            }
+          };
           if (order_type === 'by_priority_and_date') {
             answer = _.sortBy(answer, function(el) {
               var sort_answer;
               if (el && el.date1) {
-                sort_answer = (el.importance != null) + new Date(el.date1).getTime();
+                sort_answer = el.importance ? pad(el.importance, 5) + new Date(el.date1).getTime() : void 0;
               } else {
-                sort_answer = (el.importance != null) + new Date().getTime();
+                sort_answer = el.importance ? pad(el.importance, 5) + now : void 0;
               }
-              return sort_answer;
+              console.info('sort', sort_answer);
+              return -parseInt(sort_answer);
             });
           }
           return answer;
         },
         getTasksByTreeId: _.memoize(function(tree_id, only_next) {
           var answer, answer1;
+          console.info('hello!', tree_id);
           answer = _.filter(this._db.tasks, function(el) {
             return el.tree_id === tree_id;
           });
@@ -910,6 +926,7 @@
             new_task.parent_id = tree_id;
             new_task._new = true;
             new_task.created = new Date();
+            new_task.importance = 50;
             new_task.user_id = $rootScope.$$childTail.set.user_id;
             old_value = _.clone(new_task);
             new_task.title = scope.new_task_title;
@@ -1147,7 +1164,7 @@
           console.info('search', searchString);
           oAuth2Api.jsGetToken().then(function(access_token) {
             return $http({
-              url: '/api/v1/search',
+              url: $rootScope.$$childTail.set.server + '/api/v1/search',
               method: "GET",
               params: {
                 user_id: '5330ff92898a2b63c2f7095f',
@@ -1284,7 +1301,6 @@
         saveDiff: _.throttle(function(db_name, _id) {
           var dfd, mythis;
           mythis = this;
-          console.info('save_diff starting.....' + _id);
           dfd = $q.defer();
           this.getElement(db_name, _id).then(function(new_element) {
             mythis.getElementFromLocal(db_name, _id).then(function(old_element) {
@@ -1316,7 +1332,6 @@
                 if (patch && !_.isEmpty(patch)) {
                   mythis._tmp._diffs[el._id] = el;
                   mythis.db.put('_diffs', el).done(function() {
-                    console.info('diff_saved');
                     dfd.resolve();
                     return mythis.jsStartSyncInWhile();
                   });
@@ -1595,7 +1610,7 @@
             })._sha1;
             oAuth2Api.jsGetToken().then(function(token) {
               return $http({
-                url: '/api/v2/sync',
+                url: $rootScope.$$childTail.set.server + '/api/v2/sync',
                 method: "POST",
                 isArray: true,
                 params: {

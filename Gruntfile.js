@@ -120,7 +120,7 @@ module.exports = function (grunt) {
                 outputStyle: 'compressed'
             },
             files: {
-                '.tmp/styles/main.css': '<%= yeoman.app %>/styles/main.scss'
+                '.tmp/styles/main.css': '<%= yeoman.app %>/sass/theme1.scss'
             }
         }
     },
@@ -183,7 +183,7 @@ module.exports = function (grunt) {
           dot: true,
           src: [
             '.tmp',
-            '<%= yeoman.dist %>/*',
+            '<%= yeoman.dist %>/**/*',
             '!<%= yeoman.dist %>/.git*'
           ]
         }]
@@ -310,7 +310,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.dist %>',
-          src: ['*.html', 'views/{,*/}*.html'],
+          src: ['*.html', 'views/**/{,*/}*.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -348,7 +348,7 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
-            'views/{,*/}*.html',
+            'views/**/{,*/}*.html',
             'bower_components/**/*',
             'images/{,*/}*.{webp}',
             'fonts/*'
@@ -358,6 +358,21 @@ module.exports = function (grunt) {
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/images',
           src: ['generated/*']
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>/others/fontello',
+          dest: '<%= yeoman.dist %>/fontello',
+          src: ['**/*']
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>/bower_components/sass-bootstrap/fonts',
+          dest: '<%= yeoman.dist %>/fonts',
+          src: ['**/*']
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>/others',
+          dest: '<%= yeoman.dist %>/others',
+          src: ['socket.io.min.js', '*.swf']
         }]
       },
       styles: {
@@ -386,28 +401,35 @@ module.exports = function (grunt) {
     // By default, your `index.html`'s <!-- Usemin block --> will take care of
     // minification. These next options are pre-configured if you do not wish
     // to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= yeoman.dist %>/styles/main.css': [
-    //         '.tmp/styles/{,*/}*.css',
-    //         '<%= yeoman.app %>/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
-    // },
-    // uglify: {
-    //   dist: {
-    //     files: {
-    //       '<%= yeoman.dist %>/scripts/scripts.js': [
-    //         '<%= yeoman.dist %>/scripts/scripts.js'
-    //       ]
-    //     }
-    //   }
-    // },
-    // concat: {
-    //   dist: {}
-    // },
+     cssmin: {
+       dist: {
+         files: {
+           '<%= yeoman.dist %>/styles/main.css': [
+             '.tmp/concat/styles/{,*/}*.css'
+             //,
+             //'<%= yeoman.app %>/styles/{,*/}*.css'
+           ]
+         }
+       }
+     },
+     uglify: {
+       dist: {
+         files: {
+           //'<%= yeoman.dist %>/scripts/scripts.js': [
+           //  '<%= yeoman.dist %>/scripts/scripts.js'
+           //],
+           '<%= yeoman.dist %>/scripts/scripts.js': [
+             '.tmp/concat/scripts/scripts.js'
+           ],
+           '<%= yeoman.dist %>/scripts/vendor.js': [
+             '.tmp/concat/scripts/vendor.js'
+           ]
+         }
+       }
+     },
+     concat: {
+       dist: {}
+     },
 
     // Test settings
     karma: {
@@ -421,7 +443,35 @@ module.exports = function (grunt) {
         singleRun: false,
         autoWatch: true        
       }
+    },
+    manifest: {
+      generate: {
+        options: {
+          basePath: '<%= yeoman.dist %>',
+          cache: [],
+          network: ['http://*', 'https://*'],
+          fallback: [],
+          exclude: [],
+          preferOnline: true,
+          verbose: true,
+          timestamp: true,
+          hash: true,
+          master: ['index.html']
+        },
+        src: [
+          'views/**/*.html',
+          'scripts/**/*.js',
+          'styles/**/*.css',
+          'fontello/font/*.*',
+          'fonts/*.*',
+          'images/**/*.*',
+          'others/**/*.*'
+        ],
+        dest: '<%= yeoman.dist %>/manifest.appcache'
+      }
     }
+
+
   });
 
 
@@ -460,19 +510,28 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'bower-install',
+    //'bower-install',
+    'copy:dist',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
     'concat',
     'ngmin',
-    'copy:dist',
-    'cdnify',
+    //'cdnify',
     'cssmin',
     'uglify',
     'rev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'manifest'
+  ]);
+
+  grunt.registerTask('build_part', [
+    'clean:dist',
+    //'bower-install',
+    'copy:dist',
+    'useminPrepare',
+    'concat',
   ]);
 
 //  grunt.registerTask('default', [
@@ -486,4 +545,5 @@ grunt.loadNpmTasks('grunt-sass');
 grunt.loadNpmTasks('grunt-contrib-watch');
 grunt.loadNpmTasks('grunt-contrib-coffee');
 grunt.loadNpmTasks('grunt-protractor-runner');
+grunt.loadNpmTasks('grunt-manifest');
 };

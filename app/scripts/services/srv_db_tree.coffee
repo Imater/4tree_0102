@@ -34,7 +34,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     constructor: () ->
       mythis = @;
       $rootScope.$on 'jsFindAndSaveDiff', (event, db_name, new_value, old_value)->
-        mythis.saveDiff(db_name, new_value._id)
+        mythis.saveDiff(db_name, new_value._id) if new_value and new_value._id
 
       $rootScope.$on 'my-sorted', (event, data)->
         $timeout ()->
@@ -69,7 +69,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       @dbInit();
       dfd = $.Deferred();
       @ydnLoadFromLocal(mythis).then (records)->
-        if !records.tree or Object.keys(records.tree).length == 0 or true
+        if !records.tree or Object.keys(records.tree).length == 0 or false
           console.info 'NEED DATA FROM NET';
           mythis.getTreeFromWeb().then (data)->
             result = {};
@@ -97,7 +97,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         $rootScope.$$childTail.set.tree_loaded = true;
         $rootScope.$$childTail.db.main_node = []
         $rootScope.$broadcast('tree_loaded');
-        mythis.TestJson();
+        mythis.TestJson() if false
         found = _.find mythis._db['tree'], (el)->
           el.title == '_НОВОЕ'
         $rootScope.$$childTail.db.main_node = [
@@ -118,7 +118,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
       oAuth2Api.jsGetToken().then (access_token)->
         $http({
-          url: '/api/v2/tree',
+          url: $rootScope.$$childTail.set.server+'/api/v2/tree',
           method: "GET",
           params:
             user_id: '5330ff92898a2b63c2f7095f'
@@ -463,22 +463,27 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     getTasks: ()->
       @_db.tasks;
 
-    getTasksByTreeId: (tree_id, only_next)->
+    sortTasks: (answer, order_type = 'by_priority_and_date')->
+      now = new Date().getTime();
+      pad = (str, max)->
+        str = str.toString();
+        return if str.length < max then pad("0" + str, max) else str;
+
+      if order_type == 'by_priority_and_date'
+        answer = _.sortBy answer, (el)->
+          if el and el.date1
+            sort_answer = if el.importance then pad(el.importance,5) + new Date(el.date1).getTime()
+          else
+            sort_answer = if el.importance then pad(el.importance,5) + now;
+          console.info 'sort', sort_answer
+          return -parseInt(sort_answer)
+      answer
+    getTasksByTreeId: _.memoize (tree_id, only_next)->
       console.info 'hello!', tree_id
-      sortTasks = (answer, order_type = 'by_priority_and_date')->
-        if order_type == 'by_priority_and_date'
-          answer = _.sortBy answer, (el)->
-            if el and el.date1
-              sort_answer = el.importance? + new Date(el.date1).getTime()
-            else
-              sort_answer = el.importance? + new Date().getTime()
-            console.info 'sort', sort_answer
-            return sort_answer
-        answer
 
       answer = _.filter @_db.tasks, (el)->
         el.tree_id == tree_id
-      answer = sortTasks(answer);
+      answer = @sortTasks(answer);
       if only_next == true
         answer1 = _.find answer, (el)->
           el.date1 && !el.did;
@@ -579,6 +584,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         new_task.parent_id = tree_id;
         new_task._new = true;
         new_task.created = new Date();
+        new_task.importance = 50;
         new_task.user_id = $rootScope.$$childTail.set.user_id;
         old_value = _.clone(new_task); #clone
         new_task.title = scope.new_task_title;
@@ -743,7 +749,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       console.info 'search', searchString
       oAuth2Api.jsGetToken().then (access_token)->
         $http({
-          url: '/api/v1/search',
+          url: $rootScope.$$childTail.set.server+'/api/v1/search',
           method: "GET",
           params:
             user_id: '5330ff92898a2b63c2f7095f'
@@ -834,7 +840,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           doc._sha1 = mythis.JSON_stringify(doc)._sha1
           @_db['texts'][text_id] = doc
           mythis.db.put('texts', doc).done ()->
-            console.info 'text '+text_id+' saved', doc
+            console.info 'text ' + text_id + ' saved', doc
 
 
     'jsStartSyncInWhile': _.debounce ()->
@@ -843,7 +849,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     , 300
     saveDiff: _.throttle (db_name, _id)->
       mythis = @;
-      console.info 'save_diff starting.....' + _id;
+      #console.info 'save_diff starting.....' + _id;
       dfd = $q.defer();
       @getElement(db_name, _id).then (new_element)->
         mythis.getElementFromLocal(db_name, _id).then (old_element)->
@@ -868,7 +874,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
               #если синхронизация уже идёт, то изменения пока не сохраняем
               mythis._tmp._diffs[el._id] = el
               mythis.db.put('_diffs', el).done ()->
-                console.info 'diff_saved'
+                #console.info 'diff_saved'
                 dfd.resolve()
                 mythis.jsStartSyncInWhile()
           else
@@ -1088,7 +1094,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         sha1_sign = $rootScope.$$childTail.set.machine + mythis.JSON_stringify({diffs, new_db_elements})._sha1;
         oAuth2Api.jsGetToken().then (token)->
           $http({
-            url: '/api/v2/sync',
+            url: $rootScope.$$childTail.set.server+'/api/v2/sync',
             method: "POST",
             isArray: true,
             params:

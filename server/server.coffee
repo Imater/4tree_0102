@@ -75,6 +75,7 @@ if cluster.isMaster
   
 else 
   express = require("express")
+  cors = require('cors')
   app = express()
   server = require("http").createServer(app)
   RedisStore = require("socket.io/lib/stores/redis")
@@ -106,6 +107,7 @@ else
       done();
     return
 
+  app.use(cors())
   app.use(express.json({limit: '50mb'}));
   app.use(express.urlencoded({limit: '50mb'}));
 
@@ -256,20 +258,29 @@ else
       } )
       task.save();
 
-  
+  #CORS middleware
+  allowCrossDomain = (req, res, next) ->
+    res.header "Access-Control-Allow-Origin", '*:*'
+    res.header "Access-Control-Allow-Methods", "GET,PUT,POST,DELETE"
+    res.header "Access-Control-Allow-Headers", "Content-Type"
+    next()
+    return
+
   oauthserver = require("node-oauth2-server")
   model = require("node-oauth2-server/examples/mongodb/model.js")
   app.configure ->
+
     app.oauth = oauthserver(
       model: model # See below for specification
       grants: ["password", "refresh_token"]
       debug: false
     )
-    app.use express.bodyParser() # REQUIRED
-    return
 
+    app.use express.bodyParser() # REQUIRED
+    #app.use allowCrossDomain
+    return
   app.all "/oauth/token", app.oauth.grant();
-  
+
   app.use(app.oauth.errorHandler());
   ###
     app.get "/", app.oauth.authorise(), (req, res) ->
@@ -300,7 +311,7 @@ else
       dfd = $.Deferred()
       check_emails = [];
       mymails = mail['from'].concat(mail['to']) if mail['to']
-      mymails = mymails.concat(mail['cc']) if mail['cc'];
+      mymails = mymails.concat(mail['cc']) if mail['cc']
       _.each mymails, (from)->
         console.info "ADRESS", from
         check_emails.push(from.address)
@@ -309,7 +320,7 @@ else
       found_clients = [];
       async.each check_emails, (item, callback)->
         mythis.findUserByEmail(item).then (result)->
-          found_clients = found_clients.concat(result) if result;
+          found_clients = found_clients.concat(result) if result
           callback();
       , ()->
         dfd.resolve(found_clients);
@@ -357,11 +368,17 @@ else
     redisClient: redis.createClient()
   }))
 
+  global.io.set 'origins', '*:*'
+
 
   console.info "Hello John! #19"
 
+
   app.configure ->
+
     app.use express.compress()
+
+    #app.use allowCrossDomain
 
     #var server_is = "dist";
     server_is = "app"

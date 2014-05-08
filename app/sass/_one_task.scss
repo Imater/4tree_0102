@@ -58,6 +58,28 @@ $date_opacity: 0.2;
 .one_task {
   white-space: nowrap;
   margin-bottom: $padding*2;
+  &.active {
+    .title {
+      font-weight: bold;
+    }
+  }
+  &.most_important {
+    .title:before {
+      content: "\e104";
+      color: rgba(red, 0.3);
+      font-family: "Glyphicons Halflings";
+      margin-right: $padding;
+    }
+  }
+  &.most_important100 {
+    color: red;
+    .title:before {
+      content: "\e104";
+      font-family: "Glyphicons Halflings";
+      margin-right: $padding;
+    }
+  }
+
   &.did {
     .title {
       text-decoration: line-through;
@@ -81,8 +103,13 @@ $date_opacity: 0.2;
     padding-left: $padding;
     margin-left: $padding/2;
     .title {
-      display: inline;
+      display: inline-flex;
       white-space: normal;
+    }
+    .importance {
+      display: inline-flex;
+      white-space: normal;
+      color: $gray;
     }
   }
 }

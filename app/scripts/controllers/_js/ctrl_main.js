@@ -48,6 +48,7 @@
         user_id: '5330ff92898a2b63c2f7095f',
         machine: localStorage.getItem('mongoMachineId'),
         autosync_on: false,
+        server: "http://localhost:8888",
         today_date: new Date(),
         focus: 1,
         focus_edit: 1,
@@ -592,6 +593,11 @@
   });
 
   angular.module("4treeApp").controller("editor_tasks", function($scope, db_tree, $rootScope) {
+    $scope.$watch('task.importance', function(new_value, old_value) {
+      if (new_value !== old_value) {
+        return db_tree.clearCache();
+      }
+    });
     return $scope.getTasks = function() {
       return db_tree.getTasksByTreeId($scope.db.main_node[$scope.set.focus_edit]._id, $scope.set.mini_tasks_show);
     };

@@ -14,7 +14,7 @@ angular.module("4treeApp").directive "taskSettings", ->
       scope.set.set_task = undefined
 
     scope.$watch 'task', (old_value, new_value)->
-      if old_value!=new_value
+      if old_value and new_value and old_value._id!=new_value._id
         ngModel.$setViewValue = new_value
         scope.show.visible = true;
     , true
@@ -26,4 +26,5 @@ angular.module("4treeApp").directive "taskSettings", ->
         scope.show.visible = true;
       else
         scope.show.visible = false;
+        ngModel.$setViewValue = undefined
     return
