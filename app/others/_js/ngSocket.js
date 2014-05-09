@@ -5,7 +5,7 @@
     "$rootScope", function($rootScope) {
       var addListener, addListenerOnce, angularCallback, emit, is_online, removeAllListeners, removeListener, socket;
       if (typeof socket === "undefined") {
-        socket = io.connect('//localhost:8888');
+        socket = io.connect();
       }
       angularCallback = function(callback) {
         return function() {

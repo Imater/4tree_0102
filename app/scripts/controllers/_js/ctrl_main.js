@@ -48,7 +48,7 @@
         user_id: '5330ff92898a2b63c2f7095f',
         machine: localStorage.getItem('mongoMachineId'),
         autosync_on: false,
-        server: "http://localhost:8888",
+        server: "",
         today_date: new Date(),
         focus: 1,
         focus_edit: 1,

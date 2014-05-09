@@ -59,7 +59,7 @@
           dfd = $q.defer();
           console.info("REFRESH TOKEN = ", refresh_token);
           $http({
-            url: $rootScope.$$childTail.set.server + '/oauth/token',
+            url: $rootScope.$$childTail.set.server + '/api/v2/oauth/token',
             method: "POST",
             isArray: true,
             headers: {
@@ -81,7 +81,7 @@
           var dfd;
           dfd = $q.defer();
           $http({
-            url: $rootScope.$$childTail.set.server + '/oauth/token',
+            url: $rootScope.$$childTail.set.server + '/api/v2/oauth/token',
             method: "POST",
             isArray: true,
             headers: {

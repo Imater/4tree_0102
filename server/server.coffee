@@ -49,7 +49,7 @@ if cluster.isMaster
 
   numCPUs = 0;
 
-  debug = process.execArgv[0].indexOf('--debug') != -1;
+  debug = process.execArgv[0]?.indexOf('--debug') != -1;
   console.info 'debug', debug, process.execArgv, process.execArgv.indexOf('--debug')
   
   cluster.setupMaster execArgv: process.execArgv.filter((s) ->
@@ -250,7 +250,7 @@ else
       task.save();
       task = new Task( {
         title: 'second_task'
-        user_id: '5330ff92898a2b63c2f7095f'
+        user_id: '5330ff92898a2b63c2f7095f---'
         tree_id: '534020016b84290000acfbda'
         date1: new Date()
         date2: new Date()
@@ -258,7 +258,7 @@ else
       } )
       task.save();
 
-  #CORS middleware
+  #CORS middleware - may delete!!!
   allowCrossDomain = (req, res, next) ->
     res.header "Access-Control-Allow-Origin", '*:*'
     res.header "Access-Control-Allow-Methods", "GET,PUT,POST,DELETE"
@@ -279,7 +279,7 @@ else
     app.use express.bodyParser() # REQUIRED
     #app.use allowCrossDomain
     return
-  app.all "/oauth/token", app.oauth.grant();
+  app.all "api/v2/oauth/token", app.oauth.grant();
 
   app.use(app.oauth.errorHandler());
   ###
@@ -358,7 +358,7 @@ else
     console.log "publisher", e.stack
 
   global.io = require('socket.io').listen(server, {
-    log: false
+    log: true
   })
 
 
@@ -751,4 +751,4 @@ else
     (require('../get/_js/server_fake_fpk_names')).get(req, res)
 
 
-  server.listen( 8888 );
+  server.listen( 7777 );
