@@ -1,6 +1,7 @@
 async = require('async');
 mongoose = require('mongoose')
 CryptoJS = require("crypto-js");
+winston = require('winston')
 
 require '../../models/_js/model_tree.js'
 Tree = mongoose.model('Tree');
@@ -16,9 +17,9 @@ exports.get = (req, res)->
     (callback)->
       result = {};
       async.each Object.keys(global._db_models), (db_name, callback2)->
-        console.info '!!DB_NAME', db_name
+        winston.info '!!DB_NAME', db_name
         db_model = global._db_models[db_name];
-        console.info "USER_ID = ", user_id
+        winston.info "USER_ID = ", user_id
         data_to_send = {};
         db_model.find {'user_id':user_id, 'del':0}, (err, rows)->
           async.eachLimit rows, 50, (row, callback)->
@@ -34,7 +35,7 @@ exports.get = (req, res)->
             callback err, rows
             callback2 err
         , (err)->
-          console.info 'hi!!!';
+          winston.info 'hi!!!';
       , (err)->
         res.send( JSON.stringify result )
 

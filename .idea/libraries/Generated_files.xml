@@ -62,6 +62,7 @@
         <item url="file://$PROJECT_DIR$/server/models/_js/model_task.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/rasterize.js" />
         <item url="file://$PROJECT_DIR$/node_modules/grunt-newer/test/fixtures/newer-reconfigure/src/_js/one.js" />
+        <item url="file://$PROJECT_DIR$/server/logJson/_js/logJson.js" />
         <item url="file://$PROJECT_DIR$/node_modules/grunt-newer/test/fixtures/newer-reconfigure/src/_js/two.js" />
         <item url="file://$PROJECT_DIR$/node_modules/grunt-newer/test/fixtures/newer-dest/src/_js/two.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/loadurlwithoutcss.js" />
@@ -138,8 +139,8 @@
         <item url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/whet.extend/test/_js/extend_test.js" />
         <item url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/whet.extend/test/_js/test_helper.js" />
         <item url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/whet.extend/src/_js/whet.extend.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/coa/src/_js/opt.js" />
         <item url="file://$PROJECT_DIR$/app/bower_components/nanoscroller/_js/Gruntfile.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/coa/src/_js/opt.js" />
         <item url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/coa/src/_js/index.js" />
         <item url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/coa/src/_js/cmd.js" />
       </sourceFilesUrls>
@@ -210,6 +211,7 @@
       <root url="file://$PROJECT_DIR$/server/models/_js/model_task.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/rasterize.js" />
       <root url="file://$PROJECT_DIR$/node_modules/grunt-newer/test/fixtures/newer-reconfigure/src/_js/one.js" />
+      <root url="file://$PROJECT_DIR$/server/logJson/_js/logJson.js" />
       <root url="file://$PROJECT_DIR$/node_modules/grunt-newer/test/fixtures/newer-reconfigure/src/_js/two.js" />
       <root url="file://$PROJECT_DIR$/node_modules/grunt-newer/test/fixtures/newer-dest/src/_js/two.js" />
       <root url="file://$PROJECT_DIR$/node_modules/grunt-newer/test/fixtures/newer-clean-dest/src/_js/two.js" />
@@ -286,8 +288,8 @@
       <root url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/whet.extend/test/_js/extend_test.js" />
       <root url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/whet.extend/test/_js/test_helper.js" />
       <root url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/whet.extend/src/_js/whet.extend.js" />
-      <root url="file://$PROJECT_DIR$/app/bower_components/nanoscroller/_js/Gruntfile.js" />
       <root url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/coa/src/_js/opt.js" />
+      <root url="file://$PROJECT_DIR$/app/bower_components/nanoscroller/_js/Gruntfile.js" />
       <root url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/coa/src/_js/index.js" />
       <root url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/coa/src/_js/cmd.js" />
     </CLASSES>
