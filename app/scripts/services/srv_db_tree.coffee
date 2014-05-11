@@ -69,7 +69,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       @dbInit();
       dfd = $.Deferred();
       @ydnLoadFromLocal(mythis).then (records)->
-        if !records.tree or Object.keys(records.tree).length == 0 or false
+        if !records.tree or Object.keys(records.tree).length == 0 or true
           console.info 'NEED DATA FROM NET';
           mythis.getTreeFromWeb().then (data)->
             result = {};

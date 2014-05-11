@@ -107,7 +107,7 @@
           this.dbInit();
           dfd = $.Deferred();
           this.ydnLoadFromLocal(mythis).then(function(records) {
-            if (!records.tree || Object.keys(records.tree).length === 0 || false) {
+            if (!records.tree || Object.keys(records.tree).length === 0 || true) {
               console.info('NEED DATA FROM NET');
               return mythis.getTreeFromWeb().then(function(data) {
                 var result;

@@ -14,6 +14,8 @@ kue = require('kue')
 jobs = kue.createQueue();
 winston = require('winston');
 
+MYLOG = require('../scripts/_js/mylog.js').mylog
+
 # Move the animal.
 #
 # @example Move an animal
@@ -53,7 +55,7 @@ if cluster.isMaster
   numCPUs = 0;
 
   debug = process.execArgv[0]?.indexOf('--debug') != -1;
-  winston.info 'debug', debug, process.execArgv, process.execArgv.indexOf('--debug')
+  MYLOG.log 'info', 'debug', debug, process.execArgv, process.execArgv.indexOf('--debug')
   
   cluster.setupMaster execArgv: process.execArgv.filter((s) ->
     s isnt "--debug"
@@ -68,13 +70,13 @@ if cluster.isMaster
     allWorkers[worker.process.pid] = worker;
 
   cluster.on 'exit', (worker, code, signal) -> 
-    winston.log('worker ' + worker.process.pid + ' died');
+    MYLOG.log('worker ' + worker.process.pid + ' died');
     worker = cluster.fork();
     delete workerAll[worker.process.pid];
     workerAll[worker.process.pid] = worker;
 
   cluster.on 'fork', (worker, address) ->
-    winston.info("FORK: ", worker.id);
+    MYLOG.log("FORK: ", worker.id);
   
 else 
   express = require("express")
@@ -90,12 +92,19 @@ else
   async = require('async');
   fs = require('fs');
 
-  winston.add(winston.transports.File, { filename: '_server4tree_log.log' });
-  winston.log('info', 'Hello distributed log files!');
-  winston.info('Hello distributed log files!');
 
-  process.on 'uncaughtException', (error)->
-     winston.info '\x1b[35mERROR:\x1b[0m', error.stack
+  ### Сервер для ведения логов
+  bin/logstash -e 'input { tcp { port => 28777 type=>"sample" } } output { elasticsearch { host => localhost } } filter { json { source => "message"} }'
+  ###
+
+
+
+
+  MYLOG.log('info', 'Log started');
+
+  if false
+    process.on 'uncaughtException', (error)->
+       console.info 'info', '\x1b[35mERROR:\x1b[0m', error.stack
 
   kue_cleanup = require('../scripts/kue_cleanup.js')
 
@@ -106,9 +115,9 @@ else
     return
 
   jobs.process "recognizeImage", 1, (job, done) ->
-    winston.info 'start recognize '+job.data.imageUrl+" from process "+job.data.process+' on '+process.pid;
+    MYLOG.log 'info', 'start recognize '+job.data.imageUrl+" from process "+job.data.process+' on '+process.pid;
     image_service.image_make_white(job.data.imageUrl).then (text)->
-      winston.info 'TEXT = ', text, 'on process '+process.pid
+      MYLOG.log 'info', 'TEXT = ', text, 'on process '+process.pid
       done();
     return
 
@@ -138,14 +147,14 @@ else
     # use secure connection
     tls: true
     debug: (msg)->
-      winston.info "MAIL: ", msg
+      MYLOG.log 'info', "MAIL: ", msg
   }
 
   image_service = require('../scripts/_js/imagemagic.service.js')
 
   #image_service.image_make_white('user_data/clipboard.jpg')
   
-  #winston.info image_service.image_make_white('../val.jpg')
+  #MYLOG.log 'info', image_service.image_make_white('../val.jpg')
 
   notifier_instance = notifier(imap).on 'mail', (mail)->
     mail_service.save_mail_to_tree(mail)
@@ -162,10 +171,10 @@ else
     imap.openBox('INBOX', false, cb);
 
   imap_connection.once 'ready', ()->
-    winston.info 'Mail Ready!!!!!!!!!!!!!!!!!'
+    MYLOG.log 'info', 'Mail Ready!!!!!!!!!!!!!!!!!'
 
   imap_connection.on 'error', (err)->
-    winston.info 'Mail error', err
+    MYLOG.log 'info', 'Mail error', err
 
   imap_connection.connect();
   ###
@@ -184,16 +193,16 @@ else
   # operations and release them when the connection is complete.
   mongoose.connect uristring, (err, res) ->
     if err
-      winston.log "ERROR connecting to: " + uristring + ". " + err
+      MYLOG.log 'info', "ERROR connecting to: " + uristring + ". " + err
 
   mongoose.connection.on 'connected', ()->
-    winston.log 'Mongoose default connection open to ' + uristring
+    MYLOG.log 'info', 'Mongoose default connection open to ' + uristring
 
   mongoose.connection.on 'error', (err)->
-    winston.log 'Mongoose Error: '+err
+    MYLOG.log 'info', 'Mongoose Error: '+err
 
   mongoose.connection.on 'disconnected', ()->
-    winston.log 'Mongoose Disconnected'
+    MYLOG.log 'info', 'Mongoose Disconnected'
 
   # МОДЕЛИ #
 
@@ -232,13 +241,13 @@ else
           stream.on 'data', (err, doc)->
             count++
           stream.on 'close', ()->
-            winston.log('indexed '+count)
+            MYLOG.log('indexed '+count)
 
           Task.synchronize();
 
 
           stream.on 'error', (err)->
-            winston.log err
+            MYLOG.log 'info', err
 
 
 
@@ -303,12 +312,12 @@ else
     #сохраняем входящие письма по пользователям
     save_mail_to_tree: (mail)->
       @getUserId(mail).then (result)->
-        winston.info "FOUND CLIENTS = ", result;
+        MYLOG.log 'info', "FOUND CLIENTS = ", result;
       if(mail.attachments)
         async.each mail.attachments, (file, callback)->
-          winston.info "save_file", file
+          MYLOG.log 'info', "save_file", file
           fs.writeFile "user_data/"+file.contentId+file.fileName, file.content, (err)->
-            winston.info "error", err
+            MYLOG.log 'info', "error", err
             callback(err)
     #выленяем email из строки from и to
     getUserId: (mail)->
@@ -319,7 +328,7 @@ else
       mymails = mail['from'].concat(mail['to']) if mail['to']
       mymails = mymails.concat(mail['cc']) if mail['cc']
       _.each mymails, (from)->
-        winston.info "ADRESS", from
+        MYLOG.log 'info', "ADRESS", from
         check_emails.push(from.address)
       check_emails = _.uniq check_emails, (item)->
         item
@@ -358,10 +367,10 @@ else
   subscriber = redis.createClient()
   publisher = redis.createClient()
   subscriber.on "error", (e) ->
-    winston.log "subscriber", e.stack
+    MYLOG.log 'info', "subscriber", e.stack
 
   publisher.on "error", (e) ->
-    winston.log "publisher", e.stack
+    MYLOG.log 'info', "publisher", e.stack
 
   global.io = require('socket.io').listen(server, {
     log: false
@@ -377,7 +386,7 @@ else
   global.io.set 'origins', '*:*'
 
 
-  winston.info "Hello John! #19"
+  MYLOG.log 'info', "Hello John! #19"
 
 
   app.configure ->
@@ -406,15 +415,15 @@ else
 
   subscriber.on "message", (chanel, message)->
     try message = JSON.parse message catch 
-    winston.info chanel, message[0], message[1]
+    MYLOG.log 'info', chanel, message[0], message[1]
 
   exports.newMessage = (request, response)->
-    winston.info 'hi!'
+    MYLOG.log 'info', 'hi!'
     publisher.publish('chanel_1', JSON.stringify ['user_connected','John Wezel'])
     response.send('HELLO', 'IM BODY!!!')
     collection = db.collection("tree")
     collection.update {id:146}, {$push: {tags: {enter_time: new Date()}}}, {multi: false, upsert:true}, (err, result)->
-      winston.info result, err
+      MYLOG.log 'info', result, err
   exports.sync = (req, res)->
     token = req.query.token
     notes = req.body.sync_data_to_send.notes
@@ -422,7 +431,7 @@ else
       _id = note._id
       delete note._id
       Tree.update2 { _id }, note, (err)->
-        winston.info err if err
+        MYLOG.log 'info', err if err
         callback err
     , (callback)->
       res.send true
@@ -438,7 +447,7 @@ else
     dfd = $.Deferred()
     user_instance = data.user_instance;
     user_id = data.user_id;
-    winston.info { user_id }
+    MYLOG.log 'info', { user_id }
     databases = data.diff_journal
     new_elements = data.new_elements
     last_sync_time = data.last_sync_time
@@ -453,12 +462,12 @@ else
       #Обходим все новые элементы в таблице
       async.eachLimit Object.keys(new_elements_one_table), 10, (item_name, callback2)->
         one_new_element = new_elements[db_name][item_name]
-        winston.info 'need_to_create '+item_name, one_new_element
+        MYLOG.log 'info', 'need_to_create '+item_name, one_new_element
         model = new global._db_models[db_name](one_new_element)
         model._tm = new Date(start_sync_time)
         model.save ()->
           saving_complete = true;
-          winston.info 'Сохранил новый элемент '+item_name;
+          MYLOG.log 'info', 'Сохранил новый элемент '+item_name;
           confirm_about_sync_success_for_client[db_name] = [] if !confirm_about_sync_success_for_client[db_name]
           confirm_about_sync_success_for_client[db_name].push( {_id:one_new_element._id, tm: new Date(last_sync_time) } )
           callback2();
@@ -483,29 +492,29 @@ else
                 else
                   time_of_sever_change = found.diff._tm;
                   time_of_client_change = df._tm;
-                  winston.info 'tm_server', time_of_sever_change, 'tm_client', time_of_client_change
+                  MYLOG.log 'info', 'tm_server', time_of_sever_change, 'tm_client', time_of_client_change
                   if time_of_sever_change > time_of_client_change
                     #данные обновлять нельзя, так как они изменены раньше, чем отправил кто-то другой
-                    winston.info 'Не сохраняю в базу (время не то)', doc.title
+                    MYLOG.log 'info', 'Не сохраняю в базу (время не то)', doc.title
                     send_to_client_becouse_of_not_saving[db_name] = [] if !send_to_client_becouse_of_not_saving[db_name]
                     send_to_client_becouse_of_not_saving[db_name].push( {db_name: db_name, item_id: doc._id} )
                   else
                     #сохранение разрешено
                     saving_complete = true;
-                    winston.info 'Сохраняю в базу', doc.title
+                    MYLOG.log 'info', 'Сохраняю в базу', doc.title
                     found.diff._tm = df._tm;
                     doc._tm = new Date(start_sync_time); #Сохраняю время изменения, для последующих отборов
                     diff.apply([df], doc, true);
                     confirm_about_sync_success_for_client[db_name] = [] if !confirm_about_sync_success_for_client[db_name]
                     confirm_about_sync_success_for_client[db_name].push( {_id:doc._id, tm: doc._tm } )
-                #winston.info '_sync=', doc._sync, 'dif=', item_diff, 'df=', df;
+                #MYLOG.log 'info', '_sync=', doc._sync, 'dif=', item_diff, 'df=', df;
                 
               #logJson "doc=", doc
               doc.save (err)->
-                winston.info 'item_saved!'
+                MYLOG.log 'info', 'item_saved!'
                 item_callback(err);
             else 
-              winston.info 'Странно, не могу найти новый элемент в базе'
+              MYLOG.log 'info', 'Странно, не могу найти новый элемент в базе'
 
         , ()->
           callback();
@@ -517,7 +526,7 @@ else
           db_model = global._db_models[db_name];
           db_model.find {tm: {$gt: last_sync_time}}, (err, docs)->
 
-            winston.info 'По дате я отобрал '+docs.length+'шт. в '+db_name
+            MYLOG.log 'info', 'По дате я отобрал '+docs.length+'шт. в '+db_name
             sync_confirm_id = _.uniq confirm_about_sync_success_for_client[db_name], (el)->
               el._id
 
@@ -526,7 +535,7 @@ else
                 doc._id.toString() == id_element._id.toString()
               return found
 
-            winston.info 'Отправлю на сервер ('+docs_without_new.length+' шт) за исключением: ', sync_confirm_id
+            MYLOG.log 'info', 'Отправлю на сервер ('+docs_without_new.length+' шт) за исключением: ', sync_confirm_id
 
             data_to_client[db_name] = {
               new_data: docs_without_new
@@ -542,10 +551,10 @@ else
             user_instance = user_instance;
             connected_sockets = users_connection[user_id];
             logJson 'Emit to clients', data_to_others
-            winston.info 'user:'+user_id
+            MYLOG.log 'info', 'user:'+user_id
             #
             socket.broadcast.to('user_id:'+user_id).emit 'need_sync', data_to_others, (err, answer)-> 
-              winston.info 'user - ', err, answer
+              MYLOG.log 'info', 'user - ', err, answer
           dfd.resolve( data_to_client )
 
     dfd.promise();
@@ -561,7 +570,7 @@ else
       db_names = ['trees', 'tasks'];
       async.each db_names, (db_name, callback)->        
         all_results[db_name] = {};
-        winston.info '!!!', db_name
+        MYLOG.log 'info', '!!!', db_name
         query = { 
           index: db_name
           body: {
@@ -603,7 +612,7 @@ else
           all_results[db_name] = results;
           callback(err);
       , (err)->
-        winston.info 'all', all_results
+        MYLOG.log 'info', 'all', all_results
         dfd.resolve(all_results)
 
       dfd.promise()
@@ -684,11 +693,11 @@ else
   global.io.sockets.on "connection", (socket) ->
     user_id = undefined;
     token = undefined;
-    winston.info 'connection established socket.id = '+ socket.id
-    winston.info 'socket user_list = ', global.io.sockets.clients().length
+    MYLOG.log 'info', 'connection established socket.id = '+ socket.id
+    MYLOG.log 'info', 'socket user_list = ', global.io.sockets.clients().length
 
     socket.on "disconnect", (socket) ->
-      winston.info 'user_disconected'
+      MYLOG.log 'info', 'user_disconected'
 
     socket.emit "who_are_you",
       hello: "world"
@@ -710,7 +719,7 @@ else
     socket.on 'sync_data', (data, fn)->
       socket.get 'nickname', (err, name)->
         logJson 'syncing user with name: ', name
-      winston.info 'syncing...', data
+      MYLOG.log 'info', 'syncing...', data
       exports.sync_db_universal(data, socket).then (answer)->
         socket.volatile.emit 'sync_answer', answer;
         fn('Hello from server!');
