@@ -59,7 +59,7 @@ sync = {
     answer = {};
   Merge: (diff)->
     dfd = new $.Deferred();
-    MYLOG.log 'sync', 'Merge: diff (смотри diff.patch) = ', { diff }
+    MYLOG.log 'sync', 'Merge: Начинаю мерджить diff (смотри diff.patch) = ', { diff }
     delta1 = diff.patch
     #Находим старый текст с такой же контрольной суммой
     Diff.findOne {_sha1: diff._sha1, db_id: diff._id}, undefined, (err, doc0)->
@@ -76,7 +76,7 @@ sync = {
           doc3 = jsondiffpatch.patch( doc1, delta2 )
           doc3 = jsondiffpatch.patch( doc3, delta1 )
           main_diff = jsondiffpatch.diff(doc2.toObject(), doc3)
-          MYLOG.log 'sync', 'Merge: Сгенерировал объединённый текст doc3 ', { doc1, doc2, doc3, delta1, delta2, delta3 }
+          MYLOG.log 'sync', 'Merge: Сгенерировал объединённый текст doc3 ', { doc1, doc2, doc3, delta1, delta2, main_diff }
           MYLOG.log 'sync', 'Merge: MAIN_DIFF теперь = ', { main_diff }
           doc2 = _.extend( doc2, doc3)
           MYLOG.log 'sync', 'Merge: Extend doc2 = _.extend( doc2, doc3) = ', { doc2 }
@@ -86,6 +86,7 @@ sync = {
             MYLOG.log 'sync', 'Merge: Merged saved', { err, doc }
             dfd.resolve(doc);
       else
+        MYLOG.log 'sync', 'Merge: В базе не нашёл с _sha1: '+diff._sha1+' возвращаю пустой элемент'
         dfd.resolve();
     dfd.promise();
 
@@ -113,7 +114,7 @@ exports.fullSyncUniversal = (req, res)->
   machine = req.query.machine;
 
   confirm_count = 0;
-
+  MYLOG.log 'sync', '---------------------------------------'+ (new Date().toString());
   MYLOG.log 'sync', 'Начинаю синхронизацию для machine='+machine, {diffs, new_db_elements, last_sync_time};
 
 
@@ -201,9 +202,9 @@ exports.fullSyncUniversal = (req, res)->
             MYLOG.log 'sync', 'NEW: Все дифы обработаны, пошли дальше. Сейчас будем искать изменившиеся элементы.'
             async.each Object.keys(global._db_models), (db_name, callback)->
               tm = new Date( JSON.parse(last_sync_time) ).toISOString();
-              MYLOG.log 'sync', 'NEW: Ищем все дела с датой больше '+tm, { _tm: { $gt: tm } }
               global._db_models[db_name].find { _tm: { $gt: tm } }, (err, docs)->
-                MYLOG.log 'sync', 'NEW: Нашли дела с датой больше '+tm, { err, docs }
+                if docs and docs.length
+                  MYLOG.log 'sync', 'NEW: Нашли дела в '+db_name+' с датой больше '+tm, { err, docs }
                 async.each docs, (doc, callback2)->
                   if (confirm = send_to_client?[db_name]?['confirm']?[ doc._id ])
                     MYLOG.log 'sync', 'NEW: В базе подтверждений такой элемент есть, значит мы его сейчас меняли', {confirm}
@@ -229,14 +230,14 @@ exports.fullSyncUniversal = (req, res)->
 
       if confirm_count > 0
         clients = global.io.sockets.clients('user_id:'+user_id)
-        MYLOG.log 'sync', 'SOCKETS: Есть что подтверждать клиентам '+clients.length, {clients}
+        MYLOG.log 'sync', 'SOCKETS: Есть что подтверждать клиентам '+clients.length
         if clients
           async.each Object.keys(clients), (client_i, callback3)->
             client = clients[client_i]
             client.get 'nickname', (err, nickname)->
               nickname = JSON.parse(nickname)
               if nickname and nickname.machine != machine
-                MYLOG.log 'sync', 'SOCKETS: Клиента '+nickname+' попросили синхронизироваться', {client_i}
+                MYLOG.log 'sync', 'SOCKETS: Клиента '+nickname.machine+' попросили синхронизироваться', {client_i}
                 client.emit('need_sync_now')
             callback3()
           ,()->

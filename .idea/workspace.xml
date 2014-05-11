@@ -5,18 +5,11 @@
     <bookmark url="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="Установил систему логирования Winston">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/scripts/mylog.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/models/_js/model_text.js" afterPath="$PROJECT_DIR$/server/models/_js/model_text.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/server.coffee" afterPath="$PROJECT_DIR$/server/server.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/_js/server.js" afterPath="$PROJECT_DIR$/server/_js/server.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/_js/server.map" afterPath="$PROJECT_DIR$/server/_js/server.map" />
+    <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/logstash.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/scripts/mylog.coffee" afterPath="$PROJECT_DIR$/server/scripts/mylog.coffee" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/get/server_sync.coffee" afterPath="$PROJECT_DIR$/server/get/server_sync.coffee" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/get/_js/server_sync.js" afterPath="$PROJECT_DIR$/server/get/_js/server_sync.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" afterPath="$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.js" afterPath="$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.map" afterPath="$PROJECT_DIR$/app/scripts/services/_js/srv_db_tree.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="56ee746e-8f1d-4d4a-a92c-f05706cc2e69" name="Rejected commit: Default" comment="Пробую сделать коммит" />
@@ -3938,162 +3931,182 @@
     </favorites_list>
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="server.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/server.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1589" max-vertical-offset="13158">
-              <caret line="106" column="0" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mylog.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/scripts/mylog.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="799">
-              <caret line="39" column="15" selection-start-line="39" selection-start-column="15" selection-end-line="39" selection-end-column="15" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="logJson.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/logJson/logJson.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="255">
-              <caret line="6" column="26" selection-start-line="6" selection-start-column="26" selection-end-line="6" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="server_get_all_tree.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/get/server_get_all_tree.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="449" max-vertical-offset="1003">
-              <caret line="37" column="18" selection-start-line="37" selection-start-column="18" selection-end-line="37" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="server_sync.coffee" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/server/get/server_sync.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.14229248" vertical-offset="2710" max-vertical-offset="4590">
-              <caret line="170" column="0" selection-start-line="170" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="server_sync.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/get/_js/server_sync.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4828" max-vertical-offset="7871">
-              <caret line="292" column="0" selection-start-line="292" selection-start-column="0" selection-end-line="292" selection-end-column="0" />
-              <folding>
-                <marker date="1399806811000" expanded="true" signature="47:17003" placeholder="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="model_text.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/models/model_text.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="714">
-              <caret line="33" column="67" selection-start-line="33" selection-start-column="67" selection-end-line="33" selection-end-column="67" />
-              <folding>
-                <marker date="1399806247000" expanded="true" signature="860:923" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="saveDiff.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/models/saveDiff.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="867">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="srv_db_tree.coffee" pinned="true" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1012" max-vertical-offset="20655">
-              <caret line="71" column="50" selection-start-line="71" selection-start-column="50" selection-end-line="71" selection-end-column="50" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="srv_oauth2api.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/scripts/services/srv_oauth2api.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="710" max-vertical-offset="1734">
-              <caret line="54" column="19" selection-start-line="54" selection-start-column="19" selection-end-line="54" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="task_settings.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/subviews/task_settings.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="289" max-vertical-offset="629">
-              <caret line="17" column="36" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="view_ms_0.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/subviews/ms/view_ms_0.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="187" max-vertical-offset="289">
-              <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="view_ms_1.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/subviews/ms/view_ms_1.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="1343">
-              <caret line="25" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Gruntfile.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Gruntfile.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4850" max-vertical-offset="9435">
-              <caret line="312" column="16" selection-start-line="312" selection-start-column="16" selection-end-line="312" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="manifest.appcache" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dist/manifest.appcache">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="462" max-vertical-offset="1224">
-              <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="vertical" split-proportion="0.5">
+      <split-first>
+        <leaf>
+          <file leaf-file-name="server.coffee" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/server/server.coffee">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="1589" max-vertical-offset="13158">
+                  <caret line="106" column="0" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="mylog.coffee" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/server/scripts/mylog.coffee">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1309">
+                  <caret line="24" column="19" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="19" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="winston-logstash.js" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/node_modules/winston-logstash/lib/winston-logstash.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="850" max-vertical-offset="3349">
+                  <caret line="73" column="5" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
+                  <folding>
+                    <element signature="n#!!doc" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="logJson.coffee" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/server/logJson/logJson.coffee">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
+                  <caret line="6" column="26" selection-start-line="6" selection-start-column="26" selection-end-line="6" selection-end-column="26" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="server_get_all_tree.coffee" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/server/get/server_get_all_tree.coffee">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1003">
+                  <caret line="37" column="18" selection-start-line="37" selection-start-column="18" selection-end-line="37" selection-end-column="18" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="server_sync.coffee" pinned="false" current="true" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/server/get/server_sync.coffee">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.608642" vertical-offset="816" max-vertical-offset="4607">
+                  <caret line="77" column="63" selection-start-line="77" selection-start-column="63" selection-end-line="77" selection-end-column="63" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="server_sync.js" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/server/get/_js/server_sync.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="5032" max-vertical-offset="7820">
+                  <caret line="304" column="0" selection-start-line="304" selection-start-column="0" selection-end-line="304" selection-end-column="0" />
+                  <folding>
+                    <marker date="1399826847000" expanded="true" signature="364:367" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="956:5652" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="3086:5569" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="3360:5565" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="5487:5523" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="6342:17126" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="6969:17112" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="7137:15882" placeholder="[...]" />
+                    <marker date="1399826847000" expanded="true" signature="10209:15835" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="10229:15816" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="12983:15796" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="13192:15760" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="13030:13211" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="12976:13119" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="13822:15790" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="13877:14152" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="15781:17067" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="15906:16944" placeholder="{...}" />
+                    <marker date="1399826847000" expanded="true" signature="16055:16079" placeholder="{...}" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="model_text.coffee" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/server/models/model_text.coffee">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="714">
+                  <caret line="33" column="67" selection-start-line="33" selection-start-column="67" selection-end-line="33" selection-end-column="67" />
+                  <folding>
+                    <marker date="1399806247000" expanded="true" signature="860:923" placeholder="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="saveDiff.coffee" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/server/models/saveDiff.coffee">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="867">
+                  <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="srv_db_tree.coffee" pinned="true" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="1012" max-vertical-offset="20655">
+                  <caret line="71" column="50" selection-start-line="71" selection-start-column="50" selection-end-line="71" selection-end-column="50" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="view_ms_1.html" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/views/subviews/ms/view_ms_1.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="1343">
+                  <caret line="25" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Gruntfile.js" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Gruntfile.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="4850" max-vertical-offset="9435">
+                  <caret line="312" column="16" selection-start-line="312" selection-start-column="16" selection-end-line="312" selection-end-column="16" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="manifest.appcache" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/dist/manifest.appcache">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="462" max-vertical-offset="1224">
+                  <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="winston-logstash.js" pinned="false" current="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/node_modules/winston-logstash/lib/winston-logstash.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.26674366" vertical-offset="789" max-vertical-offset="3349">
+                  <caret line="60" column="32" selection-start-line="60" selection-start-column="32" selection-end-line="60" selection-end-column="32" />
+                  <folding>
+                    <element signature="n#!!doc" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -4116,8 +4129,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/others/scalyr.js" />
-        <option value="$PROJECT_DIR$/app/others/jquery.jsscrollpane.js" />
         <option value="$PROJECT_DIR$/app/sass/_global.scss" />
         <option value="/" />
         <option value="$PROJECT_DIR$/tests/test1.coffee" />
@@ -4162,10 +4173,12 @@
         <option value="$PROJECT_DIR$/app/views/subviews/view_main/view_text.html" />
         <option value="$PROJECT_DIR$/server/logJson/logJson.coffee" />
         <option value="$PROJECT_DIR$/server/get/server_get_all_tree.coffee" />
-        <option value="$PROJECT_DIR$/server/scripts/mylog.coffee" />
         <option value="$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" />
         <option value="$PROJECT_DIR$/server/server.coffee" />
         <option value="$PROJECT_DIR$/server/models/model_text.coffee" />
+        <option value="$PROJECT_DIR$/logstash.sh" />
+        <option value="$PROJECT_DIR$/node_modules/winston-logstash/lib/winston-logstash.js" />
+        <option value="$PROJECT_DIR$/server/scripts/mylog.coffee" />
         <option value="$PROJECT_DIR$/server/get/server_sync.coffee" />
       </list>
     </option>
@@ -4373,7 +4386,7 @@
     <option name="x" value="1680" />
     <option name="y" value="-291" />
     <option name="width" value="1200" />
-    <option name="height" value="1898" />
+    <option name="height" value="1894" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -4488,6 +4501,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="scripts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="_js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4tree" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4tree_0102" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="models" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -4560,7 +4595,47 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
+              <option name="myItemId" value="node_modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="winston-logstash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4tree" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4tree_0102" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="node_modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="winston-logstash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4tree" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4tree_0102" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="node_modules" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -4855,7 +4930,11 @@
       <created>1399782474379</created>
       <updated>1399782474379</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Глючит монго после добавления логирования">
+      <created>1399819722826</created>
+      <updated>1399819722826</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TodoView" selected-index="2">
@@ -4879,22 +4958,23 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1680" y="-291" width="1200" height="1898" extended-state="6" />
+    <frame x="1680" y="-291" width="1200" height="1894" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16943522" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" x="742" y="431" width="1178" height="594" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26748058" sideWeight="0.50086355" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26744187" sideWeight="0.50086355" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25738007" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12619808" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26493362" sideWeight="0.49913645" order="5" side_tool="false" content_ui="tabs" x="9" y="586" width="1229" height="465" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.26467332" sideWeight="0.49913645" order="5" side_tool="false" content_ui="tabs" x="818" y="315" width="844" height="729" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40423572" sideWeight="0.5004241" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" x="1249" y="22" width="415" height="1028" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32902032" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32963374" sideWeight="0.4995759" order="14" side_tool="false" content_ui="tabs" x="795" y="606" width="1049" height="594" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329863" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963374" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24936387" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.22561494" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="1213" y="22" width="462" height="1024" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13540511" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="699" y="598" width="1200" height="596" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13429523" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="699" y="598" width="1200" height="596" />
       <window_info id="Pomodoro" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32994455" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
@@ -4904,7 +4984,6 @@
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21441774" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Mongo Runner" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32963374" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329863" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39957264" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JsTestDriver Server" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977587" sideWeight="0.5" order="16" side_tool="true" content_ui="tabs" />
@@ -4982,7 +5061,8 @@
     <MESSAGE value="Настроил грунт для деплоя." />
     <MESSAGE value="Деплой работает. Манифест для offline тоже." />
     <MESSAGE value="Установил систему логирования Winston" />
-    <option name="LAST_COMMIT_MESSAGE" value="Установил систему логирования Winston" />
+    <MESSAGE value="Глючит монго после добавления логирования" />
+    <option name="LAST_COMMIT_MESSAGE" value="Глючит монго после добавления логирования" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -4997,11 +5077,6 @@
           <line>69</line>
           <option name="timeStamp" value="109" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/get/_js/server_sync.js</url>
-          <line>293</line>
-          <option name="timeStamp" value="146" />
-        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog>
@@ -5010,7 +5085,7 @@
           </selected-grouping-rules>
         </breakpoints-dialog>
       </breakpoints-dialog>
-      <option name="time" value="147" />
+      <option name="time" value="153" />
     </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
@@ -5026,35 +5101,6 @@
     </PATH>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/stylesheets/theme1.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8599311" vertical-offset="13309" max-vertical-offset="74630">
-          <caret line="871" column="12" selection-start-line="871" selection-start-column="12" selection-end-line="871" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/subviews/view_side/view_plan_of_day.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.6153846" vertical-offset="0" max-vertical-offset="1292">
-          <caret line="4" column="162" selection-start-line="4" selection-start-column="130" selection-end-line="4" selection-end-column="162" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/directives/dir_droppable.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.52355075" vertical-offset="459" max-vertical-offset="1887">
-          <caret line="44" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/sass/_main_window.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.65384614" vertical-offset="5083" max-vertical-offset="12920">
-          <caret line="300" column="0" selection-start-line="300" selection-start-column="0" selection-end-line="300" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/models/model_tree.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="1190">
@@ -5115,6 +5161,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="3.385449" vertical-offset="451135" max-vertical-offset="1625676">
           <caret line="26666" column="4" selection-start-line="26666" selection-start-column="4" selection-end-line="26666" selection-end-column="4" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -5321,22 +5368,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/logJson/logJson.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
-          <caret line="6" column="26" selection-start-line="6" selection-start-column="26" selection-end-line="6" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/scripts/mylog.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="799">
-          <caret line="39" column="15" selection-start-line="39" selection-start-column="15" selection-end-line="39" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1012" max-vertical-offset="20655">
@@ -5349,14 +5380,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.36414048" vertical-offset="11346" max-vertical-offset="30515">
           <caret line="681" column="13" selection-start-line="681" selection-start-column="13" selection-end-line="681" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/server.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1589" max-vertical-offset="13158">
-          <caret line="106" column="0" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -5379,6 +5402,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/server/get/_js/server_sync.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5032" max-vertical-offset="7820">
+          <caret line="304" column="0" selection-start-line="304" selection-start-column="0" selection-end-line="304" selection-end-column="0" />
+          <folding>
+            <marker date="1399826847000" expanded="true" signature="364:367" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="956:5652" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="3086:5569" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="3360:5565" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="5487:5523" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="6342:17126" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="6969:17112" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="7137:15882" placeholder="[...]" />
+            <marker date="1399826847000" expanded="true" signature="10209:15835" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="10229:15816" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="12983:15796" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="13192:15760" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="13030:13211" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="12976:13119" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="13822:15790" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="13877:14152" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="15781:17067" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="15906:16944" placeholder="{...}" />
+            <marker date="1399826847000" expanded="true" signature="16055:16079" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/logJson/logJson.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
+          <caret line="6" column="26" selection-start-line="6" selection-start-column="26" selection-end-line="6" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/server/get/server_get_all_tree.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="629" max-vertical-offset="1003">
@@ -5387,20 +5446,60 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/get/_js/server_sync.js">
+    <entry file="file://$PROJECT_DIR$/node_modules/winston/lib/winston/logger.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4828" max-vertical-offset="7871">
-          <caret line="292" column="0" selection-start-line="292" selection-start-column="0" selection-end-line="292" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.3533569" vertical-offset="2131" max-vertical-offset="11305">
+          <caret line="149" column="34" selection-start-line="149" selection-start-column="34" selection-end-line="149" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logstash.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="102">
+          <caret line="0" column="34" selection-start-line="0" selection-start-column="34" selection-end-line="0" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/winston-logstash/lib/winston-logstash.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="850" max-vertical-offset="3349">
+          <caret line="73" column="5" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
           <folding>
-            <marker date="1399806811000" expanded="true" signature="47:17003" placeholder="{...}" />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/scripts/_js/mylog.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24401914" vertical-offset="0" max-vertical-offset="1870">
+          <caret line="12" column="31" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/server.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1589" max-vertical-offset="13158">
+          <caret line="106" column="0" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/scripts/mylog.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1309">
+          <caret line="24" column="19" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/get/server_sync.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14229248" vertical-offset="2710" max-vertical-offset="4590">
-          <caret line="170" column="0" selection-start-line="170" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.608642" vertical-offset="816" max-vertical-offset="4607">
+          <caret line="77" column="63" selection-start-line="77" selection-start-column="63" selection-end-line="77" selection-end-column="63" />
           <folding />
         </state>
       </provider>

@@ -1,0 +1,1 @@
+~/logstash/bin/logstash -e 'input { tcp { port => 28777 type=>"sample" } } output { elasticsearch { host => localhost } } filter { json { source => "message"} }'

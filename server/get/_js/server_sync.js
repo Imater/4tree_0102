@@ -99,7 +99,7 @@
     Merge: function(diff) {
       var delta1, dfd;
       dfd = new $.Deferred();
-      MYLOG.log('sync', 'Merge: diff (смотри diff.patch) = ', {
+      MYLOG.log('sync', 'Merge: Начинаю мерджить diff (смотри diff.patch) = ', {
         diff: diff
       });
       delta1 = diff.patch;
@@ -144,7 +144,7 @@
               doc3: doc3,
               delta1: delta1,
               delta2: delta2,
-              delta3: delta3
+              main_diff: main_diff
             });
             MYLOG.log('sync', 'Merge: MAIN_DIFF теперь = ', {
               main_diff: main_diff
@@ -164,6 +164,7 @@
             });
           });
         } else {
+          MYLOG.log('sync', 'Merge: В базе не нашёл с _sha1: ' + diff._sha1 + ' возвращаю пустой элемент');
           return dfd.resolve();
         }
       });
@@ -198,6 +199,7 @@
     last_sync_time = req.query.last_sync_time;
     machine = req.query.machine;
     confirm_count = 0;
+    MYLOG.log('sync', '---------------------------------------' + (new Date().toString()));
     MYLOG.log('sync', 'Начинаю синхронизацию для machine=' + machine, {
       diffs: diffs,
       new_db_elements: new_db_elements,
@@ -357,20 +359,17 @@
               return async.each(Object.keys(global._db_models), function(db_name, callback) {
                 var tm;
                 tm = new Date(JSON.parse(last_sync_time)).toISOString();
-                MYLOG.log('sync', 'NEW: Ищем все дела с датой больше ' + tm, {
-                  _tm: {
-                    $gt: tm
-                  }
-                });
                 return global._db_models[db_name].find({
                   _tm: {
                     $gt: tm
                   }
                 }, function(err, docs) {
-                  MYLOG.log('sync', 'NEW: Нашли дела с датой больше ' + tm, {
-                    err: err,
-                    docs: docs
-                  });
+                  if (docs && docs.length) {
+                    MYLOG.log('sync', 'NEW: Нашли дела в ' + db_name + ' с датой больше ' + tm, {
+                      err: err,
+                      docs: docs
+                    });
+                  }
                   return async.each(docs, function(doc, callback2) {
                     var confirm, _ref, _ref1;
                     if ((confirm = send_to_client != null ? (_ref = send_to_client[db_name]) != null ? (_ref1 = _ref['confirm']) != null ? _ref1[doc._id] : void 0 : void 0 : void 0)) {
@@ -422,9 +421,7 @@
         dfd.resolve(send_to_client);
         if (confirm_count > 0) {
           clients = global.io.sockets.clients('user_id:' + user_id);
-          MYLOG.log('sync', 'SOCKETS: Есть что подтверждать клиентам ' + clients.length, {
-            clients: clients
-          });
+          MYLOG.log('sync', 'SOCKETS: Есть что подтверждать клиентам ' + clients.length);
           if (clients) {
             async.each(Object.keys(clients), function(client_i, callback3) {
               var client;
@@ -432,7 +429,7 @@
               client.get('nickname', function(err, nickname) {
                 nickname = JSON.parse(nickname);
                 if (nickname && nickname.machine !== machine) {
-                  MYLOG.log('sync', 'SOCKETS: Клиента ' + nickname + ' попросили синхронизироваться', {
+                  MYLOG.log('sync', 'SOCKETS: Клиента ' + nickname.machine + ' попросили синхронизироваться', {
                     client_i: client_i
                   });
                   return client.emit('need_sync_now');
