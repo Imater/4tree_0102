@@ -784,7 +784,6 @@
               } else {
                 sort_answer = el.importance ? pad(el.importance, 5) + now : void 0;
               }
-              console.info('sort', sort_answer);
               return -parseInt(sort_answer);
             });
           }
@@ -1413,11 +1412,21 @@
           }
           return newObj;
         },
+        LOG: (function() {
+          return function() {
+            return console.warn(arguments);
+          };
+        })(),
         syncApplyResults: function(results) {
           var dfd, mythis;
           dfd = $q.defer();
           mythis = this;
-          console.info('backup_elements_before_sync', JSON.stringify(mythis.backup_elements_before_sync));
+          mythis.LOG('syncApply', 'Начинаю применять результаты синхронизации', {});
+          if (mythis.backup_elements_before_sync && mythis.backup_elements_before_sync.length) {
+            mythis.LOG('syncApply', 'Есть сохранённые бекапы элементов', {
+              backup_elements_before_sync: mythis.backup_elements_before_sync
+            });
+          }
           mythis.clearCache();
           _.each(Object.keys(results), function(db_name) {
             var db_data;
@@ -1426,46 +1435,90 @@
               return _.each(Object.keys(db_data.confirm), function(confirm_id) {
                 var confirm_element;
                 confirm_element = db_data.confirm[confirm_id];
-                console.info('CONFIRMED', confirm_id, confirm_element._sha1);
+                mythis.LOG('syncApply', 'Применяю первое подтверждение для ' + confirm_id, {
+                  confirm_element: confirm_element
+                });
+                mythis.LOG('syncApply', 'Мне прислали _sha1 = ' + confirm_element._sha1, {});
                 return mythis.getElement(db_name, confirm_id).then(function(doc) {
                   var old_doc, patch, sha1;
                   if (doc) {
+                    mythis.LOG('syncApply', 'В своей базе (+patch) я нашёл _sha1 = ' + doc._sha1, {
+                      doc: doc
+                    });
                     if (doc._new) {
                       doc._new = false;
+                      mythis.LOG('syncApply', 'Элемент в базе был новым, я его отметил старым', {});
                     }
                     sha1 = mythis.JSON_stringify(doc)._sha1;
+                    mythis.LOG('syncApply', 'Вычислил актуальный _sha1 = ' + sha1, {
+                      doc: doc
+                    });
                     if (sha1 === confirm_element._sha1) {
+                      mythis.LOG('syncApply', '_sha1 ' + sha1 + ' совпали, всё в порядке', {});
                       doc._sha1 = confirm_element._sha1;
+                      mythis.LOG('syncApply', '_sha1 совпали, присваиваю doc._sha1 = ' + confirm_element._sha1, {
+                        confirm_element: confirm_element,
+                        doc: doc
+                      });
                       doc._tm = confirm_element._tm;
+                      mythis.LOG('syncApply', '_sha1 совпали, обновил _tm и sha1 и сохраняю в базу', {
+                        doc: doc
+                      });
                       mythis.db.put(db_name, doc).done(function(err) {
-                        return console.info('new data applyed', err, doc);
+                        console.info('new data applyed', err, doc);
+                        return mythis.LOG('syncApply', '_sha1 совпали. Сохранил в базу данных ' + doc._sha1, {
+                          err: err,
+                          doc: doc
+                        });
                       });
                       if (mythis._tmp._diffs[confirm_id]) {
                         delete mythis._tmp._diffs[confirm_id];
                       }
+                      mythis.LOG('syncApply', '_sha1 совпали. Удалил локальные дифы. ', {});
                       return mythis.db.remove('_diffs', confirm_id).done(function(err) {
-                        console.info('diff - deleted', err);
+                        mythis.LOG('syncApply', '_sha1 совпали. Удалил дифы в базе ', {
+                          err: err
+                        });
                         return dfd.resolve();
                       });
                     } else {
-                      console.info('!!!!!!!ERROR sha1 CLIENT NOT EQUAL SERVER!!!!!!!!!!!!!!');
+                      mythis.LOG('syncApply', '!= _sha1 разные ' + sha1 + ' != ' + confirm_element._sha1, {
+                        doc: doc,
+                        confirm_element: confirm_element
+                      });
                       old_doc = mythis.backup_elements_before_sync[doc._id];
+                      if (old_doc) {
+                        mythis.LOG('syncApply', '!= Нашел элемент в бекапе _sha1 = ' + (old_doc != null ? old_doc._sha1 : void 0), {
+                          old_doc: old_doc
+                        });
+                      }
                       if (confirm_element._doc) {
                         doc = confirm_element._doc;
+                        mythis.LOG('syncApply', '!= С сервера прислали документ целиком, беру его. _sha1 = ' + doc._sha1, {
+                          doc: doc
+                        });
                         if (!old_doc) {
                           mythis.copyObject(mythis._db[db_name][confirm_id], doc);
+                          mythis.LOG('syncApply', '!= Есть данные в бекапе, сохраняю в память _sha1 = ' + doc._sha1, {
+                            doc: doc
+                          });
                           mythis.db.put(db_name, doc).done(function(err) {
-                            console.info('new data applyed', err, doc);
+                            mythis.LOG('syncApply', '!= Есть данные в бекапе, сохранил в базу _sha1 = ' + doc._sha1, {
+                              doc: doc
+                            });
                             return $timeout(function() {
-                              return $rootScope.$emit('refresh_editor');
+                              $rootScope.$emit('refresh_editor');
+                              return mythis.LOG('syncApply', '!= Попросил редактор обновиться ', {
+                                doc: doc
+                              });
                             }, 100);
                           });
                         }
-                        console.info('doc from server', doc);
                       }
                       if (old_doc) {
-                        console.info('doc_new', doc);
-                        console.info('doc_old', old_doc);
+                        mythis.LOG('syncApply', 'Данные в кеше не изменились', {
+                          old_doc: old_doc
+                        });
                         patch = mythis.diff.diff(old_doc, doc);
                         if (patch && patch._sha1) {
                           delete patch._sha1;

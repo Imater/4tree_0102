@@ -165,7 +165,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     ms_show_icon_limit: 36
     mini_settings_btn_active: 0
     mini_settings_show: false
-    mini_tasks_show: false
+    mini_tasks_hide: true
     mini_settings_btn: [
       {id:0, title: 'Оформление', icon: 'icon-brush'}
       {id:1, title: 'Проект', icon: 'icon-target'}
@@ -689,7 +689,7 @@ angular.module("4treeApp").controller "editor_tasks", ($scope, db_tree, $rootSco
       db_tree.clearCache();
 
   $scope.getTasks = ()->
-    db_tree.getTasksByTreeId($scope.db.main_node[ $scope.set.focus_edit ]._id, $scope.set.mini_tasks_show)
+    db_tree.getTasksByTreeId($scope.db.main_node[ $scope.set.focus_edit ]._id, $scope.set.mini_tasks_hide)
 
 
 angular.module("4treeApp").controller "searchController", ($scope, syncApi, db_tree, $rootScope, $sce, $timeout)->

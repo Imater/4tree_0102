@@ -149,7 +149,7 @@
         ms_show_icon_limit: 36,
         mini_settings_btn_active: 0,
         mini_settings_show: false,
-        mini_tasks_show: false,
+        mini_tasks_hide: true,
         mini_settings_btn: [
           {
             id: 0,
@@ -599,7 +599,7 @@
       }
     });
     return $scope.getTasks = function() {
-      return db_tree.getTasksByTreeId($scope.db.main_node[$scope.set.focus_edit]._id, $scope.set.mini_tasks_show);
+      return db_tree.getTasksByTreeId($scope.db.main_node[$scope.set.focus_edit]._id, $scope.set.mini_tasks_hide);
     };
   });
 

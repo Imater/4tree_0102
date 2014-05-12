@@ -475,7 +475,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
             sort_answer = if el.importance then pad(el.importance,5) + new Date(el.date1).getTime()
           else
             sort_answer = if el.importance then pad(el.importance,5) + now;
-          console.info 'sort', sort_answer
+          #console.info 'sort', sort_answer
           return -parseInt(sort_answer)
       answer
     getTasksByTreeId: _.memoize (tree_id, only_next)->
@@ -938,12 +938,17 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       for key of obj
         newObj[key] = obj[key];
       return newObj;
+    LOG: (() ->
+      return ()->
+        console.warn(arguments);
+    )()
 
     #Применяем результат синхронизации
     syncApplyResults: (results)->
       dfd = $q.defer();
       mythis = @;
-      console.info 'backup_elements_before_sync', JSON.stringify mythis.backup_elements_before_sync
+      mythis.LOG 'syncApply', 'Начинаю применять результаты синхронизации', {};
+      mythis.LOG 'syncApply', 'Есть сохранённые бекапы элементов', { backup_elements_before_sync:mythis.backup_elements_before_sync} if  mythis.backup_elements_before_sync and mythis.backup_elements_before_sync.length
       mythis.clearCache();
       _.each Object.keys(results), (db_name)->
         db_data = results[db_name];
@@ -951,41 +956,54 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           _.each Object.keys(db_data.confirm), (confirm_id)->
             #mythis.tmp_set(confirm_id).then ()->
             confirm_element = db_data.confirm[confirm_id];
-            console.info 'CONFIRMED', confirm_id, confirm_element._sha1
+            mythis.LOG 'syncApply', 'Применяю первое подтверждение для '+confirm_id, { confirm_element };
+            mythis.LOG 'syncApply', 'Мне прислали _sha1 = '+confirm_element._sha1, {};
             # тут нужно учесть, вдруг во время синхронизации элемент изменился
             # TODO Нужно учесть, вдруг элемент изменился
             mythis.getElement(db_name, confirm_id).then (doc)->
               if doc
+                mythis.LOG 'syncApply', 'В своей базе (+patch) я нашёл _sha1 = '+doc._sha1, { doc };
                 if doc._new
                   doc._new = false
+                  mythis.LOG 'syncApply', 'Элемент в базе был новым, я его отметил старым', {}
                 sha1 = mythis.JSON_stringify(doc)._sha1
+                mythis.LOG 'syncApply', 'Вычислил актуальный _sha1 = '+sha1, { doc }
                 #Если контрольные суммы сервера и клиента совпали, то удаляем diff и обновляем _sha1
                 if sha1 == confirm_element._sha1
+                  mythis.LOG 'syncApply', '_sha1 '+sha1+' совпали, всё в порядке', {}
                   doc._sha1 = confirm_element._sha1
+                  mythis.LOG 'syncApply', '_sha1 совпали, присваиваю doc._sha1 = '+confirm_element._sha1, { confirm_element, doc }
                   doc._tm = confirm_element._tm
+                  mythis.LOG 'syncApply', '_sha1 совпали, обновил _tm и sha1 и сохраняю в базу', { doc }
                   mythis.db.put(db_name, doc).done (err)->
                     console.info 'new data applyed', err, doc;
+                    mythis.LOG 'syncApply', '_sha1 совпали. Сохранил в базу данных '+doc._sha1, { err, doc }
                   delete mythis._tmp._diffs[confirm_id] if mythis._tmp._diffs[confirm_id]
+                  mythis.LOG 'syncApply', '_sha1 совпали. Удалил локальные дифы. ', {}
                   mythis.db.remove('_diffs', confirm_id).done (err)->
-                    console.info 'diff - deleted', err
+                    mythis.LOG 'syncApply', '_sha1 совпали. Удалил дифы в базе ', { err }
                     dfd.resolve();
                 else
-                  console.info '!!!!!!!ERROR sha1 CLIENT NOT EQUAL SERVER!!!!!!!!!!!!!!'
+                  mythis.LOG 'syncApply', '!= _sha1 разные '+sha1+' != '+confirm_element._sha1, { doc, confirm_element }
                   old_doc = mythis.backup_elements_before_sync[doc._id];
+                  mythis.LOG 'syncApply', '!= Нашел элемент в бекапе _sha1 = '+old_doc?._sha1, { old_doc } if old_doc
+
                   if confirm_element._doc
                     doc = confirm_element._doc;
+                    mythis.LOG 'syncApply', '!= С сервера прислали документ целиком, беру его. _sha1 = '+doc._sha1, { doc }
+
                     if !old_doc
                       mythis.copyObject(mythis._db[db_name][confirm_id], doc);
+                      mythis.LOG 'syncApply', '!= Есть данные в бекапе, сохраняю в память _sha1 = '+doc._sha1, { doc }
                       mythis.db.put(db_name, doc).done (err)->
-                        console.info 'new data applyed', err, doc;
+                        mythis.LOG 'syncApply', '!= Есть данные в бекапе, сохранил в базу _sha1 = '+doc._sha1, { doc }
                         $timeout ()->
                           $rootScope.$emit 'refresh_editor'
+                          mythis.LOG 'syncApply', '!= Попросил редактор обновиться ', { doc }
                         , 100
-                    console.info 'doc from server', doc
                   #Если данные в кеше и изменились
                   if old_doc
-                    console.info 'doc_new', doc
-                    console.info 'doc_old', old_doc
+                    mythis.LOG 'syncApply', 'Данные в кеше не изменились', { old_doc }
                     #old_doc._sha1 = mythis.JSON_stringify(old_doc)._sha1
                     #doc._sha1 = old_doc._sha1
                     patch = mythis.diff.diff(old_doc, doc);
