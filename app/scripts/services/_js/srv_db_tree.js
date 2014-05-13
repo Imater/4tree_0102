@@ -106,7 +106,7 @@
           mythis = this;
           this.dbInit();
           dfd = $.Deferred();
-          this.ydnLoadFromLocal(mythis).then(function(records) {
+          this.ydnLoadFromLocalStorage(mythis).then(function(records) {
             if (!records.tree || Object.keys(records.tree).length === 0 || true) {
               console.info('NEED DATA FROM NET');
               return mythis.getTreeFromWeb().then(function(data) {
@@ -137,7 +137,9 @@
           this.getTreeFromeWebOrLocal().then(function(records) {
             var found;
             _.each(records, function(data, db_name) {
-              if (mythis.dont_store_to_memory.indexOf(db_name) === -1) {
+              var canStoreInThisDB;
+              canStoreInThisDB = mythis.dont_store_to_memory.indexOf(db_name) === -1;
+              if (canStoreInThisDB) {
                 return mythis._db[db_name] = data;
               }
             });
@@ -246,7 +248,7 @@
           });
           return dfd.promise();
         },
-        ydnLoadFromLocal: function(mythis) {
+        ydnLoadFromLocalStorage: function(mythis) {
           var dfd, result;
           this.dbInit();
           dfd = $.Deferred();

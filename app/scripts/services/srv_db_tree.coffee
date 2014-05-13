@@ -68,7 +68,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       mythis = @;
       @dbInit();
       dfd = $.Deferred();
-      @ydnLoadFromLocal(mythis).then (records)->
+      @ydnLoadFromLocalStorage(mythis).then (records)->
         if !records.tree or Object.keys(records.tree).length == 0 or true
           console.info 'NEED DATA FROM NET';
           mythis.getTreeFromWeb().then (data)->
@@ -91,7 +91,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       console.time 'ALL DATA LOADED'
       @getTreeFromeWebOrLocal().then (records)->
         _.each records, (data, db_name)->
-          if mythis.dont_store_to_memory.indexOf(db_name) == -1
+          canStoreInThisDB = mythis.dont_store_to_memory.indexOf(db_name) == -1
+          if canStoreInThisDB
             mythis._db[db_name] = data;
         mythis.refreshParentsIndex();
         $rootScope.$$childTail.set.tree_loaded = true;
@@ -187,7 +188,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           , (err)->
             dfd.resolve();
       dfd.promise();
-    ydnLoadFromLocal: (mythis)->
+    ydnLoadFromLocalStorage: (mythis)->
       @dbInit();
       dfd = $.Deferred();
       console.time 'load_local'
