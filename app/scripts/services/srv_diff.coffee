@@ -99,5 +99,6 @@ angular.module("4treeApp").service 'diffApi', ['db_tree', (db_tree) ->
     hours = time.getHours();
     minutes = time.getMinutes();
     seconds = time.getSeconds();
-    console.info '['+hours+':'+minutes+':'+seconds+'] '+title+' = '+ JSON.stringify(data, false, if !compact then '  ')
+    console.info '[' + hours + ':' + minutes + ':' + seconds + '] ' + title + ' = ' + JSON.stringify(data, false,
+      if !compact then '  ')
 ]

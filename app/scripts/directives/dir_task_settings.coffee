@@ -4,7 +4,6 @@ angular.module("4treeApp").directive "taskSettings", ->
   restrict: "E"
   require: "?ngModel"
   link: (scope, el, attrs, ngModel) ->
-    console.info 'directive', el
     scope.show = {
       visible: false
     }
@@ -20,7 +19,6 @@ angular.module("4treeApp").directive "taskSettings", ->
     , true
 
     ngModel.$render = ->
-      console.info 'render', ngModel.$viewValue
       if ngModel.$viewValue
         scope.task = ngModel.$viewValue;
         scope.show.visible = true;

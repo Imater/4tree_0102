@@ -62,9 +62,13 @@
   angular.module("4treeApp").directive("renderTime", function($timeout) {
     return {
       link: function(scope, el, attr) {
-        console.time('renderTimeALL');
+        if (__log.show_time_long) {
+          console.time('renderTimeALL');
+        }
         return $timeout(function() {
-          return console.timeEnd('renderTimeALL');
+          if (__log.show_time_long) {
+            return console.timeEnd('renderTimeALL');
+          }
         });
       }
     };

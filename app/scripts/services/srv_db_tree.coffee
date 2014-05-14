@@ -2,7 +2,7 @@ angular.module("4treeApp").factory 'datasourceTree', ['$timeout', 'db_tree', '$r
   ($timeout, db_tree, $rootScope)->
     watchList: []
     get: (index, count, success)->
-      console.info index
+      __log.info index
       success([]) if index > db_tree._db.tree.length
       result = []
       for i in [index..index + count - 1]
@@ -38,7 +38,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
       $rootScope.$on 'my-sorted', (event, data)->
         $timeout ()->
-          console.info "SORTED", data
+          __log.info "SORTED", data
           element = mythis.jsFind(data.from_id);
           old_value = _.clone(element); #clone
           element.parent_id = data.to_id;
@@ -51,7 +51,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
 
       $rootScope.$on 'my-created', (event, data)->
-        console.info "CREATED", data
+        __log.info "CREATED", data
       @loadTasks();
       if(!@_cache)
         @_cache = {}
@@ -70,7 +70,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       dfd = $.Deferred();
       @ydnLoadFromLocalStorage(mythis).then (records)->
         if !records.tree or Object.keys(records.tree).length == 0 or true
-          console.info 'NEED DATA FROM NET';
+          __log.info 'NEED DATA FROM NET';
           mythis.getTreeFromWeb().then (data)->
             result = {};
             async.each Object.keys(data), (db_name, callback)->
@@ -82,7 +82,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
               dfd.resolve(result);
 
         else
-          console.info 'ALL DATA FROM LOCAL'
+          __log.info 'ALL DATA FROM LOCAL'
           dfd.resolve(records);
       dfd.promise();
     getTreeFromNet: ()->
@@ -119,7 +119,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
       oAuth2Api.jsGetToken().then (access_token)->
         $http({
-          url: $rootScope.$$childTail.set.server+'/api/v2/tree',
+          url: $rootScope.$$childTail.set.server + '/api/v2/tree',
           method: "GET",
           params:
             user_id: '5330ff92898a2b63c2f7095f'
@@ -170,7 +170,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       @db = new ydn.db.Storage('_db.tree', schema, options);
       if false
         @db.search('name', 'Рабочие').done (x)->
-          console.info 'found', x
+          __log.info 'found', x
 
 
     ydnSaveToLocal: (db_name, records)->
@@ -191,7 +191,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     ydnLoadFromLocalStorage: (mythis)->
       @dbInit();
       dfd = $.Deferred();
-      console.time 'load_local'
+      console.time 'load_local' if __log.show_time_long
       result = {};
       mythis.db.values('_diffs', null, 999999999).done (diffs)->
         _.each diffs, (diff)->
@@ -215,7 +215,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           else
             callback();
         , ()->
-          console.timeEnd 'load_local'
+          console.timeEnd 'load_local' if __log.show_time_long
           dfd.resolve(result);
           result = undefined;
       dfd.promise();
@@ -473,14 +473,14 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       if order_type == 'by_priority_and_date'
         answer = _.sortBy answer, (el)->
           if el and el.date1
-            sort_answer = if el.importance then pad(el.importance,5) + new Date(el.date1).getTime()
+            sort_answer = if el.importance then pad(el.importance, 5) + new Date(el.date1).getTime()
           else
-            sort_answer = if el.importance then pad(el.importance,5) + now;
-          #console.info 'sort', sort_answer
+            sort_answer = if el.importance then pad(el.importance, 5) + now;
+          #__log.info 'sort', sort_answer
           return -parseInt(sort_answer)
       answer
     getTasksByTreeId: _.memoize (tree_id, only_next)->
-      console.info 'hello!', tree_id
+      __log.info 'hello!', tree_id
 
       answer = _.filter @_db.tasks, (el)->
         el.tree_id == tree_id
@@ -514,7 +514,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       tree_id + only_next
 
     jsExpand: (id, make_open)->
-      console.time 'expand'
+      console.time 'expand' if __log.show_time_long
       focus = $rootScope.$$childTail.set.focus
       _.each @_db.tree, (el)->
         if el._path and el._path.indexOf(id) != -1
@@ -523,7 +523,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           else
             el._open = undefined
         return
-      console.timeEnd 'expand'
+      console.timeEnd 'expand' if __log.show_time_long
     tree_template: ()->
       return {
       title: ''
@@ -548,13 +548,14 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       found = _.find parents, (value)->
         value.pos > tree.pos
       if found and found.pos
-        console.info "POS = ", found.pos, tree.pos
-        return (parseInt(1000000000000 * (found.pos - tree.pos) / 1.1)) / 1000000000000
+        __log.info "POS = ", found.pos, tree.pos
+        sortPrice = (parseInt(1000000000000 * (found.pos - tree.pos) / 1.1)) / 1000000000000
+        return sortPrice
       else
         return 1
     jsAddNote: (tree, make_child)->
       focus = $rootScope.$$childTail.set.focus
-      console.info "AddNote", tree
+      __log.info "AddNote", tree
       new_note = new @tree_template;
       new_note.title = $rootScope.$$childTail.set.new_title;
       new_note._id = new ObjectId().toString();
@@ -576,7 +577,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       event.stopPropagation();
       event.preventDefault();
       mythis = $rootScope.$$childTail.fn.service.db_tree;
-      console.info 'add_task', event, scope, tree;
+      __log.info 'add_task', event, scope, tree;
       tree_id = scope.db.main_node[scope.set.focus_edit]._id
       if tree_id
         new_task = new mythis.task_template;
@@ -590,7 +591,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         old_value = _.clone(new_task); #clone
         new_task.title = scope.new_task_title;
         mythis._db.tasks[new_task._id] = new_task if !mythis._db.tasks[new_task._id]
-        console.info 'pushed new task', new_task;
+        __log.info 'pushed new task', new_task;
         scope.new_task_title = "";
         mythis.clearCache();
         new_value = new_task;
@@ -631,7 +632,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         event.stopPropagation();
         event.preventDefault();
         main_node = $rootScope.$$childTail.db.main_node[focus];
-        console.info main_node;
+        __log.info main_node;
 
         shift = event.shiftKey;
         if !shift
@@ -644,7 +645,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
             db_tree.refreshParentsIndex();
         else
           parent_note = db_tree.jsFind(main_node.parent_id);
-          console.info { parent_note }
+          __log.info { parent_note }
           if parent_note and parent_note.folder != 'main'
             main_node.parent_id = parent_note.parent_id;
             main_node.pos = parent_note.pos + db_tree.diffForSort(parent_note);
@@ -665,7 +666,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         value._id == tree._id
       found = parents[found_key + 1];
       if !found
-        console.info 'need_to_parent'
+        __log.info 'need_to_parent'
         next = db_tree.jsFind(tree.parent_id);
         found = db_tree.jsFindNext(next, 'ignore_open') if next
       found
@@ -747,10 +748,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       $rootScope.$$childTail.set.focus = 3
     searchString: (searchString, dont_need_highlight)->
       dfd = new $.Deferred();
-      console.info 'search', searchString
+      __log.info 'search', searchString
       oAuth2Api.jsGetToken().then (access_token)->
         $http({
-          url: $rootScope.$$childTail.set.server+'/api/v1/search',
+          url: $rootScope.$$childTail.set.server + '/api/v1/search',
           method: "GET",
           params:
             user_id: '5330ff92898a2b63c2f7095f'
@@ -777,7 +778,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
       key = moment(date).format('YYYY-MM-DD');
       answer = mythis.getView('tree', 'diary_by_date').result[key]
-      console.info answer, date, answer.text if answer
+      __log.info answer, date, answer.text if answer
       answer
     diff: jsondiffpatch.create {
       objectHash: (obj) ->
@@ -794,7 +795,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           if text_element
             mythis.dfdTextLater.resolve(text_element)
           else
-            console.info 'text_not_found';
+            __log.info 'text_not_found';
             mythis.dfdTextLater.resolve()
       , 1000
       mythis.dfdTextLater.promise
@@ -841,16 +842,15 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           doc._sha1 = mythis.JSON_stringify(doc)._sha1
           @_db['texts'][text_id] = doc
           mythis.db.put('texts', doc).done ()->
-            console.info 'text ' + text_id + ' saved', doc
+            __log.info 'text ' + text_id + ' saved', doc
 
 
     'jsStartSyncInWhile': _.debounce ()->
-      console.info 'wait 5 sec...' + $rootScope.$$childTail.set.autosync_on
       @syncDiff() if false or $rootScope.$$childTail.set.autosync_on
-    , 300
+    , 50
     saveDiff: _.throttle (db_name, _id)->
       mythis = @;
-      #console.info 'save_diff starting.....' + _id;
+      #__log.info 'save_diff starting.....' + _id;
       dfd = $q.defer();
       @getElement(db_name, _id).then (new_element)->
         mythis.getElementFromLocal(db_name, _id).then (old_element)->
@@ -861,7 +861,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
             if patch
               _.each Object.keys(patch), (key)->
                 delete patch[key] if patch[key] and (key[0] == '_' or key[0] == '$')
-            #console.info 'DIFF SAVED = ', JSON.stringify(patch), (JSON.stringify patch)?.length;
+            #__log.info 'DIFF SAVED = ', JSON.stringify(patch), (JSON.stringify patch)?.length;
             el = {
               _id: _id
               patch: patch
@@ -875,7 +875,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
               #если синхронизация уже идёт, то изменения пока не сохраняем
               mythis._tmp._diffs[el._id] = el
               mythis.db.put('_diffs', el).done ()->
-                #console.info 'diff_saved'
+                #__log.info 'diff_saved'
                 dfd.resolve()
                 mythis.jsStartSyncInWhile()
           else
@@ -929,7 +929,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       dfd = $q.defer()
       mythis.getElement('texts', _id).then (result)->
         mythis._db['texts'][_id].text = result.text + '<p>' + Math.round(Math.random() * 100) + '</p>'
-        console.info 'ADDED ', mythis._db['texts'][_id].text
+        __log.info 'ADDED ', mythis._db['texts'][_id].text
         mythis.saveDiff('texts', _id).then ()->
           dfd.resolve()
       dfd.promise
@@ -939,81 +939,86 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       for key of obj
         newObj[key] = obj[key];
       return newObj;
-    LOG: (() ->
-      return ()->
-        console.warn(arguments);
-    )()
 
     #Применяем результат синхронизации
     syncApplyResults: (results)->
       dfd = $q.defer();
       mythis = @;
-      mythis.LOG 'syncApply', 'Начинаю применять результаты синхронизации', {};
-      mythis.LOG 'syncApply', 'Есть сохранённые бекапы элементов', { backup_elements_before_sync:mythis.backup_elements_before_sync} if  mythis.backup_elements_before_sync and mythis.backup_elements_before_sync.length
+      __log.debug 'syncApply', 'Начинаю применять результаты синхронизации', {};
+      if  mythis.before_sync and mythis.before_sync.length
+        __log.debug 'syncApply', 'Есть сохранённые бекапы элементов', { before_sync: mythis.before_sync}
       mythis.clearCache();
       _.each Object.keys(results), (db_name)->
         db_data = results[db_name];
         if db_data and _.isObject(db_data.confirm)
           _.each Object.keys(db_data.confirm), (confirm_id)->
             #mythis.tmp_set(confirm_id).then ()->
-            confirm_element = db_data.confirm[confirm_id];
-            mythis.LOG 'syncApply', 'Применяю первое подтверждение для '+confirm_id, { confirm_element };
-            mythis.LOG 'syncApply', 'Мне прислали _sha1 = '+confirm_element._sha1, {};
+            confirm_element = db_data.confirm[confirm_id]
+            __log.debug 'syncApply', 'Применяю первое подтверждение для ' + confirm_id, { confirm_element };
+            __log.debug 'syncApply', 'Мне прислали _sha1 = ' + confirm_element._sha1, {};
             # тут нужно учесть, вдруг во время синхронизации элемент изменился
             # TODO Нужно учесть, вдруг элемент изменился
             mythis.getElement(db_name, confirm_id).then (doc)->
               if doc
-                mythis.LOG 'syncApply', 'В своей базе (+patch) я нашёл _sha1 = '+doc._sha1, { doc };
+                __log.debug 'syncApply', 'В своей базе (+patch) я нашёл _sha1 = ' + doc._sha1, { doc };
                 if doc._new
                   doc._new = false
-                  mythis.LOG 'syncApply', 'Элемент в базе был новым, я его отметил старым', {}
+                  __log.debug 'syncApply', 'Элемент в базе был новым, я его отметил старым', {}
                 sha1 = mythis.JSON_stringify(doc)._sha1
-                mythis.LOG 'syncApply', 'Вычислил актуальный _sha1 = '+sha1, { doc }
+                __log.debug 'syncApply', 'Вычислил актуальный _sha1 = ' + sha1, { doc }
                 #Если контрольные суммы сервера и клиента совпали, то удаляем diff и обновляем _sha1
                 if sha1 == confirm_element._sha1
-                  mythis.LOG 'syncApply', '_sha1 '+sha1+' совпали, всё в порядке', {}
+                  __log.debug 'syncApply', '_sha1 ' + sha1 + ' совпали, всё в порядке', {}
                   doc._sha1 = confirm_element._sha1
-                  mythis.LOG 'syncApply', '_sha1 совпали, присваиваю doc._sha1 = '+confirm_element._sha1, { confirm_element, doc }
+                  __log.debug 'syncApply', '_sha1 совпали, присваиваю doc._sha1 = ' + confirm_element._sha1, { confirm_element, doc }
                   doc._tm = confirm_element._tm
-                  mythis.LOG 'syncApply', '_sha1 совпали, обновил _tm и sha1 и сохраняю в базу', { doc }
+                  __log.debug 'syncApply', '_sha1 совпали, обновил _tm и sha1 и сохраняю в базу', { doc }
                   mythis.db.put(db_name, doc).done (err)->
-                    console.info 'new data applyed', err, doc;
-                    mythis.LOG 'syncApply', '_sha1 совпали. Сохранил в базу данных '+doc._sha1, { err, doc }
+                    __log.info 'new data applyed', err, doc;
+                    __log.debug 'syncApply', '_sha1 совпали. Сохранил в базу данных ' + doc._sha1, { err, doc }
+                  __log.debug 'syncApply', '_sha1 совпали. Удалил локальные дифы. ', {}
                   delete mythis._tmp._diffs[confirm_id] if mythis._tmp._diffs[confirm_id]
-                  mythis.LOG 'syncApply', '_sha1 совпали. Удалил локальные дифы. ', {}
                   mythis.db.remove('_diffs', confirm_id).done (err)->
-                    mythis.LOG 'syncApply', '_sha1 совпали. Удалил дифы в базе ', { err }
+                    __log.debug 'syncApply', '_sha1 совпали. Удалил дифы в базе ', { err }
                     dfd.resolve();
                 else
-                  mythis.LOG 'syncApply', '!= _sha1 разные '+sha1+' != '+confirm_element._sha1, { doc, confirm_element }
-                  old_doc = mythis.backup_elements_before_sync[doc._id];
-                  mythis.LOG 'syncApply', '!= Нашел элемент в бекапе _sha1 = '+old_doc?._sha1, { old_doc } if old_doc
-
+                  #sha1 в базе не совпадает с присланным с сервера
+                  __log.debug 'syncApply', '!= _sha1 sha1 в базе не совпадает с присланным с сервера ' + sha1 + ' != (сервер)' + confirm_element._sha1, { doc, confirm_element }
+                  old_doc = mythis.before_sync[doc._id];
+                  __log.debug 'syncApply', '!= Нашел элемент в бекапе _sha1 = ' + old_doc?._sha1, { old_doc } if old_doc
+                  #Если нам прислали документ целиком - значит это был merge
                   if confirm_element._doc
-                    doc = confirm_element._doc;
-                    mythis.LOG 'syncApply', '!= С сервера прислали документ целиком, беру его. _sha1 = '+doc._sha1, { doc }
-
-                    if !old_doc
+                    doc = confirm_element._doc
+                  else
+                    __log.error 'EMPTY DOC RECIEVED!!! STRANGE';
+                  if (doc)
+                    __log.debug 'syncApply', '!= С сервера прислали документ целиком, беру его. _sha1 = ' + doc._sha1, { doc }
+                    #Если его нет в бекапе, то просто сохраняю и стираю все изменения
+                    if !old_doc or confirm_element.merged
+                      delete mythis._tmp._diffs[confirm_id] if mythis._tmp._diffs[confirm_id]
+                      mythis.db.remove('_diffs', confirm_id).done (err)->
+                        __log.debug 'syncApply', '_sha1 не совпали. Удалил дифы в базе, так как мне прислали новый элемент ', { err }
                       mythis.copyObject(mythis._db[db_name][confirm_id], doc);
-                      mythis.LOG 'syncApply', '!= Есть данные в бекапе, сохраняю в память _sha1 = '+doc._sha1, { doc }
+                      __log.debug 'syncApply', '!= Есть данные в бекапе, сохраняю в память _sha1 = ' + doc._sha1, { doc }
                       mythis.db.put(db_name, doc).done (err)->
-                        mythis.LOG 'syncApply', '!= Есть данные в бекапе, сохранил в базу _sha1 = '+doc._sha1, { doc }
+                        __log.debug 'syncApply', '!= Есть данные в бекапе, сохранил в базу _sha1 = ' + doc._sha1, { doc }
                         $timeout ()->
                           $rootScope.$emit 'refresh_editor'
-                          mythis.LOG 'syncApply', '!= Попросил редактор обновиться ', { doc }
+                          __log.warn 'syncApply', '!= Попросил редактор обновиться ', { doc }
                         , 100
                   #Если данные в кеше и изменились
-                  if old_doc
-                    mythis.LOG 'syncApply', 'Данные в кеше не изменились', { old_doc }
+                  if old_doc and !confirm_element.merged and doc
+                    __log.warn 'syncApply', 'Данные есть в кеше, но sha1 другой!!!!!!!!!!!!!!!!', { old_doc, doc }
                     #old_doc._sha1 = mythis.JSON_stringify(old_doc)._sha1
                     #doc._sha1 = old_doc._sha1
-                    patch = mythis.diff.diff(old_doc, doc);
+                    patch = mythis.diff.diff(JSON.parse(JSON.stringify(old_doc)), doc); #вычисляю патч
+                    __log.warn 'BUG: ', { old_doc, doc, patch }
                     delete patch._sha1 if patch and patch._sha1
                     delete patch._tm if patch and patch._tm
-                    console.info 'PATCH = ', patch
+                    __log.warn 'PATCH = ', patch
                     mythis.db.put(db_name, old_doc).done (err)->
                       mythis._db[db_name][confirm_id] = doc;
-                      console.info 'old_saved'
+                      __log.warn 'old_saved'
                       if patch
                         el = {
                           _id: confirm_id
@@ -1024,23 +1029,23 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                           machine: $rootScope.$$childTail.set.machine
                           _tm: new Date().getTime()
                         }
-                        console.info '!!!!!!!!!!!SHA1!!!!!!', doc._sha1, doc
+                        __log.warn '!!!!!!!!!!!SHA1!!!!!!', doc._sha1, doc
                         #если синхронизация уже идёт, то изменения пока не сохраняем
                         mythis.saving_diff_busy = true
                         mythis._tmp._diffs[el._id] = el
                         mythis.db.put('_diffs', el).done ()->
                           $timeout ()->
                             $rootScope.$emit 'refresh_editor'
+                            __log.warn 'syncApply', '!= Попросил редактор обновиться SHA1 ERROR', { doc }
                           , 100
                           mythis.saving_diff_busy = false
-                          console.info 'diff_saved NEW'
               else
                 #добавление нового элемента в базу
                 if confirm_element._doc
-                  mythis._db[db_name][confirm_element._doc._id] = confirm_element._doc
                   mythis.clearCache();
+                  mythis._db[db_name][confirm_element._doc._id] = confirm_element._doc
                   mythis.db.put(db_name, confirm_element._doc).done (err)->
-                    console.info 'saved_to_db ', err
+                    __log.info 'saved_to_db ', err
 
 
       dfd.resolve();
@@ -1058,7 +1063,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       async.each mythis.store_schema, (table_schema, callback)->
         db_name = table_schema.name;
         if db_name[0] != '_'
-          console.info { db_name }
+          __log.info { db_name }
           max_element = _.max mythis._db[db_name], (el)->
             if el._new
               new_db_elements[db_name] = {} if !new_db_elements[db_name]
@@ -1080,15 +1085,14 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       mythis = @;
       if !mythis.sync_now
         mythis.sync_now = true
-        $timeout ()->
-          mythis.sync_now = false
-        , 2000
-        console.info 'New syncing...'
+        console.time 'sync_long' if __log.show_time_long
+        sync_id = Math.round(Math.random()*100);
+        __log.info '('+sync_id+') New syncing...';
 
         @getDiffsForSync().then (diffs)->
           if $socket.is_online() and false
             mythis.syncThrough('websocket', data).then ()->
-              console.info 'sync_socket_ended';
+              __log.info 'sync_socket_ended';
               mythis.sync_now = false
               dfd.resolve();
           else
@@ -1097,14 +1101,15 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                 mythis.refreshParentsIndex();
                 mythis.sync_now = false
                 dfd.resolve();
-                console.info 'sha1 applyed';
-                console.info 'STOP syncing...'
+                __log.info 'sha1 applyed';
+                __log.info '('+sync_id+') STOP syncing...';
+                console.time 'sync_long' if __log.show_time_long
       else
-        console.info 'cant sync now, already syncing...................'
+        __log.warn 'cant sync now, already syncing...................'
       dfd.promise
 
     sendDiffToWeb: (diffs)->
-      console.info 'Sending: ', JSON.stringify(diffs)?.length
+      __log.info 'Sending: ', JSON.stringify(diffs)?.length
       dfd = $q.defer();
       mythis = @;
       mythis.getLastSyncTime().then (last_sync_time_and_new)->
@@ -1113,7 +1118,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         sha1_sign = $rootScope.$$childTail.set.machine + mythis.JSON_stringify({diffs, new_db_elements})._sha1;
         oAuth2Api.jsGetToken().then (token)->
           $http({
-            url: $rootScope.$$childTail.set.server+'/api/v2/sync',
+            url: $rootScope.$$childTail.set.server + '/api/v2/sync',
             method: "POST",
             isArray: true,
             params:
@@ -1128,19 +1133,19 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           }).then (result)->
             dfd.resolve result.data
         dfd.promise
-    backup_elements_before_sync: {}
+    before_sync: {}
     getDiffsForSync: ()->
       dfd = $q.defer()
       mythis = @
       diffs = mythis._tmp._diffs
-      mythis.backup_elements_before_sync = {}
+      mythis.before_sync = {}
       if !!diffs
         async.each Object.keys(diffs), (dif_id, callback)->
           dif = diffs[dif_id]
-          console.info 'dif = ', dif
+          __log.info 'dif = ', dif
           mythis.getElement(dif.db_name, dif._id).then (now_element)->
-            mythis.backup_elements_before_sync[dif._id] = JSON.parse(JSON.stringify(now_element))
-            console.info 'backup = ', now_element.text
+            mythis.before_sync[dif._id] = JSON.parse(JSON.stringify(now_element))
+            __log.info 'backup = ', now_element.text
             callback();
         , ()->
           dfd.resolve(diffs);
@@ -1151,17 +1156,17 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     TestJson: ()->
       mythis = @;
       $timeout ()->
-        console.info 'start test JSON'
-        console.time 'JSON_test'
+        __log.info 'start test JSON'
+        console.time 'JSON_test' if __log.show_time_long
         _.each ['tree', 'tasks', 'texts'], (db_name)->
           i = 0;
           _.each mythis._db[db_name], (element)->
             answer = mythis.JSON_stringify element
             if answer._sha1 != element._sha1
-              console.info 'SHA1 error [' + i + ']', element, answer
+              __log.info 'SHA1 error [' + i + ']', element, answer
               i++;
-          console.info 'Congratulations.. ' + db_name + ' is equal...' if i == 0
-        console.timeEnd 'JSON_test'
+          __log.info 'Congratulations.. ' + db_name + ' is equal...' if i == 0
+        console.timeEnd 'JSON_test' if __log.show_time_long
       , 3000
     JSON_stringify: (json)->
       isObject = (a) ->

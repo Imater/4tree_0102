@@ -5,17 +5,27 @@
   angular.module("4treeApp").controller("MainCtrl", [
     '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', 'cryptApi', '$socket', 'oAuth2Api', 'mySettings', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi, cryptApi, $socket, oAuth2Api, mySettings) {
       var pas1_encrypted, pasA, pasB, pubKey, sendtoA, sendtoB, set_pomidors;
+      __log.show_time_long = false;
+      __log.setLevel('warn');
+
+      /*
+      "trace",
+      "debug",
+      "info",
+      "warn",
+      "error"
+       */
       if (false) {
         pasA = "sex";
         pubKey = "lexus";
         pasB = "hello";
-        console.info('sha3(pasA)', sendtoB = cryptApi.sha3(pasA + pubKey));
-        console.info('sha3(pasB)', sendtoA = cryptApi.sha3(pasB + pubKey));
-        console.info("SEND TO B", sendtoB);
-        console.info('sha3(pasA)+sha3(pasB)1 = ', cryptApi.sha3(cryptApi.sha3(pasA + pubKey) + sendtoA));
-        console.info('sha3(pasA)+sha3(pasB)2 = ', cryptApi.sha3(sendtoB + cryptApi.sha3(pasB + pubKey)));
+        __log.info('sha3(pasA)', sendtoB = cryptApi.sha3(pasA + pubKey));
+        __log.info('sha3(pasB)', sendtoA = cryptApi.sha3(pasB + pubKey));
+        __log.info("SEND TO B", sendtoB);
+        __log.info('sha3(pasA)+sha3(pasB)1 = ', cryptApi.sha3(cryptApi.sha3(pasA + pubKey) + sendtoA));
+        __log.info('sha3(pasA)+sha3(pasB)2 = ', cryptApi.sha3(sendtoB + cryptApi.sha3(pasB + pubKey)));
         pas1_encrypted = cryptApi.encrypt(pasA, 0);
-        console.info('ENCRYPT', {
+        __log.info('ENCRYPT', {
           pas1_encrypted: pas1_encrypted
         }, cryptApi.decrypt(pas1_encrypted));
       }
@@ -26,11 +36,11 @@
         });
       });
       $socket.on('file_loaded', $scope, function(data) {
-        return console.info('File Loaded', data);
+        return __log.info('File Loaded', data);
       });
       $socket.on('need_sync', $scope, function(data, fn) {
         fn('success');
-        console.info('sync_data', data);
+        __log.info('sync_data', data);
         return syncApi.jsUpdateDb(data);
       });
       $socket.on('need_sync_now', $scope, function(data) {
@@ -176,7 +186,7 @@
       };
       $rootScope.$on('tree_loaded', function(e) {
         if (false) {
-          return console.info(db_tree.diaryFind(new Date()));
+          return __log.info(db_tree.diaryFind(new Date()));
         }
       });
       $scope.fn = {
@@ -226,7 +236,7 @@
         loadTags: function(query) {
           var dfd;
           dfd = $q.defer();
-          console.info(query);
+          __log.info(query);
           dfd.resolve(_.filter(this.tags, function(el) {
             return el.indexOf(query) !== -1;
           }));
@@ -271,14 +281,14 @@
         },
         jsTreeFocus: function(id) {
           $scope.set.main_parent_id[$scope.set.focus] = id;
-          console.info('focus ', id);
+          __log.info('focus ', id);
           return $scope.db.tree_path = db_tree.jsGetPath(id);
         },
         jsClosePomidor: function() {
           if ($scope.set.show_pomidor_timer) {
             $scope.set.show_pomidor_timer = false;
           }
-          return console.info('close');
+          return __log.info('close');
         },
         jsGetTimeRest: function(dif) {
           var minutes, seconds;
@@ -556,7 +566,7 @@
 
     /*
     $scope.$watch "db.main_node[set.focus_edit]", ()->
-      console.info 8888
+      __log.info 8888
       if !_.isEqual( new_value, old_value )
         $rootScope.$emit("jsFindAndSaveDiff",'tree', new_value, old_value);
     , true
@@ -634,7 +644,7 @@
     }, 600);
     mythis = this;
     $rootScope.$on('sync_ended', function(event) {
-      console.info('hello, im change');
+      __log.info('hello, im change');
       if (!$scope.dont_need_highlight) {
         return $timeout(function() {
           return show_search_result($scope.search_box, $scope.dont_need_highlight);
@@ -662,13 +672,13 @@
         };
         if (['-', '=', '+', '/', '*', ' '].indexOf(new_value[new_value.length - 1]) !== -1) {
           new_value = new_value.substr(0, new_value.length - 1);
-          console.info('s', {
+          __log.info('s', {
             new_value: new_value
           });
         }
         try {
           if (new_value.indexOf('+') === -1 && new_value.indexOf('-') === -1 && new_value.indexOf('/') === -1 && new_value.indexOf('*') === -1) {
-            console.info('error!!!');
+            __log.info('error!!!');
             throw "dont calculate!";
           }
           calc_answer = Parser.evaluate(new_value.replace(/,/ig, '.').replace(/\s/ig, ''));
@@ -678,7 +688,7 @@
           return $scope.show_calc = true;
         } catch (_error) {
           error = _error;
-          console.info({
+          __log.info({
             error: error
           });
           show_search_result(new_value, $scope.dont_need_highlight);
@@ -694,7 +704,7 @@
    */
 
   sex = function(a, b) {
-    return console.info(a + b);
+    return __log.info(a + b);
   };
 
   angular.module("4treeApp").value("fooConfig", {

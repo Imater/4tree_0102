@@ -21,14 +21,13 @@
           var parsed;
           parsed = JSON.parse(oauth_saved);
           if (!parsed.expire_time) {
-            console.info('token none');
+            __log.warn('token none');
             return false;
           }
           if (new Date(parsed.expire_time) <= new Date()) {
-            console.info('token is expired');
+            __log.warn('token is expired');
             return parsed;
           } else {
-            console.info('token is valid');
             return false;
           }
         },
@@ -57,7 +56,7 @@
         jsGetRemoteTokenByRefreshToken: function(refresh_token) {
           var dfd;
           dfd = $q.defer();
-          console.info("REFRESH TOKEN = ", refresh_token);
+          __log.warn("REFRESH TOKEN = ", refresh_token);
           $http({
             url: $rootScope.$$childTail.set.server + '/api/v2/oauth/token',
             method: "POST",

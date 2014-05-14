@@ -13,8 +13,9 @@ class MySettingsClass
   # @author Вецель Евгений
   # @example Move an animal
   #   new Lion('Simba').move('south', 12)  
-  set: {
-    #новый параметр
+  set:
+  {
+  #новый параметр
     hello: 'hello!!!'
   }
 

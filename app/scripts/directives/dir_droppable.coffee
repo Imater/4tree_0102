@@ -52,9 +52,9 @@ angular.module("4treeApp").directive "renderNote", ($timeout, db_tree)->
 
 angular.module("4treeApp").directive "renderTime", ($timeout)->
   link: (scope, el, attr) ->
-    console.time 'renderTimeALL'
+    console.time 'renderTimeALL' if __log.show_time_long
     $timeout ()->
-      console.timeEnd 'renderTimeALL'¢
+      console.timeEnd 'renderTimeALL' if __log.show_time_long
 
 
 angular.module("4treeApp").directive "mySortable", ->
