@@ -9,11 +9,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/config.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/server.coffee" afterPath="$PROJECT_DIR$/server/server.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/_js/server.js" afterPath="$PROJECT_DIR$/server/_js/server.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/_js/server.map" afterPath="$PROJECT_DIR$/server/_js/server.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="56ee746e-8f1d-4d4a-a92c-f05706cc2e69" name="Rejected commit: Default" comment="Пробую сделать коммит" />
@@ -3984,8 +3979,8 @@
           <file leaf-file-name="server.coffee" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/server/server.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.6522727" vertical-offset="8623" max-vertical-offset="14264">
-                  <caret line="495" column="32" selection-start-line="495" selection-start-column="32" selection-end-line="495" selection-end-column="32" />
+                <state vertical-scroll-proportion="0.775" vertical-offset="8623" max-vertical-offset="14264">
+                  <caret line="498" column="83" selection-start-line="498" selection-start-column="83" selection-end-line="498" selection-end-column="83" />
                   <folding />
                 </state>
               </provider>
@@ -4752,7 +4747,11 @@
       <created>1400063580401</created>
       <updated>1400063580401</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Перенёс все пароли в config">
+      <created>1400077723876</created>
+      <updated>1400077723876</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TodoView" selected-index="2">
@@ -4857,7 +4856,6 @@
       <TodoPanelSettings />
     </option>
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
-    <MESSAGE value="Научился работать с моча - тесты" />
     <MESSAGE value="Синхронизация заработала" />
     <MESSAGE value="Новые дела добавляются в базу" />
     <MESSAGE value="Добавление через синхронизацию работает. Делаю сортировку." />
@@ -4882,7 +4880,8 @@
     <MESSAGE value="Поставил логи на синхронизацию в браузер" />
     <MESSAGE value="Делаю синхронизацию. Глюк при отслеживании изменений во время синхронизации." />
     <MESSAGE value="Настраиваю синхронизацию" />
-    <option name="LAST_COMMIT_MESSAGE" value="Настраиваю синхронизацию" />
+    <MESSAGE value="Перенёс все пароли в config" />
+    <option name="LAST_COMMIT_MESSAGE" value="Перенёс все пароли в config" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -5280,8 +5279,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/server.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6522727" vertical-offset="8623" max-vertical-offset="14264">
-          <caret line="495" column="32" selection-start-line="495" selection-start-column="32" selection-end-line="495" selection-end-column="32" />
+        <state vertical-scroll-proportion="0.775" vertical-offset="8623" max-vertical-offset="14264">
+          <caret line="498" column="83" selection-start-line="498" selection-start-column="83" selection-end-line="498" selection-end-column="83" />
           <folding />
         </state>
       </provider>
