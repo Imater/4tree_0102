@@ -5,6 +5,7 @@
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/walk_through_frames.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/stdin-stdout-stderr.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/printheaderfooter.js" />
+        <item url="file://$PROJECT_DIR$/server/_js/config.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/loadurlwithoutcss.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/render_multi_url.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/serverkeepalive.js" />
@@ -157,6 +158,7 @@
       <root url="file://$PROJECT_DIR$/node_modules/mongodb/deps/nodeunit/test/fixtures/coffee/_js/mock_coffee_module.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/walk_through_frames.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/stdin-stdout-stderr.js" />
+      <root url="file://$PROJECT_DIR$/server/_js/config.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/printheaderfooter.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/loadurlwithoutcss.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/render_multi_url.js" />
