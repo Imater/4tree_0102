@@ -34,6 +34,7 @@ customLevels = {
       level: 'sync'
     })
     new (winston.transports.Console)({ level: 'sync', colorize: 'true' })
+    new (winston.transports.File)({filename: 'mylog.log', level: 'sync'})
   ]
   levels: {
     sync: 0

@@ -1436,6 +1436,20 @@
           _.each(Object.keys(results), function(db_name) {
             var db_data;
             db_data = results[db_name];
+            if (db_data && _.isObject(db_data.not_found)) {
+              _.each(Object.keys(db_data.not_found), function(not_found) {
+                var sha1_of_not_found;
+                sha1_of_not_found = db_data.not_found[not_found];
+                console.error('NEED RESEND ALL ELEMENT NEXT TIME', not_found, sha1_of_not_found);
+                if (!mythis._tmp._send_doc_next_time) {
+                  mythis._tmp._send_doc_next_time = {};
+                }
+                if (!mythis._tmp._send_doc_next_time[db_name]) {
+                  mythis._tmp._send_doc_next_time[db_name] = {};
+                }
+                return mythis._tmp._send_doc_next_time[db_name][not_found] = sha1_of_not_found;
+              });
+            }
             if (db_data && _.isObject(db_data.confirm)) {
               return _.each(Object.keys(db_data.confirm), function(confirm_id) {
                 var confirm_element;
@@ -1445,7 +1459,7 @@
                 });
                 __log.debug('syncApply', 'Мне прислали _sha1 = ' + confirm_element._sha1, {});
                 return mythis.getElement(db_name, confirm_id).then(function(doc) {
-                  var old_doc, patch, sha1;
+                  var el, old_doc, patch, sha1, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
                   if (doc) {
                     __log.debug('syncApply', 'В своей базе (+patch) я нашёл _sha1 = ' + doc._sha1, {
                       doc: doc
@@ -1480,6 +1494,9 @@
                       if (mythis._tmp._diffs[confirm_id]) {
                         delete mythis._tmp._diffs[confirm_id];
                       }
+                      if ((_ref = mythis._tmp) != null ? (_ref1 = _ref._send_doc_next_time) != null ? (_ref2 = _ref1[db_name]) != null ? _ref2[confirm_id] : void 0 : void 0 : void 0) {
+                        delete mythis._tmp._send_doc_next_time[db_name][confirm_id];
+                      }
                       return mythis.db.remove('_diffs', confirm_id).done(function(err) {
                         __log.debug('syncApply', '_sha1 совпали. Удалил дифы в базе ', {
                           err: err
@@ -1497,18 +1514,19 @@
                           old_doc: old_doc
                         });
                       }
+                      __log.debug('EMPTY DOC RECIEVED!!! STRANGE');
                       if (confirm_element._doc) {
                         doc = confirm_element._doc;
-                      } else {
-                        __log.error('EMPTY DOC RECIEVED!!! STRANGE');
-                      }
-                      if (doc) {
                         __log.debug('syncApply', '!= С сервера прислали документ целиком, беру его. _sha1 = ' + doc._sha1, {
                           doc: doc
                         });
                         if (!old_doc || confirm_element.merged) {
+                          __log.warn('Прислали документ с мерджем!', confirm_element);
                           if (mythis._tmp._diffs[confirm_id]) {
                             delete mythis._tmp._diffs[confirm_id];
+                          }
+                          if ((_ref3 = mythis._tmp) != null ? (_ref4 = _ref3._send_doc_next_time) != null ? (_ref5 = _ref4[db_name]) != null ? _ref5[confirm_id] : void 0 : void 0 : void 0) {
+                            delete mythis._tmp._send_doc_next_time[db_name][confirm_id];
                           }
                           mythis.db.remove('_diffs', confirm_id).done(function(err) {
                             return __log.debug('syncApply', '_sha1 не совпали. Удалил дифы в базе, так как мне прислали новый элемент ', {
@@ -1531,6 +1549,8 @@
                             }, 100);
                           });
                         }
+                      } else {
+                        __log.warn('Документ целиком не прислали, просто подтвердили старое изменение, нужно удалить дифы до нового изменения');
                       }
                       if (old_doc && !confirm_element.merged && doc) {
                         __log.warn('syncApply', 'Данные есть в кеше, но sha1 другой!!!!!!!!!!!!!!!!', {
@@ -1550,33 +1570,32 @@
                           delete patch._tm;
                         }
                         __log.warn('PATCH = ', patch);
+                        if (patch) {
+                          el = {
+                            _id: confirm_id,
+                            patch: patch,
+                            db_name: db_name,
+                            _sha1: old_doc._sha1,
+                            user_id: $rootScope.$$childTail.set.user_id,
+                            machine: $rootScope.$$childTail.set.machine,
+                            _tm: new Date().getTime()
+                          };
+                          __log.warn('!!!!!!!!!!!SHA1!!!!!!', doc._sha1, doc);
+                          mythis.saving_diff_busy = true;
+                          mythis._tmp._diffs[el._id] = el;
+                        }
+                        mythis._db[db_name][confirm_id] = doc;
                         return mythis.db.put(db_name, old_doc).done(function(err) {
-                          var el;
-                          mythis._db[db_name][confirm_id] = doc;
-                          __log.warn('old_saved');
-                          if (patch) {
-                            el = {
-                              _id: confirm_id,
-                              patch: patch,
-                              db_name: db_name,
-                              _sha1: doc._sha1,
-                              user_id: $rootScope.$$childTail.set.user_id,
-                              machine: $rootScope.$$childTail.set.machine,
-                              _tm: new Date().getTime()
-                            };
-                            __log.warn('!!!!!!!!!!!SHA1!!!!!!', doc._sha1, doc);
-                            mythis.saving_diff_busy = true;
-                            mythis._tmp._diffs[el._id] = el;
-                            return mythis.db.put('_diffs', el).done(function() {
-                              $timeout(function() {
-                                $rootScope.$emit('refresh_editor');
-                                return __log.warn('syncApply', '!= Попросил редактор обновиться SHA1 ERROR', {
-                                  doc: doc
-                                });
-                              }, 100);
-                              return mythis.saving_diff_busy = false;
-                            });
-                          }
+                          __log.warn('old_saved _Sha1 = ', old_doc._sha1);
+                          return mythis.db.put('_diffs', el).done(function() {
+                            $timeout(function() {
+                              $rootScope.$emit('refresh_editor');
+                              return __log.warn('syncApply', '!= Попросил редактор обновиться SHA1 ERROR', {
+                                doc: doc
+                              });
+                            }, 100);
+                            return mythis.saving_diff_busy = false;
+                          });
                         });
                       }
                     }
@@ -1639,6 +1658,7 @@
           return dfd.promise;
         },
         sync_now: false,
+        sync_later: void 0,
         syncDiff: function() {
           var dfd, mythis, sync_id;
           dfd = $q.defer();
@@ -1673,6 +1693,11 @@
               }
             });
           } else {
+            clearTimeout(mythis.sync_later);
+            mythis.sync_later = setTimeout(function() {
+              mythis.syncDiff();
+              return __log.warn('SyncAgain...');
+            }, 100);
             __log.warn('cant sync now, already syncing...................');
           }
           return dfd.promise;
@@ -1726,9 +1751,24 @@
               dif = diffs[dif_id];
               __log.info('dif = ', dif);
               return mythis.getElement(dif.db_name, dif._id).then(function(now_element) {
+                var _ref, _ref1;
                 mythis.before_sync[dif._id] = JSON.parse(JSON.stringify(now_element));
-                __log.info('backup = ', now_element.text);
-                return callback();
+                mythis.before_sync[dif._id]._sha1 = mythis.JSON_stringify(mythis.before_sync[dif._id])._sha1;
+                __log.warn('backup = ', mythis.before_sync[dif._id]);
+                if ((_ref = mythis._tmp._send_doc_next_time) != null ? (_ref1 = _ref[dif.db_name]) != null ? _ref1[dif._id] : void 0 : void 0) {
+                  return mythis.getElementFromLocal(dif.db_name, dif._id).then(function(old_element) {
+                    var _ref2, _ref3;
+                    if (old_element._sha1 === ((_ref2 = mythis._tmp._send_doc_next_time) != null ? (_ref3 = _ref2[dif.db_name]) != null ? _ref3[dif._id] : void 0 : void 0)) {
+                      dif._doc = old_element;
+                      return callback();
+                    } else {
+                      console.error('strange, sha1 of local not equal');
+                      return callback();
+                    }
+                  });
+                } else {
+                  return callback();
+                }
               });
             }, function() {
               return dfd.resolve(diffs);

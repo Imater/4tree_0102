@@ -950,6 +950,14 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       mythis.clearCache();
       _.each Object.keys(results), (db_name)->
         db_data = results[db_name];
+        if db_data and _.isObject(db_data.not_found)
+          _.each Object.keys(db_data.not_found), (not_found)->
+            sha1_of_not_found = db_data.not_found[not_found]
+            console.error 'NEED RESEND ALL ELEMENT NEXT TIME', not_found, sha1_of_not_found
+            mythis._tmp._send_doc_next_time = {} if !mythis._tmp._send_doc_next_time
+            mythis._tmp._send_doc_next_time[db_name] = {} if !mythis._tmp._send_doc_next_time[db_name]
+            mythis._tmp._send_doc_next_time[db_name][not_found] = sha1_of_not_found
+
         if db_data and _.isObject(db_data.confirm)
           _.each Object.keys(db_data.confirm), (confirm_id)->
             #mythis.tmp_set(confirm_id).then ()->
@@ -978,6 +986,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                     __log.debug 'syncApply', '_sha1 совпали. Сохранил в базу данных ' + doc._sha1, { err, doc }
                   __log.debug 'syncApply', '_sha1 совпали. Удалил локальные дифы. ', {}
                   delete mythis._tmp._diffs[confirm_id] if mythis._tmp._diffs[confirm_id]
+                  delete mythis._tmp._send_doc_next_time[db_name][confirm_id] if mythis._tmp?._send_doc_next_time?[db_name]?[confirm_id]
                   mythis.db.remove('_diffs', confirm_id).done (err)->
                     __log.debug 'syncApply', '_sha1 совпали. Удалил дифы в базе ', { err }
                     dfd.resolve();
@@ -985,17 +994,18 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                   #sha1 в базе не совпадает с присланным с сервера
                   __log.debug 'syncApply', '!= _sha1 sha1 в базе не совпадает с присланным с сервера ' + sha1 + ' != (сервер)' + confirm_element._sha1, { doc, confirm_element }
                   old_doc = mythis.before_sync[doc._id];
-                  __log.debug 'syncApply', '!= Нашел элемент в бекапе _sha1 = ' + old_doc?._sha1, { old_doc } if old_doc
+                  if old_doc
+                    __log.debug 'syncApply', '!= Нашел элемент в бекапе _sha1 = ' + old_doc?._sha1, { old_doc }
                   #Если нам прислали документ целиком - значит это был merge
-                  if confirm_element._doc
+                  __log.debug 'EMPTY DOC RECIEVED!!! STRANGE';
+                  if (confirm_element._doc)
                     doc = confirm_element._doc
-                  else
-                    __log.error 'EMPTY DOC RECIEVED!!! STRANGE';
-                  if (doc)
                     __log.debug 'syncApply', '!= С сервера прислали документ целиком, беру его. _sha1 = ' + doc._sha1, { doc }
                     #Если его нет в бекапе, то просто сохраняю и стираю все изменения
                     if !old_doc or confirm_element.merged
+                      __log.warn 'Прислали документ с мерджем!', confirm_element
                       delete mythis._tmp._diffs[confirm_id] if mythis._tmp._diffs[confirm_id]
+                      delete mythis._tmp._send_doc_next_time[db_name][confirm_id] if mythis._tmp?._send_doc_next_time?[db_name]?[confirm_id]
                       mythis.db.remove('_diffs', confirm_id).done (err)->
                         __log.debug 'syncApply', '_sha1 не совпали. Удалил дифы в базе, так как мне прислали новый элемент ', { err }
                       mythis.copyObject(mythis._db[db_name][confirm_id], doc);
@@ -1006,6 +1016,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                           $rootScope.$emit 'refresh_editor'
                           __log.warn 'syncApply', '!= Попросил редактор обновиться ', { doc }
                         , 100
+                  else
+                    __log.warn 'Документ целиком не прислали, просто подтвердили старое изменение, нужно удалить дифы до нового изменения'
                   #Если данные в кеше и изменились
                   if old_doc and !confirm_element.merged and doc
                     __log.warn 'syncApply', 'Данные есть в кеше, но sha1 другой!!!!!!!!!!!!!!!!', { old_doc, doc }
@@ -1016,29 +1028,31 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                     delete patch._sha1 if patch and patch._sha1
                     delete patch._tm if patch and patch._tm
                     __log.warn 'PATCH = ', patch
+
+                    if patch
+                      el = {
+                        _id: confirm_id
+                        patch: patch
+                        db_name: db_name
+                        _sha1: old_doc._sha1
+                        user_id: $rootScope.$$childTail.set.user_id
+                        machine: $rootScope.$$childTail.set.machine
+                        _tm: new Date().getTime()
+                      }
+                      __log.warn '!!!!!!!!!!!SHA1!!!!!!', doc._sha1, doc
+                      #если синхронизация уже идёт, то изменения пока не сохраняем
+                      mythis.saving_diff_busy = true
+                      mythis._tmp._diffs[el._id] = el
+
+                    mythis._db[db_name][confirm_id] = doc;
                     mythis.db.put(db_name, old_doc).done (err)->
-                      mythis._db[db_name][confirm_id] = doc;
-                      __log.warn 'old_saved'
-                      if patch
-                        el = {
-                          _id: confirm_id
-                          patch: patch
-                          db_name: db_name
-                          _sha1: doc._sha1
-                          user_id: $rootScope.$$childTail.set.user_id
-                          machine: $rootScope.$$childTail.set.machine
-                          _tm: new Date().getTime()
-                        }
-                        __log.warn '!!!!!!!!!!!SHA1!!!!!!', doc._sha1, doc
-                        #если синхронизация уже идёт, то изменения пока не сохраняем
-                        mythis.saving_diff_busy = true
-                        mythis._tmp._diffs[el._id] = el
-                        mythis.db.put('_diffs', el).done ()->
-                          $timeout ()->
-                            $rootScope.$emit 'refresh_editor'
-                            __log.warn 'syncApply', '!= Попросил редактор обновиться SHA1 ERROR', { doc }
-                          , 100
-                          mythis.saving_diff_busy = false
+                      __log.warn 'old_saved _Sha1 = ', old_doc._sha1
+                      mythis.db.put('_diffs', el).done ()->
+                        $timeout ()->
+                          $rootScope.$emit 'refresh_editor'
+                          __log.warn 'syncApply', '!= Попросил редактор обновиться SHA1 ERROR', { doc }
+                        , 100
+                        mythis.saving_diff_busy = false
               else
                 #добавление нового элемента в базу
                 if confirm_element._doc
@@ -1053,7 +1067,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
 
 
-
+    #Определяет последнее время синхронизации и новые элементы
     getLastSyncTime: ()->
       dfd = $q.defer();
       max_time = new Date(2013, 3, 1);
@@ -1080,6 +1094,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         dfd.resolve { last_sync_time: max_time, new_db_elements }
       dfd.promise;
     sync_now: false
+    sync_later: undefined
     syncDiff: ()->
       dfd = $q.defer();
       mythis = @;
@@ -1105,6 +1120,11 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                 __log.info '('+sync_id+') STOP syncing...';
                 console.time 'sync_long' if __log.show_time_long
       else
+        clearTimeout mythis.sync_later
+        mythis.sync_later = setTimeout ()->
+          mythis.syncDiff();
+          __log.warn 'SyncAgain...'
+        , 100
         __log.warn 'cant sync now, already syncing...................'
       dfd.promise
 
@@ -1145,8 +1165,19 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           __log.info 'dif = ', dif
           mythis.getElement(dif.db_name, dif._id).then (now_element)->
             mythis.before_sync[dif._id] = JSON.parse(JSON.stringify(now_element))
-            __log.info 'backup = ', now_element.text
-            callback();
+            mythis.before_sync[dif._id]._sha1 = mythis.JSON_stringify( mythis.before_sync[dif._id] )._sha1
+            __log.warn 'backup = ', mythis.before_sync[dif._id]
+            #если сервер просил отправить элемент целиком
+            if mythis._tmp._send_doc_next_time?[dif.db_name]?[dif._id]
+              mythis.getElementFromLocal(dif.db_name, dif._id).then (old_element)->
+                if old_element._sha1 == mythis._tmp._send_doc_next_time?[dif.db_name]?[dif._id]
+                  dif._doc = old_element;
+                  callback();
+                else
+                  console.error 'strange, sha1 of local not equal'
+                  callback();
+            else
+              callback();
         , ()->
           dfd.resolve(diffs);
       else

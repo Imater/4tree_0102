@@ -63,6 +63,7 @@ sync = {
     delta1 = diff.patch
     #Находим старый текст с такой же контрольной суммой
     Diff.findOne {_sha1: diff._sha1, db_id: diff._id}, undefined, (err, doc0)->
+      doc0 = { new_body: diff._doc } if !doc0 and diff._doc
       if (doc0)
         MYLOG.log 'sync', 'Merge: Нашёл в базе diff', { new_body: doc0.new_body }
         doc1 = jsondiffpatch.patch( doc0.new_body, delta1)
@@ -185,16 +186,22 @@ exports.fullSyncUniversal = (req, res)->
                   confirm_count++;
                   callback()
               else
-                #тут нужно разобраться
+                #в основной базе нет, буду искать в диффах
                 MYLOG.log 'sync', 'DIFFS: 2. В основоной базе нет, запускаю Merge...'
                 if diff
                   sync.Merge(diff).then (doc)->
+                    send_to_client[diff.db_name] = { confirm: {} } if !send_to_client[diff.db_name]
                     if doc
-                      send_to_client[diff.db_name] = { confirm: {} } if !send_to_client[diff.db_name]
                       send_to_client[diff.db_name]['confirm'][doc._id] = { _sha1: doc._sha1, _tm: doc._tm, _doc: doc, merged: true }
                       confirm_count++;
                       MYLOG.log 'sync', 'DIFFS: 2. Merge применён, подтверждаю', {doc, send_to_client}
-                    callback()
+                      callback()
+                    else
+                      #Если не найден в дифах, попрошу клиента прислать ещё раз
+                      send_to_client[diff.db_name].not_found = {} if !send_to_client[diff.db_name].not_found
+                      send_to_client[diff.db_name].not_found[diff._id] = diff._sha1;
+                      MYLOG.log 'sync', 'NOT FOUND IN DIFFS, NEED RESEND', diff._id;
+                      callback()
                 else
                   callback()
 
@@ -213,10 +220,15 @@ exports.fullSyncUniversal = (req, res)->
                       confirm._doc = doc
                       confirm.becouse_new = true
                   else
-                    MYLOG.log 'sync', 'NEW: Нашли НОВЫЙ элемент, будем отправлять клиенту', {doc}
-                    send_to_client[db_name] = { confirm: {} } if !send_to_client[db_name]
-                    send_to_client[db_name]['confirm'][doc._id] = { _sha1: doc._sha1, _tm: doc._tm, _doc: doc, just_new: true }
-                    MYLOG.log 'sync', 'NEW: Нашли НОВЫЙ элемент, будем отправлять клиенту send_to_client[db_name][confirm][doc._id]', {send_to_client: send_to_client[db_name]['confirm'][doc._id]}
+                    console.info 'EEEEE = ', { doc, send_to_client }, !(send_to_client[db_name] and send_to_client[db_name].not_found and send_to_client[db_name].not_found[doc._id])
+                    if !(send_to_client[db_name] and send_to_client[db_name].not_found and send_to_client[db_name].not_found[doc._id])
+                      #Если элемент найден в диффах, если нет, мы уже попросили клиента прислать данные целиком
+                      MYLOG.log 'sync', 'NEW: Нашли НОВЫЙ элемент, будем отправлять клиенту', {doc}
+                      send_to_client[db_name] = { confirm: {} } if !send_to_client[db_name]
+                      send_to_client[db_name]['confirm'][doc._id] = { _sha1: doc._sha1, _tm: doc._tm, _doc: doc, just_new: true }
+                      MYLOG.log 'sync', 'NEW: Нашли НОВЫЙ элемент, будем отправлять клиенту send_to_client[db_name][confirm][doc._id]', {send_to_client: send_to_client[db_name]['confirm'][doc._id]}
+                    else
+                      MYLOG.log 'sync', 'Не подтверждаю, так как нужен элемент целиком'
                   callback2();
                 , (docs_filtered)->
                   callback();

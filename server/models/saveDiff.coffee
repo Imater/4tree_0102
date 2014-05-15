@@ -39,8 +39,8 @@ exports.saveDiff = (db_name, new_data, old_data)->
     
     new Diff(dif).save (err, doc)->
       console.info 'DIFF SAVED', err, doc if false
+      dfd.resolve();
     #console.info "PATCH = ", patch, '!!!!!!!!', new_data._machine
-    dfd.resolve();
   else
     dfd.resolve();
   dfd.promise()

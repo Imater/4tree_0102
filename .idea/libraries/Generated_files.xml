@@ -4,8 +4,8 @@
       <sourceFilesUrls>
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/walk_through_frames.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/stdin-stdout-stderr.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/printheaderfooter.js" />
         <item url="file://$PROJECT_DIR$/server/_js/config.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/printheaderfooter.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/loadurlwithoutcss.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/render_multi_url.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/serverkeepalive.js" />
@@ -52,8 +52,8 @@
         <item url="file://$PROJECT_DIR$/app/others/_js/ngSocket.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/postserver.js" />
         <item url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/coa/src/_js/completion.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/coa/src/_js/arg.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/useragent.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/coa/src/_js/arg.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/colorwheel.js" />
         <item url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_task_settings.js" />
         <item url="file://$PROJECT_DIR$/app/scripts/directives/_js/tast_settings.js" />
@@ -73,6 +73,7 @@
         <item url="file://$PROJECT_DIR$/node_modules/grunt-newer/test/fixtures/newer-clean-dest/src/_js/one.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/render_multi_url.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/serverkeepalive.js" />
+        <item url="file://$PROJECT_DIR$/server/models/_js/saveDiff.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/phantomwebintro.js" />
         <item url="file://$PROJECT_DIR$/app/bower_components/angular-ui-scroll/_js/angular-ui-scroll.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/outputEncoding.js" />
@@ -102,6 +103,7 @@
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/page_events.js" />
         <item url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_droppable.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/detectsniff.js" />
+        <item url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_smartRedactor.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/seasonfood.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/postserver.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/echoToFile.js" />
@@ -158,8 +160,8 @@
       <root url="file://$PROJECT_DIR$/node_modules/mongodb/deps/nodeunit/test/fixtures/coffee/_js/mock_coffee_module.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/walk_through_frames.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/stdin-stdout-stderr.js" />
-      <root url="file://$PROJECT_DIR$/server/_js/config.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/printheaderfooter.js" />
+      <root url="file://$PROJECT_DIR$/server/_js/config.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/loadurlwithoutcss.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/render_multi_url.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/serverkeepalive.js" />
@@ -206,8 +208,8 @@
       <root url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/coa/src/_js/color.js" />
       <root url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/coa/src/_js/completion.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/postserver.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/useragent.js" />
       <root url="file://$PROJECT_DIR$/node_modules/grunt-svgmin/node_modules/svgo/node_modules/coa/src/_js/arg.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/useragent.js" />
       <root url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_task_settings.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/colorwheel.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/run-qunit.js" />
@@ -226,6 +228,7 @@
       <root url="file://$PROJECT_DIR$/node_modules/grunt-newer/test/fixtures/newer-clean-dest/src/_js/two.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/render_multi_url.js" />
       <root url="file://$PROJECT_DIR$/node_modules/grunt-newer/test/fixtures/newer-clean-dest/src/_js/one.js" />
+      <root url="file://$PROJECT_DIR$/server/models/_js/saveDiff.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/serverkeepalive.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/phantomwebintro.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/outputEncoding.js" />
@@ -255,6 +258,7 @@
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/run-jasmine.js" />
       <root url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_droppable.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/page_events.js" />
+      <root url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_smartRedactor.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/detectsniff.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/seasonfood.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/postserver.js" />

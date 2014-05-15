@@ -108,6 +108,11 @@
         db_id: diff._id
       }, void 0, function(err, doc0) {
         var doc1;
+        if (!doc0 && diff._doc) {
+          doc0 = {
+            new_body: diff._doc
+          };
+        }
         if (doc0) {
           MYLOG.log('sync', 'Merge: Нашёл в базе diff', {
             new_body: doc0.new_body
@@ -329,12 +334,12 @@
                   MYLOG.log('sync', 'DIFFS: 2. В основоной базе нет, запускаю Merge...');
                   if (diff) {
                     return sync.Merge(diff).then(function(doc) {
+                      if (!send_to_client[diff.db_name]) {
+                        send_to_client[diff.db_name] = {
+                          confirm: {}
+                        };
+                      }
                       if (doc) {
-                        if (!send_to_client[diff.db_name]) {
-                          send_to_client[diff.db_name] = {
-                            confirm: {}
-                          };
-                        }
                         send_to_client[diff.db_name]['confirm'][doc._id] = {
                           _sha1: doc._sha1,
                           _tm: doc._tm,
@@ -346,8 +351,15 @@
                           doc: doc,
                           send_to_client: send_to_client
                         });
+                        return callback();
+                      } else {
+                        if (!send_to_client[diff.db_name].not_found) {
+                          send_to_client[diff.db_name].not_found = {};
+                        }
+                        send_to_client[diff.db_name].not_found[diff._id] = diff._sha1;
+                        MYLOG.log('sync', 'NOT FOUND IN DIFFS, NEED RESEND', diff._id);
+                        return callback();
                       }
-                      return callback();
                     });
                   } else {
                     return callback();
@@ -385,23 +397,31 @@
                         confirm.becouse_new = true;
                       }
                     } else {
-                      MYLOG.log('sync', 'NEW: Нашли НОВЫЙ элемент, будем отправлять клиенту', {
-                        doc: doc
-                      });
-                      if (!send_to_client[db_name]) {
-                        send_to_client[db_name] = {
-                          confirm: {}
+                      console.info('EEEEE = ', {
+                        doc: doc,
+                        send_to_client: send_to_client
+                      }, !(send_to_client[db_name] && send_to_client[db_name].not_found && send_to_client[db_name].not_found[doc._id]));
+                      if (!(send_to_client[db_name] && send_to_client[db_name].not_found && send_to_client[db_name].not_found[doc._id])) {
+                        MYLOG.log('sync', 'NEW: Нашли НОВЫЙ элемент, будем отправлять клиенту', {
+                          doc: doc
+                        });
+                        if (!send_to_client[db_name]) {
+                          send_to_client[db_name] = {
+                            confirm: {}
+                          };
+                        }
+                        send_to_client[db_name]['confirm'][doc._id] = {
+                          _sha1: doc._sha1,
+                          _tm: doc._tm,
+                          _doc: doc,
+                          just_new: true
                         };
+                        MYLOG.log('sync', 'NEW: Нашли НОВЫЙ элемент, будем отправлять клиенту send_to_client[db_name][confirm][doc._id]', {
+                          send_to_client: send_to_client[db_name]['confirm'][doc._id]
+                        });
+                      } else {
+                        MYLOG.log('sync', 'Не подтверждаю, так как нужен элемент целиком');
                       }
-                      send_to_client[db_name]['confirm'][doc._id] = {
-                        _sha1: doc._sha1,
-                        _tm: doc._tm,
-                        _doc: doc,
-                        just_new: true
-                      };
-                      MYLOG.log('sync', 'NEW: Нашли НОВЫЙ элемент, будем отправлять клиенту send_to_client[db_name][confirm][doc._id]', {
-                        send_to_client: send_to_client[db_name]['confirm'][doc._id]
-                      });
                     }
                     return callback2();
                   }, function(docs_filtered) {

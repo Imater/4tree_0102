@@ -30,7 +30,7 @@
             boldTag: 'b'
             changeCallback: _.debounce (value)->
               updateModel(value);
-            , 100
+            , 3
             imageUpload: '/api/v1/uploadImage/?id='+$rootScope.$$childTail.set.user_id
             clipboardUploadUrl: '/api/v1/uploadImage/?id='+$rootScope.$$childTail.set.user_id
           }
@@ -77,24 +77,25 @@
 
           $rootScope.$on 'refresh_editor', _.debounce (value)->
               db_tree.getText( ngModel.$viewValue ).then (text_element)->
-                
-                #offset = $_element.redactor("getCaretOffset", parent)
-                #console.info $_element.redactor "getBlock", $_element.redactor "getParent"
-                #index = $(parent).index();
-                old_position = getCurrent();
-                if old_position.first_parent and old_position.first_parent.length
-                  offset = $_element.redactor("getCaretOffset", old_position.first_parent[0] )
-                else
-                  offset = 0
-                $_element.redactor "set", text_element?.text or "", false
-                old_element = setCurrent( old_position );
-                if old_element and old_element.html()
-                  if offset > old_element.html().length
-                    offset = old_element.html().length;
-                  try 
-                    $_element.redactor "setCaret", old_element, offset if old_element.length
-                  catch
-                    console.info 'error of caret'
+                if text_element?.text != $_element.redactor "get"
+                  #offset = $_element.redactor("getCaretOffset", parent)
+                  #console.info $_element.redactor "getBlock", $_element.redactor "getParent"
+                  #index = $(parent).index();
+                  old_position = getCurrent();
+                  if old_position.first_parent and old_position.first_parent.length
+                    offset = $_element.redactor("getCaretOffset", old_position.first_parent[0] )
+                  else
+                    offset = 0
+
+                  $_element.redactor "set", text_element?.text or "", false
+                  old_element = setCurrent( old_position );
+                  if old_element and old_element.html()
+                    if offset > old_element.html().length
+                      offset = old_element.html().length;
+                    try
+                      $_element.redactor "setCaret", old_element, offset if old_element.length
+                    catch
+                      console.info 'error of caret'
                 #txt = $(parent).html();
                 #find_again = $_element.find( '*:contains('+txt.substr(0,txt.length-1)+')' ); 
                 #'*:eq('+index+')'
