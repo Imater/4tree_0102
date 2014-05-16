@@ -847,7 +847,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
     'jsStartSyncInWhile': _.debounce ()->
       @syncDiff() if false or $rootScope.$$childTail.set.autosync_on
-    , 50
+    , 1000
+    'jsStartSyncRightNow': _.debounce ()->
+      @syncDiff() if false or $rootScope.$$childTail.set.autosync_on
+    , 10
     saveDiff: _.throttle (db_name, _id)->
       mythis = @;
       #__log.info 'save_diff starting.....' + _id;
@@ -1003,7 +1006,9 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                     __log.debug 'syncApply', '!= С сервера прислали документ целиком, беру его. _sha1 = ' + doc._sha1, { doc }
                     #Если его нет в бекапе, то просто сохраняю и стираю все изменения
                     if !old_doc or confirm_element.merged
-                      __log.warn 'Прислали документ с мерджем!', confirm_element
+                      __log.debug 'Прислали документ с мерджем!', confirm_element
+                      machine_id = $rootScope.$$childTail.set.machine
+                      alert('merged') if confirm_element.merged and machine_id == '7829517'
                       delete mythis._tmp._diffs[confirm_id] if mythis._tmp._diffs[confirm_id]
                       delete mythis._tmp._send_doc_next_time[db_name][confirm_id] if mythis._tmp?._send_doc_next_time?[db_name]?[confirm_id]
                       mythis.db.remove('_diffs', confirm_id).done (err)->
@@ -1124,7 +1129,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         mythis.sync_later = setTimeout ()->
           mythis.syncDiff();
           __log.warn 'SyncAgain...'
-        , 100
+        , 500
         __log.warn 'cant sync now, already syncing...................'
       dfd.promise
 
@@ -1158,6 +1163,9 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       dfd = $q.defer()
       mythis = @
       diffs = mythis._tmp._diffs
+      machine_id = $rootScope.$$childTail.set.machine
+      if machine_id == '7829517' and diffs and Object.keys(diffs).length
+        alert('stop!');
       mythis.before_sync = {}
       if !!diffs
         async.each Object.keys(diffs), (dif_id, callback)->

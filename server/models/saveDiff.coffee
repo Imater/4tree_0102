@@ -2,6 +2,7 @@ mongoose = require("mongoose")
 
 require '../../models/_js/model_diff.js'
 Diff = mongoose.model('Diff');
+MYLOG = require('../../scripts/_js/mylog.js').mylog
 
 JSON_stringify = require '../../scripts/_js/JSON_stringify.js'
 $ = require('jquery')
@@ -38,7 +39,7 @@ exports.saveDiff = (db_name, new_data, old_data)->
       _tm: new_data._tm
     
     new Diff(dif).save (err, doc)->
-      console.info 'DIFF SAVED', err, doc if false
+      MYLOG.info 'DIFF SAVED', err, doc if false
       dfd.resolve();
     #console.info "PATCH = ", patch, '!!!!!!!!', new_data._machine
   else

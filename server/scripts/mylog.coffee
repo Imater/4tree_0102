@@ -27,14 +27,6 @@ winston.add(winston.transports.Logstash, {
 
 customLevels = {
   transports: [
-    new (winston.transports.Logstash)({
-      port: 28777,
-      node_name: 'my node name',
-      host: '127.0.0.1'
-      level: 'sync'
-    })
-    new (winston.transports.Console)({ level: 'sync', colorize: 'true' })
-    new (winston.transports.File)({filename: 'mylog.log', level: 'sync'})
   ]
   levels: {
     sync: 0
@@ -49,6 +41,18 @@ customLevels = {
     trace: 'magenta'
   }
 }
+
+level = 'error';
+
+customLevels.transports.push new (winston.transports.Logstash)({
+    port: 28777,
+    node_name: 'my node name',
+    host: '127.0.0.1'
+    level: level
+  })
+customLevels.transports.push new (winston.transports.Console)({ level: level, colorize: 'true' })
+customLevels.transports.push new (winston.transports.File)({filename: 'mylog.log', level: level})
+
 
 winston.addColors(customLevels.colors)
 

@@ -6,7 +6,7 @@
     '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', 'cryptApi', '$socket', 'oAuth2Api', 'mySettings', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi, cryptApi, $socket, oAuth2Api, mySettings) {
       var pas1_encrypted, pasA, pasB, pubKey, sendtoA, sendtoB, set_pomidors;
       __log.show_time_long = false;
-      __log.setLevel('trace');
+      __log.setLevel('error');
 
       /*
       "trace",
@@ -44,7 +44,7 @@
         return syncApi.jsUpdateDb(data);
       });
       $socket.on('need_sync_now', $scope, function(data) {
-        return db_tree.jsStartSyncInWhile();
+        return db_tree.jsStartSyncRightNow();
       });
       $socket.on('sync_answer', $scope, function(data) {
         return syncApi.jsUpdateDb(data).then(function() {
@@ -57,7 +57,7 @@
       $scope.set = {
         user_id: '5330ff92898a2b63c2f7095f',
         machine: localStorage.getItem('mongoMachineId'),
-        autosync_on: false,
+        autosync_on: true,
         server: "",
         today_date: new Date(),
         focus: 1,

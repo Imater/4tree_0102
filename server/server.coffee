@@ -105,7 +105,7 @@ else
 
   if false
     process.on 'uncaughtException', (error)->
-       console.info 'info', '\x1b[35mERROR:\x1b[0m', error.stack
+       MYLOG.info 'info', '\x1b[35mERROR:\x1b[0m', error.stack
 
   kue_cleanup = require('../scripts/kue_cleanup.js')
 

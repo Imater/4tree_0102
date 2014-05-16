@@ -103,7 +103,9 @@ exports.get2 = (req, res)->
 exports.get = (req, res)->
   MYLOG.profile 'Время исполнения синхронизации'
   exports.fullSyncUniversal(req, res).then (data_to_client)->
-    res.send(data_to_client);
+    setTimeout ()->
+      res.send(data_to_client);
+    , 0
     MYLOG.profile 'Время исполнения синхронизации'
 
 exports.fullSyncUniversal = (req, res)->
@@ -142,7 +144,6 @@ exports.fullSyncUniversal = (req, res)->
                 db_model = new DB_MODEL(doc)
                 MYLOG.log 'sync', 'NEW_DB_ELEMENTS: Документ подготовил ', {db_model}
                 db_model.save (err, saved)->
-                  console.info 'SAVED - ', err, saved
                   if saved
                     confirm_count++;
                     MYLOG.log 'sync', 'NEW_DB_ELEMENTS: Успешно сохранил в базу', { err, saved }
@@ -220,7 +221,6 @@ exports.fullSyncUniversal = (req, res)->
                       confirm._doc = doc
                       confirm.becouse_new = true
                   else
-                    console.info 'EEEEE = ', { doc, send_to_client }, !(send_to_client[db_name] and send_to_client[db_name].not_found and send_to_client[db_name].not_found[doc._id])
                     if !(send_to_client[db_name] and send_to_client[db_name].not_found and send_to_client[db_name].not_found[doc._id])
                       #Если элемент найден в диффах, если нет, мы уже попросили клиента прислать данные целиком
                       MYLOG.log 'sync', 'NEW: Нашли НОВЫЙ элемент, будем отправлять клиенту', {doc}

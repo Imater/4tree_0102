@@ -190,7 +190,9 @@
   exports.get = function(req, res) {
     MYLOG.profile('Время исполнения синхронизации');
     return exports.fullSyncUniversal(req, res).then(function(data_to_client) {
-      res.send(data_to_client);
+      setTimeout(function() {
+        return res.send(data_to_client);
+      }, 0);
       return MYLOG.profile('Время исполнения синхронизации');
     });
   };
@@ -245,7 +247,6 @@
                     db_model: db_model
                   });
                   return db_model.save(function(err, saved) {
-                    console.info('SAVED - ', err, saved);
                     if (saved) {
                       confirm_count++;
                       MYLOG.log('sync', 'NEW_DB_ELEMENTS: Успешно сохранил в базу', {
@@ -397,10 +398,6 @@
                         confirm.becouse_new = true;
                       }
                     } else {
-                      console.info('EEEEE = ', {
-                        doc: doc,
-                        send_to_client: send_to_client
-                      }, !(send_to_client[db_name] && send_to_client[db_name].not_found && send_to_client[db_name].not_found[doc._id]));
                       if (!(send_to_client[db_name] && send_to_client[db_name].not_found && send_to_client[db_name].not_found[doc._id])) {
                         MYLOG.log('sync', 'NEW: Нашли НОВЫЙ элемент, будем отправлять клиенту', {
                           doc: doc

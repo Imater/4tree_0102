@@ -1306,7 +1306,12 @@
           if (false || $rootScope.$$childTail.set.autosync_on) {
             return this.syncDiff();
           }
-        }, 50),
+        }, 1000),
+        'jsStartSyncRightNow': _.debounce(function() {
+          if (false || $rootScope.$$childTail.set.autosync_on) {
+            return this.syncDiff();
+          }
+        }, 10),
         saveDiff: _.throttle(function(db_name, _id) {
           var dfd, mythis;
           mythis = this;
@@ -1459,7 +1464,7 @@
                 });
                 __log.debug('syncApply', 'Мне прислали _sha1 = ' + confirm_element._sha1, {});
                 return mythis.getElement(db_name, confirm_id).then(function(doc) {
-                  var el, old_doc, patch, sha1, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+                  var el, machine_id, old_doc, patch, sha1, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
                   if (doc) {
                     __log.debug('syncApply', 'В своей базе (+patch) я нашёл _sha1 = ' + doc._sha1, {
                       doc: doc
@@ -1521,7 +1526,11 @@
                           doc: doc
                         });
                         if (!old_doc || confirm_element.merged) {
-                          __log.warn('Прислали документ с мерджем!', confirm_element);
+                          __log.debug('Прислали документ с мерджем!', confirm_element);
+                          machine_id = $rootScope.$$childTail.set.machine;
+                          if (confirm_element.merged && machine_id === '7829517') {
+                            alert('merged');
+                          }
                           if (mythis._tmp._diffs[confirm_id]) {
                             delete mythis._tmp._diffs[confirm_id];
                           }
@@ -1697,7 +1706,7 @@
             mythis.sync_later = setTimeout(function() {
               mythis.syncDiff();
               return __log.warn('SyncAgain...');
-            }, 100);
+            }, 500);
             __log.warn('cant sync now, already syncing...................');
           }
           return dfd.promise;
@@ -1740,10 +1749,14 @@
         },
         before_sync: {},
         getDiffsForSync: function() {
-          var dfd, diffs, mythis;
+          var dfd, diffs, machine_id, mythis;
           dfd = $q.defer();
           mythis = this;
           diffs = mythis._tmp._diffs;
+          machine_id = $rootScope.$$childTail.set.machine;
+          if (machine_id === '7829517' && diffs && Object.keys(diffs).length) {
+            alert('stop!');
+          }
           mythis.before_sync = {};
           if (!!diffs) {
             async.each(Object.keys(diffs), function(dif_id, callback) {

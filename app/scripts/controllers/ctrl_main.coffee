@@ -2,7 +2,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
 
   #уровень логирования
   __log.show_time_long = false; #замер производительности
-  __log.setLevel 'trace';
+  __log.setLevel 'error';
   ###
   "trace",
   "debug",
@@ -48,7 +48,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
 
   $socket.on 'need_sync_now', $scope, (data)->
     #db_tree.syncDiff();
-    db_tree.jsStartSyncInWhile()
+    db_tree.jsStartSyncRightNow()
 
   $socket.on 'sync_answer', $scope, (data) ->
     syncApi.jsUpdateDb(data).then ()->
@@ -64,7 +64,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   $scope.set = {
     user_id: '5330ff92898a2b63c2f7095f'
     machine: localStorage.getItem('mongoMachineId')
-    autosync_on: false
+    autosync_on: true
     server: ""
     today_date: new Date()
     focus: 1
