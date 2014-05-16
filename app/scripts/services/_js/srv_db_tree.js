@@ -58,7 +58,6 @@
           var mythis;
           mythis = this;
           $rootScope.$on('jsFindAndSaveDiff', function(event, db_name, new_value, old_value) {
-            console.info('HELLO');
             if (new_value && new_value._id) {
               return mythis.saveDiff(db_name, new_value._id);
             }
@@ -445,7 +444,6 @@
             }
           };
           mymap_calendar = function(doc, emit) {
-            console.info(new Date().getTime());
             if (((doc != null ? doc.date2 : void 0) || (doc != null ? doc.date1 : void 0)) && (doc != null ? doc.date_on : void 0) && !(doc != null ? doc.hide_in_todo : void 0)) {
               return emit(doc.date2, doc, doc);
             }
@@ -462,7 +460,23 @@
               return memo[key].push(values.value);
             }
           };
-          return this.newView('tasks', 'tasks_by_date', mymap_calendar, myreduce_calendar);
+          this.newView('tasks', 'tasks_by_date', mymap_calendar, myreduce_calendar);
+          mymap_calendar = function(doc, emit) {
+            if ((doc != null ? doc.tree_id : void 0)) {
+              return emit(doc.tree_id, doc, doc);
+            }
+          };
+          myreduce_calendar = function(memo, values) {
+            var key;
+            key = values.key;
+            if (!memo[key]) {
+              memo[key] = [];
+            }
+            if (values.value) {
+              return memo[key].push(values.value);
+            }
+          };
+          mythis.newView('tasks', 'tasks_by_tree_id', mymap_calendar, myreduce_calendar);
         },
         getTree: function(args) {
           return this._db.tree;
@@ -667,7 +681,9 @@
         newView: function(db_name, view_name, mymap, myreduce) {
           var mythis;
           mythis = this;
-          mythis._cache[db_name] = {};
+          if (!mythis._cache[db_name]) {
+            mythis._cache[db_name] = {};
+          }
           if (!mythis._cache[db_name]['views']) {
             mythis._cache[db_name]['views'] = {};
           }
@@ -683,14 +699,18 @@
         getView: function(db_name, view_name) {
           var view;
           view = this._cache[db_name]['views'][view_name];
-          if (view.rows.length && view.invalid.length === 0) {
-            return view;
-          } else if (view.invalid.length > 0 && view.rows.length > 0) {
-            this.generateView(db_name, view_name, view.invalid);
-            return view;
+          if (view && view.rows) {
+            if (view.rows.length && view.invalid.length === 0) {
+              return view;
+            } else if (view.invalid.length > 0 && view.rows.length > 0) {
+              this.generateView(db_name, view_name, view.invalid);
+              return view;
+            } else {
+              this.generateView(db_name, view_name);
+              return view;
+            }
           } else {
-            this.generateView(db_name, view_name);
-            return view;
+            console.info('NOT FOUND VIEW', db_name, view_name);
           }
         },
         generateView: function(db_name, view_name, view_invalid) {

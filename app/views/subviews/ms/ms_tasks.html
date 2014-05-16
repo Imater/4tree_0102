@@ -1,6 +1,6 @@
 <div class="note_tasks" ng-controller="editor_tasks">
 	{{(tasks = getTasks()).t}}
-	<div ng-repeat="task in tasks" ng-include="'views/subviews/task_one_line1.html'"></div>
+	<div ng-repeat="task in tasks track by $index" ng-include="'views/subviews/task_one_line1.html'"></div>
 	<textarea class="add_task_input" placeholder="Добавить дело..." hotkey="{'Enter':fn.service.db_tree.jsAddTask}" ng-model="new_task_title"></textarea>
 </div>
 

@@ -588,7 +588,7 @@
 
   angular.module("4treeApp").controller("save_task_db", function($scope, syncApi, db_tree, $rootScope) {
     $scope.$watch("task.date_on", function(new_value, old_value) {
-      if (old_value === false && new_value === true) {
+      if (!old_value && new_value === true) {
         if (!$scope.task.date1) {
           $scope.task.date1 = new Date();
         }

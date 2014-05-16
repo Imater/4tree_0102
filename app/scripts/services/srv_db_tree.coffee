@@ -34,7 +34,6 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     constructor: () ->
       mythis = @;
       $rootScope.$on 'jsFindAndSaveDiff', (event, db_name, new_value, old_value)->
-        console.info 'HELLO'
         mythis.saveDiff(db_name, new_value._id) if new_value and new_value._id
 
       $rootScope.$on 'my-sorted', (event, data)->
@@ -306,7 +305,6 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       #@newView('tree', 'by_date', mymap);
 
       mymap_calendar = (doc, emit)->
-        console.info new Date().getTime()
         if (doc?.date2 or doc?.date1) and doc?.date_on and !doc?.hide_in_todo
           emit(doc.date2, doc, doc)
 
@@ -318,6 +316,20 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         memo[key].push(values.value) if values.value
 
       @newView('tasks', 'tasks_by_date', mymap_calendar, myreduce_calendar)
+
+      mymap_calendar = (doc, emit)->
+        if (doc?.tree_id)
+          emit(doc.tree_id, doc, doc)
+
+      myreduce_calendar = (memo, values)->
+        key = values.key;
+        memo[key] = [] if !memo[key]
+        memo[key].push(values.value) if values.value
+
+      mythis.newView('tasks', 'tasks_by_tree_id', mymap_calendar, myreduce_calendar)
+
+      return
+
 
     getTree: (args) ->
       @_db.tree
@@ -392,7 +404,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
     newView: (db_name, view_name, mymap, myreduce)->
       mythis = @;
-      mythis._cache[db_name] = {}
+      mythis._cache[db_name] = {} if !mythis._cache[db_name]
       # if !mythis._cache[db_name]
       mythis._cache[db_name]['views'] = {} if !mythis._cache[db_name]['views']
 
@@ -405,14 +417,18 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         }
     getView: (db_name, view_name)->
       view = @_cache[db_name]['views'][view_name];
-      if( view.rows.length && view.invalid.length == 0 )
-        return view;
-      else if (view.invalid.length > 0 and view.rows.length > 0)
-        @generateView(db_name, view_name, view.invalid);
-        return view;
+      if view and view.rows
+        if( view.rows.length && view.invalid.length == 0 )
+          return view;
+        else if (view.invalid.length > 0 and view.rows.length > 0)
+          @generateView(db_name, view_name, view.invalid);
+          return view;
+        else
+          @generateView(db_name, view_name);
+          return view;
       else
-        @generateView(db_name, view_name);
-        return view;
+        console.info 'NOT FOUND VIEW', db_name, view_name
+        return
 
 
     generateView: (db_name, view_name, view_invalid)->
