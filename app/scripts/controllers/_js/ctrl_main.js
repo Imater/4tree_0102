@@ -587,6 +587,16 @@
   });
 
   angular.module("4treeApp").controller("save_task_db", function($scope, syncApi, db_tree, $rootScope) {
+    $scope.$watch("task.date_on", function(new_value, old_value) {
+      if (old_value === false && new_value === true) {
+        if (!$scope.task.date1) {
+          $scope.task.date1 = new Date();
+        }
+        if (!$scope.task.date2) {
+          return $scope.task.date2 = new Date();
+        }
+      }
+    });
     return $scope.$watchCollection("set.set_task", function(new_value, old_value) {
       if (!_.isEqual(new_value, old_value)) {
         return $rootScope.$emit("jsFindAndSaveDiff", 'tasks', new_value, old_value);

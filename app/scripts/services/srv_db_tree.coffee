@@ -34,6 +34,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     constructor: () ->
       mythis = @;
       $rootScope.$on 'jsFindAndSaveDiff', (event, db_name, new_value, old_value)->
+        console.info 'HELLO'
         mythis.saveDiff(db_name, new_value._id) if new_value and new_value._id
 
       $rootScope.$on 'my-sorted', (event, data)->
@@ -305,7 +306,9 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       #@newView('tree', 'by_date', mymap);
 
       mymap_calendar = (doc, emit)->
-        emit(doc.date2, doc, doc) if doc?.date2
+        console.info new Date().getTime()
+        if (doc?.date2 or doc?.date1) and doc?.date_on and !doc?.hide_in_todo
+          emit(doc.date2, doc, doc)
 
       myreduce_calendar = (memo, values)->
         key = values.key;
@@ -460,7 +463,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       true
     clearCache2: ()->
       _.each @, (fn)->
-        fn.cache = {} if fn
+        fn.cache = {} if fn and fn.cache
     getTasks: ()->
       @_db.tasks;
 
@@ -882,11 +885,13 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                 #__log.info 'diff_saved'
                 dfd.resolve()
                 mythis.jsStartSyncInWhile()
+                mythis.refreshView db_name, [new_element._id] #обновляем все View с этим элементом
           else
             if new_element and new_element._new == true
               dfd.resolve()
               mythis.jsStartSyncInWhile()
-          return
+              mythis.refreshView db_name, [new_element._id] #обновляем все View с этим элементом
+        return
         return
       dfd.promise
     , 50

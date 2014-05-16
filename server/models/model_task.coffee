@@ -6,9 +6,11 @@ treeSchema = new Schema (
   'tree_id': String
   'user_id': { type: String, es_indexed: true } 
   'del': { type: Number, default: 0 }
-  'title':  { type: String, es_indexed: true } 
+  'title':  { type: String, es_indexed: true }
+  'date_on': { type: Boolean }
   'date1': Date
   'date2': Date
+  'hide_in_todo': Boolean
   'parent_id': String
   '_sha1': String
   'did': Boolean

@@ -39,6 +39,9 @@
   .dates_block {
     margin: $padding 0;
     display: block;
+    &.date_off {
+      opacity: 0.3;
+    }
     .st_date {
       display: inline-block;
       vertical-align: middle;

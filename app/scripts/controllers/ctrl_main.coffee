@@ -683,6 +683,15 @@ angular.module("4treeApp").controller "save_tree_db", ($scope, syncApi, db_tree,
 
 angular.module("4treeApp").controller "save_task_db", ($scope, syncApi, db_tree, $rootScope)->
 
+  $scope.$watch "task.date_on", (new_value, old_value)->
+    #Если включили
+    if old_value == false and new_value == true
+      if !$scope.task.date1
+        $scope.task.date1 = new Date();
+      if !$scope.task.date2
+        $scope.task.date2 = new Date();
+
+
   $scope.$watchCollection "set.set_task", (new_value, old_value)->
     if !_.isEqual( new_value, old_value )
       $rootScope.$emit("jsFindAndSaveDiff",'tasks', new_value, old_value);

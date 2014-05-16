@@ -3,14 +3,15 @@
     <div class="pull-right" ng-click="close()">x</div>
     <input class="st_checkbox" type="checkbox" ng-model="task.did">
     <div class="title" contenteditable="true" ng-model="task.title"></div>
-    <h10 class="open">Даты</h10>
-    <div class="dates_block">
-
+    <h10 class="open"><input type="checkbox" ng-model="task.date_on"> Даты начала и окончания</h10>
+    <div class="dates_block" ng-class="{date_off: !task.date_on}">
         <date-time-input class="st_date" ng-model="task.date1"></date-time-input>
         <b> — </b>
         <date-time-input class="st_date" ng-model="task.date2"></date-time-input>
+        <div>
+            <input type="checkbox" id="remind_me"> <label for="show_to_do1">Напомнить...</label>
+        </div>
     </div>
-    <input type="checkbox" id="remind_me"> <label for="show_to_do1">Напомнить...</label><br>
     <h10 class="open">Настройки</h10>
     <div range-slider
          min="0"
@@ -19,7 +20,7 @@
          pin-handle="min"
          show-values="false">
     </div>
-    <input type="checkbox" checked id="show_to_do"> <label for="show_to_do">показывать в To-do</label><br>
+    <input type="checkbox" ng-model="task.hide_in_todo" id="show_to_do"> <label for="show_to_do">скрыть в To-do</label><br>
     <input type="checkbox" id="show_to_do1"> <label for="show_to_do1">не распознавать дату</label><br>
     <input type="checkbox" id="show_to_do2"> <label for="show_to_do2">дело лягушка</label><br>
     <input type="color" name="" id="" ng-model="task.color"/>

@@ -58,6 +58,7 @@
           var mythis;
           mythis = this;
           $rootScope.$on('jsFindAndSaveDiff', function(event, db_name, new_value, old_value) {
+            console.info('HELLO');
             if (new_value && new_value._id) {
               return mythis.saveDiff(db_name, new_value._id);
             }
@@ -444,7 +445,8 @@
             }
           };
           mymap_calendar = function(doc, emit) {
-            if (doc != null ? doc.date2 : void 0) {
+            console.info(new Date().getTime());
+            if (((doc != null ? doc.date2 : void 0) || (doc != null ? doc.date1 : void 0)) && (doc != null ? doc.date_on : void 0) && !(doc != null ? doc.hide_in_todo : void 0)) {
               return emit(doc.date2, doc, doc);
             }
           };
@@ -760,7 +762,7 @@
         },
         clearCache2: function() {
           return _.each(this, function(fn) {
-            if (fn) {
+            if (fn && fn.cache) {
               return fn.cache = {};
             }
           });
@@ -1346,18 +1348,21 @@
                 };
                 if (patch && !_.isEmpty(patch)) {
                   mythis._tmp._diffs[el._id] = el;
-                  mythis.db.put('_diffs', el).done(function() {
+                  return mythis.db.put('_diffs', el).done(function() {
                     dfd.resolve();
-                    return mythis.jsStartSyncInWhile();
+                    mythis.jsStartSyncInWhile();
+                    return mythis.refreshView(db_name, [new_element._id]);
                   });
                 }
               } else {
                 if (new_element && new_element._new === true) {
                   dfd.resolve();
                   mythis.jsStartSyncInWhile();
+                  return mythis.refreshView(db_name, [new_element._id]);
                 }
               }
             });
+            return;
           });
           return dfd.promise;
         }, 50),
