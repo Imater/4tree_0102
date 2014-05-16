@@ -82,14 +82,10 @@
             .sync_indicator {
                 &.active {
                     //@include animate_me(color, 0.1s);
-                    -moz-animation: spin 2s infinite linear !important;
-                    -o-animation: spin 2s infinite linear !important;
-                    -webkit-animation: spin 2s infinite linear !important;
-                    animation: spin 2s infinite linear !important;
-                    color: $main_color;
-                }
-                &.need_sync {
-                    color: $main_color;
+                    -moz-animation: spin 1s infinite  ease-out !important;
+                    -o-animation: spin 1s infinite  ease-out !important;
+                    -webkit-animation: spin 1s infinite  ease-out !important;
+                    animation: spin 1s infinite  ease-out !important;
                 }
             }
             .navbar-collapse {
@@ -156,7 +152,23 @@
                 }
             }
             .sync {
-                color: $dark_gray;
+                color: #444;
+                opacity: 0.4;
+                -moz-transition: opacity 0.5s ease-in-out;
+                -o-transition: opacity 0.5s ease-in-out;
+                -webkit-transition: opacity 0.5s ease-in-out;
+                transition: opacity 0.5s ease-in-out;
+                &.need_sync {
+                  -moz-transition: opacity 0.1s ease-in-out;
+                  -o-transition: opacity 0.1s ease-in-out;
+                  -webkit-transition: opacity 0.1s ease-in-out;
+                  transition: opacity 0.1s ease-in-out;
+                  color: #444;
+                  opacity: 1;
+                }
+            }
+            .reminder_icon {
+              color: $gray;
             }
             .search {
                 margin-left: round($grid/2);

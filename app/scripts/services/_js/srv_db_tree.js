@@ -107,7 +107,7 @@
           this.dbInit();
           dfd = $.Deferred();
           this.ydnLoadFromLocalStorage(mythis).then(function(records) {
-            if (!records.tree || Object.keys(records.tree).length === 0 || true) {
+            if (!records.tree || Object.keys(records.tree).length === 0) {
               __log.info('NEED DATA FROM NET');
               return mythis.getTreeFromWeb().then(function(data) {
                 var result;
@@ -258,7 +258,7 @@
           result = {};
           mythis.db.values('_diffs', null, 999999999).done(function(diffs) {
             _.each(diffs, function(diff) {
-              return mythis._tmp._diffs[diff._id] = diffs;
+              return mythis._tmp._diffs[diff._id] = diff;
             });
             return async.each(mythis.store_schema, function(table_schema, callback) {
               var db_name;
@@ -1320,6 +1320,7 @@
             mythis.getElementFromLocal(db_name, _id).then(function(old_element) {
               var el, patch;
               if (new_element && old_element) {
+                $('.sync').addClass('need_sync');
                 patch = mythis.diff.diff(old_element, new_element);
                 if (patch && patch._sha1) {
                   delete patch._sha1;
@@ -1666,13 +1667,25 @@
           });
           return dfd.promise;
         },
+        jsSyncJournalCount: function() {
+          if (this._tmp._diffs) {
+            return Object.keys(this._tmp._diffs).length;
+          } else {
+            return 0;
+          }
+        },
         sync_now: false,
         sync_later: void 0,
+        last_sync_time: 'не проводилась',
         syncDiff: function() {
           var dfd, mythis, sync_id;
           dfd = $q.defer();
           mythis = this;
           if (!mythis.sync_now) {
+            $('.sync_indicator').addClass('active');
+            setTimeout(function() {
+              return $('.sync_indicator').removeClass('active');
+            }, 950);
             mythis.sync_now = true;
             if (__log.show_time_long) {
               console.time('sync_long');
@@ -1689,14 +1702,18 @@
               } else {
                 return mythis.sendDiffToWeb(diffs).then(function(results) {
                   return mythis.syncApplyResults(results).then(function() {
+                    var now;
                     mythis.refreshParentsIndex();
                     mythis.sync_now = false;
                     dfd.resolve();
                     __log.info('sha1 applyed');
                     __log.info('(' + sync_id + ') STOP syncing...');
                     if (__log.show_time_long) {
-                      return console.time('sync_long');
+                      console.time('sync_long');
                     }
+                    $('.sync').removeClass('need_sync');
+                    now = new moment();
+                    return mythis.last_sync_time = now.format("HH:mm:ss");
                   });
                 });
               }
@@ -1765,9 +1782,11 @@
               __log.info('dif = ', dif);
               return mythis.getElement(dif.db_name, dif._id).then(function(now_element) {
                 var _ref, _ref1;
-                mythis.before_sync[dif._id] = JSON.parse(JSON.stringify(now_element));
-                mythis.before_sync[dif._id]._sha1 = mythis.JSON_stringify(mythis.before_sync[dif._id])._sha1;
-                __log.warn('backup = ', mythis.before_sync[dif._id]);
+                if (now_element) {
+                  mythis.before_sync[dif._id] = JSON.parse(JSON.stringify(now_element));
+                  mythis.before_sync[dif._id]._sha1 = mythis.JSON_stringify(mythis.before_sync[dif._id])._sha1;
+                  __log.warn('backup = ', mythis.before_sync[dif._id]);
+                }
                 if ((_ref = mythis._tmp._send_doc_next_time) != null ? (_ref1 = _ref[dif.db_name]) != null ? _ref1[dif._id] : void 0 : void 0) {
                   return mythis.getElementFromLocal(dif.db_name, dif._id).then(function(old_element) {
                     var _ref2, _ref3;

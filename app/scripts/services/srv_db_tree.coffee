@@ -69,7 +69,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       @dbInit();
       dfd = $.Deferred();
       @ydnLoadFromLocalStorage(mythis).then (records)->
-        if !records.tree or Object.keys(records.tree).length == 0 or true
+        if !records.tree or Object.keys(records.tree).length == 0
           __log.info 'NEED DATA FROM NET';
           mythis.getTreeFromWeb().then (data)->
             result = {};
@@ -195,7 +195,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       result = {};
       mythis.db.values('_diffs', null, 999999999).done (diffs)->
         _.each diffs, (diff)->
-          mythis._tmp._diffs[diff._id] = diffs
+          mythis._tmp._diffs[diff._id] = diff
         async.each mythis.store_schema, (table_schema, callback)->
           db_name = table_schema.name;
           if mythis.dont_store_to_memory.indexOf(db_name) == -1
@@ -858,6 +858,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       @getElement(db_name, _id).then (new_element)->
         mythis.getElementFromLocal(db_name, _id).then (old_element)->
           if new_element and old_element
+            $('.sync').addClass('need_sync');
             patch = mythis.diff.diff(old_element, new_element);
             delete patch._sha1 if patch and patch._sha1
             delete patch._tm if patch and patch._tm
@@ -1098,12 +1099,22 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       , ()->
         dfd.resolve { last_sync_time: max_time, new_db_elements }
       dfd.promise;
+    jsSyncJournalCount: ()->
+      if @_tmp._diffs
+        return Object.keys(@_tmp._diffs).length
+      else
+        return 0
     sync_now: false
     sync_later: undefined
+    last_sync_time: 'не проводилась'
     syncDiff: ()->
       dfd = $q.defer();
       mythis = @;
       if !mythis.sync_now
+        $('.sync_indicator').addClass('active');
+        setTimeout ()->
+          $('.sync_indicator').removeClass('active');
+        , 950
         mythis.sync_now = true
         console.time 'sync_long' if __log.show_time_long
         sync_id = Math.round(Math.random()*100);
@@ -1124,6 +1135,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                 __log.info 'sha1 applyed';
                 __log.info '('+sync_id+') STOP syncing...';
                 console.time 'sync_long' if __log.show_time_long
+                $('.sync').removeClass('need_sync');
+                now = new moment()
+                mythis.last_sync_time = now.format("HH:mm:ss")
+
       else
         clearTimeout mythis.sync_later
         mythis.sync_later = setTimeout ()->
@@ -1172,9 +1187,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           dif = diffs[dif_id]
           __log.info 'dif = ', dif
           mythis.getElement(dif.db_name, dif._id).then (now_element)->
-            mythis.before_sync[dif._id] = JSON.parse(JSON.stringify(now_element))
-            mythis.before_sync[dif._id]._sha1 = mythis.JSON_stringify( mythis.before_sync[dif._id] )._sha1
-            __log.warn 'backup = ', mythis.before_sync[dif._id]
+            if now_element
+              mythis.before_sync[dif._id] = JSON.parse(JSON.stringify(now_element))
+              mythis.before_sync[dif._id]._sha1 = mythis.JSON_stringify( mythis.before_sync[dif._id] )._sha1
+              __log.warn 'backup = ', mythis.before_sync[dif._id]
             #если сервер просил отправить элемент целиком
             if mythis._tmp._send_doc_next_time?[dif.db_name]?[dif._id]
               mythis.getElementFromLocal(dif.db_name, dif._id).then (old_element)->

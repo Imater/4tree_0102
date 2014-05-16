@@ -106,7 +106,7 @@
     </span>
 
     <span class="dropdown">
-      <span class="dropdown-toggle link sync" data-toggle="dropdown"><i class="glyphicon glyphicon-bell"></i></span>
+      <span class="dropdown-toggle link reminder_icon" data-toggle="dropdown"><i class="glyphicon glyphicon-bell"></i></span>
       <ul class="dropdown-menu">
         <li><a>Action</a></li>
         <li><a>Another action</a></li>
@@ -121,14 +121,14 @@
 
     <span class="dropdown">
       <span class="dropdown-toggle link sync" data-toggle="dropdown">
-        <i class="glyphicon glyphicon-refresh sync_indicator" ng-class="{need_sync: (sync_count = fn.service.syncApi.jsSyncJournalCount())}"></i>
+        <i class="glyphicon glyphicon-refresh sync_indicator" ng-class="{need_sync: (sync_count = fn.service.db_tree.jsSyncJournalCount())}"></i>
       </span>
       <ul class="dropdown-menu">
         <hotkey bind="Alt + R" invoke="fn.service.syncApi.jsStartSync()" />
         <li><a ng-click="$event.stopPropagation(); fn.service.syncApi.jsStartSync();">
 
             <ng-pluralize count="sync_count"
-                       when="{'0': 'Синхронизация — {{fn.service.syncApi.last_sync_time}}',
+                       when="{'0': 'Все данные синхронизированны — {{fn.service.db_tree.last_sync_time}}',
                            'one': 'Синхронизировать 1 объект',
                            'few': 'Синхронизировать {} объекта',
                            'many': 'Синхронизировать {} объектов',

@@ -42,7 +42,7 @@ customLevels = {
   }
 }
 
-level = 'error';
+level = 'sync';
 
 customLevels.transports.push new (winston.transports.Logstash)({
     port: 28777,
