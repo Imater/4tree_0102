@@ -467,14 +467,26 @@
             }
           };
           myreduce_calendar = function(memo, values) {
-            var key;
+            var key, sorted;
             key = values.key;
             if (!memo[key]) {
-              memo[key] = [];
+              memo[key] = {
+                tasks: [],
+                next_action: [],
+                cnt: 0
+              };
             }
             if (values.value) {
-              return memo[key].push(values.value);
+              memo[key].tasks.push(values.value);
             }
+            if (memo[key].tasks) {
+              memo[key].cnt = memo[key].tasks.length;
+            }
+            if (memo[key].cnt > 0) {
+              sorted = mythis.sortTasks(memo[key].tasks);
+            }
+            memo[key].tasks = sorted;
+            return memo[key].next_action = mythis.getNextAction(sorted);
           };
           mythis.newView('tasks', 'tasks_by_tree_id', mymap_calendar, myreduce_calendar);
         },
@@ -790,78 +802,73 @@
         getTasks: function() {
           return this._db.tasks;
         },
+        calcWeight: function(el) {
+          var mythis, round, w, weight, weight_date, weight_importance;
+          mythis = this;
+          round = function(value) {
+            return Math.round(parseInt(value * 100)) / 100;
+          };
+          weight_date = $rootScope.$$childTail.set.weight.date;
+          weight_importance = $rootScope.$$childTail.set.weight.importance;
+          w = {};
+          w['did'] = 0;
+          if (!!el.did) {
+            w['did'] = -1000;
+          }
+          if (el.date2) {
+            w['date1'] = (new Date(el.date2).getTime() - $rootScope.$$childTail.set.today_date_time) / (24 * 60 * 60 * 1000);
+          } else {
+            w['date1'] = -500;
+            w['importance'] = (el.importance ? el.importance : 50) * weight_importance;
+          }
+          weight = _.reduce(w, function(memo, el) {
+            return memo + el;
+          });
+          return {
+            weights: w,
+            weight: weight
+          };
+        },
+        pad: function(str, max) {
+          str = str.toString();
+          if (str.length < max) {
+            return pad("0" + str, max);
+          } else {
+            return str;
+          }
+        },
         sortTasks: function(answer, order_type) {
-          var now, pad;
+          var mythis;
           if (order_type == null) {
             order_type = 'by_priority_and_date';
           }
-          now = new Date().getTime();
-          pad = function(str, max) {
-            str = str.toString();
-            if (str.length < max) {
-              return pad("0" + str, max);
-            } else {
-              return str;
-            }
-          };
+          mythis = this;
           if (order_type === 'by_priority_and_date') {
             answer = _.sortBy(answer, function(el) {
-              var sort_answer;
-              if (el && el.date1) {
-                sort_answer = el.importance ? pad(el.importance, 5) + new Date(el.date1).getTime() : void 0;
-              } else {
-                sort_answer = el.importance ? pad(el.importance, 5) + now : void 0;
-              }
-              return -parseInt(sort_answer);
+              var w;
+              w = mythis.calcWeight(el);
+              return -w.weight;
             });
           }
           return answer;
         },
-        getTasksByTreeId: _.memoize(function(tree_id, only_next) {
-          var answer, answer1;
-          __log.info('hello!', tree_id);
-          answer = _.filter(this._db.tasks, function(el) {
-            return el.tree_id === tree_id;
+        getNextAction: function(answer) {
+          var answer1;
+          answer1 = _.find(answer, function(el) {
+            return el.date1 && !el.did;
           });
-          answer = this.sortTasks(answer);
-          if (only_next === true) {
+          if (!answer1) {
             answer1 = _.find(answer, function(el) {
-              return el.date1 && !el.did;
-            });
-            if (!answer1) {
-              answer1 = _.find(answer, function(el) {
-                return !el.did;
-              });
-            }
-            if (answer1) {
-              answer = [answer1];
-            } else {
-              answer = void 0;
-            }
-          } else {
-            answer = _.sortBy(answer, function(el) {
-              var res;
-              if (el.date1) {
-                res = -new Date(el.date1).getTime();
-                res = res + 100000000000000;
-              } else {
-                res = new Date().getTime();
-                res = res + 200000000000000;
-              }
-              if (el.did) {
-                res = res + 500000000000000;
-              }
-              return res;
+              return !el.did;
             });
           }
-          if (answer) {
-            return answer;
+          if (answer1) {
+            answer = [answer1];
           } else {
-            return [];
+            answer = void 0;
           }
-        }, function(tree_id, only_next) {
-          return tree_id + only_next;
-        }),
+          return answer;
+        },
         jsExpand: function(id, make_open) {
           var focus;
           if (__log.show_time_long) {
@@ -1342,7 +1349,6 @@
             mythis.getElementFromLocal(db_name, _id).then(function(old_element) {
               var el, patch;
               if (new_element && old_element) {
-                $('.sync').addClass('need_sync');
                 patch = mythis.diff.diff(old_element, new_element);
                 if (patch && patch._sha1) {
                   delete patch._sha1;
@@ -1371,6 +1377,7 @@
                   return mythis.db.put('_diffs', el).done(function() {
                     dfd.resolve();
                     mythis.jsStartSyncInWhile();
+                    $('.sync').addClass('need_sync');
                     return mythis.refreshView(db_name, [new_element._id]);
                   });
                 }
@@ -1378,6 +1385,7 @@
                 if (new_element && new_element._new === true) {
                   dfd.resolve();
                   mythis.jsStartSyncInWhile();
+                  $('.sync').addClass('need_sync');
                   return mythis.refreshView(db_name, [new_element._id]);
                 }
               }

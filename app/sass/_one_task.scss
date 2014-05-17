@@ -58,9 +58,25 @@ $date_opacity: 0.2;
 .one_task {
   white-space: nowrap;
   margin-bottom: $padding*2;
+  &.next_action {
+    color: #000;
+    &:before {
+      content: '\27a1';
+      font-family: 'fontello';
+      position: absolute;
+      margin-left: -$padding*2;
+      line-height: 1.8em;
+      color: $light_gray;
+    }
+  }
   &.active {
-    .title {
-      font-weight: bold;
+    &:before {
+      content: '\e82b';
+      font-family: 'fontello';
+      position: absolute;
+      margin-left: -$padding*2;
+      line-height: 1.8em;
+      color: $main_color;
     }
   }
   &.most_important {

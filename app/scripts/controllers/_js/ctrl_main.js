@@ -60,6 +60,7 @@
         autosync_on: true,
         server: "",
         today_date: new Date(),
+        today_date_time: new Date().getTime(),
         focus: 1,
         focus_edit: 1,
         header_panel_opened: false,
@@ -74,11 +75,15 @@
         show_right_menu: true,
         new_title: 'Новая заметка',
         calendar_box_template: 'views/subviews/view_calendar_box.html',
+        weight: {
+          date: 1,
+          importance: 1
+        },
         panel: [
           {
             active: 7
           }, {
-            active: 0
+            active: 6
           }, {
             active: 5
           }, {
@@ -159,7 +164,7 @@
         ms_show_icon_limit: 36,
         mini_settings_btn_active: 0,
         mini_settings_show: false,
-        mini_tasks_hide: true,
+        mini_tasks_hide: false,
         mini_settings_btn: [
           {
             id: 0,
@@ -619,7 +624,11 @@
       }
     });
     return $scope.getTasks = function() {
-      return db_tree.getTasksByTreeId($scope.db.main_node[$scope.set.focus_edit]._id, $scope.set.mini_tasks_hide);
+      if (!$scope.set.mini_tasks_hide) {
+        return $scope.tasks_by_id.tasks;
+      } else {
+        return $scope.tasks_by_id.next_action;
+      }
     };
   });
 

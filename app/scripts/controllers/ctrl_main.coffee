@@ -67,6 +67,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     autosync_on: true
     server: ""
     today_date: new Date()
+    today_date_time: new Date().getTime()
     focus: 1
     focus_edit: 1
     header_panel_opened: false
@@ -81,9 +82,13 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     show_right_menu: true
     new_title: 'Новая заметка'
     calendar_box_template: 'views/subviews/view_calendar_box.html'
+    weight: {
+      date: 1
+      importance: 1
+    }
     panel: [
       {active: 7} #0  
-      {active: 0} #1   0-дерево 1-карточки 2-mindmap 3-divider 4-календарь 5-редактор 6-none
+      {active: 6} #1   0-дерево 1-карточки 2-mindmap 3-divider 4-календарь 5-редактор 6-none
       {active: 5} #2
       {active: 0} #3
     ]
@@ -175,7 +180,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     ms_show_icon_limit: 36
     mini_settings_btn_active: 0
     mini_settings_show: false
-    mini_tasks_hide: true
+    mini_tasks_hide: false
     mini_settings_btn: [
       {id:0, title: 'Оформление', icon: 'icon-brush'}
       {id:1, title: 'Проект', icon: 'icon-target'}
@@ -708,7 +713,10 @@ angular.module("4treeApp").controller "editor_tasks", ($scope, db_tree, $rootSco
       db_tree.clearCache();
 
   $scope.getTasks = ()->
-    db_tree.getTasksByTreeId($scope.db.main_node[ $scope.set.focus_edit ]._id, $scope.set.mini_tasks_hide)
+    if !$scope.set.mini_tasks_hide
+      return $scope.tasks_by_id.tasks
+    else
+      return $scope.tasks_by_id.next_action
 
 
 angular.module("4treeApp").controller "searchController", ($scope, syncApi, db_tree, $rootScope, $sce, $timeout)->

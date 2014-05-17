@@ -99,7 +99,9 @@
                           hotkey="{'Enter':fn.service.db_tree.jsEnterPress,'Esc':fn.service.db_tree.jsEscPress}"
                           ng-blur="fn.service.db_tree.jsBlur($event, undefined, tree)" tabindex="-1"></span>
                     <span class="cnt" ng-if="tree._childs">({{tree._childs}})</span>
-                    <span class="cnt" ng-if="tasks_cnt = fn.service.db_tree.getView('tasks', 'tasks_by_tree_id').result[tree._id].length">[{{tasks_cnt}}]</span>
+                    <div class="cnt" ng-if="tasks_by_id = fn.service.db_tree.getView('tasks', 'tasks_by_tree_id').result[tree._id]">
+                        {{tasks_by_id.next_action[0].title}} ещё {{tasks_by_id.cnt}} дел...
+                    </div>
 
                 </div>
             </div>

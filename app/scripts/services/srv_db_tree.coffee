@@ -323,8 +323,13 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
       myreduce_calendar = (memo, values)->
         key = values.key;
-        memo[key] = [] if !memo[key]
-        memo[key].push(values.value) if values.value
+        memo[key] = {tasks: [], next_action: [], cnt: 0} if !memo[key]
+        memo[key].tasks.push(values.value) if values.value
+        memo[key].cnt = memo[key].tasks.length if memo[key].tasks
+        if memo[key].cnt > 0
+          sorted = mythis.sortTasks(memo[key].tasks)
+        memo[key].tasks = sorted;
+        memo[key].next_action = mythis.getNextAction(sorted);
 
       mythis.newView('tasks', 'tasks_by_tree_id', mymap_calendar, myreduce_calendar)
 
@@ -482,55 +487,46 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         fn.cache = {} if fn and fn.cache
     getTasks: ()->
       @_db.tasks;
+    calcWeight: (el)->
+      mythis = @;
+      round = (value)->
+        Math.round( parseInt(value*100) )/100
+      weight_date = $rootScope.$$childTail.set.weight.date;
+      weight_importance = $rootScope.$$childTail.set.weight.importance;
+      w = {};
+      w['did'] = 0;
+      if !!el.did
+        w['did'] = -1000;
+      if el.date2
+        w['date1'] = (new Date(el.date2).getTime() -  $rootScope.$$childTail.set.today_date_time )/(24*60*60*1000);
+      else
+        w['date1'] = -500
+        w['importance'] = (if el.importance then el.importance else 50) * weight_importance;
+      weight = _.reduce w, (memo, el)->
+        memo + el
+      { weights: w, weight }
 
+    pad: (str, max)->
+      str = str.toString();
+      return if str.length < max then pad("0" + str, max) else str;
     sortTasks: (answer, order_type = 'by_priority_and_date')->
-      now = new Date().getTime();
-      pad = (str, max)->
-        str = str.toString();
-        return if str.length < max then pad("0" + str, max) else str;
-
+      mythis = @;
       if order_type == 'by_priority_and_date'
         answer = _.sortBy answer, (el)->
-          if el and el.date1
-            sort_answer = if el.importance then pad(el.importance, 5) + new Date(el.date1).getTime()
-          else
-            sort_answer = if el.importance then pad(el.importance, 5) + now;
-          #__log.info 'sort', sort_answer
-          return -parseInt(sort_answer)
+          w = mythis.calcWeight(el);
+          return -(w.weight)
       answer
-    getTasksByTreeId: _.memoize (tree_id, only_next)->
-      __log.info 'hello!', tree_id
-
-      answer = _.filter @_db.tasks, (el)->
-        el.tree_id == tree_id
-      answer = @sortTasks(answer);
-      if only_next == true
+    getNextAction: (answer)->
+      answer1 = _.find answer, (el)->
+        el.date1 && !el.did;
+      if !answer1
         answer1 = _.find answer, (el)->
-          el.date1 && !el.did;
-        if !answer1
-          answer1 = _.find answer, (el)->
-            !el.did
-        if answer1
-          answer = [ answer1 ];
-        else
-          answer = undefined;
+          !el.did
+      if answer1
+        answer = [ answer1 ];
       else
-        answer = _.sortBy answer, (el)->
-          if el.date1
-            res = -new Date(el.date1).getTime();
-            res = res + 100000000000000
-          else
-            res = new Date().getTime();
-            res = res + 200000000000000
-
-          if el.did
-            res = res + 500000000000000
-
-          res
-
-      if answer then answer else []
-    , (tree_id, only_next)->
-      tree_id + only_next
+        answer = undefined;
+      answer
 
     jsExpand: (id, make_open)->
       console.time 'expand' if __log.show_time_long
@@ -877,7 +873,6 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       @getElement(db_name, _id).then (new_element)->
         mythis.getElementFromLocal(db_name, _id).then (old_element)->
           if new_element and old_element
-            $('.sync').addClass('need_sync');
             patch = mythis.diff.diff(old_element, new_element);
             delete patch._sha1 if patch and patch._sha1
             delete patch._tm if patch and patch._tm
@@ -901,11 +896,13 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                 #__log.info 'diff_saved'
                 dfd.resolve()
                 mythis.jsStartSyncInWhile()
+                $('.sync').addClass('need_sync');
                 mythis.refreshView db_name, [new_element._id] #обновляем все View с этим элементом
           else
             if new_element and new_element._new == true
               dfd.resolve()
               mythis.jsStartSyncInWhile()
+              $('.sync').addClass('need_sync');
               mythis.refreshView db_name, [new_element._id] #обновляем все View с этим элементом
         return
         return
