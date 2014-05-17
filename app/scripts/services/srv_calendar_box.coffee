@@ -9,7 +9,7 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', '$ro
       1
     jsDateDiff: (date2, only_days) ->
       answer =
-        text: "∞"
+        text: ""
         class: "nodate"
         image: ""
 
@@ -40,19 +40,21 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', '$ro
       if days is 0
         if (minutes > 59) or (minutes < -59)
           hours = parseInt(dif_sec / (60 * 1000 * 60) * 10, 10) / 10
-          answer.text = ((if (minutes > 0) then "+ " else "")) + hours + " ч."
+          answer.text = ((if (minutes > 0) then "+" else "")) + hours + " ч."
         else
-          answer.text = ((if (minutes > 0) then "+ " else "")) + minutes + " мин."
+          answer.text = ((if (minutes > 0) then "+" else "")) + minutes + " мин."
         if (only_days)
           answer.text = "сегодня";
       else
-        answer.text = ((if (days > 0) then "+ " else "")) + days + " дн."
+        answer.text = ((if (days > 0) then "+" else "")) + days + " дн."
       if (days is 0)
         if minutes < 0
           answer.class = "datetoday past"
           pr2 = (-minutes / 480) * 100
           pr2 = 80 if pr2 > 80
-          answer.image = "background-image: -webkit-gradient(linear, left top, right top, color-stop(" + (pr2 - 25) + "%, #f56571), color-stop(" + (pr2 + 25) + "%, rgba(0,0,0,0))) !important;"
+          red_color = '#fe4500';
+          if !date2.did
+            answer.image = "background-image: -webkit-gradient(linear, left top, right top, color-stop(" + (pr2 - 25) + "%, "+red_color+"), color-stop(" + (pr2 + 25) + "%, rgba(0,0,0,0))) !important;"
 
         #"-webkit-gradient(linear, right top, left top, color-stop("+pr+", #da5700), color-stop("+(pr+0.1)+", #990000));";
         #"-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #333), color-stop(100%, #222))"
@@ -62,7 +64,7 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', '$ro
     getDates: (args) ->
       @getDate(args.today)
     getDateBox: _.memoize (date) ->
-      @current_month = (new Date()).getMonth() if (!@current_month);
+      @current_month = (new Date()).getMonth() if (!@current_month)
       day = date.getDate().toString();
       month1 = date.getMonth();
       year = date.getFullYear().toString().substr(2, 4);
@@ -76,8 +78,7 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', '$ro
       #myclass += " odd_month" if ((month1 + add)%2)
       #myclass += " this_month" if month1 == @current_month;
       answer = {day, month, year, week_day, myclass, fulldate}
-    getDays:
-    _.memoize (date, only_days)->
+    getDays: _.memoize (date, only_days)->
       @jsDateDiff(date, only_days)
     , (date, only_days) ->
       (date + parseInt(new Date().getTime() / 1000 / 120) + only_days )

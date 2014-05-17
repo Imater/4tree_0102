@@ -16,48 +16,116 @@ $date_opacity: 0.2;
   outline: none;
 }
 
+$past_color: #fe4500;
+$today_color: $today_background;
+$today_font_color: #000;
+$future_color: rgba(#31a415, 0.65);
+$future_font_color: #FFF;
+
 .datepast {
-    background: #f56571 !important;
+  background: $past_color !important;
+  color: #FFF !important;
   border: 0px solid #f5a1aa !important;
   //color: #FFF !important;
 }
 
+
 .datetoday {
-    background: #feaa0c !important;
+  background: $today_color !important;
+  color: $today_font_color !important;
   border: 0px solid #feaa0c !important;
 }
 
 .datetoday.past {
-    background-image: -webkit-gradient(linear, right top, left top, color-stop(0.85, #ffd5b5), color-stop(0.95, rgba(#f8000d, $date_opacity) )) !important;
+  //background-image: -webkit-gradient(linear, right top, left top, color-stop(0.85, #ffd5b5), color-stop(0.95, rgba(#f8000d, $date_opacity) )) !important;
   border: 0px solid #feaa0c !important;    
 }
 
+$date_label_radius: round($grid_label*0.4);
+$date_label_radius_little: 0px;
+$date_label_padding: 5px;
+$date_dot_color: #FFF;
+$date_dot_opacity: 1;
+
 .nodate {
-  background: #71b873 !important;
-  color: rgba(255,255,255,0.6) !important; 
+  background: rgba($today_color, 1) !important;
+  color: rgba(255,255,255,0.6) !important;
+  &:before {
+    content: "\e78d";
+    font-family: 'fontello';
+    font-size: 10px;
+    text-align: center;
+    opacity: $date_dot_opacity - 0.5;
+    color: #000;
+  }
   //font-weight: bold !important;
 }
 
+
 .task_date {
   display: inline-block;
-  background: rgba(#0000FF, 0.2);
+  background: $future_color;
+  color: $future_font_color;
   font-size: round($grid_label/2);
-  color: #000;
   line-height: $grid_label;
   vertical-align: baseline;
   height: $grid_label;
-  width: $grid_label*3;
+  width: $grid_label*3.3;
   text-align: center;
-  border-radius: 3px;
+  border-radius: $date_label_radius;
   border: 0px solid #c9c5ff;
   cursor: pointer;
-  margin-right: $padding/2;
+  margin-right: $padding;
+  position: relative;
+  &.date1 {
+    text-align: left;
+    border-bottom-left-radius: $date_label_radius;
+    border-top-left-radius: $date_label_radius;
+    border-bottom-right-radius: $date_label_radius_little;
+    border-top-right-radius: $date_label_radius_little;
+    padding-left: $date_label_padding;
+    &:before {
+      content: '\e78d';
+      font-family: 'fontello';
+      line-height: $grid_label;
+      margin-top: 1px;
+      color: $date_dot_color;
+      opacity: $date_dot_opacity;
+      position: absolute;
+      vertical-align: middle;
+      width: $grid_label*3;
+      text-align: right;
+      right: round($date_label_padding);
+    }
+  }
+  &.date2 {
+    text-align: right;
+    border-bottom-right-radius: $date_label_radius;
+    border-top-right-radius: $date_label_radius;
+    border-bottom-left-radius: $date_label_radius_little;
+    border-top-left-radius: $date_label_radius_little;
+    padding-right: $date_label_padding;
+    &:before {
+      content: '\e78d';
+      font-family: 'fontello';
+      line-height: $grid_label;
+      margin-top: 1px;
+      color: $date_dot_color;
+      opacity: $date_dot_opacity;
+      position: absolute;
+      vertical-align: middle;
+      //width: $grid_label*3;
+      text-align: right;
+      left: round($date_label_padding);
+    }
+  }
 }
 
 
 .one_task {
   white-space: nowrap;
   margin-bottom: $padding*2;
+  color: #444;
   &.next_action {
     color: #000;
     &:before {
@@ -66,15 +134,15 @@ $date_opacity: 0.2;
       position: absolute;
       margin-left: -$padding*2;
       line-height: 1.8em;
-      color: $light_gray;
+      color: #000;
     }
   }
   &.active {
-    &:before {
+    .right_part:before {
       content: '\e82b';
       font-family: 'fontello';
       position: absolute;
-      margin-left: -$padding*2;
+      margin-left: -$padding - 5px;
       line-height: 1.8em;
       color: $main_color;
     }
@@ -88,18 +156,18 @@ $date_opacity: 0.2;
     }
   }
   &.most_important100 {
-    color: red;
     .title:before {
       content: "\e104";
       font-family: "Glyphicons Halflings";
       margin-right: $padding;
+      color: red;
     }
   }
 
   &.did {
     .title {
       text-decoration: line-through;
-      color: $gray;
+      color: $gray !important;
     }
 
     .task_date {
@@ -118,14 +186,17 @@ $date_opacity: 0.2;
     //border-left: 1px solid lighten($gray, 5%);
     padding-left: $padding;
     margin-left: $padding/2;
-    .title {
-      display: inline-flex;
+    .title_wrap {
+      display: inline;
       white-space: normal;
-    }
-    .importance {
-      display: inline-flex;
-      white-space: normal;
-      color: $gray;
+      .title {
+        outline: none;
+      }
+      .importance {
+        display: inline;
+        white-space: normal;
+        color: $gray;
+      }
     }
   }
 }

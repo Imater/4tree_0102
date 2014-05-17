@@ -517,16 +517,31 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           return -(w.weight)
       answer
     getNextAction: (answer)->
-      answer1 = _.find answer, (el)->
-        el.date1 && !el.did;
-      if !answer1
-        answer1 = _.find answer, (el)->
-          !el.did
-      if answer1
-        answer = [ answer1 ];
-      else
-        answer = undefined;
-      answer
+      today = new Date();
+      na = [];
+      na2 = [];
+      na3 = [];
+      _.each answer, (el)->
+        if !el.did
+          if (!na2.length and !el.date1)
+            na2 = [el];
+          na = [el] if !na.length
+          el_date = new Date(el.date1);
+          na_date = new Date(na?[0]?.date1);
+          if ( el.date1 and (el_date < na_date ) and (el_date <= today) )
+            na = [el];
+          if ( el.date1 and (el_date < na_date ) and (el_date > today ) )
+            na3 = [el];
+      na_date = new Date(na?[0]?.date1);
+      if (!na.length or (na.length and na_date>today) ) and na2.length
+        na = na2
+      if !na.length and !na2.length and na3.length and false
+        na = na3
+
+
+
+
+      na
 
     jsExpand: (id, make_open)->
       console.time 'expand' if __log.show_time_long

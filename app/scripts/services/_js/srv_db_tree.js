@@ -853,21 +853,38 @@
           return answer;
         },
         getNextAction: function(answer) {
-          var answer1;
-          answer1 = _.find(answer, function(el) {
-            return el.date1 && !el.did;
+          var na, na2, na3, na_date, today, _ref;
+          today = new Date();
+          na = [];
+          na2 = [];
+          na3 = [];
+          _.each(answer, function(el) {
+            var el_date, na_date, _ref;
+            if (!el.did) {
+              if (!na2.length && !el.date1) {
+                na2 = [el];
+              }
+              if (!na.length) {
+                na = [el];
+              }
+              el_date = new Date(el.date1);
+              na_date = new Date(na != null ? (_ref = na[0]) != null ? _ref.date1 : void 0 : void 0);
+              if (el.date1 && (el_date < na_date) && (el_date <= today)) {
+                na = [el];
+              }
+              if (el.date1 && (el_date < na_date) && (el_date > today)) {
+                return na3 = [el];
+              }
+            }
           });
-          if (!answer1) {
-            answer1 = _.find(answer, function(el) {
-              return !el.did;
-            });
+          na_date = new Date(na != null ? (_ref = na[0]) != null ? _ref.date1 : void 0 : void 0);
+          if ((!na.length || (na.length && na_date > today)) && na2.length) {
+            na = na2;
           }
-          if (answer1) {
-            answer = [answer1];
-          } else {
-            answer = void 0;
+          if (!na.length && !na2.length && na3.length && false) {
+            na = na3;
           }
-          return answer;
+          return na;
         },
         jsExpand: function(id, make_open) {
           var focus;

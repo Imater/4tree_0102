@@ -17,11 +17,14 @@
 		</div>
 		<div class="right_part">
 			<a ng-if="dt = fn.service.calendarBox.getDays(task.date1)"></a>
-			<div ng-click="set.set_task = task" class="task_date {{dt.class}}" style="{{dt.image}}">{{dt.text}}</div>
-			<div class="title" contenteditable="true" ng-model="task.title" style="color:{{task.color}}"></div>
-            <div class="importance" ng-if="task.importance!=50">{{task.importance}}%</div>
-            <div>{{fn.service.db_tree.calcWeight(task)}}</div>
-            <div class="my">{{task.did}}</div>
+            <a ng-if="dt2 = fn.service.calendarBox.getDays(task.date2)"></a>
+            <div class="title_wrap">
+                <div ng-if="task.date1>=set.today_date" ng-click="set.set_task = task" class="task_date date1 {{dt.class}}" style="{{dt.image}}">{{dt.text}}</div>
+                <div ng-if="task.date1<set.today_date" ng-click="set.set_task = task" class="task_date date2 {{dt2.class}}" style="{{dt.image}}">{{dt2.text}}</div>
+                <div ng-if="!task.date1" ng-click="set.set_task = task" class="task_date {{dt2.class}}" style="{{dt.image}}">{{dt2.text}}</div>
+                <span class="title" contenteditable="true" ng-model="task.title" style="color:{{task.color}}"></span>
+                <span class="importance" ng-if="task.importance!=50">{{task.importance}}%</span>
+            </div>
 		</div>
 	</div>
 
