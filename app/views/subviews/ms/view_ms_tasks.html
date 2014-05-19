@@ -17,9 +17,9 @@
 		</div>
 		<div class="right_part">
             <div class="title_wrap">
+                <div class="taskdate_wrap" ng-click="set.set_task = task" mini-date ng-model="task"></div>
                 <span class="title" contenteditable="true" ng-model="task.title" style="color:{{task.color}}"></span>
                 <span class="importance" ng-if="task.importance!=50">{{task.importance}}%</span>
-                <div ng-click="set.set_task = task" mini-date ng-model="task"></div>
             </div>
 		</div>
 	</div>

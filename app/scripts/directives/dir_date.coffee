@@ -6,31 +6,103 @@
 angular.module('4treeApp').directive 'miniDate', [
   "calendarBox"
   (calendarBox) ->
+    jsMakeGradient = (pr2, red_color)->
+      "background-image: -webkit-gradient(linear, left top, right top, color-stop("+
+      (pr2 - 0) + "%, "+red_color+"), color-stop("+
+      (pr2 + 0) + "%, rgba(0,0,0,0)));";
+    jsDateDiff = (date2, only_days) ->
+      answer =
+        text: ""
+        class: "nodate"
+        image: ""
+
+      return answer unless date2
+      return answer if date2 is "0000-00-00 00:00:00"
+
+      date2 = new Date(date2);
+
+      answer.class = "";
+      now = new Date;
+      if(only_days)
+        now.setHours(0);
+        now.setMinutes(0);
+        now.setSeconds(0);
+        date2 = new Date(date2);
+        date2.setHours(0);
+        date2.setMinutes(0);
+        date2.setSeconds(0);
+
+
+      dif_sec = date2.getTime() - now
+      dif_sec += 1000 if dif_sec > 0;
+      dif_sec -= 1000 if dif_sec < 0;
+
+      days = parseInt(dif_sec / (60 * 1000 * 60 * 24), 10)
+      minutes = parseInt(dif_sec / (60 * 1000), 10)
+      minutes = 0 if only_days and days == 0
+      if days is 0
+        if (minutes > 59) or (minutes < -59)
+          hours = parseInt(dif_sec / (60 * 1000 * 60) * 10, 10) / 10
+          answer.text = ((if (minutes > 0) then "+" else "")) + hours + " ч."
+        else
+          answer.text = ((if (minutes > 0) then "+" else "")) + minutes + " м."
+        if (only_days)
+          answer.text = "сегодня";
+      else
+        answer.text = ((if (days > 0) then "+" else "")) + days + " дн."
+      if (days is 0)
+        if minutes < 0
+          answer.class = "datetoday past"
+          pr2 = (-minutes / 480) * 100
+          pr2 = 80 if pr2 > 80
+          red_color = '#d7d7d7';
+          if !date2.did
+            answer.image = "background-image: -webkit-gradient(linear, left top, right top, color-stop(" + (pr2 - 25) + "%, "+red_color+"), color-stop(" + (pr2 + 25) + "%, rgba(0,0,0,0)));"
+
+        #"-webkit-gradient(linear, right top, left top, color-stop("+pr+", #da5700), color-stop("+(pr+0.1)+", #990000));";
+        #"-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #333), color-stop(100%, #222))"
+        answer.class = "datetoday"  if minutes >= 0
+      else answer.class = "datepast"  if minutes < 0
+      answer
     return (
       restrict: 'A'
       require: 'ngModel'
       scope:
         model: '=ngModel'
       link: ($scope, el, attr, ngModel) ->
-        dateToTxt = (dat)->
-          date = moment(dat);
-          days = date.diff(moment(), 'days');
-          if days < 1 and days > -2
-            text = date.calendar();
-          else
-            text = date.format('l в HH:MM');
-          #text += ' ('+date.fromNow()+')';
-          { text }
         ngModel.$render = ->
           if ngModel.$viewValue.date1
-            d1 = dateToTxt(ngModel.$viewValue.date1)
+            d1 = jsDateDiff(ngModel.$viewValue.date1)
           else
             d1 = {text: ' ', class:'nodate'}
-          d2 = dateToTxt(ngModel.$viewValue.date2) if ngModel.$viewValue.date2
+          d2 = jsDateDiff(ngModel.$viewValue.date2) if ngModel.$viewValue.date2
           txt = '';
-          txt += d1.text if d1?.text
-          txt += ' — '+d2.text if d2?.text
-          el.html( '<div class="date_txt">'+txt+'</div>' );
+          txt += '<div class="myprogress"></div></span><span  class="date1">'+d1.text+'</span>' if d1?.text
+          txt += '<span class="date2">'+d2.text+'</span>' if d2?.text
+          dt1 = new Date(ngModel.$viewValue.date1).getTime();
+          dt2 = new Date(ngModel.$viewValue.date2).getTime();
+          dt = new Date().getTime();
+
+          el.html( txt );
+          progress = el.find('.myprogress');
+          red = '';
+          if dt>=dt1 and dt<=dt2
+            pr2 = (100/(dt2-dt1))*(dt-dt1) ;
+            console.info pr2
+            progress.width(pr2+'%');
+            progress.removeClass('red');
+          else if dt >= dt2
+            pr2 = (100/(dt2-dt1))*(dt-dt2) ;
+            pr2 = 100 if pr2>100;
+            el.find('.myprogress').width(pr2+'%');
+            progress.attr('style', 'width:'+pr2+'%');
+            progress.addClass('red');
+            red = 'red'
+            if ngModel.$viewValue.did
+              red = 'did';
+          if !dt1 and !dt2
+            red = 'nodate';
+          el.attr('class', 'task_date '+red)
 
 
 

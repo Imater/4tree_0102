@@ -4,7 +4,7 @@
   margin-top: $padding*2;
 }
 
-$date_opacity: 0.2;
+$date_opacity: 1;
 
 .add_task_input {
   border: 1px solid rgba(100,100,100,0.2);
@@ -16,12 +16,24 @@ $date_opacity: 0.2;
   outline: none;
 }
 
-$past_color: #d7d7d7;
+// (x2-x1)    100
+// ------  = ----
+// 10          x
+
+
+$past_color: rgba(#ff7e7b, 1);
 $past_font_color: #000;
-$today_color: $today_background;
+$today_color: rgba($today_background, 1);
 $today_font_color: #000;
-$future_color: rgba(#bef2a5, 0.65);
+$future_color: rgba(#bef2a5, 1);
 $future_font_color: #000;
+
+$date_label_radius: 0px;
+$date_label_radius_little: 0px;
+$date_label_padding: 0px;
+$date_dot_color: #FFF;
+$date_dot_opacity: 0.3;
+$date_width: $grid_label*2.4;
 
 .datepast {
   background-color: $past_color !important;
@@ -42,28 +54,20 @@ $future_font_color: #000;
   border: 0px solid #feaa0c !important;    
 }
 
-$date_label_radius: 15px;
-$date_label_radius_little: 0px;
-$date_label_padding: 5px;
-$date_dot_color: #FFF;
-$date_dot_opacity: 0.3;
 
 .nodate {
   background-color: rgba($today_color, 1) !important;
-  color: rgba(255,255,255,0.6) !important;
-  &:before {
-    content: "\e78d";
-    font-family: 'fontello';
-    font-size: 10px;
-    text-align: center;
-    opacity: 1;
-    color: #FFF;
-  }
+  color: rgba(255,255,255,0.3) !important;
   //font-weight: bold !important;
 }
 
-$date_width: $grid_label*2.1;
-
+.taskdate_wrap {
+  height: $grid_label;
+  line-height: $grid_label;
+  width: $date_width*2;
+  margin-right: 10px;
+  margin-right: $padding;
+}
 
 .task_date {
   display: inline-block;
@@ -80,26 +84,47 @@ $date_width: $grid_label*2.1;
   cursor: pointer;
   margin: 0;
   position: relative;
-  &.date1 {
-    text-align: left;
+  z-index: -1;
+  &.red {
+    background: $today_color;
+  }
+  .myprogress {
+    position: absolute;
+    background: $today_color;
+    border-radius: 0px;
+    height: $grid_label;
+    left: 0;
+    z-index: -1;
+    &.red {
+      background: $past_color;
+    }
+  }
+  .date1 {
+    text-align: center;
     border-bottom-left-radius: $date_label_radius;
     border-top-left-radius: $date_label_radius;
     border-bottom-right-radius: $date_label_radius_little;
     border-top-right-radius: $date_label_radius_little;
     padding-left: $date_label_padding;
+    min-width: $date_width;
+    z-index: 1;
+    display: inline-block;
   }
-  &.date2 {
-    text-align: right;
+  .date2 {
+    text-align: center;
     border-bottom-right-radius: $date_label_radius;
     border-top-right-radius: $date_label_radius;
     border-bottom-left-radius: $date_label_radius_little;
     border-top-left-radius: $date_label_radius_little;
     padding-right: $date_label_padding;
-    margin-right: $padding;
+    min-width: $date_width;
+    display: inline-block;
+    z-index: 1;
   }
   &.nodate {
     text-align: center;
     width: $date_width*2;
+    background: $today_color;
     border-bottom-right-radius: $date_label_radius;
     border-top-right-radius: $date_label_radius;
     margin-right: $padding;
@@ -111,14 +136,6 @@ $date_width: $grid_label*2.1;
   white-space: nowrap;
   margin-bottom: $padding*2;
   color: #444;
-  .title {
-    color: #000;
-    font-size: 1em;
-  }
-  .date_txt {
-    color: #c0b9b9;
-    font-size: 0.85em;
-  }
   &.next_action {
     color: #000;
     &:before {
@@ -160,7 +177,10 @@ $date_width: $grid_label*2.1;
   &.did {
     .title {
       text-decoration: line-through;
-      color: $gray !important;
+      color: $dark_gray !important;
+    }
+    .progress {
+      background: #EEE;
     }
 
     .task_date {
