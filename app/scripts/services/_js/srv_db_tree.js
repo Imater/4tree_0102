@@ -445,19 +445,33 @@
           };
           mymap_calendar = function(doc, emit) {
             if (((doc != null ? doc.date2 : void 0) || (doc != null ? doc.date1 : void 0)) && (doc != null ? doc.date_on : void 0) && !(doc != null ? doc.hide_in_todo : void 0)) {
-              return emit(doc.date2, doc, doc);
+              return emit(doc.date1, doc, doc);
             }
           };
           myreduce_calendar = function(memo, values) {
-            var key;
+            var day, day1, day2, days, key, _results;
             key = values.key;
             key = moment(values.key);
             key = key.format("YYYY-MM-DD");
-            if (!memo[key]) {
-              memo[key] = [];
-            }
-            if (values.value) {
-              return memo[key].push(values.value);
+            day1 = new Date(values.value.date1).getTime();
+            day2 = new Date(values.value.date2).getTime();
+            days = (day2 - day1) / (24 * 60 * 60 * 1000);
+            if (days > 0) {
+              _results = [];
+              while ((days--) > 0) {
+                day = day1 + days * 24 * 60 * 60 * 1000;
+                key = moment(new Date(day));
+                key = key.format("YYYY-MM-DD");
+                if (!memo[key]) {
+                  memo[key] = [];
+                }
+                if (values.value) {
+                  _results.push(memo[key].push(values.value));
+                } else {
+                  _results.push(void 0);
+                }
+              }
+              return _results;
             }
           };
           this.newView('tasks', 'tasks_by_date', mymap_calendar, myreduce_calendar);
@@ -803,7 +817,7 @@
           return this._db.tasks;
         },
         calcWeight: function(el) {
-          var mythis, round, w, weight, weight_date, weight_importance;
+          var mythis, round, w, weight, weight_date, weight_importance, _ref, _ref1, _ref2;
           mythis = this;
           round = function(value) {
             return Math.round(parseInt(value * 100)) / 100;
@@ -811,7 +825,9 @@
           weight_date = $rootScope.$$childTail.set.weight.date;
           weight_importance = $rootScope.$$childTail.set.weight.importance;
           w = {};
+          w['tree_id'] = (_ref = mythis._db) != null ? (_ref1 = _ref.tree) != null ? (_ref2 = _ref1[el.tree_id]) != null ? _ref2.importance : void 0 : void 0 : void 0;
           w['did'] = 0;
+          w['created'] = (new Date(el.created).getTime() - $rootScope.$$childTail.set.today_date_time) / (24 * 60 * 60 * 1000 * 10);
           if (!!el.did) {
             w['did'] = -1000;
           }
@@ -1234,6 +1250,9 @@
             });
           });
           return dfd.promise();
+        },
+        jsTreeToDiary: function(tree_el) {
+          return tree_el.diary = new Date();
         },
         diaryFind: _.memoize(function(date) {
           var answer, key, mymap_diary, myreduce_diary, mythis;

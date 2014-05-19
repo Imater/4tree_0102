@@ -32,7 +32,9 @@
 
 	<h10 class="open">дневник</h10>
 
-    <div class="diary" ng-controller="save_tree_db" ng-if='tree=fn.service.db_tree.diaryFind(set.today_date)[0]'>
+    <div ng-repeat='tree in fn.service.db_tree.diaryFind(set.today_date) track by $index'
+         class="diary color_{{$index}}"
+         ng-controller="save_tree_db">
       <div class="diary_header">
         <div class="btn-group">
           <button type="button" class="btn btn-default btn-xs active">22</button>
@@ -40,7 +42,7 @@
           <button type="button" class="btn btn-default btn-xs">2014г</button>
         </div>
       </div>
-      <div class="diary_editor" contenteditable="true" spellcheck="false" ng-model="tree.text"></div>
+      <div class="diary_editor" smart-redactor="{air: true}" ng-model="tree._id"></div>
     </div>
 	</div>
   <div>

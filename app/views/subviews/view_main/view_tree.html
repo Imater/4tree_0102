@@ -26,7 +26,7 @@
             <ul ng-if="set.main_parent_id[panel_id]" frang-tree my-sortable class="sortable"
                 data-parent-id="{{set.main_parent_id[panel_id]}}">
                 <li class="tree2"
-                    frang-tree-repeat="tree in fn.service.db_tree.jsFindByParent(set.main_parent_id[panel_id])">
+                    frang-tree-repeat="tree in fn.service.db_tree.jsFindByParent(set.main_parent_id[panel_id]) track by $index">
                     {{tree._id}}
                     <!--<div ng-include="'views/subviews/view_one_line0.html'"></div>-->
                     <one-note render-time></one-note>

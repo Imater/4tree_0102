@@ -81,6 +81,35 @@
     width: 100%;
     min-height: 15em;
     margin-bottom: $grid;
+    .redactor_editor {
+      background: none !important;
+      padding: 0px;
+    }
+    .redactor_box {
+      background: none !important;
+      padding: 0px;
+    }
+    &.color_1 {
+      background: rgba(red, 0.05);
+    }
+    &.color_2 {
+      background: rgba(green, 0.05);
+    }
+    &.color_3 {
+      background: rgba(magenta, 0.05);
+    }
+    &.color_4 {
+      background: rgba(yellow, 0.35);
+    }
+    &.color_5 {
+      background: rgba(navy, 0.15);
+    }
+    &.color_6 {
+      background: rgba(#000, 0.03);
+    }
+    &.color_7 {
+      background: rgba(red, 0.35);
+    }
     .btn-group {
       background: none;
       .btn {

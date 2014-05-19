@@ -58,6 +58,8 @@
     border: 1px solid rgba($main_color, 0.5);
     width: 100%;
     background: #FFF;
+    max-height: 200px;
+    overflow: auto;
   }
   .pull-right {
     font-weight: normal;

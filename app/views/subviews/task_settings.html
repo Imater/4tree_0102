@@ -25,7 +25,7 @@
     <input type="checkbox" id="show_to_do2"> <label for="show_to_do2">дело лягушка</label><br>
     <input type="color" name="" id="" ng-model="task.color"/>
     <h10 class="open">Описание</h10>
-    <div class="task_editor">
+    <div class="task_editor" smart-redactor="{air:true, cleanup: true}" ng-model="task._id">
         {{task}}
     </div>
 

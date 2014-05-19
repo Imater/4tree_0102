@@ -306,14 +306,22 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
       mymap_calendar = (doc, emit)->
         if (doc?.date2 or doc?.date1) and doc?.date_on and !doc?.hide_in_todo
-          emit(doc.date2, doc, doc)
+          emit(doc.date1, doc, doc)
 
       myreduce_calendar = (memo, values)->
         key = values.key;
         key = moment(values.key);
         key = key.format("YYYY-MM-DD")
-        memo[key] = [] if !memo[key]
-        memo[key].push(values.value) if values.value
+        day1 = new Date(values.value.date1).getTime();
+        day2 = new Date(values.value.date2).getTime()
+        days = (day2 - day1)/(24*60*60*1000);
+        if days > 0
+          while (days--)>0
+            day = day1 + days*24*60*60*1000;
+            key = moment( new Date(day) );
+            key = key.format("YYYY-MM-DD");
+            memo[key] = [] if !memo[key]
+            memo[key].push(values.value) if values.value
 
       @newView('tasks', 'tasks_by_date', mymap_calendar, myreduce_calendar)
 
@@ -494,7 +502,9 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       weight_date = $rootScope.$$childTail.set.weight.date;
       weight_importance = $rootScope.$$childTail.set.weight.importance;
       w = {};
+      w['tree_id'] = mythis._db?.tree?[el.tree_id]?.importance;
       w['did'] = 0;
+      w['created'] = (new Date(el.created).getTime()-$rootScope.$$childTail.set.today_date_time)/(24*60*60*1000*10)
       if !!el.did
         w['did'] = -1000;
       if el.date2
@@ -792,6 +802,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         }).then (result)->
           dfd.resolve(result.data);
       dfd.promise();
+    jsTreeToDiary: (tree_el)->
+      tree_el.diary = new Date();
     diaryFind: _.memoize (date)->
       mythis = @;
       mymap_diary = (doc, emit)->

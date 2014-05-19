@@ -42,7 +42,7 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', '$ro
           hours = parseInt(dif_sec / (60 * 1000 * 60) * 10, 10) / 10
           answer.text = ((if (minutes > 0) then "+" else "")) + hours + " ч."
         else
-          answer.text = ((if (minutes > 0) then "+" else "")) + minutes + " мин."
+          answer.text = ((if (minutes > 0) then "+" else "")) + minutes + " м."
         if (only_days)
           answer.text = "сегодня";
       else
@@ -52,9 +52,9 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', '$ro
           answer.class = "datetoday past"
           pr2 = (-minutes / 480) * 100
           pr2 = 80 if pr2 > 80
-          red_color = '#fe4500';
+          red_color = '#d7d7d7';
           if !date2.did
-            answer.image = "background-image: -webkit-gradient(linear, left top, right top, color-stop(" + (pr2 - 25) + "%, "+red_color+"), color-stop(" + (pr2 + 25) + "%, rgba(0,0,0,0))) !important;"
+            answer.image = "background-image: -webkit-gradient(linear, left top, right top, color-stop(" + (pr2 - 25) + "%, "+red_color+"), color-stop(" + (pr2 + 25) + "%, rgba(0,0,0,0)));"
 
         #"-webkit-gradient(linear, right top, left top, color-stop("+pr+", #da5700), color-stop("+(pr+0.1)+", #990000));";
         #"-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #333), color-stop(100%, #222))"
@@ -80,8 +80,8 @@ angular.module("4treeApp").service 'calendarBox', ['$translate', 'db_tree', '$ro
       answer = {day, month, year, week_day, myclass, fulldate}
     getDays: _.memoize (date, only_days)->
       @jsDateDiff(date, only_days)
-    , (date, only_days) ->
-      (date + parseInt(new Date().getTime() / 1000 / 120) + only_days )
+    , (date, only_days)->
+      date+only_days
     getCalendarForIndex: ($index)->
       $index = $index + $rootScope.$$childHead.set.from_today_index
       date = new Date(new Date().getTime() + ($index - 3) * 24 * 60 * 60 * 1000);

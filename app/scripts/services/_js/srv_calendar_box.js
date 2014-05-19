@@ -66,7 +66,7 @@
               hours = parseInt(dif_sec / (60 * 1000 * 60) * 10, 10) / 10;
               answer.text = (minutes > 0 ? "+" : "") + hours + " ч.";
             } else {
-              answer.text = (minutes > 0 ? "+" : "") + minutes + " мин.";
+              answer.text = (minutes > 0 ? "+" : "") + minutes + " м.";
             }
             if (only_days) {
               answer.text = "сегодня";
@@ -81,9 +81,9 @@
               if (pr2 > 80) {
                 pr2 = 80;
               }
-              red_color = '#fe4500';
+              red_color = '#d7d7d7';
               if (!date2.did) {
-                answer.image = "background-image: -webkit-gradient(linear, left top, right top, color-stop(" + (pr2 - 25) + "%, " + red_color + "), color-stop(" + (pr2 + 25) + "%, rgba(0,0,0,0))) !important;";
+                answer.image = "background-image: -webkit-gradient(linear, left top, right top, color-stop(" + (pr2 - 25) + "%, " + red_color + "), color-stop(" + (pr2 + 25) + "%, rgba(0,0,0,0)));";
               }
             }
             if (minutes >= 0) {
@@ -132,7 +132,7 @@
         getDays: _.memoize(function(date, only_days) {
           return this.jsDateDiff(date, only_days);
         }, function(date, only_days) {
-          return date + parseInt(new Date().getTime() / 1000 / 120) + only_days;
+          return date + only_days;
         }),
         getCalendarForIndex: function($index) {
           var date, element, key;

@@ -31,6 +31,11 @@
         <item url="file://$PROJECT_DIR$/app/bower_components/angular-redactor/_js/angular-redactor.js" />
         <item url="file://$PROJECT_DIR$/dist/bower_components/nanoscroller/_js/Gruntfile.js" />
         <item url="file://$PROJECT_DIR$/dist/bower_components/angular-virtual-scroll/_js/angular-virtual-scroll-my.js" />
+        <item url="file://$PROJECT_DIR$/app/bower_components/odometer/docs/welcome/_js/landing-page.js" />
+        <item url="file://$PROJECT_DIR$/app/bower_components/odometer/_js/Gruntfile.js" />
+        <item url="file://$PROJECT_DIR$/app/bower_components/odometer/_js/odometer.js" />
+        <item url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_odometer.js" />
+        <item url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_date.js" />
         <item url="file://$PROJECT_DIR$/dist/bower_components/nanoscroller/tests/coffeescripts/_js/nano-spec.js" />
         <item url="file://$PROJECT_DIR$/dist/bower_components/nanoscroller/coffeescripts/_js/jquery.nanoscroller.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/injectme.js" />
@@ -188,6 +193,11 @@
       <root url="file://$PROJECT_DIR$/app/bower_components/angular-redactor/_js/angular-redactor.js" />
       <root url="file://$PROJECT_DIR$/dist/bower_components/nanoscroller/_js/Gruntfile.js" />
       <root url="file://$PROJECT_DIR$/dist/bower_components/angular-virtual-scroll/_js/angular-virtual-scroll-my.js" />
+      <root url="file://$PROJECT_DIR$/app/bower_components/odometer/docs/welcome/_js/landing-page.js" />
+      <root url="file://$PROJECT_DIR$/app/bower_components/odometer/_js/Gruntfile.js" />
+      <root url="file://$PROJECT_DIR$/app/bower_components/odometer/_js/odometer.js" />
+      <root url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_odometer.js" />
+      <root url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_date.js" />
       <root url="file://$PROJECT_DIR$/dist/bower_components/nanoscroller/tests/coffeescripts/_js/nano-spec.js" />
       <root url="file://$PROJECT_DIR$/dist/bower_components/nanoscroller/coffeescripts/_js/jquery.nanoscroller.js" />
       <root url="file://$PROJECT_DIR$/dist/bower_components/angular-redactor/_js/angular-redactor.js" />
