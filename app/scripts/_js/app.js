@@ -4,16 +4,28 @@
 
   moment.lang('ru');
 
-  angular.module("4treeApp", ["ngCookies", "ngResource", "app.directives", "ngRoute", "pasvaz.bindonce", "pascalprecht.translate", "sun.scrollable", "ui.scroll", "angular-redactor", "ui-rangeSlider", "$strap", "$strap.directives", "ngSanitize", "ngBootstrap", "ngTagsInput", "sly", "ngClipboard", "ngSocket", "drahak.hotkeys"]);
+  angular.module("4treeApp", ["ngCookies", "ngResource", "app.directives", "ngRoute", "pasvaz.bindonce", "pascalprecht.translate", "sun.scrollable", "ui.scroll", "angular-redactor", "ui-rangeSlider", "$strap", "$strap.directives", "ngSanitize", "ngBootstrap", "ngTagsInput", "sly", "ngClipboard", "ngSocket", "drahak.hotkeys", 'route-segment', 'view-segment', 'ngRoute']);
 
   angular.module("4treeApp").config([
-    "$translateProvider", "$routeProvider", function($translateProvider, $routeProvider) {
-      var lang, lng;
-      $routeProvider.when("/", {
-        templateUrl: "views/main.html",
+    "$translateProvider", "$locationProvider", "$routeProvider", "$routeSegmentProvider", function($translateProvider, $locationProvider, $routeProvider, $routeSegmentProvider) {
+
+      /*
+      $routeProvider.when("/",
+        templateUrl: "views/main.html"
         controller: "MainCtrl"
-      }).otherwise({
-        redirectTo: "/"
+      ).otherwise redirectTo: "/"
+       */
+      var lang, lng;
+      $routeSegmentProvider.options.autoLoadTemplates = true;
+      $routeSegmentProvider.when('/home', 'home').when('/login', 'login').segment('home', {
+        templateUrl: 'views/main.html',
+        controller: 'MainCtrl'
+      }).segment('login', {
+        templateUrl: 'views/main/login.html',
+        controller: 'LoginCtrl'
+      });
+      $routeProvider.otherwise({
+        redirectTo: '/home'
       });
       $translateProvider.translations("en", {
         TREE: "Tree",

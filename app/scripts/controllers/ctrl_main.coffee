@@ -58,7 +58,11 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     $socket.emit('hello', message)
 
 
-
+  $interval ()->
+    $scope.set.tick_today_date = new Date();
+    $scope.set.tick_today_date_time = new Date().getTime();
+    console.info 'tick'
+  , 30*1000
 
   #параметры
   $scope.set = {
@@ -66,6 +70,8 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     machine: localStorage.getItem('mongoMachineId')
     autosync_on: true
     server: ""
+    tick_today_date: new Date()
+    tick_today_date_time: new Date().getTime()
     today_date: new Date()
     today_date_time: new Date().getTime()
     focus: 1
@@ -88,7 +94,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     }
     panel: [
       {active: 7} #0  
-      {active: 6} #1   0-дерево 1-карточки 2-mindmap 3-divider 4-календарь 5-редактор 6-none
+      {active: 0} #1   0-дерево 1-карточки 2-mindmap 3-divider 4-календарь 5-редактор 6-none
       {active: 5} #2
       {active: 0} #3
     ]

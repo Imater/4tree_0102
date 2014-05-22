@@ -4,8 +4,8 @@
 
 'use strict'
 angular.module('4treeApp').directive 'miniDate', [
-  "calendarBox"
-  (calendarBox) ->
+  "$rootScope"
+  ($rootScope) ->
     jsMakeGradient = (pr2, red_color)->
       "background-image: -webkit-gradient(linear, left top, right top, color-stop("+
       (pr2 - 0) + "%, "+red_color+"), color-stop("+
@@ -70,40 +70,52 @@ angular.module('4treeApp').directive 'miniDate', [
       scope:
         model: '=ngModel'
       link: ($scope, el, attr, ngModel) ->
-        ngModel.$render = ->
+
+        $scope.$watch ()->
+          step = Math.round( ($rootScope.$$childTail.set.tick_today_date_time)/(1000*30) )
+          return step + ngModel.$modelValue.date1 +
+                 ngModel.$modelValue.date2 +
+                 ngModel.$modelValue.did
+        , (newVal, oldVal)->
+          if newVal != oldVal
+            updateDate();
+
+
+        updateDate = ->
           if ngModel.$viewValue.date1
             d1 = jsDateDiff(ngModel.$viewValue.date1)
           else
             d1 = {text: ' ', class:'nodate'}
           d2 = jsDateDiff(ngModel.$viewValue.date2) if ngModel.$viewValue.date2
-          txt = '';
-          txt += '<div class="myprogress"></div></span><span  class="date1">'+d1.text+'</span>' if d1?.text
-          txt += '<span class="date2">'+d2.text+'</span>' if d2?.text
+          txt = '<div class="myprogress"></div>';
+          txt += '<div class="txt"></div><span  class="date1">'+d1.text+'</span>' if d1?.text
+          txt += '<span class="date2">'+d2.text+'</span></div>' if d2?.text
+          txt += '';
           dt1 = new Date(ngModel.$viewValue.date1).getTime();
           dt2 = new Date(ngModel.$viewValue.date2).getTime();
-          dt = new Date().getTime();
+          dt = $rootScope.$$childTail.set.tick_today_date_time;
 
           el.html( txt );
           progress = el.find('.myprogress');
           red = '';
           if dt>=dt1 and dt<=dt2
             pr2 = (100/(dt2-dt1))*(dt-dt1) ;
-            console.info pr2
-            progress.width(pr2+'%');
             progress.removeClass('red');
           else if dt >= dt2
             pr2 = (100/(dt2-dt1))*(dt-dt2) ;
             pr2 = 100 if pr2>100;
-            el.find('.myprogress').width(pr2+'%');
-            progress.attr('style', 'width:'+pr2+'%');
-            progress.addClass('red');
+            progress.width(pr2+'%');
             red = 'red'
-            if ngModel.$viewValue.did
-              red = 'did';
+            progress.addClass('red');
           if !dt1 and !dt2
             red = 'nodate';
+          if ngModel.$viewValue.did
+            red = 'did';
+            pr2 = 0;
+          progress.width(pr2+'%');
           el.attr('class', 'task_date '+red)
 
+        ngModel.$render = updateDate
 
 
     )

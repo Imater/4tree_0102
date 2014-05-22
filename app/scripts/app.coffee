@@ -25,14 +25,36 @@ angular.module("4treeApp", [
   "ngSocket"
   #"Decorators"
   "drahak.hotkeys"
+  'route-segment'
+  'view-segment'
+  'ngRoute'
 ])
 
-angular.module("4treeApp").config ["$translateProvider", "$routeProvider", ($translateProvider, $routeProvider) ->
-  
+angular.module("4treeApp").config ["$translateProvider", "$locationProvider", "$routeProvider", "$routeSegmentProvider", ($translateProvider, $locationProvider, $routeProvider, $routeSegmentProvider) ->
+
+  ###
   $routeProvider.when("/",
     templateUrl: "views/main.html"
     controller: "MainCtrl"
   ).otherwise redirectTo: "/"
+  ###
+
+  $routeSegmentProvider.options.autoLoadTemplates = true;
+
+  $routeSegmentProvider
+  .when '/home', 'home'
+  .when '/login', 'login'
+  .segment 'home', {
+    templateUrl: 'views/main.html'
+    controller: 'MainCtrl'
+  }
+  .segment 'login', {
+    templateUrl: 'views/main/login.html'
+    controller: 'LoginCtrl'
+  }
+
+  $routeProvider.otherwise({redirectTo: '/home'});
+
 
   $translateProvider.translations "en",
     TREE: "Tree"

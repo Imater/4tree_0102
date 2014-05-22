@@ -30,6 +30,7 @@
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/scandir.js" />
         <item url="file://$PROJECT_DIR$/app/bower_components/angular-redactor/_js/angular-redactor.js" />
         <item url="file://$PROJECT_DIR$/dist/bower_components/nanoscroller/_js/Gruntfile.js" />
+        <item url="file://$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_login.js" />
         <item url="file://$PROJECT_DIR$/dist/bower_components/angular-virtual-scroll/_js/angular-virtual-scroll-my.js" />
         <item url="file://$PROJECT_DIR$/app/bower_components/odometer/docs/welcome/_js/landing-page.js" />
         <item url="file://$PROJECT_DIR$/app/bower_components/odometer/_js/Gruntfile.js" />
@@ -98,10 +99,11 @@
         <item url="file://$PROJECT_DIR$/app/scripts/services/_js/srv_calendar_box.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/walk_through_frames.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/stdin-stdout-stderr.js" />
+        <item url="file://$PROJECT_DIR$/app/scripts/services/_js/srv_crypt.js" />
         <item url="file://$PROJECT_DIR$/app/scripts/services/_js/srv_diff.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/child_process-examples.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/simpleserver.js" />
         <item url="file://$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_main.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/simpleserver.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/printmargins.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/pagecallback.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/unrandomize.js" />
@@ -110,6 +112,7 @@
         <item url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_droppable.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/detectsniff.js" />
         <item url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_smartRedactor.js" />
+        <item url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_datetime.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/seasonfood.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/postserver.js" />
         <item url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/echoToFile.js" />
@@ -192,6 +195,7 @@
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/scandir.js" />
       <root url="file://$PROJECT_DIR$/app/bower_components/angular-redactor/_js/angular-redactor.js" />
       <root url="file://$PROJECT_DIR$/dist/bower_components/nanoscroller/_js/Gruntfile.js" />
+      <root url="file://$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_login.js" />
       <root url="file://$PROJECT_DIR$/dist/bower_components/angular-virtual-scroll/_js/angular-virtual-scroll-my.js" />
       <root url="file://$PROJECT_DIR$/app/bower_components/odometer/docs/welcome/_js/landing-page.js" />
       <root url="file://$PROJECT_DIR$/app/bower_components/odometer/_js/Gruntfile.js" />
@@ -260,10 +264,11 @@
       <root url="file://$PROJECT_DIR$/app/scripts/services/_js/srv_calendar_box.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/walk_through_frames.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/stdin-stdout-stderr.js" />
+      <root url="file://$PROJECT_DIR$/app/scripts/services/_js/srv_crypt.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/phantomjs/phantomjs-1.9.7-macosx.zip-extract-1399347877308/phantomjs-1.9.7-macosx/examples/_js/child_process-examples.js" />
       <root url="file://$PROJECT_DIR$/app/scripts/services/_js/srv_diff.js" />
-      <root url="file://$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_main.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/simpleserver.js" />
+      <root url="file://$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_main.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/printmargins.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/pagecallback.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/unrandomize.js" />
@@ -273,6 +278,7 @@
       <root url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_smartRedactor.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/detectsniff.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/seasonfood.js" />
+      <root url="file://$PROJECT_DIR$/app/scripts/directives/_js/dir_datetime.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/postserver.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/echoToFile.js" />
       <root url="file://$PROJECT_DIR$/node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/phantom/examples/_js/colorwheel.js" />

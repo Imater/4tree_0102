@@ -16,16 +16,12 @@ $date_opacity: 1;
   outline: none;
 }
 
-// (x2-x1)    100
-// ------  = ----
-// 10          x
 
-
-$past_color: rgba(#ff7e7b, 1);
+$past_color: rgba(#ffc6cd, 1);
 $past_font_color: #000;
-$today_color: rgba($today_background, 1);
+$today_color: #ffc83f;
 $today_font_color: #000;
-$future_color: rgba(#bef2a5, 1);
+$future_color: rgba(#d2f4c5, 1);
 $future_font_color: #000;
 
 $date_label_radius: 0px;
@@ -33,40 +29,12 @@ $date_label_radius_little: 0px;
 $date_label_padding: 0px;
 $date_dot_color: #FFF;
 $date_dot_opacity: 0.3;
-$date_width: $grid_label*2.4;
-
-.datepast {
-  background-color: $past_color !important;
-  color: $past_font_color !important;
-  border: 0px solid #f5a1aa !important;
-  //color: #FFF !important;
-}
-
-
-.datetoday {
-  background-color: $today_color !important;
-  color: $today_font_color !important;
-  border: 0px solid #feaa0c !important;
-}
-
-.datetoday.past {
-  //background-image: -webkit-gradient(linear, right top, left top, color-stop(0.85, #ffd5b5), color-stop(0.95, rgba(#f8000d, $date_opacity) )) !important;
-  border: 0px solid #feaa0c !important;    
-}
-
+$date_width: $grid_label*2.2;
 
 .nodate {
   background-color: rgba($today_color, 1) !important;
   color: rgba(255,255,255,0.3) !important;
   //font-weight: bold !important;
-}
-
-.taskdate_wrap {
-  height: $grid_label;
-  line-height: $grid_label;
-  width: $date_width*2;
-  margin-right: 10px;
-  margin-right: $padding;
 }
 
 .task_date {
@@ -75,50 +43,42 @@ $date_width: $grid_label*2.4;
   color: $future_font_color;
   font-size: round($grid_label/2);
   line-height: $grid_label;
-  vertical-align: baseline;
+  vertical-align: middle;
   height: $grid_label;
-  min-width: $date_width;
-  text-align: center;
-  border-radius: $date_label_radius;
-  border: 0px solid #c9c5ff;
+  min-width: $date_width*2;
   cursor: pointer;
   margin: 0;
   position: relative;
-  z-index: -1;
+  margin-right: $padding;
   &.red {
     background: $today_color;
   }
   .myprogress {
     position: absolute;
-    background: $today_color;
-    border-radius: 0px;
+    background: rgba($today_color, 1);
     height: $grid_label;
     left: 0;
-    z-index: -1;
+    top: 0;
+    z-index: 1;
+    border-right: 1px solid #FFF;
     &.red {
       background: $past_color;
     }
   }
   .date1 {
-    text-align: center;
-    border-bottom-left-radius: $date_label_radius;
-    border-top-left-radius: $date_label_radius;
-    border-bottom-right-radius: $date_label_radius_little;
-    border-top-right-radius: $date_label_radius_little;
     padding-left: $date_label_padding;
     min-width: $date_width;
-    z-index: 1;
     display: inline-block;
+    position: absolute;
+    left: 3px;
+    z-index: 1;
   }
   .date2 {
-    text-align: center;
-    border-bottom-right-radius: $date_label_radius;
-    border-top-right-radius: $date_label_radius;
-    border-bottom-left-radius: $date_label_radius_little;
-    border-top-left-radius: $date_label_radius_little;
     padding-right: $date_label_padding;
-    min-width: $date_width;
     display: inline-block;
+    position: absolute;
+    text-align: center;
+    right: 3px;
     z-index: 1;
   }
   &.nodate {
@@ -127,7 +87,6 @@ $date_width: $grid_label*2.4;
     background: $today_color;
     border-bottom-right-radius: $date_label_radius;
     border-top-right-radius: $date_label_radius;
-    margin-right: $padding;
   }
 }
 
@@ -179,8 +138,9 @@ $date_width: $grid_label*2.4;
       text-decoration: line-through;
       color: $dark_gray !important;
     }
-    .progress {
+    .myprogress {
       background: #EEE;
+      border: none;
     }
 
     .task_date {

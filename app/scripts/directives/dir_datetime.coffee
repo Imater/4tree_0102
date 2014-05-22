@@ -5,7 +5,9 @@ angular.module("4treeApp").directive "dateTimeInput", ($timeout, $compile)->
   scope: {
 
   }
-  template: ' <div class="datetimeinput">'+
+  template: ()->
+
+    return ' <div class="datetimeinput">'+
                 '<div class="dt_wrap">'+
                   '<i class="icon-up-dir"></i>'+
                   '<input class="day" size="2" only-digits>'+
@@ -23,7 +25,20 @@ angular.module("4treeApp").directive "dateTimeInput", ($timeout, $compile)->
                   '<input class="year" size="4">'+
                   '<i class="icon-down-dir"></i>'+
                 '</div>'+
-              '</div>'
+
+                '<div class="dt_wrap">'+
+                '<i class="icon-up-dir"></i>'+
+                '<input class="hours" size="2">'+
+                '<i class="icon-down-dir"></i>'+
+                '</div>'+
+
+                '<div class="dt_wrap">'+
+                '<i class="icon-up-dir"></i>'+
+                '<input class="minutes" size="2">'+
+                '<i class="icon-down-dir"></i>'+
+                '</div>'+
+
+    '</div>'
   link: (scope, el, attr, ngModel) ->
 
     params = {
@@ -72,6 +87,8 @@ angular.module("4treeApp").directive "dateTimeInput", ($timeout, $compile)->
       el.find('.day').val date.getDate() or ""
       el.find('.month').val params.month_names[ date.getMonth() ] or ""
       el.find('.year').val date.getFullYear() or ""
+      el.find('.hours').val date.getHours() or ""
+      el.find('.minutes').val date.getMinutes() or ""
 
     ngModel.$render = ->
       renderDate(el, ngModel.$modelValue)
@@ -85,7 +102,11 @@ angular.module("4treeApp").directive "dateTimeInput", ($timeout, $compile)->
       day = el.find('.day').val();
       month = el.find('.month').val();
       year = el.find('.year').val();
+      hours = el.find('.hours').val();
+      minutes = el.find('.minutes').val();
       day = parseInt(day);
+      hours = parseInt(hours);
+      minutes = parseInt(minutes);
       substr_month = month.substr(0,4);
       found_month_key = new Date().getMonth();
       month = _.find params.month_names, (month, key)->
@@ -93,7 +114,7 @@ angular.module("4treeApp").directive "dateTimeInput", ($timeout, $compile)->
       year = parseInt(year);
 
 
-      new Date( year, found_month_key, day )
+      new Date( year, found_month_key, day, hours, minutes )
 
     el.on 'keyup', 'input', (e)->
       if e.which == 13
@@ -136,6 +157,14 @@ angular.module("4treeApp").directive "dateTimeInput", ($timeout, $compile)->
           dt = new Date(date);
           scope.$apply ()->
             ngModel.$setViewValue new Date( dt.setFullYear( dt.getFullYear() + 1 ) );
+        if $(this).hasClass('hours')
+          dt = new Date(date);
+          scope.$apply ()->
+            ngModel.$setViewValue new Date( dt.setHours( dt.getHours() + 1 ) );
+        if $(this).hasClass('minutes')
+          dt = new Date(date);
+          scope.$apply ()->
+            ngModel.$setViewValue new Date( dt.setMinutes( dt.getMinutes() + 1 ) );
       if e.keyCode == params.key_code.down
         e.preventDefault();
         e.stopPropagation();
@@ -152,7 +181,15 @@ angular.module("4treeApp").directive "dateTimeInput", ($timeout, $compile)->
           dt = new Date(date);
           scope.$apply ()->
             ngModel.$setViewValue new Date( dt.setFullYear( dt.getFullYear() - 1 ) );
-          
+        if $(this).hasClass('hours')
+          dt = new Date(date);
+          scope.$apply ()->
+            ngModel.$setViewValue new Date( dt.setHours( dt.getHours() - 1 ) );
+        if $(this).hasClass('minutes')
+          dt = new Date(date);
+          scope.$apply ()->
+            ngModel.$setViewValue new Date( dt.setMinutes( dt.getMinutes() - 1 ) );
+
 
 
 

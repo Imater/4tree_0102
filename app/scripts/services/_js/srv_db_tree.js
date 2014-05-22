@@ -39,7 +39,7 @@
   ]);
 
   angular.module("4treeApp").service('db_tree', [
-    '$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', '$socket', function($translate, $http, $q, $rootScope, oAuth2Api, $timeout, $socket) {
+    '$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', '$socket', '$location', function($translate, $http, $q, $rootScope, oAuth2Api, $timeout, $socket, $location) {
       return {
         _db: {
           texts: {}
@@ -129,6 +129,21 @@
           });
           return dfd.promise();
         },
+        setMainTimeout: null,
+        setMain: function(el) {
+          var hash;
+          $rootScope.$$childTail.db.main_node[$rootScope.$$childTail.set.focus] = el;
+          if (el != null ? el._id : void 0) {
+            hash = '' + el._id.substr(el._id.length - 5, el._id.length);
+          }
+          if (this.setMainTimeout) {
+            $timeout.cancel(this.setMainTimeout);
+          }
+          return this.setMainTimeout = $timeout(function() {
+            $location.hash(hash);
+            return console.info(hash);
+          }, 5000);
+        },
         getTreeFromNet: function() {
           var dfd, mythis;
           mythis = this;
@@ -153,7 +168,7 @@
             found = _.find(mythis._db['tree'], function(el) {
               return el.title === '_НОВОЕ';
             });
-            $rootScope.$$childTail.db.main_node = [{}, found, {}, {}];
+            mythis.setMain(found);
             mythis.clearCache();
             console.timeEnd('ALL DATA LOADED!');
             return dfd.resolve();
@@ -829,7 +844,7 @@
           w['did'] = 0;
           w['created'] = (new Date(el.created).getTime() - $rootScope.$$childTail.set.today_date_time) / (24 * 60 * 60 * 1000 * 10);
           if (!!el.did) {
-            w['did'] = -1000;
+            w['did'] = -50000;
           }
           if (el.date2) {
             w['date1'] = (new Date(el.date2).getTime() - $rootScope.$$childTail.set.today_date_time) / (24 * 60 * 60 * 1000);
@@ -981,7 +996,7 @@
             this.refreshParentsIndex();
             tree._open = true;
           }
-          $rootScope.$$childTail.db.main_node[focus] = new_note;
+          this.main_node(new_note);
           return this.clearCache();
         },
         jsAddTask: function(event, scope, tree) {
@@ -1039,7 +1054,7 @@
             scope.tree.del = 1;
           }
           if (prev_note) {
-            $rootScope.$$childTail.db.main_node[focus] = prev_note;
+            this.setMain(prev_note);
           }
           return event.target.blur();
         },
@@ -1173,7 +1188,7 @@
             event.preventDefault();
             found = db_tree.jsFindPrev($rootScope.$$childTail.db.main_node[focus]);
             if (found) {
-              return $rootScope.$$childTail.db.main_node[focus] = found;
+              return this.setMain(found);
             }
           }
         },
@@ -1186,7 +1201,7 @@
             event.preventDefault();
             found = db_tree.jsFindNext($rootScope.$$childTail.db.main_node[focus]);
             if (found) {
-              return $rootScope.$$childTail.db.main_node[focus] = found;
+              return this.setMain(found);
             }
           }
         },

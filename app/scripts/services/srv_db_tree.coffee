@@ -20,8 +20,8 @@ angular.module("4treeApp").factory 'datasource', ['$timeout', '$rootScope', ($ti
 ]
 
 angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout',
-                                               '$socket',
-  ($translate, $http, $q, $rootScope, oAuth2Api, $timeout, $socket) ->
+                                               '$socket', '$location',
+  ($translate, $http, $q, $rootScope, oAuth2Api, $timeout, $socket, $location) ->
     _db:
       texts: {}
     _tmp:
@@ -85,6 +85,16 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           __log.info 'ALL DATA FROM LOCAL'
           dfd.resolve(records);
       dfd.promise();
+    #Устанавливает главный выбранный элемент и hash в адресную строку
+    setMainTimeout: null
+    setMain: (el)->
+      $rootScope.$$childTail.db.main_node[ $rootScope.$$childTail.set.focus ] = el;
+      hash = ''+ el._id.substr(el._id.length-5,el._id.length) if el?._id
+      $timeout.cancel @setMainTimeout if @setMainTimeout
+      @setMainTimeout = $timeout ()->
+        $location.hash( hash )
+        console.info hash
+      , 5000
     getTreeFromNet: ()->
       mythis = @;
       dfd = $q.defer();
@@ -101,12 +111,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         mythis.TestJson() if false
         found = _.find mythis._db['tree'], (el)->
           el.title == '_НОВОЕ'
-        $rootScope.$$childTail.db.main_node = [
-          {},
-          found,
-          {},
-          {}
-        ]
+        mythis.setMain(found)
         mythis.clearCache();
         console.timeEnd 'ALL DATA LOADED!'
         dfd.resolve();
@@ -506,7 +511,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       w['did'] = 0;
       w['created'] = (new Date(el.created).getTime()-$rootScope.$$childTail.set.today_date_time)/(24*60*60*1000*10)
       if !!el.did
-        w['did'] = -1000;
+        w['did'] = -50000;
       if el.date2
         w['date1'] = (new Date(el.date2).getTime() -  $rootScope.$$childTail.set.today_date_time )/(24*60*60*1000);
       else
@@ -611,7 +616,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         new_note.parent_id = tree._id;
         @refreshParentsIndex();
         tree._open = true;
-      $rootScope.$$childTail.db.main_node[focus] = new_note
+      @main_node new_note
       @clearCache();
     jsAddTask: (event, scope, tree)->
       event.stopPropagation();
@@ -655,7 +660,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       focus = $rootScope.$$childTail.set.focus
       prev_note = $rootScope.$$childTail.fn.service.db_tree.jsFindPreviusParent(scope.tree);
       scope.tree.del = 1 if scope.tree['_new']
-      $rootScope.$$childTail.db.main_node[focus] = prev_note if prev_note
+      @setMain prev_note if prev_note
       event.target.blur()
     findMaxPos: (prev_note_id)->
       parents = $rootScope.$$childTail.fn.service.db_tree.db_parents['n' + prev_note_id];
@@ -748,7 +753,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         event.preventDefault();
         found = db_tree.jsFindPrev($rootScope.$$childTail.db.main_node[focus]);
         if found
-          $rootScope.$$childTail.db.main_node[focus] = found
+          @setMain found
     jsDownPress: (event, scope)->
       focus = $rootScope.$$childTail.set.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;
@@ -757,7 +762,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         event.preventDefault();
         found = db_tree.jsFindNext($rootScope.$$childTail.db.main_node[focus]);
         if found
-          $rootScope.$$childTail.db.main_node[focus] = found
+          @setMain found
     jsLeftPress: (event, scope)->
       focus = $rootScope.$$childTail.set.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;

@@ -43,7 +43,8 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="mycontainer" ng-view=""></div>
+    <!-- <div class="mycontainer" ng-view=""></div> -->
+    <div class="mycontainer" app-view-segment="0"></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <!--
@@ -83,6 +84,7 @@
     <script src="./bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="./bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="./bower_components/angular-route/angular-route.js"></script>
+    <script src="./bower_components/angular-route-segment/build/angular-route-segment.js"></script>
     <script src="./bower_components/angular-redactor/_js/angular-redactor.js"></script>
     <script src="./bower_components/redactor9201/redactor/redactor.js"></script>
     <script src="./bower_components/angular-strap/dist/angular-strap.js"></script>
@@ -147,6 +149,7 @@
         <script src="./scripts/services/_js/srv_textdb.js"></script>
         <script src="./scripts/controllers/_js/ctrl_main.js"></script>
         <script src="./scripts/controllers/_js/ctrl_text.js"></script>
+        <script src="./scripts/controllers/_js/ctrl_login.js"></script>
         <script src="./scripts/directives/_js/dir_jq_show_effect.js"></script>
         <script src="./scripts/directives/_js/dir_odometer.js"></script>
         <script src="./scripts/directives/_js/dir_smartRedactor.js"></script>

@@ -54,11 +54,18 @@
       $scope.send = function(message) {
         return $socket.emit('hello', message);
       };
+      $interval(function() {
+        $scope.set.tick_today_date = new Date();
+        $scope.set.tick_today_date_time = new Date().getTime();
+        return console.info('tick');
+      }, 30 * 1000);
       $scope.set = {
         user_id: '5330ff92898a2b63c2f7095f',
         machine: localStorage.getItem('mongoMachineId'),
         autosync_on: true,
         server: "",
+        tick_today_date: new Date(),
+        tick_today_date_time: new Date().getTime(),
         today_date: new Date(),
         today_date_time: new Date().getTime(),
         focus: 1,
@@ -83,7 +90,7 @@
           {
             active: 7
           }, {
-            active: 6
+            active: 0
           }, {
             active: 5
           }, {
