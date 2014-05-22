@@ -14,7 +14,7 @@
         user_info: {
           client_id: '4tree_client',
           client_secret: '4tree_secret',
-          username: 'imater',
+          username: 'eugene.leonar@gmail.com',
           password: '990990'
         },
         jsCheckTokenExpired: function(oauth_saved) {
@@ -43,8 +43,10 @@
           oauth_saved = localStorage.getItem("oAuth20_" + this.user_info.username);
           if (!oauth_saved || (oauth_saved && (token_expired = this.jsCheckTokenExpired(oauth_saved)))) {
             if (token_expired) {
+              __log.info('Получаю token из localStorage ', token_expired);
               this.jsGetRemoteTokenByRefreshToken(token_expired.refresh_token).then(save_and_answer_token);
             } else {
+              __log.info('Получаю token из пароля', token_expired);
               this.jsGetRemoteTokenByPassword().then(save_and_answer_token);
             }
           } else {
@@ -57,6 +59,7 @@
           var dfd;
           dfd = $q.defer();
           __log.warn("REFRESH TOKEN = ", refresh_token);
+          console.info('start');
           $http({
             url: $rootScope.$$childTail.set.server + '/api/v2/oauth/token',
             method: "POST",
@@ -72,14 +75,17 @@
               refresh_token: refresh_token
             })
           }).then(function(result) {
+            console.info({
+              result: result
+            });
             return dfd.resolve(result.data);
           });
           return dfd.promise;
         },
         jsGetRemoteTokenByPassword: function() {
-          var dfd;
+          var dfd, h;
           dfd = $q.defer();
-          $http({
+          h = $http({
             url: $rootScope.$$childTail.set.server + '/api/v2/oauth/token',
             method: "POST",
             isArray: true,
@@ -94,6 +100,10 @@
               username: this.user_info.username,
               password: this.user_info.password
             })
+          }).error(function(d, err) {
+            if (err === 400) {
+              return document.location.hash = '#/login/';
+            }
           }).then(function(result) {
             return dfd.resolve(result.data);
           });

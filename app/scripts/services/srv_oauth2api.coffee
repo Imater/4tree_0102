@@ -10,7 +10,7 @@ angular.module("4treeApp").service 'oAuth2Api', ['$q', '$http', '$rootScope', ($
   user_info:
     client_id: '4tree_client'
     client_secret: '4tree_secret'
-    username: 'imater'
+    username: 'eugene.leonar@gmail.com'
     password: '990990'
   jsCheckTokenExpired: (oauth_saved)->
     parsed = JSON.parse(oauth_saved);
@@ -34,8 +34,10 @@ angular.module("4treeApp").service 'oAuth2Api', ['$q', '$http', '$rootScope', ($
     oauth_saved = localStorage.getItem("oAuth20_" + @user_info.username)
     if !oauth_saved or ( oauth_saved and token_expired = @jsCheckTokenExpired(oauth_saved) )
       if(token_expired) #пытаемся получить новый токен при помощи Refresh_Token, чтобы не светить паролем
+        __log.info 'Получаю token из localStorage ', token_expired
         @jsGetRemoteTokenByRefreshToken(token_expired.refresh_token).then save_and_answer_token
       else
+        __log.info 'Получаю token из пароля', token_expired
         @jsGetRemoteTokenByPassword().then save_and_answer_token
     else
       token_data_saved = JSON.parse oauth_saved
@@ -47,6 +49,7 @@ angular.module("4treeApp").service 'oAuth2Api', ['$q', '$http', '$rootScope', ($
     dfd = $q.defer();
 
     __log.warn "REFRESH TOKEN = ", refresh_token
+    console.info 'start'
     $http({
       url: $rootScope.$$childTail.set.server + '/api/v2/oauth/token'
       method: "POST"
@@ -66,13 +69,14 @@ angular.module("4treeApp").service 'oAuth2Api', ['$q', '$http', '$rootScope', ($
         refresh_token: refresh_token
       }
     }).then (result)->
+      console.info {result}
       dfd.resolve(result.data);
 
     dfd.promise
   jsGetRemoteTokenByPassword: ()->
     dfd = $q.defer();
 
-    $http({
+    h = $http({
       url: $rootScope.$$childTail.set.server + '/api/v2/oauth/token'
       method: "POST"
       isArray: true
@@ -89,7 +93,10 @@ angular.module("4treeApp").service 'oAuth2Api', ['$q', '$http', '$rootScope', ($
         username: @user_info.username
         password: @user_info.password
       }
-    }).then (result)->
+    }).error (d,err)->
+      if err == 400
+        document.location.hash = '#/login/';
+    .then (result)->
       dfd.resolve(result.data);
 
 

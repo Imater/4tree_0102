@@ -50,7 +50,7 @@ angular.module("4treeApp").config ["$translateProvider", "$locationProvider", "$
   }
   .segment 'login', {
     templateUrl: 'views/main/login.html'
-    controller: 'LoginCtrl'
+    controller: 'MainCtrl'
   }
 
   $routeProvider.otherwise({redirectTo: '/home'});

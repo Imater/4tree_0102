@@ -6,7 +6,7 @@
     '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', 'cryptApi', '$socket', 'oAuth2Api', 'mySettings', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi, cryptApi, $socket, oAuth2Api, mySettings) {
       var pas1_encrypted, pasA, pasB, pubKey, sendtoA, sendtoB, set_pomidors;
       __log.show_time_long = false;
-      __log.setLevel('error');
+      __log.setLevel('trace');
 
       /*
       "trace",

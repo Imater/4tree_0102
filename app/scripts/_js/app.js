@@ -22,7 +22,7 @@
         controller: 'MainCtrl'
       }).segment('login', {
         templateUrl: 'views/main/login.html',
-        controller: 'LoginCtrl'
+        controller: 'MainCtrl'
       });
       $routeProvider.otherwise({
         redirectTo: '/home'

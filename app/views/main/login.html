@@ -1,4 +1,4 @@
-<div class="reg_wrap">
+<div class="reg_wrap" ng-controller="LoginCtrl">
 
     <div class="row main_row">
         <div class="login_wrap col-sm-6 green">
@@ -10,7 +10,11 @@
                 <input class="email_input" ng-model="email" type="email" placeholder="эл.почта" />
             </div>
             <div>
-                <input class="password_input" ng-model="pas1" type="{{pass_type}}" placeholder="пароль" />
+                <input class="password_input"
+                       ng-model="pas1"
+                       type="{{pass_type}}"
+                       placeholder="{{pass_placeholder}}"
+                       hotkey="{'Enter':loginOrReg}"/>
                 <i ng-click="show_password = !show_password"
                    class="show_password icon-eye"
                    ng-class="{active: show_password}"></i>
@@ -18,8 +22,8 @@
             <div ng-show="tab=='reg'&&!show_password">
                 <input class="password_input" ng-model="pas2" type="password" placeholder="пароль" />
             </div>
-            <button ng-if="tab=='login'" class="btn btn-sm" ng-class="{ok:all_ok}">войти</button>
-            <button ng-if="tab=='reg'" class="btn btn-sm" ng-class="{ok:all_ok}">зарегистрироваться</button>
+            <button ng-click="loginOrReg()" ng-if="tab=='login'" class="btn btn-sm" ng-class="{ok:all_ok}">войти</button>
+            <button ng-click="loginOrReg()" ng-if="tab=='reg'" class="btn btn-sm" ng-class="{ok:all_ok}">зарегистрироваться</button>
             <div ng-if="tab=='login'" class="lost_password">
                 сменить пароль
             </div>
