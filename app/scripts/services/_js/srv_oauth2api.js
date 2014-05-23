@@ -9,14 +9,8 @@
 
 (function() {
   angular.module("4treeApp").service('oAuth2Api', [
-    '$q', '$http', '$rootScope', function($q, $http, $rootScope) {
+    '$q', '$http', '$rootScope', 'settingsApi', function($q, $http, $rootScope, settingsApi) {
       return {
-        user_info: {
-          client_id: '4tree_client',
-          client_secret: '4tree_secret',
-          username: 'eugene.leonar@gmail.com',
-          password: '990990'
-        },
         jsCheckTokenExpired: function(oauth_saved) {
           var parsed;
           parsed = JSON.parse(oauth_saved);
@@ -37,10 +31,10 @@
           mythis = this;
           save_and_answer_token = function(token_data) {
             token_data.expire_time = new Date(new Date().getTime() + token_data.expires_in * 1000);
-            localStorage.setItem("oAuth20_" + mythis.user_info.username, JSON.stringify(token_data));
+            localStorage.setItem("oAuth20_" + settingsApi.set.user_info.username, JSON.stringify(token_data));
             return dfd.resolve(token_data.access_token);
           };
-          oauth_saved = localStorage.getItem("oAuth20_" + this.user_info.username);
+          oauth_saved = localStorage.getItem("oAuth20_" + settingsApi.set.user_info.username);
           if (!oauth_saved || (oauth_saved && (token_expired = this.jsCheckTokenExpired(oauth_saved)))) {
             if (token_expired) {
               __log.info('Получаю token из localStorage ', token_expired);
@@ -61,7 +55,7 @@
           __log.warn("REFRESH TOKEN = ", refresh_token);
           console.info('start');
           $http({
-            url: $rootScope.$$childTail.set.server + '/api/v2/oauth/token',
+            url: settingsApi.set.server + '/api/v2/oauth/token',
             method: "POST",
             isArray: true,
             headers: {
@@ -70,8 +64,8 @@
             params: {},
             data: $.param({
               grant_type: 'refresh_token',
-              client_id: this.user_info.client_id,
-              client_secret: this.user_info.client_secret,
+              client_id: settingsApi.set.user_info.client_id,
+              client_secret: settingsApi.set.user_info.client_secret,
               refresh_token: refresh_token
             })
           }).then(function(result) {
@@ -86,7 +80,7 @@
           var dfd, h;
           dfd = $q.defer();
           h = $http({
-            url: $rootScope.$$childTail.set.server + '/api/v2/oauth/token',
+            url: settingsApi.set.server + '/api/v2/oauth/token',
             method: "POST",
             isArray: true,
             headers: {
@@ -95,10 +89,10 @@
             params: {},
             data: $.param({
               grant_type: 'password',
-              client_id: this.user_info.client_id,
-              client_secret: this.user_info.client_secret,
-              username: this.user_info.username,
-              password: this.user_info.password
+              client_id: settingsApi.set.user_info.client_id,
+              client_secret: settingsApi.set.user_info.client_secret,
+              username: settingsApi.set.user_info.username,
+              password: settingsApi.set.user_info.password
             })
           }).error(function(d, err) {
             if (err === 400) {

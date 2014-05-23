@@ -39,7 +39,7 @@
   ]);
 
   angular.module("4treeApp").service('db_tree', [
-    '$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', '$socket', '$location', function($translate, $http, $q, $rootScope, oAuth2Api, $timeout, $socket, $location) {
+    '$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', '$socket', '$location', 'settingsApi', function($translate, $http, $q, $rootScope, oAuth2Api, $timeout, $socket, $location, settingsApi) {
       return {
         _db: {
           texts: {}
@@ -132,7 +132,7 @@
         setMainTimeout: null,
         setMain: function(el) {
           var hash;
-          $rootScope.$$childTail.db.main_node[$rootScope.$$childTail.set.focus] = el;
+          $rootScope.$$childTail.db.main_node[settingsApi.set.focus] = el;
           if (el != null ? el._id : void 0) {
             hash = '' + el._id.substr(el._id.length - 5, el._id.length);
           }
@@ -159,7 +159,7 @@
               }
             });
             mythis.refreshParentsIndex();
-            $rootScope.$$childTail.set.tree_loaded = true;
+            settingsApi.set.tree_loaded = true;
             $rootScope.$$childTail.db.main_node = [];
             $rootScope.$broadcast('tree_loaded');
             if (false) {
@@ -181,12 +181,12 @@
           mythis = this;
           oAuth2Api.jsGetToken().then(function(access_token) {
             return $http({
-              url: $rootScope.$$childTail.set.server + '/api/v2/tree',
+              url: settingsApi.set.server + '/api/v2/tree',
               method: "GET",
               params: {
                 user_id: '5330ff92898a2b63c2f7095f',
                 access_token: access_token,
-                machine: $rootScope.$$childTail.set.machine
+                machine: settingsApi.set.machine
               }
             }).then(function(result) {
               return dfd.resolve(result.data);
@@ -316,7 +316,7 @@
         },
         refreshParentsIndex: function(parent_id) {
           var focus, found, mymap, mymap_calendar, myreduce_calendar, mythis;
-          focus = $rootScope.$$childTail.set.focus;
+          focus = settingsApi.set.focus;
           mythis = this;
           if (!parent_id) {
             mythis.db_parents = {};
@@ -327,13 +327,13 @@
             return el.folder === 'main';
           });
           if (found) {
-            if ($rootScope.$$childTail.set.main_parent_id.length === 0) {
-              $rootScope.$$childTail.set.main_parent_id[0] = found._id;
-              $rootScope.$$childTail.set.main_parent_id[1] = found._id;
-              $rootScope.$$childTail.set.main_parent_id[2] = found._id;
-              $rootScope.$$childTail.set.main_parent_id[3] = found._id;
+            if (settingsApi.set.main_parent_id.length === 0) {
+              settingsApi.set.main_parent_id[0] = found._id;
+              settingsApi.set.main_parent_id[1] = found._id;
+              settingsApi.set.main_parent_id[2] = found._id;
+              settingsApi.set.main_parent_id[3] = found._id;
             }
-            $rootScope.$$childTail.set.top_parent_id = found._id;
+            settingsApi.set.top_parent_id = found._id;
           }
           _.each(this._db.tree, function(el) {
             var cnt, parent;
@@ -713,7 +713,7 @@
               path.push(el._id);
             }
           }
-          path.push($rootScope.$$childTail.set.top_parent_id);
+          path.push(settingsApi.set.top_parent_id);
           return path.reverse();
         }),
         jsView: function() {
@@ -837,17 +837,17 @@
           round = function(value) {
             return Math.round(parseInt(value * 100)) / 100;
           };
-          weight_date = $rootScope.$$childTail.set.weight.date;
-          weight_importance = $rootScope.$$childTail.set.weight.importance;
+          weight_date = settingsApi.set.weight.date;
+          weight_importance = settingsApi.set.weight.importance;
           w = {};
           w['tree_id'] = (_ref = mythis._db) != null ? (_ref1 = _ref.tree) != null ? (_ref2 = _ref1[el.tree_id]) != null ? _ref2.importance : void 0 : void 0 : void 0;
           w['did'] = 0;
-          w['created'] = (new Date(el.created).getTime() - $rootScope.$$childTail.set.today_date_time) / (24 * 60 * 60 * 1000 * 10);
+          w['created'] = (new Date(el.created).getTime() - settingsApi.set.today_date_time) / (24 * 60 * 60 * 1000 * 10);
           if (!!el.did) {
             w['did'] = -50000;
           }
           if (el.date2) {
-            w['date1'] = (new Date(el.date2).getTime() - $rootScope.$$childTail.set.today_date_time) / (24 * 60 * 60 * 1000);
+            w['date1'] = (new Date(el.date2).getTime() - settingsApi.set.today_date_time) / (24 * 60 * 60 * 1000);
           } else {
             w['date1'] = -500;
             w['importance'] = (el.importance ? el.importance : 50) * weight_importance;
@@ -922,7 +922,7 @@
           if (__log.show_time_long) {
             console.time('expand');
           }
-          focus = $rootScope.$$childTail.set.focus;
+          focus = settingsApi.set.focus;
           _.each(this._db.tree, function(el) {
             if (el._path && el._path.indexOf(id) !== -1) {
               if (!(make_open === true && el._childs > 50)) {
@@ -978,14 +978,14 @@
         },
         jsAddNote: function(tree, make_child) {
           var focus, new_note;
-          focus = $rootScope.$$childTail.set.focus;
+          focus = settingsApi.set.focus;
           __log.info("AddNote", tree);
           new_note = new this.tree_template;
-          new_note.title = $rootScope.$$childTail.set.new_title;
+          new_note.title = settingsApi.set.new_title;
           new_note._id = new ObjectId().toString();
           new_note['_new'] = true;
           new_note._focus_me = true;
-          new_note.user_id = $rootScope.$$childTail.set.user_id;
+          new_note.user_id = settingsApi.set.user_id;
           new_note.pos = tree.pos + this.diffForSort(tree);
           this._db.tree[new_note._id] = new_note;
           if (!make_child) {
@@ -1014,7 +1014,7 @@
             new_task._new = true;
             new_task.created = new Date();
             new_task.importance = 50;
-            new_task.user_id = $rootScope.$$childTail.set.user_id;
+            new_task.user_id = settingsApi.set.user_id;
             old_value = _.clone(new_task);
             new_task.title = scope.new_task_title;
             if (!mythis._db.tasks[new_task._id]) {
@@ -1048,7 +1048,7 @@
         },
         jsEscPress: function(event, scope) {
           var focus, prev_note;
-          focus = $rootScope.$$childTail.set.focus;
+          focus = settingsApi.set.focus;
           prev_note = $rootScope.$$childTail.fn.service.db_tree.jsFindPreviusParent(scope.tree);
           if (scope.tree['_new']) {
             scope.tree.del = 1;
@@ -1072,7 +1072,7 @@
         },
         jsTabPress: function(event, scope, tree) {
           var db_tree, focus, main_node, parent_note, prev_note, shift;
-          focus = $rootScope.$$childTail.set.focus;
+          focus = settingsApi.set.focus;
           db_tree = $rootScope.$$childTail.fn.service.db_tree;
           if (db_tree.jsIsTree()) {
             event.stopPropagation();
@@ -1105,7 +1105,7 @@
         },
         jsFindNext: function(tree, ignore_open) {
           var db_tree, focus, found, found_key, next, parents;
-          focus = $rootScope.$$childTail.set.focus;
+          focus = settingsApi.set.focus;
           db_tree = $rootScope.$$childTail.fn.service.db_tree;
           if (tree && tree._panel[focus]._open && !ignore_open) {
             if (db_tree.db_parents['n' + tree._id]) {
@@ -1136,7 +1136,7 @@
         },
         jsFindPrev: function(tree, ignore_open, last_and_deep) {
           var db_tree, focus, found, found_key, parents;
-          focus = $rootScope.$$childTail.set.focus;
+          focus = settingsApi.set.focus;
           db_tree = $rootScope.$$childTail.fn.service.db_tree;
           if ((tree && tree._open2 && !ignore_open) || last_and_deep) {
             parents = db_tree.db_parents['n' + tree._id];
@@ -1163,7 +1163,7 @@
             found = db_tree.jsFindPrev(db_tree.jsFind(found._id), 'ignore_open', 'last_and_deep');
           }
           if (!found && !ignore_open && !last_and_deep) {
-            if (tree.parent_id !== $rootScope.$$childTail.set.main_parent_id[focus]) {
+            if (tree.parent_id !== settingsApi.set.main_parent_id[focus]) {
               found = db_tree.jsFind(tree.parent_id);
             }
           }
@@ -1171,8 +1171,8 @@
         },
         jsIsTree: function() {
           var focus, widget_index;
-          focus = $rootScope.$$childTail.set.focus;
-          widget_index = $rootScope.$$childTail.set._panel[focus].active;
+          focus = settingsApi.set.focus;
+          widget_index = settingsApi.set._panel[focus].active;
           if ([0].indexOf(widget_index) !== -1) {
             return true;
           } else {
@@ -1181,7 +1181,7 @@
         },
         jsUpPress: function(event, scope) {
           var db_tree, focus, found;
-          focus = $rootScope.$$childTail.set.focus;
+          focus = settingsApi.set.focus;
           db_tree = $rootScope.$$childTail.fn.service.db_tree;
           if (db_tree.jsIsTree()) {
             event.stopPropagation();
@@ -1194,7 +1194,7 @@
         },
         jsDownPress: function(event, scope) {
           var db_tree, focus, found;
-          focus = $rootScope.$$childTail.set.focus;
+          focus = settingsApi.set.focus;
           db_tree = $rootScope.$$childTail.fn.service.db_tree;
           if (db_tree.jsIsTree()) {
             event.stopPropagation();
@@ -1207,7 +1207,7 @@
         },
         jsLeftPress: function(event, scope) {
           var db_tree, focus;
-          focus = $rootScope.$$childTail.set.focus;
+          focus = settingsApi.set.focus;
           db_tree = $rootScope.$$childTail.fn.service.db_tree;
           if (db_tree.jsIsTree()) {
             event.stopPropagation();
@@ -1221,7 +1221,7 @@
         },
         jsRightPress: function(event, scope) {
           var db_tree, focus;
-          focus = $rootScope.$$childTail.set.focus;
+          focus = settingsApi.set.focus;
           db_tree = $rootScope.$$childTail.fn.service.db_tree;
           if (db_tree.jsIsTree()) {
             event.stopPropagation();
@@ -1234,16 +1234,16 @@
           }
         },
         jsFocus1: function() {
-          return $rootScope.$$childTail.set.focus = 0;
+          return settingsApi.set.focus = 0;
         },
         jsFocus2: function() {
-          return $rootScope.$$childTail.set.focus = 1;
+          return settingsApi.set.focus = 1;
         },
         jsFocus3: function() {
-          return $rootScope.$$childTail.set.focus = 2;
+          return settingsApi.set.focus = 2;
         },
         jsFocus4: function() {
-          return $rootScope.$$childTail.set.focus = 3;
+          return settingsApi.set.focus = 3;
         },
         searchString: function(searchString, dont_need_highlight) {
           var dfd;
@@ -1251,13 +1251,13 @@
           __log.info('search', searchString);
           oAuth2Api.jsGetToken().then(function(access_token) {
             return $http({
-              url: $rootScope.$$childTail.set.server + '/api/v1/search',
+              url: settingsApi.set.server + '/api/v1/search',
               method: "GET",
               params: {
                 user_id: '5330ff92898a2b63c2f7095f',
                 access_token: access_token,
                 search: searchString,
-                machine: $rootScope.$$childTail.set.machine,
+                machine: settingsApi.set.machine,
                 dont_need_highlight: dont_need_highlight
               }
             }).then(function(result) {
@@ -1370,7 +1370,7 @@
                 _tm: new Date(),
                 db_name: 'trees',
                 text: new_text,
-                user_id: $rootScope.$$childTail.set.user_id,
+                user_id: settingsApi.set.user_id,
                 del: 0,
                 _new: true
               };
@@ -1383,12 +1383,12 @@
           }
         },
         'jsStartSyncInWhile': _.debounce(function() {
-          if (false || $rootScope.$$childTail.set.autosync_on) {
+          if (false || settingsApi.set.autosync_on) {
             return this.syncDiff();
           }
         }, 1000),
         'jsStartSyncRightNow': _.debounce(function() {
-          if (false || $rootScope.$$childTail.set.autosync_on) {
+          if (false || settingsApi.set.autosync_on) {
             return this.syncDiff();
           }
         }, 10),
@@ -1419,8 +1419,8 @@
                   patch: patch,
                   db_name: db_name,
                   _sha1: old_element._sha1,
-                  user_id: $rootScope.$$childTail.set.user_id,
-                  machine: $rootScope.$$childTail.set.machine,
+                  user_id: settingsApi.set.user_id,
+                  machine: settingsApi.set.machine,
                   _tm: new Date().getTime()
                 };
                 if (patch && !_.isEmpty(patch)) {
@@ -1612,7 +1612,7 @@
                         });
                         if (!old_doc || confirm_element.merged) {
                           __log.debug('Прислали документ с мерджем!', confirm_element);
-                          machine_id = $rootScope.$$childTail.set.machine;
+                          machine_id = settingsApi.set.machine;
                           if (confirm_element.merged && machine_id === '7829517') {
                             alert('merged');
                           }
@@ -1670,8 +1670,8 @@
                             patch: patch,
                             db_name: db_name,
                             _sha1: old_doc._sha1,
-                            user_id: $rootScope.$$childTail.set.user_id,
-                            machine: $rootScope.$$childTail.set.machine,
+                            user_id: settingsApi.set.user_id,
+                            machine: settingsApi.set.machine,
                             _tm: new Date().getTime()
                           };
                           __log.warn('!!!!!!!!!!!SHA1!!!!!!', doc._sha1, doc);
@@ -1821,25 +1821,25 @@
             var last_sync_time, new_db_elements, sha1_sign;
             last_sync_time = last_sync_time_and_new.last_sync_time;
             new_db_elements = last_sync_time_and_new.new_db_elements;
-            sha1_sign = $rootScope.$$childTail.set.machine + mythis.JSON_stringify({
+            sha1_sign = settingsApi.set.machine + mythis.JSON_stringify({
               diffs: diffs,
               new_db_elements: new_db_elements
             })._sha1;
             oAuth2Api.jsGetToken().then(function(token) {
               return $http({
-                url: $rootScope.$$childTail.set.server + '/api/v2/sync',
+                url: settingsApi.set.server + '/api/v2/sync',
                 method: "POST",
                 isArray: true,
                 params: {
                   access_token: token,
-                  machine: $rootScope.$$childTail.set.machine,
+                  machine: settingsApi.set.machine,
                   last_sync_time: last_sync_time
                 },
                 data: {
                   diffs: diffs,
                   new_db_elements: new_db_elements,
                   sha1_sign: sha1_sign,
-                  user_id: $rootScope.$$childTail.set.user_id
+                  user_id: settingsApi.set.user_id
                 }
               }).then(function(result) {
                 return dfd.resolve(result.data);
@@ -1854,7 +1854,7 @@
           dfd = $q.defer();
           mythis = this;
           diffs = mythis._tmp._diffs;
-          machine_id = $rootScope.$$childTail.set.machine;
+          machine_id = settingsApi.set.machine;
           if (machine_id === '7829517' && diffs && Object.keys(diffs).length) {
             alert('stop!');
           }

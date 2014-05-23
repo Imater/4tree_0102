@@ -24,6 +24,9 @@
             </div>
             <button ng-click="loginOrReg()" ng-if="tab=='login'" class="btn btn-sm" ng-class="{ok:all_ok}">войти</button>
             <button ng-click="loginOrReg()" ng-if="tab=='reg'" class="btn btn-sm" ng-class="{ok:all_ok}">зарегистрироваться</button>
+            <div class="lost_password">
+                <input type="checkbox" checked id="member"> <label for="member">запомнить на этом компьютере</label>
+            </div>
             <div ng-if="tab=='login'" class="lost_password">
                 сменить пароль
             </div>

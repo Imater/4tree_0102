@@ -20,8 +20,8 @@ angular.module("4treeApp").factory 'datasource', ['$timeout', '$rootScope', ($ti
 ]
 
 angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout',
-                                               '$socket', '$location',
-  ($translate, $http, $q, $rootScope, oAuth2Api, $timeout, $socket, $location) ->
+                                               '$socket', '$location', 'settingsApi',
+  ($translate, $http, $q, $rootScope, oAuth2Api, $timeout, $socket, $location, settingsApi) ->
     _db:
       texts: {}
     _tmp:
@@ -88,7 +88,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     #Устанавливает главный выбранный элемент и hash в адресную строку
     setMainTimeout: null
     setMain: (el)->
-      $rootScope.$$childTail.db.main_node[ $rootScope.$$childTail.set.focus ] = el;
+      $rootScope.$$childTail.db.main_node[ settingsApi.set.focus ] = el;
       hash = ''+ el._id.substr(el._id.length-5,el._id.length) if el?._id
       $timeout.cancel @setMainTimeout if @setMainTimeout
       @setMainTimeout = $timeout ()->
@@ -105,7 +105,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           if canStoreInThisDB
             mythis._db[db_name] = data;
         mythis.refreshParentsIndex();
-        $rootScope.$$childTail.set.tree_loaded = true;
+        settingsApi.set.tree_loaded = true;
         $rootScope.$$childTail.db.main_node = []
         $rootScope.$broadcast('tree_loaded');
         mythis.TestJson() if false
@@ -124,12 +124,12 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
       oAuth2Api.jsGetToken().then (access_token)->
         $http({
-          url: $rootScope.$$childTail.set.server + '/api/v2/tree',
+          url: settingsApi.set.server + '/api/v2/tree',
           method: "GET",
           params:
             user_id: '5330ff92898a2b63c2f7095f'
             access_token: access_token
-            machine: $rootScope.$$childTail.set.machine
+            machine: settingsApi.set.machine
         }).then (result)->
           dfd.resolve(result.data);
       dfd.promise;
@@ -226,7 +226,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       dfd.promise();
 
     refreshParentsIndex: (parent_id)->
-      focus = $rootScope.$$childTail.set.focus
+      focus = settingsApi.set.focus
       mythis = @;
       if !parent_id
         mythis.db_parents = {}
@@ -236,12 +236,12 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       found = _.find @_db.tree, (el)->
         el.folder == 'main'
       if found
-        if $rootScope.$$childTail.set.main_parent_id.length == 0
-          $rootScope.$$childTail.set.main_parent_id[0] = found._id
-          $rootScope.$$childTail.set.main_parent_id[1] = found._id
-          $rootScope.$$childTail.set.main_parent_id[2] = found._id
-          $rootScope.$$childTail.set.main_parent_id[3] = found._id
-        $rootScope.$$childTail.set.top_parent_id = found._id
+        if settingsApi.set.main_parent_id.length == 0
+          settingsApi.set.main_parent_id[0] = found._id
+          settingsApi.set.main_parent_id[1] = found._id
+          settingsApi.set.main_parent_id[2] = found._id
+          settingsApi.set.main_parent_id[3] = found._id
+        settingsApi.set.top_parent_id = found._id
 
 
       _.each @_db.tree, (el)->
@@ -414,7 +414,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       while (el = @jsFind(id)) and (prevent_recursive--)
         id = el.parent_id
         path.push(el._id) if el.parent_id
-      path.push($rootScope.$$childTail.set.top_parent_id);
+      path.push(settingsApi.set.top_parent_id);
       path.reverse();
     jsView: ()->
       @_cache
@@ -504,16 +504,16 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       mythis = @;
       round = (value)->
         Math.round( parseInt(value*100) )/100
-      weight_date = $rootScope.$$childTail.set.weight.date;
-      weight_importance = $rootScope.$$childTail.set.weight.importance;
+      weight_date = settingsApi.set.weight.date;
+      weight_importance = settingsApi.set.weight.importance;
       w = {};
       w['tree_id'] = mythis._db?.tree?[el.tree_id]?.importance;
       w['did'] = 0;
-      w['created'] = (new Date(el.created).getTime()-$rootScope.$$childTail.set.today_date_time)/(24*60*60*1000*10)
+      w['created'] = (new Date(el.created).getTime()-settingsApi.set.today_date_time)/(24*60*60*1000*10)
       if !!el.did
         w['did'] = -50000;
       if el.date2
-        w['date1'] = (new Date(el.date2).getTime() -  $rootScope.$$childTail.set.today_date_time )/(24*60*60*1000);
+        w['date1'] = (new Date(el.date2).getTime() -  settingsApi.set.today_date_time )/(24*60*60*1000);
       else
         w['date1'] = -500
         w['importance'] = (if el.importance then el.importance else 50) * weight_importance;
@@ -560,7 +560,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
     jsExpand: (id, make_open)->
       console.time 'expand' if __log.show_time_long
-      focus = $rootScope.$$childTail.set.focus
+      focus = settingsApi.set.focus
       _.each @_db.tree, (el)->
         if el._path and el._path.indexOf(id) != -1
           if !(make_open == true and el._childs > 50)
@@ -599,14 +599,14 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       else
         return 1
     jsAddNote: (tree, make_child)->
-      focus = $rootScope.$$childTail.set.focus
+      focus = settingsApi.set.focus
       __log.info "AddNote", tree
       new_note = new @tree_template;
-      new_note.title = $rootScope.$$childTail.set.new_title;
+      new_note.title = settingsApi.set.new_title;
       new_note._id = new ObjectId().toString();
       new_note['_new'] = true
       new_note._focus_me = true;
-      new_note.user_id = $rootScope.$$childTail.set.user_id;
+      new_note.user_id = settingsApi.set.user_id;
       new_note.pos = tree.pos + @diffForSort(tree);
       @_db.tree[new_note._id] = new_note
       if !make_child
@@ -632,7 +632,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         new_task._new = true;
         new_task.created = new Date();
         new_task.importance = 50;
-        new_task.user_id = $rootScope.$$childTail.set.user_id;
+        new_task.user_id = settingsApi.set.user_id;
         old_value = _.clone(new_task); #clone
         new_task.title = scope.new_task_title;
         mythis._db.tasks[new_task._id] = new_task if !mythis._db.tasks[new_task._id]
@@ -657,7 +657,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       found = found[found.length - 1];
 
     jsEscPress: (event, scope)->
-      focus = $rootScope.$$childTail.set.focus
+      focus = settingsApi.set.focus
       prev_note = $rootScope.$$childTail.fn.service.db_tree.jsFindPreviusParent(scope.tree);
       scope.tree.del = 1 if scope.tree['_new']
       @setMain prev_note if prev_note
@@ -671,7 +671,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       else
         return 1
     jsTabPress: (event, scope, tree)->
-      focus = $rootScope.$$childTail.set.focus
+      focus = settingsApi.set.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;
       if (db_tree.jsIsTree())
         event.stopPropagation();
@@ -697,7 +697,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
             main_node._focus_me = true;
             db_tree.refreshParentsIndex();
     jsFindNext: (tree, ignore_open)->
-      focus = $rootScope.$$childTail.set.focus
+      focus = settingsApi.set.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;
       if tree and tree._panel[focus]._open and !ignore_open
         found = db_tree.db_parents['n' + tree._id][0] if db_tree.db_parents['n' + tree._id]
@@ -716,7 +716,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         found = db_tree.jsFindNext(next, 'ignore_open') if next
       found
     jsFindPrev: (tree, ignore_open, last_and_deep)->
-      focus = $rootScope.$$childTail.set.focus
+      focus = settingsApi.set.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;
       if (tree and tree._open2 and !ignore_open) or (last_and_deep)
         parents = db_tree.db_parents['n' + tree._id];
@@ -736,17 +736,17 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       if found and found._panel[focus]._open
         found = db_tree.jsFindPrev(db_tree.jsFind(found._id), 'ignore_open', 'last_and_deep');
       if !found and !ignore_open and !last_and_deep
-        found = db_tree.jsFind(tree.parent_id) if tree.parent_id != $rootScope.$$childTail.set.main_parent_id[focus]
+        found = db_tree.jsFind(tree.parent_id) if tree.parent_id != settingsApi.set.main_parent_id[focus]
       found
     jsIsTree: ()->
-      focus = $rootScope.$$childTail.set.focus
-      widget_index = $rootScope.$$childTail.set._panel[focus].active
+      focus = settingsApi.set.focus
+      widget_index = settingsApi.set._panel[focus].active
       if ([0].indexOf(widget_index) != -1)
         return true
       else
         return false
     jsUpPress: (event, scope)->
-      focus = $rootScope.$$childTail.set.focus
+      focus = settingsApi.set.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;
       if (db_tree.jsIsTree())
         event.stopPropagation();
@@ -755,7 +755,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         if found
           @setMain found
     jsDownPress: (event, scope)->
-      focus = $rootScope.$$childTail.set.focus
+      focus = settingsApi.set.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;
       if (db_tree.jsIsTree())
         event.stopPropagation();
@@ -764,7 +764,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         if found
           @setMain found
     jsLeftPress: (event, scope)->
-      focus = $rootScope.$$childTail.set.focus
+      focus = settingsApi.set.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;
       if (db_tree.jsIsTree())
         event.stopPropagation();
@@ -774,7 +774,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         else
           true
     jsRightPress: (event, scope)->
-      focus = $rootScope.$$childTail.set.focus
+      focus = settingsApi.set.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;
       if (db_tree.jsIsTree())
         event.stopPropagation();
@@ -784,25 +784,25 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         else
           true
     jsFocus1: ()->
-      $rootScope.$$childTail.set.focus = 0
+      settingsApi.set.focus = 0
     jsFocus2: ()->
-      $rootScope.$$childTail.set.focus = 1
+      settingsApi.set.focus = 1
     jsFocus3: ()->
-      $rootScope.$$childTail.set.focus = 2
+      settingsApi.set.focus = 2
     jsFocus4: ()->
-      $rootScope.$$childTail.set.focus = 3
+      settingsApi.set.focus = 3
     searchString: (searchString, dont_need_highlight)->
       dfd = new $.Deferred();
       __log.info 'search', searchString
       oAuth2Api.jsGetToken().then (access_token)->
         $http({
-          url: $rootScope.$$childTail.set.server + '/api/v1/search',
+          url: settingsApi.set.server + '/api/v1/search',
           method: "GET",
           params:
             user_id: '5330ff92898a2b63c2f7095f'
             access_token: access_token
             search: searchString
-            machine: $rootScope.$$childTail.set.machine
+            machine: settingsApi.set.machine
             dont_need_highlight: dont_need_highlight
         }).then (result)->
           dfd.resolve(result.data);
@@ -882,7 +882,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
             _tm: new Date()
             db_name: 'trees'
             text: new_text
-            user_id: $rootScope.$$childTail.set.user_id
+            user_id: settingsApi.set.user_id
             del: 0
             _new: true
           }
@@ -893,10 +893,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
 
     'jsStartSyncInWhile': _.debounce ()->
-      @syncDiff() if false or $rootScope.$$childTail.set.autosync_on
+      @syncDiff() if false or settingsApi.set.autosync_on
     , 1000
     'jsStartSyncRightNow': _.debounce ()->
-      @syncDiff() if false or $rootScope.$$childTail.set.autosync_on
+      @syncDiff() if false or settingsApi.set.autosync_on
     , 10
     saveDiff: _.throttle (db_name, _id)->
       mythis = @;
@@ -917,8 +917,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
               patch: patch
               db_name: db_name
               _sha1: old_element._sha1
-              user_id: $rootScope.$$childTail.set.user_id
-              machine: $rootScope.$$childTail.set.machine
+              user_id: settingsApi.set.user_id
+              machine: settingsApi.set.machine
               _tm: new Date().getTime()
             }
             if patch and !_.isEmpty(patch)
@@ -1058,7 +1058,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                     #Если его нет в бекапе, то просто сохраняю и стираю все изменения
                     if !old_doc or confirm_element.merged
                       __log.debug 'Прислали документ с мерджем!', confirm_element
-                      machine_id = $rootScope.$$childTail.set.machine
+                      machine_id = settingsApi.set.machine
                       alert('merged') if confirm_element.merged and machine_id == '7829517'
                       delete mythis._tmp._diffs[confirm_id] if mythis._tmp._diffs[confirm_id]
                       delete mythis._tmp._send_doc_next_time[db_name][confirm_id] if mythis._tmp?._send_doc_next_time?[db_name]?[confirm_id]
@@ -1091,8 +1091,8 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
                         patch: patch
                         db_name: db_name
                         _sha1: old_doc._sha1
-                        user_id: $rootScope.$$childTail.set.user_id
-                        machine: $rootScope.$$childTail.set.machine
+                        user_id: settingsApi.set.user_id
+                        machine: settingsApi.set.machine
                         _tm: new Date().getTime()
                       }
                       __log.warn '!!!!!!!!!!!SHA1!!!!!!', doc._sha1, doc
@@ -1205,21 +1205,21 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       mythis.getLastSyncTime().then (last_sync_time_and_new)->
         last_sync_time = last_sync_time_and_new.last_sync_time;
         new_db_elements = last_sync_time_and_new.new_db_elements;
-        sha1_sign = $rootScope.$$childTail.set.machine + mythis.JSON_stringify({diffs, new_db_elements})._sha1;
+        sha1_sign = settingsApi.set.machine + mythis.JSON_stringify({diffs, new_db_elements})._sha1;
         oAuth2Api.jsGetToken().then (token)->
           $http({
-            url: $rootScope.$$childTail.set.server + '/api/v2/sync',
+            url: settingsApi.set.server + '/api/v2/sync',
             method: "POST",
             isArray: true,
             params:
               access_token: token
-              machine: $rootScope.$$childTail.set.machine
+              machine: settingsApi.set.machine
               last_sync_time: last_sync_time
             data:
               diffs: diffs
               new_db_elements: new_db_elements
               sha1_sign: sha1_sign
-              user_id: $rootScope.$$childTail.set.user_id
+              user_id: settingsApi.set.user_id
           }).then (result)->
             dfd.resolve result.data
         dfd.promise
@@ -1228,7 +1228,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       dfd = $q.defer()
       mythis = @
       diffs = mythis._tmp._diffs
-      machine_id = $rootScope.$$childTail.set.machine
+      machine_id = settingsApi.set.machine
       if machine_id == '7829517' and diffs and Object.keys(diffs).length
         alert('stop!');
       mythis.before_sync = {}
