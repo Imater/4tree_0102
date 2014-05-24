@@ -2,7 +2,7 @@
   <date-time-input ng-model="set.today_date"></date-time-input>
 	<h10 class="open">дела на сегодня ({{todo1.length}})</h10>
 	<ul>
-		<li ng-repeat="the_do in todo1 = fn.service.calendarBox.getToDoForIndex(set.today_date).tasks" class="{{the_do.myclass}}" ng-click="set.set_task = the_do">
+		<li ng-repeat="the_do in todo1 = fn.service.calendarBox.getToDoForIndex(set.today_date).tasks track by $index" class="{{the_do.myclass}}" ng-click="set.set_task = the_do">
 			<span class="col1 time">{{the_do._time}}</span>
 			<span class="col2">
 				<span contenteditable="true" ng-model="the_do.title" class="title"></span>

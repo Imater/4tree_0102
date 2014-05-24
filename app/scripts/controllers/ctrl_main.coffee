@@ -2,7 +2,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
 
   #уровень логирования
   __log.show_time_long = false; #замер производительности
-  __log.setLevel 'trace';
+  __log.setLevel 'error';
   ###
   "trace",
   "debug",
@@ -20,8 +20,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     encrypted = localStorage.getItem 'settings'
     if encrypted
       decrypted = cryptApi.decrypt(encrypted).text
-      #settingsApi.set = $scope.set = decrypted;
-      console.info 'LOADED', decrypted;
+      $scope.set = settingsApi.set = JSON.parse(decrypted) if decrypted
 
   load_settings();
 
@@ -75,6 +74,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     $scope.set.tick_today_date = new Date();
     $scope.set.tick_today_date_time = new Date().getTime();
     console.info 'tick'
+    $rootScope.$emit 'save_settings'
   , 30*1000
 
   $scope.set = settingsApi.set

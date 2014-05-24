@@ -6,7 +6,7 @@
     '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', 'cryptApi', '$socket', 'oAuth2Api', 'settingsApi', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi, cryptApi, $socket, oAuth2Api, settingsApi) {
       var load_settings, pas1_encrypted, pasA, pasB, pubKey, sendtoA, sendtoB, set_pomidors;
       __log.show_time_long = false;
-      __log.setLevel('trace');
+      __log.setLevel('error');
 
       /*
       "trace",
@@ -26,7 +26,9 @@
         encrypted = localStorage.getItem('settings');
         if (encrypted) {
           decrypted = cryptApi.decrypt(encrypted).text;
-          return console.info('LOADED', decrypted);
+          if (decrypted) {
+            return $scope.set = settingsApi.set = JSON.parse(decrypted);
+          }
         }
       };
       load_settings();
@@ -72,7 +74,8 @@
       $interval(function() {
         $scope.set.tick_today_date = new Date();
         $scope.set.tick_today_date_time = new Date().getTime();
-        return console.info('tick');
+        console.info('tick');
+        return $rootScope.$emit('save_settings');
       }, 30 * 1000);
       $scope.set = settingsApi.set;
       $rootScope.$on('tree_loaded', function(e) {
