@@ -14,6 +14,9 @@ angular.module("4treeApp").controller "save_tree_db_editor", ($scope, syncApi, d
 
 
 angular.module("4treeApp").controller "save_tree_db", ($scope, syncApi, db_tree, $rootScope)->
+  el = $scope.db.main_node[$scope.set.focus_edit]
+  $scope.save_scroll = ()->
+    console.info($scope.scrollValues)
 
   $scope.$watch "tree", (new_value, old_value)->
     if !_.isEqual( new_value, old_value ) and (new_value._id == old_value._id)
@@ -122,16 +125,21 @@ angular.module("4treeApp").controller "searchController", ($scope, syncApi, db_t
 
 
 angular.module("4treeApp").controller "top_tabs_ctrl", ($scope, $rootScope, db_tree, settingsApi)->
+  $scope.params = { menu_open_index: undefined }
 
   $scope.getTab = (tab)->
     db_tree.jsFind(tab.tab_id);
 
   $scope.clickTab = (tab)->
+    $scope.params.menu_open_index = undefined;
     found = db_tree._db.tree[tab.tab_id];
-    $rootScope.$$childTail.db.main_node[ settingsApi.set.focus ] = found if found and settingsApi.set.focus
+    if found and settingsApi.set.focus
+      $rootScope.$$childTail.db.main_node[ settingsApi.set.focus ] = found
+      $rootScope.$$childTail.db.main_node[ settingsApi.set.focus_edit ] = found
 
   $scope.closeTab = (tab)->
     #alert 'close ' + JSON.stringify tab
+    $scope.params.menu_open_index = undefined;
     settingsApi.set.tabs = _.filter settingsApi.set.tabs, (el, key)->
       el.tab_id != tab.tab_id
 

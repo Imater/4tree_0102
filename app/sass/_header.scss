@@ -12,7 +12,7 @@ $border-color: #333;
     list-style: none;
     white-space: nowrap;
     padding: 0;
-    li {
+    .li_tab {
       line-height: $grid;
       vertical-align: middle;
       display: inline-block;

@@ -1,19 +1,32 @@
+<div class="top_tabs noselectable" ng-if="set.header_panel_opened" ng-controller="top_tabs_ctrl">
+    <ul class="ul_main">
+        &nbsp;
+        <li ng-repeat="tab in set.tabs track by $index"
+            class="li_tab"
+            ng-class="{active:(db.main_node[set.focus]._id==tab.tab_id)}"
+            ng-right-click="params.menu_open_index = $index">
+            <span class="dropdown" ng-class="{open:params.menu_open_index == $index}" ng-click="params.menu_open_index = undefined">
+                <ul class="dropdown-menu">
+                    <li><a ng-click="closeTab(tab)">Закрыть</a></li>
+                    <li><a>Закрыть другие</a></li>
+                    <li><a>Закрыть другие справа</a></li>
+                    <li><a>Закрыть другие слева</a></li>
+                </ul>
+            </span>
+            <div class="title"
+                 ng-bind-html="getTab(tab).title"
+                 ng-click="clickTab(tab)">
+            </div>
+            <div class="close_btn"
+                 ng-click="closeTab(tab)">&nbsp;
+            </div>
+        </li>
+    </ul>
+</div>
+
 <div class="header_menu">
 
-    <div class="top_tabs" ng-if="set.header_panel_opened" ng-controller="top_tabs_ctrl">
-        <ul class="ul_main">
-            <li ng-repeat="tab in set.tabs track by $index"
-                ng-class="{active:(db.main_node[set.focus_edit]._id==tab.tab_id)}">
-                <div class="title"
-                     ng-bind-html="getTab(tab).title"
-                     ng-click="clickTab(tab)">
-                </div>
-                <div class="close_btn"
-                     ng-click="closeTab(tab)">&nbsp;
-                </div>
-            </li>
-        </ul>
-    </div>
+
 
     <nav class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container-fluid">
