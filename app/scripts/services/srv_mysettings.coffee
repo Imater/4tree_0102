@@ -6,16 +6,23 @@ angular.module("4treeApp").service 'settingsApi', [
   '$timeout',
   '$socket',
   '$location'
+  'cryptApi'
   ($translate,
    $http,
    $q,
    $rootScope,
    $timeout,
    $socket,
-   $location) ->
+   $location,
+   cryptApi) ->
 
-      #параметры
+      tmp = {
+        tick_today_date: new Date()
+        tick_today_date_time: new Date().getTime()
+      }
+
       set = {
+        v: 2
         user_info:
           client_id: '4tree_client'
           client_secret: '4tree_secret'
@@ -25,13 +32,13 @@ angular.module("4treeApp").service 'settingsApi', [
         machine: localStorage.getItem('mongoMachineId')
         autosync_on: true
         server: ""
-        tick_today_date: new Date()
-        tick_today_date_time: new Date().getTime()
         today_date: new Date()
         today_date_time: new Date().getTime()
         focus: 1
         focus_edit: 1
-        header_panel_opened: false
+        tabs: [
+        ]
+        header_panel_opened: true
         p_left_side_open: false
         p_right_side_open: true
         p_plan_of_day_open: true
@@ -150,5 +157,34 @@ angular.module("4treeApp").service 'settingsApi', [
           {id:4, title: 'Поделиться', icon: 'icon-export-1'}
         ]
       }
-      return { set }
+
+      save = ()->
+        encrypted = cryptApi.encrypt JSON.stringify(set), 4
+        localStorage.setItem 'settings', encrypted
+        console.info 'SAVED';
+      #параметры
+
+      load_settings = ()->
+        encrypted = localStorage.getItem 'settings'
+        if encrypted
+          decrypted = cryptApi.decrypt(encrypted).text
+          if decrypted
+            parsed = JSON.parse(decrypted)
+            if parsed.v == set.v
+              set = parsed
+              console.info 'loaded', set
+            else
+              console.info 'version changed'
+
+      load_settings();
+
+      $rootScope.$watch ()->
+        set
+      , (new_val, old_val)->
+        if !_.isEqual(new_val,old_val)
+          save();
+      , true
+
+
+      return { set, tmp, save }
 ]

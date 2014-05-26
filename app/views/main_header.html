@@ -1,195 +1,205 @@
 <div class="header_menu">
 
-<nav class="navbar navbar-default navbar-static-top" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-
-
-    <div class="navbar-header">
-
-        <span class="dropdown">
-          <span class="dropdown-toggle link user_photo" data-toggle="dropdown"><span class="photo" style="background:url('images/tmp/photo.jpg');"></span>
-        </span>
-          <ul class="dropdown-menu">
-            <li><a>Action</a></li>
-            <li><a>Another action</a></li>
-            <li><a>Something else here</a></li>
-            <li class="divider"></li>
-            <li><a>Separated link</a></li>
-            <li class="divider"></li>
-            <li><a>One more separated link</a></li>
-          </ul>
-        </span>
-
-        <span class="dropdown">
-          <span class="dropdown-toggle link" data-toggle="dropdown">4tree.ru</span>
-          <ul class="dropdown-menu">
-            <li><a>Action</a></li>
-            <li><a>Another action</a></li>
-            <li><a>Something else here</a></li>
-            <li class="divider"></li>
-            <li><a>Separated link</a></li>
-            <li class="divider"></li>
-            <li><a>One more separated link</a></li>
-          </ul>
-        </span>
-
-
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-
+    <div class="top_tabs" ng-if="set.header_panel_opened" ng-controller="top_tabs_ctrl">
+        <ul class="ul_main">
+            <li ng-repeat="tab in set.tabs track by $index"
+                ng-class="{active:(db.main_node[set.focus_edit]._id==tab.tab_id)}">
+                <div class="title"
+                     ng-bind-html="getTab(tab).title"
+                     ng-click="clickTab(tab)">
+                </div>
+                <div class="close_btn"
+                     ng-click="closeTab(tab)">&nbsp;
+                </div>
+            </li>
+        </ul>
     </div>
 
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+      <div class="container-fluid">
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
+        <div class="navbar-header">
 
+            <span class="dropdown">
+              <span class="dropdown-toggle link user_photo" data-toggle="dropdown"><span class="photo" style="background:url('images/tmp/photo.jpg');"></span>
+            </span>
+              <ul class="dropdown-menu">
+                <li><a>Action</a></li>
+                <li><a>Another action</a></li>
+                <li><a>Something else here</a></li>
+                <li class="divider"></li>
+                <li><a>Separated link</a></li>
+                <li class="divider"></li>
+                <li><a>One more separated link</a></li>
+              </ul>
+            </span>
 
-
-
-
-    <span class="dropdown">
-      <span class="dropdown-toggle link" data-toggle="dropdown">Изменить</span>
-      <ul class="dropdown-menu">
-        <li><a>Action</a></li>
-        <li><a>Another action</a></li>
-        <li><a>Something else here</a></li>
-        <li class="divider"></li>
-        <li><a>Separated link</a></li>
-        <li class="divider"></li>
-        <li><a>One more separated link</a></li>
-      </ul>
-    </span>
-
-    <span class="dropdown">
-      <span class="dropdown-toggle link" data-toggle="dropdown">Вид</span>
-      <ul class="dropdown-menu">
-        <li><a>Action</a></li>
-        <li><a>Another action</a></li>
-        <li><a>Something else here</a></li>
-        <li class="divider"></li>
-        <li><a>Separated link</a></li>
-        <li class="divider"></li>
-        <li><a>One more separated link</a></li>
-      </ul>
-    </span>
-
-    <span class="dropdown">
-      <span class="dropdown-toggle link" data-toggle="dropdown">Закладки</span>
-      <ul class="dropdown-menu">
-        <li><a>Action</a></li>
-        <li><a>Another action</a></li>
-        <li><a>Something else here</a></li>
-        <li class="divider"></li>
-        <li><a>Separated link</a></li>
-        <li class="divider"></li>
-        <li><a>One more separated link</a></li>
-      </ul>
-    </span>
-
-    <span class="dropdown">
-      <span class="dropdown-toggle link" data-toggle="dropdown">25:00</span>
-      <ul class="dropdown-menu">
-        <li><a>Action</a></li>
-        <li><a>Another action</a></li>
-        <li><a>Something else here</a></li>
-        <li class="divider"></li>
-        <li><a>Separated link</a></li>
-        <li class="divider"></li>
-        <li><a>One more separated link</a></li>
-      </ul>
-    </span>
-
-    <span class="dropdown">
-      <span class="dropdown-toggle link reminder_icon" data-toggle="dropdown"><i class="glyphicon glyphicon-bell"></i></span>
-      <ul class="dropdown-menu">
-        <li><a>Action</a></li>
-        <li><a>Another action</a></li>
-        <li><a>Something else here</a></li>
-        <li class="divider"></li>
-        <li><a>Separated link</a></li>
-        <li class="divider"></li>
-        <li><a>One more separated link</a></li>
-      </ul>
-    </span>
+            <span class="dropdown">
+              <span class="dropdown-toggle link" data-toggle="dropdown">4tree.ru</span>
+              <ul class="dropdown-menu">
+                <li><a>Action</a></li>
+                <li><a>Another action</a></li>
+                <li><a>Something else here</a></li>
+                <li class="divider"></li>
+                <li><a>Separated link</a></li>
+                <li class="divider"></li>
+                <li><a>One more separated link</a></li>
+              </ul>
+            </span>
 
 
-    <span class="dropdown">
-      <span class="dropdown-toggle link sync" data-toggle="dropdown">
-        <i class="glyphicon glyphicon-refresh sync_indicator" ng-class="{need_sync: (sync_count = fn.service.db_tree.jsSyncJournalCount())}"></i>
-      </span>
-      <ul class="dropdown-menu">
-        <hotkey bind="Alt + R" invoke="fn.service.syncApi.jsStartSync()" />
-        <li><a ng-click="$event.stopPropagation(); fn.service.syncApi.jsStartSync();">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
 
-            <ng-pluralize count="sync_count"
-                       when="{'0': 'Все данные синхронизированны — {{fn.service.db_tree.last_sync_time}}',
-                           'one': 'Синхронизировать 1 объект',
-                           'few': 'Синхронизировать {} объекта',
-                           'many': 'Синхронизировать {} объектов',
-                           'other': 'Синхронизировать {} объектов'}">
-            </ng-pluralize>     
+        </div>
 
-          <span class="hotkey">alt + R</span></a></li>
-        <li class="divider"></li>
-        <li>
-          <span ng-click="$event.stopPropagation();" class="replace_a">
-            <input type="checkbox" id="autosync_on" ng-model="set.autosync_on" ng-change="fn.service.tree_db.sendDiff();"> 
-            <label for="autosync_on">Автосинхронизация</label>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+
+
+
+
+
+        <span class="dropdown">
+          <span class="dropdown-toggle link" data-toggle="dropdown">Изменить</span>
+          <ul class="dropdown-menu">
+            <li><a>Action</a></li>
+            <li><a>Another action</a></li>
+            <li><a>Something else here</a></li>
+            <li class="divider"></li>
+            <li><a>Separated link</a></li>
+            <li class="divider"></li>
+            <li><a>One more separated link</a></li>
+          </ul>
+        </span>
+
+        <span class="dropdown">
+          <span class="dropdown-toggle link" data-toggle="dropdown">Вид</span>
+          <ul class="dropdown-menu">
+              <input type="checkbox" id="show_tabs" ng-model="set.header_panel_opened">
+              <label for="show_tabs">Показывать вкладки</label>
+          </ul>
+        </span>
+
+        <span class="dropdown">
+          <span class="dropdown-toggle link" data-toggle="dropdown">Закладки</span>
+          <ul class="dropdown-menu">
+            <li><a>Action</a></li>
+            <li><a>Another action</a></li>
+            <li><a>Something else here</a></li>
+            <li class="divider"></li>
+            <li><a>Separated link</a></li>
+            <li class="divider"></li>
+            <li><a>One more separated link</a></li>
+          </ul>
+        </span>
+
+        <span class="dropdown">
+          <span class="dropdown-toggle link" data-toggle="dropdown">25:00</span>
+          <ul class="dropdown-menu">
+            <li><a>Action</a></li>
+            <li><a>Another action</a></li>
+            <li><a>Something else here</a></li>
+            <li class="divider"></li>
+            <li><a>Separated link</a></li>
+            <li class="divider"></li>
+            <li><a>One more separated link</a></li>
+          </ul>
+        </span>
+
+        <span class="dropdown">
+          <span class="dropdown-toggle link reminder_icon" data-toggle="dropdown"><i class="glyphicon glyphicon-bell"></i></span>
+          <ul class="dropdown-menu">
+            <li><a>Action</a></li>
+            <li><a>Another action</a></li>
+            <li><a>Something else here</a></li>
+            <li class="divider"></li>
+            <li><a>Separated link</a></li>
+            <li class="divider"></li>
+            <li><a>One more separated link</a></li>
+          </ul>
+        </span>
+
+
+        <span class="dropdown">
+          <span class="dropdown-toggle link sync" data-toggle="dropdown">
+            <i class="glyphicon glyphicon-refresh sync_indicator" ng-class="{need_sync: (sync_count = fn.service.db_tree.jsSyncJournalCount())}"></i>
           </span>
-        </li>
-      </ul>
-    </span>
+          <ul class="dropdown-menu">
+            <hotkey bind="Alt + R" invoke="fn.service.syncApi.jsStartSync()" />
+            <li><a ng-click="$event.stopPropagation(); fn.service.syncApi.jsStartSync();">
 
+                <ng-pluralize count="sync_count"
+                           when="{'0': 'Все данные синхронизированны — {{fn.service.db_tree.last_sync_time}}',
+                               'one': 'Синхронизировать 1 объект',
+                               'few': 'Синхронизировать {} объекта',
+                               'many': 'Синхронизировать {} объектов',
+                               'other': 'Синхронизировать {} объектов'}">
+                </ng-pluralize>
 
-
-      </ul>
-      <form class="navbar-form navbar-left header_search_form" role="search" ng-controller="searchController" ng-init="init({dont_need_highlight:true})">
-        <div class="btn-group btn-input clearfix">
-          <input type="text" class="form-control" placeholder="Искать..." ng-model="search_box" data-toggle="dropdown">
-          <ul class="dropdown-menu search_in_header">
-            <li class="title_calc" ng-repeat="note in calc_history" ng-if="show_calc">
-              <div class="title" ng-bind-html="note"></div>
-            </li>
-            <li><h10>Дела ({{search_notes_result['tasks'].length?search_notes_result['tasks'].length:0}})</h10></li>
-            <li ng-repeat="note in search_notes_result['tasks']">
-              <div class="title" ng-bind-html="trust(note.highlight.title[0]?note.highlight.title[0]:note.fields.title[0])"></div>
-            </li>
-            <li style="height:5px"></li>
-            <li><h10>Заметки ({{search_notes_result['trees'].length?search_notes_result['trees'].length:0}})</h10></li>
-            <li ng-repeat="note in search_notes_result['trees']">
-              <div class="title" ng-bind-html="trust(note.highlight.title[0]?note.highlight.title[0]:note.fields.title[0])"></div>
+              <span class="hotkey">alt + R</span></a></li>
+            <li class="divider"></li>
+            <li>
+              <span ng-click="$event.stopPropagation();" class="replace_a">
+                <input type="checkbox" id="autosync_on" ng-model="set.autosync_on" ng-change="fn.service.tree_db.sendDiff();">
+                <label for="autosync_on">Автосинхронизация</label>
+              </span>
             </li>
           </ul>
-        </div>
-      </form>
+        </span>
 
-      <ul class="nav navbar-nav navbar-right">
-            <div class="btn-group">
-              <button type="button" class="btn btn-default btn-sm wide">Добавить</button>
-              <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                <span class="caret"></span>
-                <span class="sr-only">Toggle Dropdown</span>
-              </button>
-              <ul class="dropdown-menu pull-right" role="menu">
-                <li><a>Заметку</a></li>
-                <li><a>Дело</a></li>
-                <li><a>Дневник</a></li>
-                <li class="divider"></li>
-                <li><a>Помидорку</a></li>
+
+
+          </ul>
+          <form class="navbar-form navbar-left header_search_form" role="search" ng-controller="searchController" ng-init="init({dont_need_highlight:true})">
+            <div class="btn-group btn-input clearfix">
+              <input type="text" class="form-control" placeholder="Искать..." ng-model="search_box" data-toggle="dropdown">
+              <ul class="dropdown-menu search_in_header">
+                <li class="title_calc" ng-repeat="note in calc_history" ng-if="show_calc">
+                  <div class="title" ng-bind-html="note"></div>
+                </li>
+                <li><h10>Дела ({{search_notes_result['tasks'].length?search_notes_result['tasks'].length:0}})</h10></li>
+                <li ng-repeat="note in search_notes_result['tasks']">
+                  <div class="title" ng-bind-html="trust(note.highlight.title[0]?note.highlight.title[0]:note.fields.title[0])"></div>
+                </li>
+                <li style="height:5px"></li>
+                <li><h10>Заметки ({{search_notes_result['trees'].length?search_notes_result['trees'].length:0}})</h10></li>
+                <li ng-repeat="note in search_notes_result['trees']">
+                  <div class="title" ng-bind-html="trust(note.highlight.title[0]?note.highlight.title[0]:note.fields.title[0])"></div>
+                </li>
               </ul>
             </div>
-      </ul>
+          </form>
+
+          <ul class="nav navbar-nav navbar-right">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default btn-sm wide">Добавить</button>
+                  <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu pull-right" role="menu">
+                    <li><a>Заметку</a></li>
+                    <li><a>Дело</a></li>
+                    <li><a>Дневник</a></li>
+                    <li class="divider"></li>
+                    <li><a>Помидорку</a></li>
+                  </ul>
+                </div>
+          </ul>
 
 
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+
 
 </div>
 

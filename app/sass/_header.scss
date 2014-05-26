@@ -1,0 +1,58 @@
+@charset "UTF-8";
+
+//параметры
+@import 'settings';
+
+$border-color: #333;
+
+.top_tabs {
+  height: $grid;
+  background: $top_tabs_background;
+  .ul_main {
+    list-style: none;
+    white-space: nowrap;
+    padding: 0;
+    li {
+      line-height: $grid;
+      vertical-align: middle;
+      display: inline-block;
+      padding: 0 0 0 $padding;
+      white-space: nowrap;
+      border-right: 1px solid $border-color;
+      cursor: pointer;
+      .title {
+        display: inline-block;
+        color: $top_tabs_color;
+        min-width: 5em;
+        max-width: 7em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      &.active {
+        background: $border-color;
+        .title {
+          color: $top_tabs_color_active;
+        }
+      }
+      .close_btn {
+        display: inline-block;
+        color: $top_tabs_color;
+        vertical-align: top;
+        width: 1.6em;
+        padding: 0;
+        &:after {
+          line-height: $grid;
+          vertical-align: middle;
+          content: '\2715';
+          font-family: 'fontello';
+          height: $grid;
+        }
+        &:hover:after {
+          color: #EEE;
+        }
+
+      }
+    }
+  }
+
+}

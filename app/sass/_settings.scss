@@ -11,6 +11,10 @@ $highlight_color: rgba(yellow, 0.3);
 
 $today_background: rgb(252, 232, 161);
 
+$top_tabs_background: #000;
+$top_tabs_color: #777;
+$top_tabs_color_active: #BBB;
+
 $light_gray: lighten($gray, 7%);
 $dark_gray: darken($gray, 30%);
 $title_lighten: 40%;
@@ -32,7 +36,7 @@ $leaf_radius: round( $padding/2 );
 //шапка приложения - высота
 $header_height_closed: $grid + $padding*2;
 $header_height_opened: $grid * 2 //панель
-           + $grid * 2; //место для кнопок календаря
+           + $grid - $padding; //место для кнопок календаря
 
 //боковые панели - ширина
 $p_left_side_width: $grid * 12; 

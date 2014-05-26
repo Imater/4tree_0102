@@ -5,7 +5,8 @@
 'use strict'
 angular.module('4treeApp').directive 'miniDate', [
   "$rootScope"
-  ($rootScope) ->
+  "settingsApi"
+  ($rootScope, settingsApi) ->
     jsMakeGradient = (pr2, red_color)->
       "background-image: -webkit-gradient(linear, left top, right top, color-stop("+
       (pr2 - 0) + "%, "+red_color+"), color-stop("+
@@ -72,7 +73,7 @@ angular.module('4treeApp').directive 'miniDate', [
       link: ($scope, el, attr, ngModel) ->
 
         $scope.$watch ()->
-          step = Math.round( ($rootScope.$$childTail.set.tick_today_date_time)/(1000*30) )
+          step = Math.round( (settingsApi.tmp.tick_today_date_time)/(1000*30) )
           return step + ngModel.$modelValue.date1 +
                  ngModel.$modelValue.date2 +
                  ngModel.$modelValue.did
@@ -93,7 +94,7 @@ angular.module('4treeApp').directive 'miniDate', [
           txt += '';
           dt1 = new Date(ngModel.$viewValue.date1).getTime();
           dt2 = new Date(ngModel.$viewValue.date2).getTime();
-          dt = $rootScope.$$childTail.set.tick_today_date_time;
+          dt = settingsApi.tmp.tick_today_date_time;
 
           el.html( txt );
           progress = el.find('.myprogress');

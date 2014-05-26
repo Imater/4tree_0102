@@ -8,7 +8,7 @@
 
 angular.module("4treeApp").service 'oAuth2Api', ['$q', '$http', '$rootScope', 'settingsApi', ($q, $http, $rootScope, settingsApi) ->
   jsCheckTokenExpired: (oauth_saved)->
-    parsed = JSON.parse(oauth_saved);
+    parsed = oauth_saved;
     if !parsed.expire_time
       __log.warn 'token none'
       return false #токен не в порядке
@@ -23,19 +23,19 @@ angular.module("4treeApp").service 'oAuth2Api', ['$q', '$http', '$rootScope', 's
 
     save_and_answer_token = (token_data)->
       token_data.expire_time = new Date(new Date().getTime() + token_data.expires_in * 1000);
-      localStorage.setItem "oAuth20_" + settingsApi.set.user_info.username, JSON.stringify token_data
+      settingsApi.set.oAuth2 = token_data;
       dfd.resolve(token_data.access_token);
 
-    oauth_saved = localStorage.getItem("oAuth20_" + settingsApi.set.user_info.username)
+    oauth_saved = settingsApi.set.oAuth2
     if !oauth_saved or ( oauth_saved and token_expired = @jsCheckTokenExpired(oauth_saved) )
       if(token_expired) #пытаемся получить новый токен при помощи Refresh_Token, чтобы не светить паролем
-        __log.info 'Получаю token из localStorage ', token_expired
+        __log.info 'Получаю token из хранилища ', token_expired
         @jsGetRemoteTokenByRefreshToken(token_expired.refresh_token).then save_and_answer_token
       else
         __log.info 'Получаю token из пароля', token_expired
         @jsGetRemoteTokenByPassword().then save_and_answer_token
     else
-      token_data_saved = JSON.parse oauth_saved
+      token_data_saved = oauth_saved
       dfd.resolve(token_data_saved.access_token)
 
     dfd.promise;

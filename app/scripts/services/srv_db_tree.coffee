@@ -89,12 +89,18 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     setMainTimeout: null
     setMain: (el)->
       $rootScope.$$childTail.db.main_node[ settingsApi.set.focus ] = el;
+      @setTab(el)
       hash = ''+ el._id.substr(el._id.length-5,el._id.length) if el?._id
       $timeout.cancel @setMainTimeout if @setMainTimeout
       @setMainTimeout = $timeout ()->
         $location.hash( hash )
-        console.info hash
       , 5000
+    #Функции работы с верхними Tabs
+    setTab: (el)->
+      found = _.find settingsApi.set.tabs, (doc)->
+        el._id == doc.tab_id
+      if !found
+        settingsApi.set.tabs.push({ tab_id: el._id, tm: new Date() });
     getTreeFromNet: ()->
       mythis = @;
       dfd = $q.defer();
@@ -109,9 +115,10 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         $rootScope.$$childTail.db.main_node = []
         $rootScope.$broadcast('tree_loaded');
         mythis.TestJson() if false
-        found = _.find mythis._db['tree'], (el)->
-          el.title == '_НОВОЕ'
-        mythis.setMain(found)
+        if !$rootScope.$$childTail.db.main_node[ settingsApi.set.focus ]
+          found = _.find mythis._db['tree'], (el)->
+            el.title == '_НОВОЕ'
+          mythis.setMain(found)
         mythis.clearCache();
         console.timeEnd 'ALL DATA LOADED!'
         dfd.resolve();

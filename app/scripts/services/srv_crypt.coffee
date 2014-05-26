@@ -1,5 +1,5 @@
-angular.module("4treeApp").service 'cryptApi', ['$translate', 'db_tree', '$rootScope',
-  ($translate, db_tree, $rootScope) ->
+angular.module("4treeApp").service 'cryptApi', ['$translate', '$rootScope',
+  ($translate, $rootScope) ->
     methods:
       {
         0: 'AES'
@@ -9,9 +9,9 @@ angular.module("4treeApp").service 'cryptApi', ['$translate', 'db_tree', '$rootS
         4: 'RC4Drop'
       }
     pass_salt: 'salt'
-    password: "990990";
-    pass: "pass1";
-    reminder: 'ФИО'
+    password: "flz5Nep/ENESzbcK7QySBklo6vJb6NYN4RBu9P7jYMJssdnzi6hXS"
+    pass: "qIyhc3JmAeqwmFUvwJ7HsRjovRB8rdthk3Bd1UjbV1cTR/qs8+Cil3iGyCGr6VX"
+    reminder: 'Crypted '+new Date().toString()
     constructor: () ->
       console.time('start')
       console.timeEnd('start')

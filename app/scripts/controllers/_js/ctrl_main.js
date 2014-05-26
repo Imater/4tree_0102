@@ -4,7 +4,7 @@
 
   angular.module("4treeApp").controller("MainCtrl", [
     '$translate', '$scope', 'calendarBox', 'db_tree', '$interval', 'syncApi', 'db_tasks', '$q', '$timeout', '$rootScope', 'diffApi', 'cryptApi', '$socket', 'oAuth2Api', 'settingsApi', function($translate, $scope, calendarBox, db_tree, $interval, syncApi, db_tasks, $q, $timeout, $rootScope, diffApi, cryptApi, $socket, oAuth2Api, settingsApi) {
-      var load_settings, pas1_encrypted, pasA, pasB, pubKey, sendtoA, sendtoB, set_pomidors;
+      var pas1_encrypted, pasA, pasB, pubKey, sendtoA, sendtoB, set_pomidors;
       __log.show_time_long = false;
       __log.setLevel('error');
 
@@ -15,23 +15,6 @@
       "warn",
       "error"
        */
-      $rootScope.$on('save_settings', function() {
-        var encrypted;
-        encrypted = cryptApi.encrypt(JSON.stringify(settingsApi.set), 4);
-        localStorage.setItem('settings', encrypted);
-        return console.info('SAVED');
-      });
-      load_settings = function() {
-        var decrypted, encrypted;
-        encrypted = localStorage.getItem('settings');
-        if (encrypted) {
-          decrypted = cryptApi.decrypt(encrypted).text;
-          if (decrypted) {
-            return $scope.set = settingsApi.set = JSON.parse(decrypted);
-          }
-        }
-      };
-      load_settings();
       if (false) {
         pasA = "sex";
         pubKey = "lexus";
@@ -72,10 +55,8 @@
         return $socket.emit('hello', message);
       };
       $interval(function() {
-        $scope.set.tick_today_date = new Date();
-        $scope.set.tick_today_date_time = new Date().getTime();
-        console.info('tick');
-        return $rootScope.$emit('save_settings');
+        settingsApi.tmp.tick_today_date = new Date();
+        return settingsApi.tmp.tick_today_date_time = new Date().getTime();
       }, 30 * 1000);
       $scope.set = settingsApi.set;
       $rootScope.$on('tree_loaded', function(e) {
@@ -456,156 +437,6 @@
       }
     }
   ]);
-
-  angular.module("4treeApp").controller("save_tree_db_editor", function($scope, syncApi, db_tree, $rootScope) {
-
-    /*
-    $scope.$watch "db.main_node[set.focus_edit]", ()->
-      __log.info 8888
-      if !_.isEqual( new_value, old_value )
-        $rootScope.$emit("jsFindAndSaveDiff",'tree', new_value, old_value);
-    , true
-     */
-    return $scope.$watch("db.main_node[set.focus_edit]", function(new_value, old_value) {
-      if (!_.isEqual(new_value, old_value) && new_value && old_value && (new_value._id === old_value._id)) {
-        return $rootScope.$emit("jsFindAndSaveDiff", 'tree', new_value, old_value);
-      }
-    }, true);
-  });
-
-  angular.module("4treeApp").controller("save_tree_db", function($scope, syncApi, db_tree, $rootScope) {
-    return $scope.$watch("tree", function(new_value, old_value) {
-      if (!_.isEqual(new_value, old_value) && (new_value._id === old_value._id)) {
-        return $rootScope.$emit("jsFindAndSaveDiff", 'tree', new_value, old_value);
-      }
-    }, true);
-  });
-
-  angular.module("4treeApp").controller("save_task_db", function($scope, syncApi, db_tree, $rootScope) {
-    $scope.$watch("task.date_on", function(new_value, old_value) {
-      if (!old_value && new_value === true) {
-        if (!$scope.task.date1) {
-          $scope.task.date1 = new Date();
-        }
-        if (!$scope.task.date2) {
-          return $scope.task.date2 = new Date();
-        }
-      }
-    });
-    return $scope.$watchCollection("set.set_task", function(new_value, old_value) {
-      if (!_.isEqual(new_value, old_value)) {
-        return $rootScope.$emit("jsFindAndSaveDiff", 'tasks', new_value, old_value);
-      }
-    });
-  });
-
-  angular.module("4treeApp").controller("save_task_db_simple", function($scope, syncApi, db_tree, $rootScope) {
-    return $scope.$watchCollection("task", function(new_value, old_value) {
-      if (!_.isEqual(new_value, old_value)) {
-        return $rootScope.$emit("jsFindAndSaveDiff", 'tasks', new_value, old_value);
-      }
-    });
-  });
-
-  angular.module("4treeApp").controller("editor_tasks", function($scope, db_tree, $rootScope) {
-    $scope.$watch('task.importance', function(new_value, old_value) {
-      if (new_value !== old_value) {
-        return db_tree.clearCache();
-      }
-    });
-    return $scope.getTasks = function() {
-      if (!$scope.set.mini_tasks_hide) {
-        return $scope.tasks_by_id.tasks;
-      } else {
-        return $scope.tasks_by_id.next_action;
-      }
-    };
-  });
-
-  angular.module("4treeApp").controller("searchController", function($scope, syncApi, db_tree, $rootScope, $sce, $timeout) {
-    var mythis, show_search_result;
-    $scope.search_notes_result = {};
-    $scope.calc_history = ['2*2 = 4'];
-    $scope.show_calc = false;
-    $scope.init = function(params) {
-      return $scope.dont_need_highlight = params.dont_need_highlight;
-    };
-    $scope.trust = function(text) {
-      if (text) {
-        text = strip_tags(text, "<em>", " ");
-      }
-      if (text) {
-        return $sce.trustAsHtml(text);
-      }
-    };
-
-    /*
-    This service ....
-     */
-    show_search_result = _.debounce(function(search_text, dont_need_highlight) {
-      return $scope.fn.service.db_tree.searchString(search_text, dont_need_highlight).then(function(results) {
-        return _.each(Object.keys(results), function(db_name) {
-          var _ref, _ref1;
-          $scope.search_notes_result[db_name] = [];
-          return $scope.search_notes_result[db_name] = (_ref = results[db_name]) != null ? (_ref1 = _ref.hits) != null ? _ref1.hits : void 0 : void 0;
-        });
-      });
-    }, 600);
-    mythis = this;
-    $rootScope.$on('sync_ended', function(event) {
-      __log.info('hello, im change');
-      if (!$scope.dont_need_highlight) {
-        return $timeout(function() {
-          return show_search_result($scope.search_box, $scope.dont_need_highlight);
-        }, 500);
-      }
-    });
-    return $scope.$watch("search_box", function(new_value, old_value) {
-      var calc_answer, error, new_value_shy, three_digits;
-      if (new_value !== old_value) {
-        if (new_value && $scope.dont_need_highlight) {
-          $(".header_search_form .btn-group").addClass("open");
-        }
-        if (!new_value.length) {
-          $scope.search_notes_result = {};
-          $scope.show_calc = false;
-        }
-        three_digits = function(str) {
-          var answer, spl;
-          spl = ("" + str).split('.');
-          answer = ("" + spl[0]).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-          if (spl[1]) {
-            answer += '.' + spl[1];
-          }
-          return answer;
-        };
-        if (['-', '=', '+', '/', '*', ' '].indexOf(new_value[new_value.length - 1]) !== -1) {
-          new_value = new_value.substr(0, new_value.length - 1);
-          __log.info('s', {
-            new_value: new_value
-          });
-        }
-        try {
-          if (new_value.indexOf('+') === -1 && new_value.indexOf('-') === -1 && new_value.indexOf('/') === -1 && new_value.indexOf('*') === -1) {
-            __log.info('error!!!');
-            throw "dont calculate!";
-          }
-          calc_answer = Parser.evaluate(new_value.replace(/,/ig, '.').replace(/\s/ig, ''));
-          calc_answer = Math.round(calc_answer * 100000) / 100000;
-          new_value_shy = new_value.replace(/\+/ig, ' + ').replace(/\-/ig, ' - ').replace(/\*/ig, ' * ').replace(/\//ig, ' / ');
-          $scope.calc_history[0] = $sce.trustAsHtml(new_value_shy + " = <b>" + three_digits(calc_answer) + "</b>");
-          return $scope.show_calc = true;
-        } catch (_error) {
-          error = _error;
-          __log.info({
-            error: error
-          });
-          show_search_result(new_value, $scope.dont_need_highlight);
-          return $scope.show_calc = false;
-        }
-      }
-    });
-  });
 
 
   /*

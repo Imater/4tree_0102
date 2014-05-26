@@ -34,7 +34,7 @@ angular.module("4treeApp").controller "LoginCtrl", [
         $('input:eq(1)').focus();
       else
         $('input:first').focus();
-    myemail = localStorage.getItem 'myemail';
+    myemail = settingsApi.set.user_info.username;
     if myemail
       $scope.email = cryptApi.decrypt(myemail).text
 
@@ -42,7 +42,7 @@ angular.module("4treeApp").controller "LoginCtrl", [
       if old_val != new_val
         checkPass(new_val, old_val)
         encrypted_email = cryptApi.encrypt new_val, 4
-        localStorage.setItem 'myemail', encrypted_email;
+        settingsApi.set.user_info.username = encrypted_email;
         console.info encrypted_email;
 
     checkPass = (new_val, old_val)->

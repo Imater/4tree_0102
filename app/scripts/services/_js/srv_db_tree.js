@@ -133,6 +133,7 @@
         setMain: function(el) {
           var hash;
           $rootScope.$$childTail.db.main_node[settingsApi.set.focus] = el;
+          this.setTab(el);
           if (el != null ? el._id : void 0) {
             hash = '' + el._id.substr(el._id.length - 5, el._id.length);
           }
@@ -140,9 +141,20 @@
             $timeout.cancel(this.setMainTimeout);
           }
           return this.setMainTimeout = $timeout(function() {
-            $location.hash(hash);
-            return console.info(hash);
+            return $location.hash(hash);
           }, 5000);
+        },
+        setTab: function(el) {
+          var found;
+          found = _.find(settingsApi.set.tabs, function(doc) {
+            return el._id === doc.tab_id;
+          });
+          if (!found) {
+            return settingsApi.set.tabs.push({
+              tab_id: el._id,
+              tm: new Date()
+            });
+          }
         },
         getTreeFromNet: function() {
           var dfd, mythis;
@@ -165,10 +177,12 @@
             if (false) {
               mythis.TestJson();
             }
-            found = _.find(mythis._db['tree'], function(el) {
-              return el.title === '_НОВОЕ';
-            });
-            mythis.setMain(found);
+            if (!$rootScope.$$childTail.db.main_node[settingsApi.set.focus]) {
+              found = _.find(mythis._db['tree'], function(el) {
+                return el.title === '_НОВОЕ';
+              });
+              mythis.setMain(found);
+            }
             mythis.clearCache();
             console.timeEnd('ALL DATA LOADED!');
             return dfd.resolve();
