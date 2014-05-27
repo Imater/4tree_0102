@@ -124,8 +124,15 @@ angular.module("4treeApp").controller "searchController", ($scope, syncApi, db_t
 
 
 
-angular.module("4treeApp").controller "top_tabs_ctrl", ($scope, $rootScope, db_tree, settingsApi)->
+angular.module("4treeApp").controller "top_tabs_ctrl", ($scope, $rootScope, db_tree, settingsApi, $window)->
+  $scope.window_width = $window.innerWidth;
+
   $scope.params = { menu_open_index: undefined }
+
+  $scope.getTabWidth = ()->
+    width = 100 / parseInt(settingsApi.set.tabs.length)
+    width = 20 if width > 20
+    'width:'+width+'%'
 
   $scope.getTab = (tab)->
     db_tree.jsFind(tab.tab_id);

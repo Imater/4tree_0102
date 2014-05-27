@@ -131,6 +131,66 @@
     };
   });
 
+  angular.module("4treeApp").directive("mySortableTab", function() {
+    return {
+      require: "?ngModel",
+      link: function(scope, el, attrs) {
+        console.info('tab sort', el);
+        el.sortable({
+          revert: false,
+          helper: 'clone',
+          placeholder: "tab-state-highlight"
+        });
+        el.disableSelection();
+        if (true) {
+          el.on("sortstart", function(event, ui) {
+            console.info('start', ui.item[0].dataset.id);
+            $(this).data().sort_id = ui.item[0].dataset.id;
+            return $(".tree_tmpl[data-id='" + $(this).data().sort_id + "']").addClass('drag_now');
+          });
+          el.on("sortbeforestop", function(event, ui) {
+            var from, from_data_id, to, to_data_parent_id;
+            event.stopPropagation();
+            event.preventDefault();
+            from_data_id = $(this).data().sort_id;
+            $(".tree_tmpl[data-id='" + $(this).data().sort_id + "']").removeClass('drag_now');
+            from = angular.element(ui.item).scope().$index;
+            to = el.children().index(ui.item);
+            to = angular.element(event.target).children("[data-id='" + from_data_id + "']").index();
+            to_data_parent_id = angular.element(this).attr('data-parent-id');
+            console.info("FROM", from_data_id, "TO", to_data_parent_id);
+            if (to >= 0) {
+              scope.$apply(function() {
+                if (from >= 0 || true) {
+                  console.info('sorted', {
+                    to: to,
+                    from: from
+                  }, angular.element(ui.item).scope().tree);
+                  scope.$emit("my-sorted", {
+                    from: from,
+                    to: to,
+                    from_id: from_data_id,
+                    to_id: to_data_parent_id
+                  });
+                } else {
+                  console.info('created', {
+                    to: to
+                  });
+                  scope.$emit("my-created", {
+                    to_id: to_data_parent_id,
+                    to_index: to,
+                    name: ui.item.text()
+                  });
+                  ui.item.remove();
+                }
+              });
+            }
+          });
+        }
+      }
+    };
+  });
+
 }).call(this);
 
 //# sourceMappingURL=dir_droppable.map

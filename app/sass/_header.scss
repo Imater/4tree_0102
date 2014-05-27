@@ -3,30 +3,53 @@
 //параметры
 @import 'settings';
 
-$border-color: #333;
+$border-color: #3e3e3e;
+.tabs_top_scrollable {
+  background: $top_tabs_background;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.tab-state-highlight {
+  background: red;
+  height: $grid;
+  width: 5px;
+  line-height: $grid;
+  display: inline-block;
+  vertical-align: top;
+}
 
 .top_tabs {
   height: $grid;
-  background: $top_tabs_background;
   .ul_main {
     list-style: none;
     white-space: nowrap;
     padding: 0;
+    margin: 0;
     .li_tab {
+      position: relative;
       line-height: $grid;
+      height: $grid;
+      min-width: 3em;
+      max-width: 15em;
       vertical-align: middle;
       display: inline-block;
-      padding: 0 0 0 $padding;
+      padding: 0;
       white-space: nowrap;
       border-right: 1px solid $border-color;
       cursor: pointer;
+      &:last-child {
+        border-right: none;
+      }
       .title {
         display: inline-block;
         color: $top_tabs_color;
-        min-width: 5em;
-        max-width: 7em;
+        position: absolute;
+        left: $padding;
+        right: 0px;
         overflow: hidden;
         text-overflow: ellipsis;
+        margin-right: 2em;
       }
       &.active {
         background: $border-color;
@@ -35,6 +58,8 @@ $border-color: #333;
         }
       }
       .close_btn {
+        position: absolute;
+        right: 0em;
         display: inline-block;
         color: $top_tabs_color;
         vertical-align: top;
@@ -51,6 +76,14 @@ $border-color: #333;
           color: #EEE;
         }
 
+      }
+      .tab_color_line {
+        position: absolute;
+        left: 0px;
+        right: -1px;
+        bottom: 0px;
+        height: 3px;
+        opacity: 0.7;
       }
     }
   }
