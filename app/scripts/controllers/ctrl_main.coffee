@@ -65,6 +65,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
   , 30*1000
 
   $scope.set = settingsApi.set
+  $scope.tmp = settingsApi.tmp
 
   $rootScope.$on 'tree_loaded', (e)->
     __log.info db_tree.diaryFind( new Date() ) if false
@@ -136,7 +137,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
     jsFindByParent: (args)->
       db_tree.jsFindByParent(args)
     jsTreeFocus: (id)->
-      $scope.set.main_parent_id[ $scope.set.focus ] = id
+      $scope.set.main_parent_id[ $scope.tmp.focus ] = id
       __log.info 'focus ', id
       $scope.db.tree_path = db_tree.jsGetPath(id);
     jsClosePomidor: ()->

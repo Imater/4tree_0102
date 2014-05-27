@@ -19,10 +19,12 @@ angular.module("4treeApp").service 'settingsApi', [
       tmp = {
         tick_today_date: new Date()
         tick_today_date_time: new Date().getTime()
+        focus: 1
+        focus_edit: 1
       }
 
       set = {
-        v: 2
+        v: 0
         user_info:
           client_id: '4tree_client'
           client_secret: '4tree_secret'
@@ -34,8 +36,6 @@ angular.module("4treeApp").service 'settingsApi', [
         server: ""
         today_date: new Date()
         today_date_time: new Date().getTime()
-        focus: 1
-        focus_edit: 1
         tabs: [
         ]
         header_panel_opened: true

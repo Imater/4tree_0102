@@ -59,6 +59,7 @@
         return settingsApi.tmp.tick_today_date_time = new Date().getTime();
       }, 30 * 1000);
       $scope.set = settingsApi.set;
+      $scope.tmp = settingsApi.tmp;
       $rootScope.$on('tree_loaded', function(e) {
         if (false) {
           return __log.info(db_tree.diaryFind(new Date()));
@@ -156,7 +157,7 @@
           return db_tree.jsFindByParent(args);
         },
         jsTreeFocus: function(id) {
-          $scope.set.main_parent_id[$scope.set.focus] = id;
+          $scope.set.main_parent_id[$scope.tmp.focus] = id;
           __log.info('focus ', id);
           return $scope.db.tree_path = db_tree.jsGetPath(id);
         },

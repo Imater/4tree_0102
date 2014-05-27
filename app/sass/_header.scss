@@ -3,9 +3,8 @@
 //параметры
 @import 'settings';
 
-$border-color: #3e3e3e;
 .tabs_top_scrollable {
-  background: $top_tabs_background;
+  background: $tabs_space_background;
   overflow-x: hidden;
   overflow-y: hidden;
 }
@@ -27,6 +26,7 @@ $border-color: #3e3e3e;
     padding: 0;
     margin: 0;
     .li_tab {
+      background: $top_tabs_background;
       position: relative;
       line-height: $grid;
       height: $grid;
@@ -39,7 +39,7 @@ $border-color: #3e3e3e;
       border-right: 1px solid $border-color;
       cursor: pointer;
       &:last-child {
-        border-right: none;
+        //border-right: none;
       }
       .title {
         display: inline-block;
@@ -52,9 +52,16 @@ $border-color: #3e3e3e;
         margin-right: 2em;
       }
       &.active {
-        background: $border-color;
+        background: $top_tabs_background_color_active;
         .title {
           color: $top_tabs_color_active;
+        }
+        .tab_color_line {
+          top: 0px;
+          left: -1px;
+          right: -1px;
+          height: 1px;
+          bottom: auto;
         }
       }
       .close_btn {
@@ -80,10 +87,15 @@ $border-color: #3e3e3e;
       .tab_color_line {
         position: absolute;
         left: 0px;
-        right: -1px;
+        right: 0px;
         bottom: 0px;
-        height: 3px;
-        opacity: 0.7;
+        height: 2px;
+        opacity: 1;
+      }
+      .dropdown {
+        position: fixed;
+        top: $grid - 2px;
+        z-index: 1000;
       }
     }
   }

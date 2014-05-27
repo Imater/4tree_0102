@@ -1,20 +1,20 @@
 angular.module("4treeApp").controller "save_tree_db_editor", ($scope, syncApi, db_tree, $rootScope)->
   ###
-  $scope.$watch "db.main_node[set.focus_edit]", ()->
+  $scope.$watch "db.main_node[tmp.focus_edit]", ()->
     __log.info 8888
     if !_.isEqual( new_value, old_value )
       $rootScope.$emit("jsFindAndSaveDiff",'tree', new_value, old_value);
   , true
   ###
 
-  $scope.$watch "db.main_node[set.focus_edit]", (new_value, old_value)->
+  $scope.$watch "db.main_node[tmp.focus_edit]", (new_value, old_value)->
     if !_.isEqual( new_value, old_value ) and new_value and old_value and (new_value._id == old_value._id)
       $rootScope.$emit("jsFindAndSaveDiff",'tree', new_value, old_value);
   , true
 
 
 angular.module("4treeApp").controller "save_tree_db", ($scope, syncApi, db_tree, $rootScope)->
-  el = $scope.db.main_node[$scope.set.focus_edit]
+  el = $scope.db.main_node[$scope.tmp.focus_edit]
   $scope.save_scroll = ()->
     console.info($scope.scrollValues)
 
@@ -124,7 +124,7 @@ angular.module("4treeApp").controller "searchController", ($scope, syncApi, db_t
 
 
 
-angular.module("4treeApp").controller "top_tabs_ctrl", ($scope, $rootScope, db_tree, settingsApi, $window)->
+angular.module("4treeApp").controller "top_tabs_ctrl", ($scope, $rootScope, db_tree, settingsApi, $window, $timeout)->
   $scope.window_width = $window.innerWidth;
 
   $scope.params = { menu_open_index: undefined }
@@ -134,19 +134,50 @@ angular.module("4treeApp").controller "top_tabs_ctrl", ($scope, $rootScope, db_t
     width = 20 if width > 20
     'width:'+width+'%'
 
+  $scope.$on 'my-tab-sorted', (e, data)->
+
+    Array.prototype.move = (old_index, new_index) ->
+      if new_index >= @length
+        k = new_index - @length
+        @push `undefined`  while (k--) + 1
+      @splice new_index, 0, @splice(old_index, 1)[0]
+      this
+
+    if data and data.from>=0 and data.to>=0 and data.from != (data.to-1) and data.from_id
+      $timeout ()->
+        console.info 'before moved', JSON.stringify settingsApi.set.tabs
+        settingsApi.set.tabs = _.cloneDeep(settingsApi.set.tabs).move(data.from, data.to-1);
+        console.info 'moved', JSON.stringify settingsApi.set.tabs
+
+
   $scope.getTab = (tab)->
     db_tree.jsFind(tab.tab_id);
 
   $scope.clickTab = (tab)->
     $scope.params.menu_open_index = undefined;
     found = db_tree._db.tree[tab.tab_id];
-    if found and settingsApi.set.focus
-      $rootScope.$$childTail.db.main_node[ settingsApi.set.focus ] = found
-      $rootScope.$$childTail.db.main_node[ settingsApi.set.focus_edit ] = found
+    if found and settingsApi.tmp.focus
+      $rootScope.$$childTail.db.main_node[ settingsApi.tmp.focus ] = found
+      $rootScope.$$childTail.db.main_node[ settingsApi.tmp.focus_edit ] = found
 
-  $scope.closeTab = (tab)->
+  $scope.closeTab = (tab, close_type)->
     #alert 'close ' + JSON.stringify tab
     $scope.params.menu_open_index = undefined;
+    tmp = undefined;
     settingsApi.set.tabs = _.filter settingsApi.set.tabs, (el, key)->
-      el.tab_id != tab.tab_id
+      if !close_type
+        return el.tab_id != tab.tab_id
+      else if close_type == 'other'
+        return el.tab_id == tab.tab_id
+      else if close_type == 'left'
+        console.info { tmp, key }
+        if el.tab_id == tab.tab_id
+          tmp = key
+        return tmp and tmp <= key
+      else if close_type == 'right'
+        console.info { tmp, key }
+        if el.tab_id == tab.tab_id
+          tmp = key
+        return !tmp or tmp == key
+
 

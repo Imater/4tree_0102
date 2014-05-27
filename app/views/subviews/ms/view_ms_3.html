@@ -10,7 +10,7 @@
 
 	
 	<ol>
-		<li ng-repeat="counter in db.main_node[set.focus_edit].counters" ng-controller="save_tree_db_editor">
+		<li ng-repeat="counter in db.main_node[tmp.focus_edit].counters" ng-controller="save_tree_db_editor">
 			<input class="cnt" type="number" ng-model="counter.cnt_today"
 			><input class="title" ng-model="counter.title">
 			<i class="icon-cancel remove"></i>

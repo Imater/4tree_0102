@@ -132,7 +132,7 @@
         setMainTimeout: null,
         setMain: function(el) {
           var hash;
-          $rootScope.$$childTail.db.main_node[settingsApi.set.focus] = el;
+          $rootScope.$$childTail.db.main_node[settingsApi.tmp.focus] = el;
           this.setTab(el);
           if (el != null ? el._id : void 0) {
             hash = '' + el._id.substr(el._id.length - 5, el._id.length);
@@ -177,7 +177,7 @@
             if (false) {
               mythis.TestJson();
             }
-            if (!$rootScope.$$childTail.db.main_node[settingsApi.set.focus]) {
+            if (!$rootScope.$$childTail.db.main_node[settingsApi.tmp.focus]) {
               found = _.find(mythis._db['tree'], function(el) {
                 return el.title === '_НОВОЕ';
               });
@@ -330,7 +330,7 @@
         },
         refreshParentsIndex: function(parent_id) {
           var focus, found, mymap, mymap_calendar, myreduce_calendar, mythis;
-          focus = settingsApi.set.focus;
+          focus = settingsApi.tmp.focus;
           mythis = this;
           if (!parent_id) {
             mythis.db_parents = {};
@@ -936,7 +936,7 @@
           if (__log.show_time_long) {
             console.time('expand');
           }
-          focus = settingsApi.set.focus;
+          focus = settingsApi.tmp.focus;
           _.each(this._db.tree, function(el) {
             if (el._path && el._path.indexOf(id) !== -1) {
               if (!(make_open === true && el._childs > 50)) {
@@ -992,7 +992,7 @@
         },
         jsAddNote: function(tree, make_child) {
           var focus, new_note;
-          focus = settingsApi.set.focus;
+          focus = settingsApi.tmp.focus;
           __log.info("AddNote", tree);
           new_note = new this.tree_template;
           new_note.title = settingsApi.set.new_title;
@@ -1019,7 +1019,7 @@
           event.preventDefault();
           mythis = $rootScope.$$childTail.fn.service.db_tree;
           __log.info('add_task', event, scope, tree);
-          tree_id = scope.db.main_node[scope.set.focus_edit]._id;
+          tree_id = scope.db.main_node[scope.tmp.focus_edit]._id;
           if (tree_id) {
             new_task = new mythis.task_template;
             new_task._id = new ObjectId().toString();
@@ -1062,7 +1062,7 @@
         },
         jsEscPress: function(event, scope) {
           var focus, prev_note;
-          focus = settingsApi.set.focus;
+          focus = settingsApi.tmp.focus;
           prev_note = $rootScope.$$childTail.fn.service.db_tree.jsFindPreviusParent(scope.tree);
           if (scope.tree['_new']) {
             scope.tree.del = 1;
@@ -1086,7 +1086,7 @@
         },
         jsTabPress: function(event, scope, tree) {
           var db_tree, focus, main_node, parent_note, prev_note, shift;
-          focus = settingsApi.set.focus;
+          focus = settingsApi.tmp.focus;
           db_tree = $rootScope.$$childTail.fn.service.db_tree;
           if (db_tree.jsIsTree()) {
             event.stopPropagation();
@@ -1119,7 +1119,7 @@
         },
         jsFindNext: function(tree, ignore_open) {
           var db_tree, focus, found, found_key, next, parents;
-          focus = settingsApi.set.focus;
+          focus = settingsApi.tmp.focus;
           db_tree = $rootScope.$$childTail.fn.service.db_tree;
           if (tree && tree._panel[focus]._open && !ignore_open) {
             if (db_tree.db_parents['n' + tree._id]) {
@@ -1150,7 +1150,7 @@
         },
         jsFindPrev: function(tree, ignore_open, last_and_deep) {
           var db_tree, focus, found, found_key, parents;
-          focus = settingsApi.set.focus;
+          focus = settingsApi.tmp.focus;
           db_tree = $rootScope.$$childTail.fn.service.db_tree;
           if ((tree && tree._open2 && !ignore_open) || last_and_deep) {
             parents = db_tree.db_parents['n' + tree._id];
@@ -1185,7 +1185,7 @@
         },
         jsIsTree: function() {
           var focus, widget_index;
-          focus = settingsApi.set.focus;
+          focus = settingsApi.tmp.focus;
           widget_index = settingsApi.set._panel[focus].active;
           if ([0].indexOf(widget_index) !== -1) {
             return true;
@@ -1195,7 +1195,7 @@
         },
         jsUpPress: function(event, scope) {
           var db_tree, focus, found;
-          focus = settingsApi.set.focus;
+          focus = settingsApi.tmp.focus;
           db_tree = $rootScope.$$childTail.fn.service.db_tree;
           if (db_tree.jsIsTree()) {
             event.stopPropagation();
@@ -1208,7 +1208,7 @@
         },
         jsDownPress: function(event, scope) {
           var db_tree, focus, found;
-          focus = settingsApi.set.focus;
+          focus = settingsApi.tmp.focus;
           db_tree = $rootScope.$$childTail.fn.service.db_tree;
           if (db_tree.jsIsTree()) {
             event.stopPropagation();
@@ -1221,7 +1221,7 @@
         },
         jsLeftPress: function(event, scope) {
           var db_tree, focus;
-          focus = settingsApi.set.focus;
+          focus = settingsApi.tmp.focus;
           db_tree = $rootScope.$$childTail.fn.service.db_tree;
           if (db_tree.jsIsTree()) {
             event.stopPropagation();
@@ -1235,7 +1235,7 @@
         },
         jsRightPress: function(event, scope) {
           var db_tree, focus;
-          focus = settingsApi.set.focus;
+          focus = settingsApi.tmp.focus;
           db_tree = $rootScope.$$childTail.fn.service.db_tree;
           if (db_tree.jsIsTree()) {
             event.stopPropagation();
@@ -1248,16 +1248,16 @@
           }
         },
         jsFocus1: function() {
-          return settingsApi.set.focus = 0;
+          return settingsApi.tmp.focus = 0;
         },
         jsFocus2: function() {
-          return settingsApi.set.focus = 1;
+          return settingsApi.tmp.focus = 1;
         },
         jsFocus3: function() {
-          return settingsApi.set.focus = 2;
+          return settingsApi.tmp.focus = 2;
         },
         jsFocus4: function() {
-          return settingsApi.set.focus = 3;
+          return settingsApi.tmp.focus = 3;
         },
         searchString: function(searchString, dont_need_highlight) {
           var dfd;

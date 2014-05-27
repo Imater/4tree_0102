@@ -88,7 +88,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     #Устанавливает главный выбранный элемент и hash в адресную строку
     setMainTimeout: null
     setMain: (el)->
-      $rootScope.$$childTail.db.main_node[ settingsApi.set.focus ] = el;
+      $rootScope.$$childTail.db.main_node[ settingsApi.tmp.focus ] = el;
       @setTab(el)
       hash = ''+ el._id.substr(el._id.length-5,el._id.length) if el?._id
       $timeout.cancel @setMainTimeout if @setMainTimeout
@@ -115,7 +115,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         $rootScope.$$childTail.db.main_node = []
         $rootScope.$broadcast('tree_loaded');
         mythis.TestJson() if false
-        if !$rootScope.$$childTail.db.main_node[ settingsApi.set.focus ]
+        if !$rootScope.$$childTail.db.main_node[ settingsApi.tmp.focus ]
           found = _.find mythis._db['tree'], (el)->
             el.title == '_НОВОЕ'
           mythis.setMain(found)
@@ -233,7 +233,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       dfd.promise();
 
     refreshParentsIndex: (parent_id)->
-      focus = settingsApi.set.focus
+      focus = settingsApi.tmp.focus
       mythis = @;
       if !parent_id
         mythis.db_parents = {}
@@ -567,7 +567,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
 
     jsExpand: (id, make_open)->
       console.time 'expand' if __log.show_time_long
-      focus = settingsApi.set.focus
+      focus = settingsApi.tmp.focus
       _.each @_db.tree, (el)->
         if el._path and el._path.indexOf(id) != -1
           if !(make_open == true and el._childs > 50)
@@ -606,7 +606,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       else
         return 1
     jsAddNote: (tree, make_child)->
-      focus = settingsApi.set.focus
+      focus = settingsApi.tmp.focus
       __log.info "AddNote", tree
       new_note = new @tree_template;
       new_note.title = settingsApi.set.new_title;
@@ -630,7 +630,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       event.preventDefault();
       mythis = $rootScope.$$childTail.fn.service.db_tree;
       __log.info 'add_task', event, scope, tree;
-      tree_id = scope.db.main_node[scope.set.focus_edit]._id
+      tree_id = scope.db.main_node[scope.tmp.focus_edit]._id
       if tree_id
         new_task = new mythis.task_template;
         new_task._id = new ObjectId().toString();
@@ -664,7 +664,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       found = found[found.length - 1];
 
     jsEscPress: (event, scope)->
-      focus = settingsApi.set.focus
+      focus = settingsApi.tmp.focus
       prev_note = $rootScope.$$childTail.fn.service.db_tree.jsFindPreviusParent(scope.tree);
       scope.tree.del = 1 if scope.tree['_new']
       @setMain prev_note if prev_note
@@ -678,7 +678,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       else
         return 1
     jsTabPress: (event, scope, tree)->
-      focus = settingsApi.set.focus
+      focus = settingsApi.tmp.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;
       if (db_tree.jsIsTree())
         event.stopPropagation();
@@ -704,7 +704,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
             main_node._focus_me = true;
             db_tree.refreshParentsIndex();
     jsFindNext: (tree, ignore_open)->
-      focus = settingsApi.set.focus
+      focus = settingsApi.tmp.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;
       if tree and tree._panel[focus]._open and !ignore_open
         found = db_tree.db_parents['n' + tree._id][0] if db_tree.db_parents['n' + tree._id]
@@ -723,7 +723,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         found = db_tree.jsFindNext(next, 'ignore_open') if next
       found
     jsFindPrev: (tree, ignore_open, last_and_deep)->
-      focus = settingsApi.set.focus
+      focus = settingsApi.tmp.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;
       if (tree and tree._open2 and !ignore_open) or (last_and_deep)
         parents = db_tree.db_parents['n' + tree._id];
@@ -746,14 +746,14 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         found = db_tree.jsFind(tree.parent_id) if tree.parent_id != settingsApi.set.main_parent_id[focus]
       found
     jsIsTree: ()->
-      focus = settingsApi.set.focus
+      focus = settingsApi.tmp.focus
       widget_index = settingsApi.set._panel[focus].active
       if ([0].indexOf(widget_index) != -1)
         return true
       else
         return false
     jsUpPress: (event, scope)->
-      focus = settingsApi.set.focus
+      focus = settingsApi.tmp.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;
       if (db_tree.jsIsTree())
         event.stopPropagation();
@@ -762,7 +762,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         if found
           @setMain found
     jsDownPress: (event, scope)->
-      focus = settingsApi.set.focus
+      focus = settingsApi.tmp.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;
       if (db_tree.jsIsTree())
         event.stopPropagation();
@@ -771,7 +771,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         if found
           @setMain found
     jsLeftPress: (event, scope)->
-      focus = settingsApi.set.focus
+      focus = settingsApi.tmp.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;
       if (db_tree.jsIsTree())
         event.stopPropagation();
@@ -781,7 +781,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         else
           true
     jsRightPress: (event, scope)->
-      focus = settingsApi.set.focus
+      focus = settingsApi.tmp.focus
       db_tree = $rootScope.$$childTail.fn.service.db_tree;
       if (db_tree.jsIsTree())
         event.stopPropagation();
@@ -791,13 +791,13 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         else
           true
     jsFocus1: ()->
-      settingsApi.set.focus = 0
+      settingsApi.tmp.focus = 0
     jsFocus2: ()->
-      settingsApi.set.focus = 1
+      settingsApi.tmp.focus = 1
     jsFocus3: ()->
-      settingsApi.set.focus = 2
+      settingsApi.tmp.focus = 2
     jsFocus4: ()->
-      settingsApi.set.focus = 3
+      settingsApi.tmp.focus = 3
     searchString: (searchString, dont_need_highlight)->
       dfd = new $.Deferred();
       __log.info 'search', searchString

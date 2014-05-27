@@ -20,10 +20,10 @@
 
         <!-- LEFT PANEL 0 -->
         <div id="p_left_side_wrap" ng-if="set.p_left_side_open" class="panel_id_0">
-            <div class="p_inside_wrap" ng-click="set.focus=0">
+            <div class="p_inside_wrap" ng-click="tmp.focus=0">
                 <div class="p_inside_header">
                     <span ng-click="set.show_left_menu = !set.show_left_menu" class="title drop margin_left"
-                          ng-class="{make_white:set.focus==0}">{{set.side_views_menu[set.panel[0].active].title}}</span>
+                          ng-class="{make_white:tmp.focus==0}">{{set.side_views_menu[set.panel[0].active].title}}</span>
                 </div>
 
                 <div class="p_inside_header2">
@@ -61,11 +61,11 @@
 
             <!-- PANEL 1 -->
             <div id="p_left_wrap" class="panel_id_1">
-                <div class="p_inside_wrap" ng-click="set.focus=1">
+                <div class="p_inside_wrap" ng-click="tmp.focus=1">
                     <div class="p_inside_header">
                         <div class="btn-group main_menu">
                             <span class="title drop" bindonce data-toggle="dropdown"
-                                  ng-class="{make_white:set.focus==1}">{{set.main_views_menu[set.panel[1].active].title}}</span>
+                                  ng-class="{make_white:tmp.focus==1}">{{set.main_views_menu[set.panel[1].active].title}}</span>
                             <ul class="dropdown-menu" role="menu">
                                 <li sly-repeat="item in set.main_views_menu"
                                     ng-class="{divider:item.title=='divider', active:$index==set.left_panel_active}"
@@ -82,12 +82,12 @@
 
             <!-- PANEL 2 -->
             <div id="p_right_wrap" class="panel_id_2">
-                <div class="p_inside_wrap" ng-click="set.focus=2">
+                <div class="p_inside_wrap" ng-click="tmp.focus=2">
                     <div class="p_inside_header">
 
                         <div class="btn-group main_menu">
                             <span class="title drop" bindonce data-toggle="dropdown"
-                                  ng-class="{make_white:set.focus==2}">{{set.main_views_menu[set.panel[2].active].title}}</span>
+                                  ng-class="{make_white:tmp.focus==2}">{{set.main_views_menu[set.panel[2].active].title}}</span>
                             <ul class="dropdown-menu" role="menu">
                                 <li sly-repeat="item in set.main_views_menu"
                                     ng-class="{divider:item.title=='divider', active:$index==set.panel[2].active}"
@@ -111,10 +111,10 @@
 
         <!-- RIGHT PANEL 3 -->
         <div id="p_right_side_wrap" ng-if="set.p_plan_of_day_open">
-            <div class="p_inside_wrap" ng-click="set.focus=3">
+            <div class="p_inside_wrap" ng-click="tmp.focus=3">
                 <div class="p_inside_header">
                     <span ng-click="set.show_right_menu = !set.show_right_menu" class="title drop margin_left"
-                          ng-class="{make_white:set.focus==3}">{{set.side_views_menu[set.panel[3].active].title}}</span>
+                          ng-class="{make_white:tmp.focus==3}">{{set.side_views_menu[set.panel[3].active].title}}</span>
                 </div>
 
                 <div class="p_inside_header2">

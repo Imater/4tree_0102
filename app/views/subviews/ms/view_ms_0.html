@@ -1,12 +1,12 @@
 <h9>Иконка:</h9>
 <div class="ms_icon" ng-repeat="icon in db.icons_collection | limitTo: set.ms_show_icon_limit">
-	<i class="{{icon}}" ng-click="db.main_node[set.focus_edit].icon = icon"></i>
+	<i class="{{icon}}" ng-click="db.main_node[tmp.focus_edit].icon = icon"></i>
 </div>
 <a ng-if="set.ms_show_icon_limit==36" ng-click="set.ms_show_icon_limit=200"><i class="icon-right-open-1"></i></a>
 <a ng-if="set.ms_show_icon_limit!=36" ng-click="set.ms_show_icon_limit=36"><i class="icon-left-open-1"></i></a>
 
 <h9>Цвет:</h9>
 <div class="ms_colors">
-	<div class="ms_color_label main" style="background:{{db.main_node[set.focus_edit].color}}; color: {{db.main_node[set.focus_edit].icon_color}};"></div>
-	<div class="ms_color_label" ng-repeat="label in db.icons_collection_colors" style="background:{{label.color}}" ng-click="db.main_node[set.focus_edit].color = label.color; db.main_node[set.focus_edit].icon_color = label.icon_color"></div>
+	<div class="ms_color_label main" style="background:{{db.main_node[tmp.focus_edit].color}}; color: {{db.main_node[tmp.focus_edit].icon_color}};"></div>
+	<div class="ms_color_label" ng-repeat="label in db.icons_collection_colors" style="background:{{label.color}}" ng-click="db.main_node[tmp.focus_edit].color = label.color; db.main_node[tmp.focus_edit].icon_color = label.icon_color"></div>
 </div>

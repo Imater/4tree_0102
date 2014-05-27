@@ -137,7 +137,7 @@ angular.module("4treeApp").directive "mySortableTab", ->
           scope.$apply ->
             if from >= 0 or true
               console.info 'sorted', {to, from}, angular.element(ui.item).scope().tree;
-              scope.$emit "my-sorted",
+              scope.$emit "my-tab-sorted",
                 from: from
                 to: to
                 from_id: from_data_id

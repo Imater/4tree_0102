@@ -11,9 +11,12 @@ $highlight_color: rgba(yellow, 0.3);
 
 $today_background: rgb(252, 232, 161);
 
-$top_tabs_background: #222;
-$top_tabs_color: #777;
-$top_tabs_color_active: #CCC;
+$tabs_space_background: #777;
+$top_tabs_background: $gray;
+$top_tabs_color: #444;
+$top_tabs_color_active: #000;
+$top_tabs_background_color_active: #FFFFFF;
+$border-color: #FFF;
 
 $light_gray: lighten($gray, 7%);
 $dark_gray: darken($gray, 30%);
