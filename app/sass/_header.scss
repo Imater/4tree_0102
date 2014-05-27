@@ -58,15 +58,15 @@
         }
         .tab_color_line {
           top: 0px;
-          left: -1px;
-          right: -1px;
-          height: 1px;
+          left: 0px;
+          right: 0px;
+          height: 2px;
           bottom: auto;
         }
       }
       .close_btn {
         position: absolute;
-        right: 0em;
+        right: 0.1em;
         display: inline-block;
         color: $top_tabs_color;
         vertical-align: top;
@@ -80,7 +80,7 @@
           height: $grid;
         }
         &:hover:after {
-          color: #EEE;
+          color: #000;
         }
 
       }
@@ -89,7 +89,7 @@
         left: 0px;
         right: 0px;
         bottom: 0px;
-        height: 2px;
+        height: 3px;
         opacity: 1;
       }
       .dropdown {
