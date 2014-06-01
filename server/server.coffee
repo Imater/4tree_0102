@@ -15,7 +15,7 @@ kue = require('kue')
 jobs = kue.createQueue();
 winston = require('winston');
 
-console.info 'NEW _FILE';
+console.info 'NEW _FILE_ IS GOOD !!!';
 
 MYLOG = require('../scripts/_js/mylog.js').mylog
 

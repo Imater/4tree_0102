@@ -8,11 +8,11 @@
     <bookmark url="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="">
+    <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="Deploy doing">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gruntfile.js" afterPath="$PROJECT_DIR$/Gruntfile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/manifest.appcache" afterPath="$PROJECT_DIR$/dist/manifest.appcache" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/server.coffee" afterPath="$PROJECT_DIR$/server/server.coffee" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/_js/server.js" afterPath="$PROJECT_DIR$/server/_js/server.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/_js/server.map" afterPath="$PROJECT_DIR$/server/_js/server.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="56ee746e-8f1d-4d4a-a92c-f05706cc2e69" name="Rejected commit: Default" comment="Пробую сделать коммит" />
@@ -3980,7 +3980,7 @@
             <entry file="file://$PROJECT_DIR$/server/server.coffee">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.8095238" vertical-offset="0" max-vertical-offset="14238">
-                  <caret line="17" column="25" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="25" />
+                  <caret line="17" column="36" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
                   <folding />
                 </state>
               </provider>
@@ -4188,8 +4188,8 @@
               <file leaf-file-name="Gruntfile.js" pinned="false" current="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/Gruntfile.js">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="0.6" vertical-offset="11016" max-vertical-offset="12654">
-                      <caret line="642" column="19" selection-start-line="642" selection-start-column="19" selection-end-line="642" selection-end-column="19" />
+                    <state vertical-scroll-proportion="0.38" vertical-offset="8244" max-vertical-offset="12654">
+                      <caret line="477" column="95" selection-start-line="477" selection-start-column="95" selection-end-line="477" selection-end-column="95" />
                       <folding />
                     </state>
                   </provider>
@@ -5076,7 +5076,11 @@
       <created>1401635827937</created>
       <updated>1401635827938</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="Deploy doing">
+      <created>1401637718819</created>
+      <updated>1401637718820</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TodoView" selected-index="2">
@@ -5590,8 +5594,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Gruntfile.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6" vertical-offset="11016" max-vertical-offset="12654">
-          <caret line="642" column="19" selection-start-line="642" selection-start-column="19" selection-end-line="642" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.38" vertical-offset="8244" max-vertical-offset="12654">
+          <caret line="477" column="95" selection-start-line="477" selection-start-column="95" selection-end-line="477" selection-end-column="95" />
           <folding />
         </state>
       </provider>
@@ -5599,7 +5603,7 @@
     <entry file="file://$PROJECT_DIR$/server/server.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.8095238" vertical-offset="0" max-vertical-offset="14238">
-          <caret line="17" column="25" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="25" />
+          <caret line="17" column="36" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
           <folding />
         </state>
       </provider>

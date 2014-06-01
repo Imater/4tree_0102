@@ -475,7 +475,7 @@ module.exports = function (grunt) {
     // define our ssh commands
     sshexec: {
       git_pull: {
-        command: ["cd /home/admin/4tree","git pull"].join(' && ')
+        command: ["cd /home/admin/4tree","git pull", "/etc/init.d/forever0 restart", "sleep 10"].join(' && ')
       },
       uptime: {
         command: "uptime"
