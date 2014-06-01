@@ -1,0 +1,6 @@
+<a class="myweb_link_header" href="http://imater.4tree.ru" target="_blank">imater.4tree.ru</a><div class="plan_of_day"><h10 class="open">Разделы сайта</h10><ul class="myweb_ul"><li class="tree" sly-repeat="tree in fn.service.db_tree.jsFindByParentWeb(0)"><div ng-include="'views/subviews/one_line_myweb1.html'"></div></li></ul><h10 class="open">Управление сайтом</h10><ul class="myweb_ul"><li><span class="title">Новые комментарии</span></li><li><span class="title">Настройки</span></li><li><span class="title">Шапка сайта</span></li><li><span class="title">Обо мне</span></li><li><span class="title">Рекламные блоки</span></li><li><span class="title">Статистика</span></li></ul></div><!-- Begin Templates --><script type="text/ng-template" id="views/subviews/one_line_myweb1.html"><div class="title">{{tree.title}} <span class="cnt">({{tree.cnt}})</span></div>
+    <ul class="myweb_ul">
+        <li class="tree" sly-repeat="tree in fn.service.db_tree.jsFindByParentWeb( tree.id )">
+            <div ng-include="'views/subviews/one_line_myweb1.html'"></div>
+        </li>
+    </ul></script><!-- End Templates -->

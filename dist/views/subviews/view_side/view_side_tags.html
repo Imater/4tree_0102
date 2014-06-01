@@ -1,0 +1,6 @@
+<div class="plan_of_day"><h10 class="open">Теги (ярлыки)</h10><ul class="myweb_ul"><li class="tree" sly-repeat="tree in fn.service.db_tree.jsFindByParentTags(0)"><div ng-include="'views/subviews/one_line_tree_tags1.html'"></div></li></ul><h10 class="open">Фильтры</h10><ul class="myweb_ul"><li><span class="title">Просроченные дела</span></li><li><span class="title">По дате создания</span></li><li><span class="title">По дате изменения</span></li><li><span class="title">Дела лягушки</span></li><li><span class="title">Избранные</span></li><li><span class="title">Счётчики</span></li><li><span class="title">Архив</span></li></ul></div><!-- Begin Templates --><script type="text/ng-template" id="views/subviews/one_line_tree_tags1.html"><div class="title"><b>@</b>{{tree.title}} <span class="cnt">({{tree.cnt}})</span></div>
+    <ul class="myweb_ul">
+        <li class="tree" sly-repeat="tree in fn.service.db_tree.jsFindByParentTags( tree.id )">
+            <div ng-include="'views/subviews/one_line_tree_tags1.html'"></div>
+        </li>
+    </ul></script><!-- End Templates -->

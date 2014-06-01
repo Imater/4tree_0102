@@ -1,0 +1,21 @@
+<div class="p_inside_header2" ng-if="false"><div class="right_menu_button_w"><i class="icon-th-list r_menu_button"></i></div><div ng-include="'views/subviews/view_tree_header.html'"></div></div><div class="p_inside_content cards vertical_scroll has_header_no" scrollable="{alwaysVisible:'true'}"><div class="editor_content"><div ng-include="'views/subviews/view_main/sub/path_header.html'"></div><div class="cards_main" ng-if="trees = fn.jsFindByParent(set.main_parent_id)"><ul class="tree_ul"><li class="tree2" ng-repeat="tree in trees" ng-click="db.main_node = tree;"><div class="tree_tmpl" ng-include="'views/subviews/view_one_line_cards.html'"></div></li></ul></div></div></div><!-- Begin Templates --><script type="text/ng-template" id="views/subviews/view_one_line_cards.html"><div ng-controller="save_tree_db" class="tree_wrap" ng-class="{open:tree._open, folder:tree._childs, active:db.main_node._id==tree._id}" id="node_{{tree._id}}">
+      <div class="card_header">
+        <div class="col1">
+          <div class="is_folder" ng-click="tree._open=!tree._open"></div>
+        </div>
+        <div class="col2" title="{{tree._childs}}" ng-click="set.main_parent_id = tree._id">
+          <i class="icon-heart-empty"></i>
+        </div>
+        <div class="col3" ng-click="db.main_node = tree" id="col3_{{tree._id}}">
+            <div class="title">
+              <span contenteditable="true" ng-model="tree.title"></span>
+              <span class="cnt" ng-if="tree._childs">({{tree._childs}})</span>
+            </div>
+        </div>
+      </div>
+      <div class="text_wrap">
+        <div class="col_text" contenteditable="true" ng-model="tree.text">
+        </div>
+      </div>
+      {{tree._path}}
+    </div></script><!-- End Templates -->
