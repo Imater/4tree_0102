@@ -41,6 +41,7 @@ customLevels = {
     debug: 'blue'
     trace: 'magenta'
     error: 'red'
+
   }
 }
 
