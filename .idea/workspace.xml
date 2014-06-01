@@ -9,10 +9,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="Deploy doing">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gruntfile.js" afterPath="$PROJECT_DIR$/Gruntfile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/server.coffee" afterPath="$PROJECT_DIR$/server/server.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/_js/server.js" afterPath="$PROJECT_DIR$/server/_js/server.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/_js/server.map" afterPath="$PROJECT_DIR$/server/_js/server.map" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/styles/1481a734.main.css" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/sass/_settings.scss" afterPath="$PROJECT_DIR$/app/sass/_settings.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.html" afterPath="$PROJECT_DIR$/dist/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/manifest.appcache" afterPath="$PROJECT_DIR$/dist/manifest.appcache" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="56ee746e-8f1d-4d4a-a92c-f05706cc2e69" name="Rejected commit: Default" comment="Пробую сделать коммит" />
@@ -26,7 +26,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CreatePatchCommitExecutor">
-    <option name="PATCH_PATH" value="" />
+    <option name="PATCH_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="DaemonCodeAnalyzer">
     <disable_hints />
@@ -3937,11 +3937,11 @@
     <splitter split-orientation="vertical" split-proportion="0.23602942">
       <split-first>
         <leaf>
-          <file leaf-file-name="_settings.scss" pinned="false" current="false" current-in-tab="false">
+          <file leaf-file-name="_settings.scss" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/sass/_settings.scss">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="936" max-vertical-offset="972">
-                  <caret line="52" column="29" selection-start-line="52" selection-start-column="29" selection-end-line="52" selection-end-column="29" />
+                <state vertical-scroll-proportion="0.092307694" vertical-offset="0" max-vertical-offset="1326">
+                  <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
                   <folding />
                 </state>
               </provider>
@@ -3963,23 +3963,23 @@
                 <state vertical-scroll-proportion="0.0" vertical-offset="142362" max-vertical-offset="231930">
                   <caret line="7909" column="28" selection-start-line="7909" selection-start-column="28" selection-end-line="7909" selection-end-column="28" />
                   <folding>
-                    <marker date="1401636883000" expanded="true" signature="277600:354981" placeholder="{...}" />
-                    <marker date="1401636883000" expanded="true" signature="278924:354968" placeholder="[...]" />
-                    <marker date="1401636883000" expanded="true" signature="279152:354960" placeholder="{&quot;setMainTimeout&quot;: null...}" />
-                    <marker date="1401636883000" expanded="true" signature="279227:354964" placeholder="{...}" />
-                    <marker date="1401636883000" expanded="true" signature="296454:296790" placeholder="{...}" />
-                    <marker date="1401636883000" expanded="true" signature="380252:380391" placeholder="{&quot;focus&quot;: 1...}" />
-                    <marker date="1401636883000" expanded="true" signature="380423:385393" placeholder="{&quot;v&quot;: 0...}" />
-                    <marker date="1401636883000" expanded="true" signature="380453:380580" placeholder="{&quot;client_id&quot;: '4tree_client'...}" />
+                    <marker date="1401640000000" expanded="true" signature="277600:354981" placeholder="{...}" />
+                    <marker date="1401640000000" expanded="true" signature="278924:354968" placeholder="[...]" />
+                    <marker date="1401640000000" expanded="true" signature="279152:354960" placeholder="{&quot;setMainTimeout&quot;: null...}" />
+                    <marker date="1401640000000" expanded="true" signature="279227:354964" placeholder="{...}" />
+                    <marker date="1401640000000" expanded="true" signature="296454:296790" placeholder="{...}" />
+                    <marker date="1401640000000" expanded="true" signature="380252:380391" placeholder="{&quot;focus&quot;: 1...}" />
+                    <marker date="1401640000000" expanded="true" signature="380423:385393" placeholder="{&quot;v&quot;: 0...}" />
+                    <marker date="1401640000000" expanded="true" signature="380453:380580" placeholder="{&quot;client_id&quot;: '4tree_client'...}" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="server.coffee" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="server.coffee" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/server/server.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.8095238" vertical-offset="0" max-vertical-offset="14238">
+                <state vertical-scroll-proportion="-11.769231" vertical-offset="0" max-vertical-offset="14238">
                   <caret line="17" column="36" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
                   <folding />
                 </state>
@@ -4069,7 +4069,7 @@
           <file leaf-file-name="view_text.html" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/views/subviews/view_main/view_text.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-5.962963" vertical-offset="379" max-vertical-offset="971">
+                <state vertical-scroll-proportion="-20.0" vertical-offset="0" max-vertical-offset="971">
                   <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="30" selection-end-column="8" />
                   <folding />
                 </state>
@@ -4305,7 +4305,6 @@
         <option value="$PROJECT_DIR$/app/views/subviews/ms/view_ms_3.html" />
         <option value="$PROJECT_DIR$/app/views/subviews/ms/view_ms_4.html" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/ctrl_main.coffee" />
-        <option value="$PROJECT_DIR$/app/sass/_settings.scss" />
         <option value="$PROJECT_DIR$/app/scripts/services/srv_mysettings.coffee" />
         <option value="$PROJECT_DIR$/app/views/subviews/view_main/view_tree_exp.html" />
         <option value="$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" />
@@ -4317,6 +4316,7 @@
         <option value="$PROJECT_DIR$/app/views/subviews/view_main/view_text.html" />
         <option value="$PROJECT_DIR$/Gruntfile.js" />
         <option value="$PROJECT_DIR$/server/server.coffee" />
+        <option value="$PROJECT_DIR$/app/sass/_settings.scss" />
       </list>
     </option>
   </component>
@@ -4621,38 +4621,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="4tree_0102" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="4tree" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="4tree_0102" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="4tree" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="4tree_0102" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -5080,7 +5048,11 @@
       <created>1401637718819</created>
       <updated>1401637718820</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="Deploy doing">
+      <created>1401639820611</created>
+      <updated>1401639820612</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TodoView" selected-index="2">
@@ -5472,14 +5444,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/sass/_settings.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="936" max-vertical-offset="972">
-          <caret line="52" column="29" selection-start-line="52" selection-start-column="29" selection-end-line="52" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/scripts/services/srv_mysettings.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="414" max-vertical-offset="3438">
@@ -5493,14 +5457,14 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="141529" max-vertical-offset="231857">
           <caret line="7909" column="28" selection-start-line="7909" selection-start-column="28" selection-end-line="7909" selection-end-column="28" />
           <folding>
-            <marker date="1401636883000" expanded="true" signature="277600:354981" placeholder="{...}" />
-            <marker date="1401636883000" expanded="true" signature="278924:354968" placeholder="[...]" />
-            <marker date="1401636883000" expanded="true" signature="279152:354960" placeholder="{&quot;setMainTimeout&quot;: null...}" />
-            <marker date="1401636883000" expanded="true" signature="279227:354964" placeholder="{...}" />
-            <marker date="1401636883000" expanded="true" signature="296454:296790" placeholder="{...}" />
-            <marker date="1401636883000" expanded="true" signature="380252:380391" placeholder="{&quot;focus&quot;: 1...}" />
-            <marker date="1401636883000" expanded="true" signature="380423:385393" placeholder="{&quot;v&quot;: 0...}" />
-            <marker date="1401636883000" expanded="true" signature="380453:380580" placeholder="{&quot;client_id&quot;: '4tree_client'...}" />
+            <marker date="1401640000000" expanded="true" signature="277600:354981" placeholder="{...}" />
+            <marker date="1401640000000" expanded="true" signature="278924:354968" placeholder="[...]" />
+            <marker date="1401640000000" expanded="true" signature="279152:354960" placeholder="{&quot;setMainTimeout&quot;: null...}" />
+            <marker date="1401640000000" expanded="true" signature="279227:354964" placeholder="{...}" />
+            <marker date="1401640000000" expanded="true" signature="296454:296790" placeholder="{...}" />
+            <marker date="1401640000000" expanded="true" signature="380252:380391" placeholder="{&quot;focus&quot;: 1...}" />
+            <marker date="1401640000000" expanded="true" signature="380423:385393" placeholder="{&quot;v&quot;: 0...}" />
+            <marker date="1401640000000" expanded="true" signature="380453:380580" placeholder="{&quot;client_id&quot;: '4tree_client'...}" />
           </folding>
         </state>
       </provider>
@@ -5584,14 +5548,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/subviews/view_main/view_text.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.962963" vertical-offset="379" max-vertical-offset="971">
-          <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="30" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Gruntfile.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.38" vertical-offset="8244" max-vertical-offset="12654">
@@ -5602,8 +5558,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/server.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8095238" vertical-offset="0" max-vertical-offset="14238">
+        <state vertical-scroll-proportion="-11.769231" vertical-offset="0" max-vertical-offset="14238">
           <caret line="17" column="36" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/subviews/view_main/view_text.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-20.0" vertical-offset="0" max-vertical-offset="971">
+          <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="30" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/sass/_settings.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.092307694" vertical-offset="0" max-vertical-offset="1326">
+          <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
           <folding />
         </state>
       </provider>
