@@ -15,6 +15,8 @@ kue = require('kue')
 jobs = kue.createQueue();
 winston = require('winston');
 
+console.info 'NEW _FILE';
+
 MYLOG = require('../scripts/_js/mylog.js').mylog
 
 # Move the animal.

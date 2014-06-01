@@ -475,7 +475,7 @@ module.exports = function (grunt) {
     // define our ssh commands
     sshexec: {
       git_pull: {
-        command: "cd /home/admin/4tree && git pull"
+        command: ["cd /home/admin/4tree","git pull"].join(' && ')
       },
       uptime: {
         command: "uptime"
@@ -640,13 +640,7 @@ module.exports = function (grunt) {
 //  ]);
 
 grunt.registerTask('deploy', [
-  'sshexec:stop',
-  'sshexec:make-release-dir',
-  'sshexec:update-symlinks',
-  'sftp:deploy',
-  'sshexec:npm-update',
-  'sshexec:set-config',
-  'sshexec:start'
+  'sshexec:git_pull'
 ]);
 
 grunt.registerTask('default', ['sass', 'watch']);

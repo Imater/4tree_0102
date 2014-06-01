@@ -8,12 +8,11 @@
     <bookmark url="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="Гит настраиваю">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/scripts/24246bc0.scripts.js" afterPath="" />
+    <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gruntfile.js" afterPath="$PROJECT_DIR$/Gruntfile.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/manifest.appcache" afterPath="$PROJECT_DIR$/dist/manifest.appcache" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/subviews/view_main/view_text.html" afterPath="$PROJECT_DIR$/app/views/subviews/view_main/view_text.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/views/subviews/view_main/view_text.html" afterPath="$PROJECT_DIR$/dist/views/subviews/view_main/view_text.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/server.coffee" afterPath="$PROJECT_DIR$/server/server.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/_js/server.js" afterPath="$PROJECT_DIR$/server/_js/server.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="56ee746e-8f1d-4d4a-a92c-f05706cc2e69" name="Rejected commit: Default" comment="Пробую сделать коммит" />
@@ -3964,24 +3963,24 @@
                 <state vertical-scroll-proportion="0.0" vertical-offset="142362" max-vertical-offset="231930">
                   <caret line="7909" column="28" selection-start-line="7909" selection-start-column="28" selection-end-line="7909" selection-end-column="28" />
                   <folding>
-                    <marker date="1401635608000" expanded="true" signature="277600:354981" placeholder="{...}" />
-                    <marker date="1401635608000" expanded="true" signature="278924:354968" placeholder="[...]" />
-                    <marker date="1401635608000" expanded="true" signature="279152:354960" placeholder="{&quot;setMainTimeout&quot;: null...}" />
-                    <marker date="1401635608000" expanded="true" signature="279227:354964" placeholder="{...}" />
-                    <marker date="1401635608000" expanded="true" signature="296454:296790" placeholder="{...}" />
-                    <marker date="1401635608000" expanded="true" signature="380252:380391" placeholder="{&quot;focus&quot;: 1...}" />
-                    <marker date="1401635608000" expanded="true" signature="380423:385393" placeholder="{&quot;v&quot;: 0...}" />
-                    <marker date="1401635608000" expanded="true" signature="380453:380580" placeholder="{&quot;client_id&quot;: '4tree_client'...}" />
+                    <marker date="1401636883000" expanded="true" signature="277600:354981" placeholder="{...}" />
+                    <marker date="1401636883000" expanded="true" signature="278924:354968" placeholder="[...]" />
+                    <marker date="1401636883000" expanded="true" signature="279152:354960" placeholder="{&quot;setMainTimeout&quot;: null...}" />
+                    <marker date="1401636883000" expanded="true" signature="279227:354964" placeholder="{...}" />
+                    <marker date="1401636883000" expanded="true" signature="296454:296790" placeholder="{...}" />
+                    <marker date="1401636883000" expanded="true" signature="380252:380391" placeholder="{&quot;focus&quot;: 1...}" />
+                    <marker date="1401636883000" expanded="true" signature="380423:385393" placeholder="{&quot;v&quot;: 0...}" />
+                    <marker date="1401636883000" expanded="true" signature="380453:380580" placeholder="{&quot;client_id&quot;: '4tree_client'...}" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="server.coffee" pinned="false" current="false" current-in-tab="false">
+          <file leaf-file-name="server.coffee" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/server/server.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-4.8461537" vertical-offset="180" max-vertical-offset="14203">
-                  <caret line="17" column="48" selection-start-line="17" selection-start-column="43" selection-end-line="17" selection-end-column="48" />
+                <state vertical-scroll-proportion="0.8095238" vertical-offset="0" max-vertical-offset="14238">
+                  <caret line="17" column="25" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="25" />
                   <folding />
                 </state>
               </provider>
@@ -4067,10 +4066,10 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="view_text.html" pinned="false" current="false" current-in-tab="true">
+          <file leaf-file-name="view_text.html" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/views/subviews/view_main/view_text.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.42705572" vertical-offset="379" max-vertical-offset="971">
+                <state vertical-scroll-proportion="-5.962963" vertical-offset="379" max-vertical-offset="971">
                   <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="30" selection-end-column="8" />
                   <folding />
                 </state>
@@ -4186,11 +4185,11 @@
                   </provider>
                 </entry>
               </file>
-              <file leaf-file-name="Gruntfile.js" pinned="false" current="true" current-in-tab="true">
+              <file leaf-file-name="Gruntfile.js" pinned="false" current="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/Gruntfile.js">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="0.20222223" vertical-offset="8404" max-vertical-offset="12762">
-                      <caret line="477" column="51" selection-start-line="477" selection-start-column="51" selection-end-line="477" selection-end-column="51" />
+                    <state vertical-scroll-proportion="0.6" vertical-offset="11016" max-vertical-offset="12654">
+                      <caret line="642" column="19" selection-start-line="642" selection-start-column="19" selection-end-line="642" selection-end-column="19" />
                       <folding />
                     </state>
                   </provider>
@@ -4233,7 +4232,7 @@
               <file leaf-file-name="Gruntfile.js" pinned="false" current="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/Gruntfile.js">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="2.0797102" vertical-offset="10425" max-vertical-offset="12276">
+                    <state vertical-scroll-proportion="2.0797102" vertical-offset="10425" max-vertical-offset="12168">
                       <caret line="627" column="16" selection-start-line="627" selection-start-column="16" selection-end-line="627" selection-end-column="16" />
                       <folding />
                     </state>
@@ -4307,7 +4306,6 @@
         <option value="$PROJECT_DIR$/app/views/subviews/ms/view_ms_4.html" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/ctrl_main.coffee" />
         <option value="$PROJECT_DIR$/app/sass/_settings.scss" />
-        <option value="$PROJECT_DIR$/server/server.coffee" />
         <option value="$PROJECT_DIR$/app/scripts/services/srv_mysettings.coffee" />
         <option value="$PROJECT_DIR$/app/views/subviews/view_main/view_tree_exp.html" />
         <option value="$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" />
@@ -4318,6 +4316,7 @@
         <option value="$PROJECT_DIR$/server/scripts/mylog.coffee" />
         <option value="$PROJECT_DIR$/app/views/subviews/view_main/view_text.html" />
         <option value="$PROJECT_DIR$/Gruntfile.js" />
+        <option value="$PROJECT_DIR$/server/server.coffee" />
       </list>
     </option>
   </component>
@@ -5073,7 +5072,11 @@
       <created>1401635323255</created>
       <updated>1401635323255</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="Deploy doing">
+      <created>1401635827937</created>
+      <updated>1401635827938</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TodoView" selected-index="2">
@@ -5150,7 +5153,6 @@
       <TodoPanelSettings />
     </option>
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
-    <MESSAGE value="Глючит монго после добавления логирования" />
     <MESSAGE value="Починил логирование. Он неправильно отрабатывал циклические ссылки. Еду в Египет завтра." />
     <MESSAGE value="Поставил логи на синхронизацию в браузер" />
     <MESSAGE value="Делаю синхронизацию. Глюк при отслеживании изменений во время синхронизации." />
@@ -5175,7 +5177,8 @@
     <MESSAGE value="Поменял цвета у табов, сделал перетаскивание и меню - закрыть справа/слева" />
     <MESSAGE value="деплой настраиваю" />
     <MESSAGE value="Гит настраиваю" />
-    <option name="LAST_COMMIT_MESSAGE" value="Гит настраиваю" />
+    <MESSAGE value="Deploy doing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Deploy doing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -5486,14 +5489,14 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="141529" max-vertical-offset="231857">
           <caret line="7909" column="28" selection-start-line="7909" selection-start-column="28" selection-end-line="7909" selection-end-column="28" />
           <folding>
-            <marker date="1401635608000" expanded="true" signature="277600:354981" placeholder="{...}" />
-            <marker date="1401635608000" expanded="true" signature="278924:354968" placeholder="[...]" />
-            <marker date="1401635608000" expanded="true" signature="279152:354960" placeholder="{&quot;setMainTimeout&quot;: null...}" />
-            <marker date="1401635608000" expanded="true" signature="279227:354964" placeholder="{...}" />
-            <marker date="1401635608000" expanded="true" signature="296454:296790" placeholder="{...}" />
-            <marker date="1401635608000" expanded="true" signature="380252:380391" placeholder="{&quot;focus&quot;: 1...}" />
-            <marker date="1401635608000" expanded="true" signature="380423:385393" placeholder="{&quot;v&quot;: 0...}" />
-            <marker date="1401635608000" expanded="true" signature="380453:380580" placeholder="{&quot;client_id&quot;: '4tree_client'...}" />
+            <marker date="1401636883000" expanded="true" signature="277600:354981" placeholder="{...}" />
+            <marker date="1401636883000" expanded="true" signature="278924:354968" placeholder="[...]" />
+            <marker date="1401636883000" expanded="true" signature="279152:354960" placeholder="{&quot;setMainTimeout&quot;: null...}" />
+            <marker date="1401636883000" expanded="true" signature="279227:354964" placeholder="{...}" />
+            <marker date="1401636883000" expanded="true" signature="296454:296790" placeholder="{...}" />
+            <marker date="1401636883000" expanded="true" signature="380252:380391" placeholder="{&quot;focus&quot;: 1...}" />
+            <marker date="1401636883000" expanded="true" signature="380423:385393" placeholder="{&quot;v&quot;: 0...}" />
+            <marker date="1401636883000" expanded="true" signature="380453:380580" placeholder="{&quot;client_id&quot;: '4tree_client'...}" />
           </folding>
         </state>
       </provider>
@@ -5545,14 +5548,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/server.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.8461537" vertical-offset="180" max-vertical-offset="14203">
-          <caret line="17" column="48" selection-start-line="17" selection-start-column="43" selection-end-line="17" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.019715225" vertical-offset="0" max-vertical-offset="1039">
@@ -5587,7 +5582,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/subviews/view_main/view_text.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42705572" vertical-offset="379" max-vertical-offset="971">
+        <state vertical-scroll-proportion="-5.962963" vertical-offset="379" max-vertical-offset="971">
           <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="30" selection-end-column="8" />
           <folding />
         </state>
@@ -5595,8 +5590,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Gruntfile.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.20222223" vertical-offset="8404" max-vertical-offset="12762">
-          <caret line="477" column="51" selection-start-line="477" selection-start-column="51" selection-end-line="477" selection-end-column="51" />
+        <state vertical-scroll-proportion="0.6" vertical-offset="11016" max-vertical-offset="12654">
+          <caret line="642" column="19" selection-start-line="642" selection-start-column="19" selection-end-line="642" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/server.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8095238" vertical-offset="0" max-vertical-offset="14238">
+          <caret line="17" column="25" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="25" />
           <folding />
         </state>
       </provider>
