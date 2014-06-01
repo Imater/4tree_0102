@@ -9,7 +9,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dist/styles/427960cd.main.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dist/styles/3f057138.main.css" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/styles/427960cd.main.css" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.html" afterPath="$PROJECT_DIR$/dist/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/manifest.appcache" afterPath="$PROJECT_DIR$/dist/manifest.appcache" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/sass/theme1.scss" afterPath="$PROJECT_DIR$/app/sass/theme1.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="56ee746e-8f1d-4d4a-a92c-f05706cc2e69" name="Rejected commit: Default" comment="Пробую сделать коммит" />
@@ -3947,8 +3951,8 @@
           <file leaf-file-name="theme1.scss" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/sass/theme1.scss">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.36923078" vertical-offset="0" max-vertical-offset="516">
-                  <caret line="8" column="15" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
+                <state vertical-scroll-proportion="0.2769231" vertical-offset="0" max-vertical-offset="516">
+                  <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
                   <folding />
                 </state>
               </provider>
@@ -3980,14 +3984,14 @@
                 <state vertical-scroll-proportion="0.0" vertical-offset="142362" max-vertical-offset="231930">
                   <caret line="7909" column="28" selection-start-line="7909" selection-start-column="28" selection-end-line="7909" selection-end-column="28" />
                   <folding>
-                    <marker date="1401640887000" expanded="true" signature="277600:354981" placeholder="{...}" />
-                    <marker date="1401640887000" expanded="true" signature="278924:354968" placeholder="[...]" />
-                    <marker date="1401640887000" expanded="true" signature="279152:354960" placeholder="{&quot;setMainTimeout&quot;: null...}" />
-                    <marker date="1401640887000" expanded="true" signature="279227:354964" placeholder="{...}" />
-                    <marker date="1401640887000" expanded="true" signature="296454:296790" placeholder="{...}" />
-                    <marker date="1401640887000" expanded="true" signature="380252:380391" placeholder="{&quot;focus&quot;: 1...}" />
-                    <marker date="1401640887000" expanded="true" signature="380423:385393" placeholder="{&quot;v&quot;: 0...}" />
-                    <marker date="1401640887000" expanded="true" signature="380453:380580" placeholder="{&quot;client_id&quot;: '4tree_client'...}" />
+                    <marker date="1401641179000" expanded="true" signature="277600:354981" placeholder="{...}" />
+                    <marker date="1401641179000" expanded="true" signature="278924:354968" placeholder="[...]" />
+                    <marker date="1401641179000" expanded="true" signature="279152:354960" placeholder="{&quot;setMainTimeout&quot;: null...}" />
+                    <marker date="1401641179000" expanded="true" signature="279227:354964" placeholder="{...}" />
+                    <marker date="1401641179000" expanded="true" signature="296454:296790" placeholder="{...}" />
+                    <marker date="1401641179000" expanded="true" signature="380252:380391" placeholder="{&quot;focus&quot;: 1...}" />
+                    <marker date="1401641179000" expanded="true" signature="380423:385393" placeholder="{&quot;v&quot;: 0...}" />
+                    <marker date="1401641179000" expanded="true" signature="380453:380580" placeholder="{&quot;client_id&quot;: '4tree_client'...}" />
                   </folding>
                 </state>
               </provider>
@@ -5065,7 +5069,11 @@
       <created>1401641013915</created>
       <updated>1401641013915</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="Deploy doing">
+      <created>1401641104045</created>
+      <updated>1401641104045</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="TodoView" selected-index="2">
@@ -5463,14 +5471,14 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="141529" max-vertical-offset="231857">
           <caret line="7909" column="28" selection-start-line="7909" selection-start-column="28" selection-end-line="7909" selection-end-column="28" />
           <folding>
-            <marker date="1401640887000" expanded="true" signature="277600:354981" placeholder="{...}" />
-            <marker date="1401640887000" expanded="true" signature="278924:354968" placeholder="[...]" />
-            <marker date="1401640887000" expanded="true" signature="279152:354960" placeholder="{&quot;setMainTimeout&quot;: null...}" />
-            <marker date="1401640887000" expanded="true" signature="279227:354964" placeholder="{...}" />
-            <marker date="1401640887000" expanded="true" signature="296454:296790" placeholder="{...}" />
-            <marker date="1401640887000" expanded="true" signature="380252:380391" placeholder="{&quot;focus&quot;: 1...}" />
-            <marker date="1401640887000" expanded="true" signature="380423:385393" placeholder="{&quot;v&quot;: 0...}" />
-            <marker date="1401640887000" expanded="true" signature="380453:380580" placeholder="{&quot;client_id&quot;: '4tree_client'...}" />
+            <marker date="1401641179000" expanded="true" signature="277600:354981" placeholder="{...}" />
+            <marker date="1401641179000" expanded="true" signature="278924:354968" placeholder="[...]" />
+            <marker date="1401641179000" expanded="true" signature="279152:354960" placeholder="{&quot;setMainTimeout&quot;: null...}" />
+            <marker date="1401641179000" expanded="true" signature="279227:354964" placeholder="{...}" />
+            <marker date="1401641179000" expanded="true" signature="296454:296790" placeholder="{...}" />
+            <marker date="1401641179000" expanded="true" signature="380252:380391" placeholder="{&quot;focus&quot;: 1...}" />
+            <marker date="1401641179000" expanded="true" signature="380423:385393" placeholder="{&quot;v&quot;: 0...}" />
+            <marker date="1401641179000" expanded="true" signature="380453:380580" placeholder="{&quot;client_id&quot;: '4tree_client'...}" />
           </folding>
         </state>
       </provider>
@@ -5588,8 +5596,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/sass/theme1.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36923078" vertical-offset="0" max-vertical-offset="516">
-          <caret line="8" column="15" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
+        <state vertical-scroll-proportion="0.2769231" vertical-offset="0" max-vertical-offset="516">
+          <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
           <folding />
         </state>
       </provider>
