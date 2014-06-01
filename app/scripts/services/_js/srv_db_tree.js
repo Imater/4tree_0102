@@ -171,7 +171,7 @@
               }
             });
             mythis.refreshParentsIndex();
-            settingsApi.set.tree_loaded = true;
+            settingsApi.tmp.tree_loaded = new Date();
             $rootScope.$$childTail.db.main_node = [];
             $rootScope.$broadcast('tree_loaded');
             if (false) {
@@ -544,6 +544,8 @@
           return elements = _.filter(elements, function(value) {
             return value.del !== 1;
           });
+        }, function(args) {
+          return args + ' ' + settingsApi.tmp.tree_loaded;
         }),
         'web_tags': [
           {

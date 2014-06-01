@@ -7,6 +7,8 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
+var dirname = (new Date()).toISOString();
+
 module.exports = function (grunt) {
 
   // Load grunt tasks automatically
@@ -337,6 +339,7 @@ module.exports = function (grunt) {
     },
 
     // Copies remaining files to places other tasks can use
+    //            'bower_components/**/*',
     copy: {
       dist: {
         files: [{
@@ -349,7 +352,6 @@ module.exports = function (grunt) {
             '.htaccess',
             '*.html',
             'views/**/{,*/}*.html',
-            'bower_components/**/*',
             'images/{,*/}*.{webp}',
             'fonts/*'
           ]
@@ -424,8 +426,24 @@ module.exports = function (grunt) {
            '<%= yeoman.dist %>/scripts/vendor.js': [
              '.tmp/concat/scripts/vendor.js'
            ]
+         },
+         mangle: true,
+         options: {
+           mangle: true,
+           compress: {
+             sequences: true,
+             dead_code: true,
+             conditionals: true,
+             booleans: true,
+             unused: true,
+             if_return: true,
+             join_vars: true,
+             angular: true,
+             drop_console: true
+           }
          }
        }
+
      },
      concat: {
        dist: {}
@@ -444,7 +462,79 @@ module.exports = function (grunt) {
         autoWatch: true        
       }
     },
-    manifest: {
+// our shared sshconfig
+    sshconfig: {
+      production: {
+        host: "54.76.128.148",
+        port: 22,
+        username: "admin",
+        privateKey: grunt.file.read("/Users/iBook/.ssh/MY4TREE-KEY-PAIR.pem"),
+        path: "/home/admin/4tree"
+      }
+    },
+    // define our ssh commands
+    sshexec: {
+      uptime: {
+        command: "uptime"
+      },
+      start: {
+        command: "cd /var/www/myapp/current && forever start -o /var/www/myapp/current/logs/forever.out -e /var/www/myapp/current/logs/forever.err --append app.js"
+      },
+      stop: {
+        command: "forever stop app.js",
+        options: {
+          ignoreErrors: true
+        }
+      },
+      'make-release-dir': {
+        command: "mkdir -m 777 -p /var/www/myapp/releases/" + dirname + "/logs"
+      },
+      'update-symlinks': {
+        command: "rm -rf /var/www/myapp/current && ln -s /var/www/myapp/releases/" + dirname + " /var/www/myapp/current"
+      },
+      'npm-update': {
+        command: "cd /var/www/myapp/current && npm update"
+      },
+      'set-config': {
+        command: "mv -f /var/www/myapp/current/config/<%= grunt.option('config') %>.yml /var/www/myapp/current/config/default.yml"
+      }
+    },
+    // our sftp file copy config
+    sftp: {
+      deploy: {
+        files: {
+          "./": "dist/**"
+        },
+        options: {
+          path: '/home/admin/4tree/dist/',
+          srcBasePath: "/",
+          createDirectories: true
+        }
+      },
+      deploy_server: {
+        files: {
+          "./": ["server/_js/**","server/get/**","server/logJson/**","server/models/**","server/scripts/**", "server/changeset/**"]
+        },
+        options: {
+          path: '/home/admin/4tree/server/',
+          srcBasePath: "/",
+          createDirectories: true,
+          showProgress: true
+        }
+      },
+      deploy_s_fast: {
+        files: {
+          "./": ["server/**/*.js"]
+        },
+        options: {
+          path: '/home/admin/4tree/server/',
+          srcBasePath: "/",
+          createDirectories: true,
+          showProgress: true
+        }
+      }
+  },
+  manifest: {
       generate: {
         options: {
           basePath: '<%= yeoman.dist %>',
@@ -526,6 +616,12 @@ module.exports = function (grunt) {
     'manifest'
   ]);
 
+  grunt.option('config', 'production');
+
+  grunt.registerTask('rsync', [
+    'rseync'
+  ])
+
   grunt.registerTask('build_part', [
     'clean:dist',
     //'bower-install',
@@ -540,10 +636,22 @@ module.exports = function (grunt) {
 //    'build'
 //  ]);
 
+grunt.registerTask('deploy', [
+  'sshexec:stop',
+  'sshexec:make-release-dir',
+  'sshexec:update-symlinks',
+  'sftp:deploy',
+  'sshexec:npm-update',
+  'sshexec:set-config',
+  'sshexec:start'
+]);
+
 grunt.registerTask('default', ['sass', 'watch']);
 grunt.loadNpmTasks('grunt-sass');
 grunt.loadNpmTasks('grunt-contrib-watch');
 grunt.loadNpmTasks('grunt-contrib-coffee');
 grunt.loadNpmTasks('grunt-protractor-runner');
 grunt.loadNpmTasks('grunt-manifest');
+grunt.loadNpmTasks('grunt-ssh');
+
 };

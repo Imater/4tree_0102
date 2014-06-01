@@ -111,7 +111,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           if canStoreInThisDB
             mythis._db[db_name] = data;
         mythis.refreshParentsIndex();
-        settingsApi.set.tree_loaded = true;
+        settingsApi.tmp.tree_loaded = new Date();
         $rootScope.$$childTail.db.main_node = []
         $rootScope.$broadcast('tree_loaded');
         mythis.TestJson() if false
@@ -363,6 +363,9 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         value.pos
       elements = _.filter elements, (value)->
         value.del != 1
+    , (args)->
+      args+' '+settingsApi.tmp.tree_loaded
+
 
     'web_tags': [
       {id: 1, parent: 0, title: "Кулинария", cnt: 1}

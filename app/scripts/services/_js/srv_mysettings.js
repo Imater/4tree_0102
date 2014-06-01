@@ -7,7 +7,8 @@
         tick_today_date: new Date(),
         tick_today_date_time: new Date().getTime(),
         focus: 1,
-        focus_edit: 1
+        focus_edit: 1,
+        tree_loaded: false
       };
       set = {
         v: 0,
@@ -30,7 +31,6 @@
         p_plan_of_day_open: true,
         top_parent_id: 'no parent',
         main_parent_id: [],
-        tree_loaded: false,
         show_path_panel: false,
         show_pomidor_timer: false,
         show_right_menu: true,

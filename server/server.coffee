@@ -397,7 +397,7 @@ else
     #app.use allowCrossDomain
 
     #var server_is = "dist";
-    server_is = "app"
+    server_is = "dist"
     app.use express.static(__dirname + "/../../" + server_is + "/images",
     maxAge: 86400000
     )

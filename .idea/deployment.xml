@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="4tree-server-gm" compareModeInSync="TIMESTAMP">
+  <component name="PublishConfigData" serverName="AMAZON-s0" compareModeInSync="TIMESTAMP">
     <serverData>
       <paths name="4tree-WEB-gm">
         <serverdata>
@@ -16,6 +16,13 @@
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$/server" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="AMAZON-s0">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$/dist" web="/" />
           </mappings>
         </serverdata>
       </paths>

@@ -1,0 +1,1 @@
+rsync -avL --progress -e "ssh -i /Users/iBook/.ssh/MY4TREE-KEY-PAIR.pem" /Users/iBook/webapps/4tree_0102/dist/* 54.76.128.148:/home/admin/4tree/dist

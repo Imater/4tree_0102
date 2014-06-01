@@ -21,6 +21,7 @@ angular.module("4treeApp").service 'settingsApi', [
         tick_today_date_time: new Date().getTime()
         focus: 1
         focus_edit: 1
+        tree_loaded: false
       }
 
       set = {
@@ -44,7 +45,6 @@ angular.module("4treeApp").service 'settingsApi', [
         p_plan_of_day_open: true
         top_parent_id: 'no parent'
         main_parent_id: []
-        tree_loaded: false
         show_path_panel: false
         show_pomidor_timer: false
         show_right_menu: true

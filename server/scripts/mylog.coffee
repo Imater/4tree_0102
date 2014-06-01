@@ -29,20 +29,22 @@ customLevels = {
   transports: [
   ]
   levels: {
-    sync: 0
-    info: 1
-    debug: 2
-    trace: 3
+    sync: 1
+    info: 2
+    debug: 3
+    trace: 4
+    error: 5
   }
   colors: {
-    sync: 'red'
+    sync: 'green'
     info: 'yellow'
     debug: 'blue'
     trace: 'magenta'
+    error: 'red'
   }
 }
 
-level = 'sync';
+level = 'error';
 
 customLevels.transports.push new (winston.transports.Logstash)({
     port: 28777,
