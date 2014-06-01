@@ -8,11 +8,8 @@
     <bookmark url="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="Deploy doing">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/styles/1481a734.main.css" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/sass/_settings.scss" afterPath="$PROJECT_DIR$/app/sass/_settings.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.html" afterPath="$PROJECT_DIR$/dist/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/manifest.appcache" afterPath="$PROJECT_DIR$/dist/manifest.appcache" />
+    <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dist/styles/38fac2a1.main.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="56ee746e-8f1d-4d4a-a92c-f05706cc2e69" name="Rejected commit: Default" comment="Пробую сделать коммит" />
@@ -5052,7 +5049,11 @@
       <created>1401639820611</created>
       <updated>1401639820612</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="Deploy doing">
+      <created>1401640139813</created>
+      <updated>1401640139813</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TodoView" selected-index="2">
@@ -5091,7 +5092,7 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329863" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963374" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24936387" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.2245345" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="1201" y="22" width="471" height="891" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.2245345" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="1201" y="22" width="471" height="891" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12752809" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="699" y="598" width="1200" height="596" />
       <window_info id="Pomodoro" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
