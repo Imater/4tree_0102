@@ -8,12 +8,12 @@
     <bookmark url="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="Deploy doing">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dist/styles/3f057138.main.css" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/styles/38fac2a1.main.css" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/sass/_settings.scss" afterPath="$PROJECT_DIR$/app/sass/_settings.scss" />
+    <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/styles/3f057138.main.css" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.html" afterPath="$PROJECT_DIR$/dist/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/manifest.appcache" afterPath="$PROJECT_DIR$/dist/manifest.appcache" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/sass/theme1.scss" afterPath="$PROJECT_DIR$/app/sass/theme1.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="56ee746e-8f1d-4d4a-a92c-f05706cc2e69" name="Rejected commit: Default" comment="Пробую сделать коммит" />
@@ -3938,11 +3938,21 @@
     <splitter split-orientation="vertical" split-proportion="0.23602942">
       <split-first>
         <leaf>
-          <file leaf-file-name="_settings.scss" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="_settings.scss" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/sass/_settings.scss">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.092307694" vertical-offset="0" max-vertical-offset="1326">
-                  <caret line="2" column="14" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
+                <state vertical-scroll-proportion="-1.3333334" vertical-offset="0" max-vertical-offset="1326">
+                  <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="theme1.scss" pinned="false" current="true" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/app/sass/theme1.scss">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.2769231" vertical-offset="0" max-vertical-offset="516">
+                  <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
                   <folding />
                 </state>
               </provider>
@@ -3958,20 +3968,30 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="mylog.coffee" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/server/scripts/mylog.coffee">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="504" max-vertical-offset="1808">
+                  <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="scripts.js" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/.tmp/concat/scripts/scripts.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0" vertical-offset="142362" max-vertical-offset="231930">
                   <caret line="7909" column="28" selection-start-line="7909" selection-start-column="28" selection-end-line="7909" selection-end-column="28" />
                   <folding>
-                    <marker date="1401640289000" expanded="true" signature="277600:354981" placeholder="{...}" />
-                    <marker date="1401640289000" expanded="true" signature="278924:354968" placeholder="[...]" />
-                    <marker date="1401640289000" expanded="true" signature="279152:354960" placeholder="{&quot;setMainTimeout&quot;: null...}" />
-                    <marker date="1401640289000" expanded="true" signature="279227:354964" placeholder="{...}" />
-                    <marker date="1401640289000" expanded="true" signature="296454:296790" placeholder="{...}" />
-                    <marker date="1401640289000" expanded="true" signature="380252:380391" placeholder="{&quot;focus&quot;: 1...}" />
-                    <marker date="1401640289000" expanded="true" signature="380423:385393" placeholder="{&quot;v&quot;: 0...}" />
-                    <marker date="1401640289000" expanded="true" signature="380453:380580" placeholder="{&quot;client_id&quot;: '4tree_client'...}" />
+                    <marker date="1401640887000" expanded="true" signature="277600:354981" placeholder="{...}" />
+                    <marker date="1401640887000" expanded="true" signature="278924:354968" placeholder="[...]" />
+                    <marker date="1401640887000" expanded="true" signature="279152:354960" placeholder="{&quot;setMainTimeout&quot;: null...}" />
+                    <marker date="1401640887000" expanded="true" signature="279227:354964" placeholder="{...}" />
+                    <marker date="1401640887000" expanded="true" signature="296454:296790" placeholder="{...}" />
+                    <marker date="1401640887000" expanded="true" signature="380252:380391" placeholder="{&quot;focus&quot;: 1...}" />
+                    <marker date="1401640887000" expanded="true" signature="380423:385393" placeholder="{&quot;v&quot;: 0...}" />
+                    <marker date="1401640887000" expanded="true" signature="380453:380580" placeholder="{&quot;client_id&quot;: '4tree_client'...}" />
                   </folding>
                 </state>
               </provider>
@@ -3982,16 +4002,6 @@
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="-11.769231" vertical-offset="0" max-vertical-offset="14238">
                   <caret line="17" column="36" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="mylog.coffee" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/server/scripts/mylog.coffee">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="504" max-vertical-offset="1808">
-                  <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -4022,16 +4032,6 @@
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="1188">
                   <caret line="10" column="90" selection-start-line="10" selection-start-column="90" selection-end-line="10" selection-end-column="90" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="view_ms_1.html" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/views/subviews/ms/view_ms_1.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="1386" max-vertical-offset="1494">
-                  <caret line="77" column="82" selection-start-line="77" selection-start-column="82" selection-end-line="77" selection-end-column="82" />
                   <folding />
                 </state>
               </provider>
@@ -4189,8 +4189,8 @@
               <file leaf-file-name="Gruntfile.js" pinned="false" current="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/Gruntfile.js">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="0.38" vertical-offset="8244" max-vertical-offset="12654">
-                      <caret line="477" column="95" selection-start-line="477" selection-start-column="95" selection-end-line="477" selection-end-column="95" />
+                    <state vertical-scroll-proportion="0.9" vertical-offset="8244" max-vertical-offset="12654">
+                      <caret line="503" column="6" selection-start-line="503" selection-start-column="6" selection-end-line="503" selection-end-column="6" />
                       <folding />
                     </state>
                   </provider>
@@ -4267,7 +4267,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/scripts/services/test" />
         <option value="$PROJECT_DIR$/app/views/subviews/ms/ms_tasks.html" />
         <option value="$PROJECT_DIR$/app/sass/_plan_of_day.scss" />
         <option value="$PROJECT_DIR$/app/scripts/directives/dir_odometer.coffee" />
@@ -4318,6 +4317,7 @@
         <option value="$PROJECT_DIR$/Gruntfile.js" />
         <option value="$PROJECT_DIR$/server/server.coffee" />
         <option value="$PROJECT_DIR$/app/sass/_settings.scss" />
+        <option value="$PROJECT_DIR$/app/sass/theme1.scss" />
       </list>
     </option>
   </component>
@@ -4625,6 +4625,38 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4tree" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4tree_0102" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4tree" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4tree_0102" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sass" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -4633,7 +4665,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="appearance" />
+    <property name="options.lastSelected" value="settings" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
@@ -5061,7 +5093,11 @@
       <created>1401640228258</created>
       <updated>1401640228258</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="Deploy doing">
+      <created>1401640411854</created>
+      <updated>1401640411855</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TodoView" selected-index="2">
@@ -5091,8 +5127,9 @@
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21404494" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16943522" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" x="742" y="431" width="1178" height="594" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25671917" sideWeight="0.5005441" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29606742" sideWeight="0.4995759" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="top" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23595506" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.27415732" sideWeight="0.49889868" order="5" side_tool="false" content_ui="tabs" x="923" y="597" width="128" height="37" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.27415732" sideWeight="0.49889868" order="5" side_tool="false" content_ui="tabs" x="923" y="597" width="128" height="37" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29606742" sideWeight="0.5004241" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" x="1249" y="22" width="415" height="1028" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32902032" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
@@ -5109,7 +5146,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29606742" sideWeight="0.4995759" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Mongo Runner" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32963374" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39944392" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -5190,13 +5226,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/scripts/directives/dir_smartRedactor.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1665" max-vertical-offset="1770">
-          <caret line="111" column="49" selection-start-line="111" selection-start-column="31" selection-end-line="111" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/models/model_task.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="315" max-vertical-offset="1107">
@@ -5466,14 +5495,14 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="141529" max-vertical-offset="231857">
           <caret line="7909" column="28" selection-start-line="7909" selection-start-column="28" selection-end-line="7909" selection-end-column="28" />
           <folding>
-            <marker date="1401640289000" expanded="true" signature="277600:354981" placeholder="{...}" />
-            <marker date="1401640289000" expanded="true" signature="278924:354968" placeholder="[...]" />
-            <marker date="1401640289000" expanded="true" signature="279152:354960" placeholder="{&quot;setMainTimeout&quot;: null...}" />
-            <marker date="1401640289000" expanded="true" signature="279227:354964" placeholder="{...}" />
-            <marker date="1401640289000" expanded="true" signature="296454:296790" placeholder="{...}" />
-            <marker date="1401640289000" expanded="true" signature="380252:380391" placeholder="{&quot;focus&quot;: 1...}" />
-            <marker date="1401640289000" expanded="true" signature="380423:385393" placeholder="{&quot;v&quot;: 0...}" />
-            <marker date="1401640289000" expanded="true" signature="380453:380580" placeholder="{&quot;client_id&quot;: '4tree_client'...}" />
+            <marker date="1401640887000" expanded="true" signature="277600:354981" placeholder="{...}" />
+            <marker date="1401640887000" expanded="true" signature="278924:354968" placeholder="[...]" />
+            <marker date="1401640887000" expanded="true" signature="279152:354960" placeholder="{&quot;setMainTimeout&quot;: null...}" />
+            <marker date="1401640887000" expanded="true" signature="279227:354964" placeholder="{...}" />
+            <marker date="1401640887000" expanded="true" signature="296454:296790" placeholder="{...}" />
+            <marker date="1401640887000" expanded="true" signature="380252:380391" placeholder="{&quot;focus&quot;: 1...}" />
+            <marker date="1401640887000" expanded="true" signature="380423:385393" placeholder="{&quot;v&quot;: 0...}" />
+            <marker date="1401640887000" expanded="true" signature="380453:380580" placeholder="{&quot;client_id&quot;: '4tree_client'...}" />
           </folding>
         </state>
       </provider>
@@ -5557,14 +5586,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Gruntfile.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38" vertical-offset="8244" max-vertical-offset="12654">
-          <caret line="477" column="95" selection-start-line="477" selection-start-column="95" selection-end-line="477" selection-end-column="95" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/server.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-11.769231" vertical-offset="0" max-vertical-offset="14238">
@@ -5581,10 +5602,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Gruntfile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9" vertical-offset="8244" max-vertical-offset="12654">
+          <caret line="503" column="6" selection-start-line="503" selection-start-column="6" selection-end-line="503" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/sass/_settings.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.092307694" vertical-offset="0" max-vertical-offset="1326">
-          <caret line="2" column="14" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
+        <state vertical-scroll-proportion="-1.3333334" vertical-offset="0" max-vertical-offset="1326">
+          <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/sass/theme1.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2769231" vertical-offset="0" max-vertical-offset="516">
+          <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
           <folding />
         </state>
       </provider>
