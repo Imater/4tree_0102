@@ -8,8 +8,8 @@
     <bookmark url="file://$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="деплой настраиваю">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+    <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/sass/_header.scss" afterPath="$PROJECT_DIR$/app/sass/_header.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="56ee746e-8f1d-4d4a-a92c-f05706cc2e69" name="Rejected commit: Default" comment="Пробую сделать коммит" />
@@ -4102,8 +4102,8 @@
               <file leaf-file-name="_header.scss" pinned="false" current="true" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/app/sass/_header.scss">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="0.21896163" vertical-offset="1282" max-vertical-offset="2722">
-                      <caret line="82" column="22" selection-start-line="82" selection-start-column="22" selection-end-line="82" selection-end-column="22" />
+                    <state vertical-scroll-proportion="0.46275395" vertical-offset="1282" max-vertical-offset="2740">
+                      <caret line="94" column="6" selection-start-line="94" selection-start-column="6" selection-end-line="94" selection-end-column="6" />
                       <folding />
                     </state>
                   </provider>
@@ -4219,8 +4219,8 @@
               <file leaf-file-name="Gruntfile.js" pinned="false" current="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/Gruntfile.js">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="-5.92029" vertical-offset="11037" max-vertical-offset="12222">
-                      <caret line="477" column="25" selection-start-line="477" selection-start-column="25" selection-end-line="477" selection-end-column="25" />
+                    <state vertical-scroll-proportion="0.2536232" vertical-offset="11037" max-vertical-offset="12222">
+                      <caret line="619" column="0" selection-start-line="619" selection-start-column="0" selection-end-line="619" selection-end-column="0" />
                       <folding />
                     </state>
                   </provider>
@@ -4295,7 +4295,6 @@
         <option value="$PROJECT_DIR$/app/views/subviews/view_main/view_text.html" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/ctrl_main.coffee" />
         <option value="$PROJECT_DIR$/app/sass/_settings.scss" />
-        <option value="$PROJECT_DIR$/app/sass/_header.scss" />
         <option value="$PROJECT_DIR$/server/server.coffee" />
         <option value="$PROJECT_DIR$/app/scripts/services/srv_mysettings.coffee" />
         <option value="$PROJECT_DIR$/app/views/subviews/view_main/view_tree_exp.html" />
@@ -4304,6 +4303,7 @@
         <option value="$PROJECT_DIR$/server/scripts/mylog.coffee" />
         <option value="$PROJECT_DIR$/Gruntfile.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/app/sass/_header.scss" />
       </list>
     </option>
   </component>
@@ -5010,7 +5010,15 @@
       <created>1401633110421</created>
       <updated>1401633110422</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="Гит настраиваю">
+      <created>1401633279585</created>
+      <updated>1401633279585</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Гит настраиваю">
+      <created>1401633316456</created>
+      <updated>1401633316456</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TodoView" selected-index="2">
@@ -5087,7 +5095,6 @@
       <TodoPanelSettings />
     </option>
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
-    <MESSAGE value="Установил систему логирования Winston" />
     <MESSAGE value="Глючит монго после добавления логирования" />
     <MESSAGE value="Починил логирование. Он неправильно отрабатывал циклические ссылки. Еду в Египет завтра." />
     <MESSAGE value="Поставил логи на синхронизацию в браузер" />
@@ -5112,7 +5119,8 @@
     <MESSAGE value="Начал делать перетаскивание верхних табов. Сделал выравнивание по ширине." />
     <MESSAGE value="Поменял цвета у табов, сделал перетаскивание и меню - закрыть справа/слева" />
     <MESSAGE value="деплой настраиваю" />
-    <option name="LAST_COMMIT_MESSAGE" value="деплой настраиваю" />
+    <MESSAGE value="Гит настраиваю" />
+    <option name="LAST_COMMIT_MESSAGE" value="Гит настраиваю" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -5513,14 +5521,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Gruntfile.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="8962" max-vertical-offset="12708">
-          <caret line="530" column="27" selection-start-line="530" selection-start-column="27" selection-end-line="530" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.019715225" vertical-offset="0" max-vertical-offset="1039">
@@ -5529,10 +5529,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Gruntfile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="8962" max-vertical-offset="12708">
+          <caret line="530" column="27" selection-start-line="530" selection-start-column="27" selection-end-line="530" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/sass/_header.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21896163" vertical-offset="1282" max-vertical-offset="2722">
-          <caret line="82" column="22" selection-start-line="82" selection-start-column="22" selection-end-line="82" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.46275395" vertical-offset="1282" max-vertical-offset="2740">
+          <caret line="94" column="6" selection-start-line="94" selection-start-column="6" selection-end-line="94" selection-end-column="6" />
           <folding />
         </state>
       </provider>
