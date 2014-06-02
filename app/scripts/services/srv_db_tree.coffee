@@ -1192,6 +1192,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         $('.sync_indicator').addClass('active');
         setTimeout ()->
           $('.sync_indicator').removeClass('active');
+          mythis.sync_now = false
         , 950
         mythis.sync_now = true
         console.time 'sync_long' if __log.show_time_long
@@ -1248,8 +1249,14 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
               new_db_elements: new_db_elements
               sha1_sign: sha1_sign
               user_id: settingsApi.set.user_id
-          }).then (result)->
+          }).error (data, err)->
+            #if not auth
+            if (err == 401)
+              window.location.hash = '#/login';
+            console.info 'error', data, err;
+          .then (result)->
             dfd.resolve result.data
+
         dfd.promise
     before_sync: {}
     getDiffsForSync: ()->

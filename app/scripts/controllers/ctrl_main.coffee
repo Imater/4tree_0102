@@ -2,7 +2,7 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
 
   #уровень логирования
   __log.show_time_long = false; #замер производительности
-  __log.setLevel 'error';
+  __log.setLevel 'trace';
   ###
   "trace",
   "debug",

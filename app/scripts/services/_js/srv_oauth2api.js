@@ -25,23 +25,29 @@
             return false;
           }
         },
-        jsGetToken: function() {
-          var dfd, mythis, oauth_saved, save_and_answer_token, token_data_saved, token_expired;
+        save_and_answer_token: function(token_data) {
+          token_data.expire_time = new Date(new Date().getTime() + token_data.expires_in * 1000);
+          console.info('save_and_answer_token', token_data);
+          settingsApi.set.oAuth2 = token_data;
+          return token_data.access_token;
+        },
+        jsGetToken: function(from_password) {
+          var dfd, mythis, oauth_saved, token_data_saved, token_expired;
           dfd = $q.defer();
           mythis = this;
-          save_and_answer_token = function(token_data) {
-            token_data.expire_time = new Date(new Date().getTime() + token_data.expires_in * 1000);
-            settingsApi.set.oAuth2 = token_data;
-            return dfd.resolve(token_data.access_token);
-          };
+          ({
+            save_and_answer_token: function(token_data) {
+              return dfd.resolve(mythis.save_and_answer_token(token_data));
+            }
+          });
           oauth_saved = settingsApi.set.oAuth2;
           if (!oauth_saved || (oauth_saved && (token_expired = this.jsCheckTokenExpired(oauth_saved)))) {
-            if (token_expired) {
+            if (token_expired && !from_password) {
               __log.info('Получаю token из хранилища ', token_expired);
-              this.jsGetRemoteTokenByRefreshToken(token_expired.refresh_token).then(save_and_answer_token);
+              this.jsGetRemoteTokenByRefreshToken(token_expired.refresh_token).then(mythis.save_and_answer_token);
             } else {
               __log.info('Получаю token из пароля', token_expired);
-              this.jsGetRemoteTokenByPassword().then(save_and_answer_token);
+              this.jsGetRemoteTokenByPassword().then(mythis.save_and_answer_token);
             }
           } else {
             token_data_saved = oauth_saved;

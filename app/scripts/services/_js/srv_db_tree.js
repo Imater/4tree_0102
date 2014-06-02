@@ -1805,7 +1805,8 @@
           if (!mythis.sync_now) {
             $('.sync_indicator').addClass('active');
             setTimeout(function() {
-              return $('.sync_indicator').removeClass('active');
+              $('.sync_indicator').removeClass('active');
+              return mythis.sync_now = false;
             }, 950);
             mythis.sync_now = true;
             if (__log.show_time_long) {
@@ -1878,6 +1879,11 @@
                   sha1_sign: sha1_sign,
                   user_id: settingsApi.set.user_id
                 }
+              }).error(function(data, err) {
+                if (err === 401) {
+                  window.location.hash = '#/login';
+                }
+                return console.info('error', data, err);
               }).then(function(result) {
                 return dfd.resolve(result.data);
               });

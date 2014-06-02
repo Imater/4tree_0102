@@ -17,23 +17,27 @@ angular.module("4treeApp").service 'oAuth2Api', ['$q', '$http', '$rootScope', 's
       return parsed #токен просрочен
     else
       return false #токен валидный
-  jsGetToken: ()->
+  save_and_answer_token: (token_data)->
+    token_data.expire_time = new Date(new Date().getTime() + token_data.expires_in * 1000);
+    console.info 'save_and_answer_token', token_data
+    settingsApi.set.oAuth2 = token_data;
+    token_data.access_token;
+  jsGetToken: (from_password)->
     dfd = $q.defer();
     mythis = @;
 
-    save_and_answer_token = (token_data)->
-      token_data.expire_time = new Date(new Date().getTime() + token_data.expires_in * 1000);
-      settingsApi.set.oAuth2 = token_data;
-      dfd.resolve(token_data.access_token);
+    save_and_answer_token: (token_data)->
+      dfd.resolve mythis.save_and_answer_token(token_data);
+
 
     oauth_saved = settingsApi.set.oAuth2
     if !oauth_saved or ( oauth_saved and token_expired = @jsCheckTokenExpired(oauth_saved) )
-      if(token_expired) #пытаемся получить новый токен при помощи Refresh_Token, чтобы не светить паролем
+      if(token_expired and !from_password) #пытаемся получить новый токен при помощи Refresh_Token, чтобы не светить паролем
         __log.info 'Получаю token из хранилища ', token_expired
-        @jsGetRemoteTokenByRefreshToken(token_expired.refresh_token).then save_and_answer_token
+        @jsGetRemoteTokenByRefreshToken(token_expired.refresh_token).then mythis.save_and_answer_token
       else
         __log.info 'Получаю token из пароля', token_expired
-        @jsGetRemoteTokenByPassword().then save_and_answer_token
+        @jsGetRemoteTokenByPassword().then mythis.save_and_answer_token
     else
       token_data_saved = oauth_saved
       dfd.resolve(token_data_saved.access_token)

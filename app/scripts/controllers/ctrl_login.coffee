@@ -59,9 +59,10 @@ angular.module("4treeApp").controller "LoginCtrl", [
       if $scope.tab == 'login'
         settingsApi.set.user_info.username = $scope.email
         settingsApi.set.user_info.password = $scope.pas1
-        $rootScope.$emit('save_settings');
-        oAuth2Api.jsGetRemoteTokenByPassword().then ()->
-          oAuth2Api.jsGetToken().then ()->
-            document.location.hash = '#/home'
+        oAuth2Api.jsGetRemoteTokenByPassword().then (data)->
+          console.info 'OAUTH ANSWER = ', data
+          oAuth2Api.save_and_answer_token(data);
+          oAuth2Api.jsGetToken('from_password').then ()->
+            window.location.hash = '#/home'
 
 ]
