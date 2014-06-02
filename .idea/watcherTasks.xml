@@ -13,7 +13,7 @@
       <option name="outputFilters">
         <array />
       </option>
-      <option name="outputFromStdout" value="true" />
+      <option name="outputFromStdout" value="false" />
       <option name="passParentEnvs" value="true" />
       <option name="program" value="$USER_HOME$/npm/lib/node_modules/coffee-script/bin/coffee" />
       <option name="scopeName" value="Project Files" />

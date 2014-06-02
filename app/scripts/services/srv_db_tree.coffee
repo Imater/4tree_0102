@@ -141,6 +141,16 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
           dfd.resolve(result.data);
       dfd.promise;
     db: undefined
+    jsSaveManyElementsToLocal: (db_name, elements)->
+      dfd = $.Deferred();
+      console.info 'saved many to '+db_name+' for '+elements.length
+      console.time 'saved many to '+db_name+' for '+elements.length
+      _.each elements, (el)->
+        delete el.$$hashKey if el and el.$$hashKey
+      @db.put(db_name, elements).done ()->
+        console.timeEnd 'saved many to '+db_name+' for '+elements.length
+        dfd.resolve();
+      dfd.promise();
     jsSaveElementToLocal: (db_name, el)->
       dfd = $.Deferred();
       delete el.$$hashKey if el and el.$$hashKey
@@ -188,16 +198,24 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
     ydnSaveToLocal: (db_name, records)->
       dfd = $.Deferred();
       @dbInit();
+      console.time 'saveTo-'+db_name;
       mythis = @;
       mythis._tmp._diffs = {}
       @db.clear('_diffs').done ()->
+
         mythis.db.clear(db_name).done ()->
-          async.eachLimit Object.keys(records), 200, (el_name, callback)->
-            el = records[el_name];
-            delete el.$$hashKey if el.$$hashKey
-            mythis.jsSaveElementToLocal(db_name, el).then ()->
+          i = 0
+          chunks = _.groupBy records, (el, index)->
+            #console.info el, index
+            return Math.floor( (i++)/300 );
+          chunks = _.toArray(chunks);
+          async.eachLimit Object.keys(chunks), 300, (chunk, callback)->
+            elements = chunks[chunk];
+            mythis.jsSaveManyElementsToLocal(db_name, elements).then ()->
               callback();
+
           , (err)->
+            console.timeEnd 'saveTo-'+db_name;
             dfd.resolve();
       dfd.promise();
     ydnLoadFromLocalStorage: (mythis)->

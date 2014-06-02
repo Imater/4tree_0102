@@ -209,6 +209,22 @@
           return dfd.promise;
         },
         db: void 0,
+        jsSaveManyElementsToLocal: function(db_name, elements) {
+          var dfd;
+          dfd = $.Deferred();
+          console.info('saved many to ' + db_name + ' for ' + elements.length);
+          console.time('saved many to ' + db_name + ' for ' + elements.length);
+          _.each(elements, function(el) {
+            if (el && el.$$hashKey) {
+              return delete el.$$hashKey;
+            }
+          });
+          this.db.put(db_name, elements).done(function() {
+            console.timeEnd('saved many to ' + db_name + ' for ' + elements.length);
+            return dfd.resolve();
+          });
+          return dfd.promise();
+        },
         jsSaveElementToLocal: function(db_name, el) {
           var dfd;
           dfd = $.Deferred();
@@ -257,20 +273,25 @@
           var dfd, mythis;
           dfd = $.Deferred();
           this.dbInit();
+          console.time('saveTo-' + db_name);
           mythis = this;
           mythis._tmp._diffs = {};
           this.db.clear('_diffs').done(function() {
             return mythis.db.clear(db_name).done(function() {
-              return async.eachLimit(Object.keys(records), 200, function(el_name, callback) {
-                var el;
-                el = records[el_name];
-                if (el.$$hashKey) {
-                  delete el.$$hashKey;
-                }
-                return mythis.jsSaveElementToLocal(db_name, el).then(function() {
+              var chunks, i;
+              i = 0;
+              chunks = _.groupBy(records, function(el, index) {
+                return Math.floor((i++) / 300);
+              });
+              chunks = _.toArray(chunks);
+              return async.eachLimit(Object.keys(chunks), 300, function(chunk, callback) {
+                var elements;
+                elements = chunks[chunk];
+                return mythis.jsSaveManyElementsToLocal(db_name, elements).then(function() {
                   return callback();
                 });
               }, function(err) {
+                console.timeEnd('saveTo-' + db_name);
                 return dfd.resolve();
               });
             });
