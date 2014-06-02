@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-$main_color: #888888;
+$main_color: #306f18;
 //#306f18;
 $main_font_color: #FFF;
 $side_gradient_stop_opacity: 0.5;
@@ -12,12 +12,13 @@ $highlight_color: rgba(yellow, 0.3);
 
 $today_background: rgb(252, 232, 161);
 
-$tabs_space_background: #777;
-$top_tabs_background: #BBB;
-$top_tabs_color: #444;
-$top_tabs_color_active: #000;
-$top_tabs_background_color_active: #FFFFFF;
-$border-color: $tabs_space_background;
+//заголовок с табами
+$tabs_space_background: #333333;
+$top_tabs_background: #333333;
+$top_tabs_color: #999;
+$top_tabs_color_active: #EEE;
+$top_tabs_background_color_active: #555555;
+$border-color: #000;
 
 $light_gray: lighten($gray, 7%);
 $dark_gray: darken($gray, 30%);

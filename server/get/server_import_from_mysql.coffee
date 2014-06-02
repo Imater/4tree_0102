@@ -30,6 +30,14 @@ frommysql = (mysqldate, need_add_hours)->
   d = new Date( Date.parse(mysqldate,'Y-m-d H:i:s') )
   new Date (d.getTime() - need_add_hours*60*60*1000)
 
+strip_tags = (input, allowed, space) ->
+  return '' if !input
+  allowed = (((allowed or "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) or []).join("") # making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+  tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/g
+  commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/g
+  # Hello
+  input.replace(commentsAndPhpTags, space).replace tags, ($0, $1) ->
+    (if allowed.indexOf("<" + $1.toLowerCase() + ">") > -1 then $0 else "")
 
 
 exports.get = (req, res)->
@@ -101,7 +109,7 @@ exports.get = (req, res)->
           one_text.save();
 
         one_note['_id'] = objectId_to_id[row.id]
-        one_note['title'] = row.title
+        one_note['title'] = strip_tags(row.title);
         one_note['parent_id'] = objectId_to_id[row.parent_id]
         one_note['parent'] = row.parent_id
         one_note['pos'] = row.position

@@ -57,8 +57,8 @@ if cluster.isMaster
   allWorkers = {}
 
   numCPUs = config.numCPUs if numCPUs > config.numCPUs
-
-  debug = process.execArgv[0]?.indexOf('--debug') != -1;
+  console.info 'hi!', process.execArgv[0]
+  debug = process.execArgv[0].indexOf('--debug') != -1 if process.execArgv[0];
   MYLOG.log 'info', 'debug', debug, process.execArgv, process.execArgv.indexOf('--debug')
   
   cluster.setupMaster execArgv: process.execArgv.filter((s) ->

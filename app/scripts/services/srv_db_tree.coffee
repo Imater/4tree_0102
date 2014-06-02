@@ -100,7 +100,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       found = _.find settingsApi.set.tabs, (doc)->
         el._id == doc.tab_id
       if !found
-        settingsApi.set.tabs.push({ tab_id: el._id, tm: new Date() });
+        settingsApi.set.tabs.push({ tab_id: el._id, tm: new Date(), show_only_icon:false });
     getTreeFromNet: ()->
       mythis = @;
       dfd = $q.defer();

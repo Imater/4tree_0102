@@ -38,10 +38,30 @@
       white-space: nowrap;
       border-right: 1px solid $border-color;
       cursor: pointer;
+      &.only_icon {
+        width: 40px !important;
+        .title {
+          display: none !important;
+        }
+        .title_wrap {
+          margin: 0;
+          left: 0;
+        }
+        .close_btn {
+          display: none !important;
+        }
+        .tab_color_line {
+          width: 100%;
+          margin: 0;
+          height: 100%;
+          border-radius: 0;
+          opacity: 0.5;
+        }
+      }
       &:last-child {
         //border-right: none;
       }
-      .title {
+      .title_wrap {
         display: inline-block;
         color: $top_tabs_color;
         position: absolute;
@@ -51,20 +71,23 @@
         text-overflow: ellipsis;
         margin-right: 2em;
       }
+      &:hover {
+        .close_btn {
+          opacity: 1;
+        }
+      }
       &.active {
         background: $top_tabs_background_color_active;
         .title {
           color: $top_tabs_color_active;
         }
         .tab_color_line {
-          top: 0px;
-          left: 0px;
-          right: 0px;
-          height: 2px;
-          bottom: auto;
+          opacity: 1;
         }
       }
       .close_btn {
+        opacity: 0;
+        @include animate_me(opacity, 0.3s);
         position: absolute;
         right: 0.1em;
         display: inline-block;
@@ -79,20 +102,24 @@
           font-family: 'fontello';
           height: $grid;
         }
-        &:hover:after {
-          color: #000;
-        }
 
+      }
+      .title {
       }
       .tab_color_line {
-        position: absolute;
-        left: 0px;
-        right: 0px;
-        bottom: 0px;
-        height: 3px;
+        display: inline-block;
+        width: $grid_label;
+        text-align: center;
+        height: $grid_label+round($padding/2) - 2px;
+        vertical-align: top;
+        margin-right: round( $padding/2 );
         opacity: 1;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        i:before {
+          margin: 0;
+        }
       }
-
       .dropdown {
         position: fixed;
         top: $grid - 2px;

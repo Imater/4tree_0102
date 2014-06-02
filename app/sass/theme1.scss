@@ -5,5 +5,6 @@
 
 //#2f6913
 $main_color: #2f6913;
+$main_menu_line_background: rgba( lighten($main_color, 70%), 0.95);
 
 @import 'main';

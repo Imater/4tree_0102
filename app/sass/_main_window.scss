@@ -24,7 +24,11 @@
             }
         }
         .header_menu {
+            .navbar-collapse {
+              background: $main_menu_line_background;
+            }
             .dropdown, .dropdown-menu {
+                background: $main_menu_line_background;
                 text-align: left;
                 margin-top: round($grid/2) - 1px;
                 border-top-left-radius: 0px;
@@ -53,6 +57,11 @@
             }
             .pull-right.dropdown-menu{
                 margin-top: 2px;
+            }
+            .header_search_form {
+              input {
+                background: #FFF;
+              }
             }
             .search_in_header {
                 width: 250%;

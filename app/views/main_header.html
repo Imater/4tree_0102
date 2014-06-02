@@ -6,29 +6,39 @@
             <a ng-if="tab_width = getTabWidth()"></a>
             <li ng-repeat="tab in set.tabs track by $index"
                 class="li_tab"
-                ng-class="{active:(db.main_node[tmp.focus]._id==tab.tab_id)}"
+                ng-class="{active:(db.main_node[tmp.focus]._id==tab.tab_id), only_icon: tab.show_only_icon}"
                 ng-right-click="params.menu_open_index = $index"
                 data-id="{{tab.tab_id}}"
                 style="{{tab_width}}"
                 title="{{getTab(tab).title}}">
-                <span class="dropdown" ng-class="{open:params.menu_open_index == $index}" ng-click="params.menu_open_index = undefined">
+                <span class="dropdown" ng-class="{open:params.menu_open_index == $index}"
+                      on-out-click="params.menu_open_index = undefined">
                     <ul class="dropdown-menu">
                         <li><a ng-click="closeTab(tab)">Закрыть</a></li>
                         <li><a ng-click="closeTab(tab, 'other')">Закрыть другие</a></li>
                         <li><a ng-click="closeTab(tab, 'right')">Закрыть вкладки справа</a></li>
                         <li><a ng-click="closeTab(tab, 'left')">Закрыть вкладки слева</a></li>
+                        <li class="divider"></li>
+                        <li>
+                            <span class="checkbox_title">
+                                <input type="checkbox"
+                                       id = "tab{{tab.tab_id}}"
+                                       ng-model="tab.show_only_icon">
+                                <label for="tab{{tab.tab_id}}">только иконка</label>
+                            </span>
+                        </li>
                     </ul>
                 </span>
-                <div class="title"
-                     ng-bind-html="getTab(tab).title"
+                <div class="title_wrap"
                      ng-click="clickTab(tab)">
-
+                    <span class="tab_color_line" ng-if="(g_tab=getTab(tab))&&(g_tab.icon_color||g_tab.icon)"
+                         style="background: {{getTab(tab).color}}">
+                        <i ng-if="g_tab.icon" class="{{g_tab.icon}}" style="color:{{g_tab.icon_color}}"></i>
+                    </span>
+                    <span class="title" ng-bind-html="getTab(tab).title"></span>
                 </div>
                 <div class="close_btn"
                      ng-click="closeTab(tab)">&nbsp;
-                </div>
-                <div class="tab_color_line"
-                     style="background: {{getTab(tab).color}}">
                 </div>
             </li>
         </ul>
@@ -106,8 +116,12 @@
         <span class="dropdown">
           <span class="dropdown-toggle link" data-toggle="dropdown">Вид</span>
           <ul class="dropdown-menu">
-              <input type="checkbox" id="show_tabs" ng-model="set.header_panel_opened">
-              <label for="show_tabs">Показывать вкладки</label>
+              <li>
+                  <span class="checkbox_title">
+                      <input type="checkbox" id="show_tabs" ng-model="set.header_panel_opened">
+                      <label for="show_tabs">Показывать вкладки</label>
+                  </span>
+              </li>
           </ul>
         </span>
 

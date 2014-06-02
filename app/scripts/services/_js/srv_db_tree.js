@@ -152,7 +152,8 @@
           if (!found) {
             return settingsApi.set.tabs.push({
               tab_id: el._id,
-              tm: new Date()
+              tm: new Date(),
+              show_only_icon: false
             });
           }
         },

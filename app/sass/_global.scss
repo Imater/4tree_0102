@@ -223,6 +223,22 @@ $how_long: 0.15s;
     background: green;
 }
 
+.dropdown-menu {
+  background: rgba(255,255,255,0.95);
+}
+
+.dropdown-menu > li > span.checkbox_title {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.428571429;
+  color: #333333;
+  white-space: nowrap;
+  label {
+    font-weight: normal;
+  }
+}
 
 .alert {
     position: absolute;
