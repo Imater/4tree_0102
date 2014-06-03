@@ -139,6 +139,7 @@
         el.sortable({
           revert: false,
           helper: 'clone',
+          tolerance: 'pointer',
           placeholder: "tab-state-highlight"
         });
         el.disableSelection();

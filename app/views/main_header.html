@@ -6,12 +6,26 @@
             <a ng-if="tab_width = getTabWidth()"></a>
             <li ng-repeat="tab in set.tabs track by $index"
                 class="li_tab"
-                ng-class="{active:(db.main_node[tmp.focus]._id==tab.tab_id), only_icon: tab.show_only_icon}"
+                ng-class="{active:(db.main_node[tmp.focus]._id==tab.tab_id), only_icon: tab.show_only_icon, need_mini_title: (!(g_tab=getTab(tab)).icon&&tab.show_only_icon)}"
                 ng-right-click="params.menu_open_index = $index"
                 data-id="{{tab.tab_id}}"
                 style="{{tab_width}}"
-                title="{{getTab(tab).title}}">
-                <span class="dropdown" ng-class="{open:params.menu_open_index == $index}"
+                title="{{!tab.show_only_icon?getTab(tab).title:''}}">
+                <div class="title_wrap"
+                     ng-click="clickTab(tab)">
+
+                    <span class="tab_color_line" ng-if="(g_tab.icon_color||g_tab.icon||tab.show_only_icon)"
+                         style="background: {{getTab(tab).color}}">
+                        <i ng-if="g_tab.icon" class="{{g_tab.icon}}" style="color:{{g_tab.icon_color}}"></i>
+                    </span>
+                    <span class="title" ng-bind-html="getTab(tab).title"></span>
+                </div>
+                <div class="close_btn"
+                     ng-click="closeTab(tab)">&nbsp;
+                </div>
+
+                <span class="dropdown" ng-class="{open:(params.menu_open_index == $index), 'pull-right':($index>8 && $index>=set.tabs.length-1)}"
+                      ng-if="params.menu_open_index == $index"
                       on-out-click="params.menu_open_index = undefined">
                     <ul class="dropdown-menu">
                         <li><a ng-click="closeTab(tab)">Закрыть</a></li>
@@ -29,17 +43,7 @@
                         </li>
                     </ul>
                 </span>
-                <div class="title_wrap"
-                     ng-click="clickTab(tab)">
-                    <span class="tab_color_line" ng-if="(g_tab=getTab(tab))&&(g_tab.icon_color||g_tab.icon)"
-                         style="background: {{getTab(tab).color}}">
-                        <i ng-if="g_tab.icon" class="{{g_tab.icon}}" style="color:{{g_tab.icon_color}}"></i>
-                    </span>
-                    <span class="title" ng-bind-html="getTab(tab).title"></span>
-                </div>
-                <div class="close_btn"
-                     ng-click="closeTab(tab)">&nbsp;
-                </div>
+
             </li>
         </ul>
     </div>

@@ -129,8 +129,20 @@ angular.module("4treeApp").controller "top_tabs_ctrl", ($scope, $rootScope, db_t
 
   $scope.params = { menu_open_index: undefined }
 
+  get_mini_tab_width = _.throttle ()->
+    round = (val)-> Math.round(val*100)/100;
+    mini_tabs = _.filter settingsApi.set.tabs, (tab) ->
+      tab.show_only_icon
+    mini_one_tab_width = round( (27/$window.innerWidth) * 100 );
+    mini_all_tabs_width = round( (mini_tabs.length) * mini_one_tab_width );
+    count = mini_tabs.length;
+    big_tabs_count = settingsApi.set.tabs.length - mini_tabs.length;
+    one_big_tab_width = (100 - mini_all_tabs_width) / big_tabs_count;
+    return one_big_tab_width
+  , 3000
+
   $scope.getTabWidth = ()->
-    width = 100 / parseInt(settingsApi.set.tabs.length)
+    width = get_mini_tab_width();
     width = 20 if width > 20
     'width:'+width+'%'
 

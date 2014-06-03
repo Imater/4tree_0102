@@ -20,6 +20,9 @@
 
 .top_tabs {
   height: $grid;
+  .pull-right {
+    right: 0px
+  }
   .ul_main {
     list-style: none;
     white-space: nowrap;
@@ -30,22 +33,24 @@
       position: relative;
       line-height: $grid;
       height: $grid;
-      min-width: 3em;
-      max-width: 15em;
+      min-width: 20px;
+      max-width: 13em;
       vertical-align: middle;
       display: inline-block;
       padding: 0;
       white-space: nowrap;
       border-right: 1px solid $border-color;
       cursor: pointer;
+      @include animate_me(width, 0.5s);
       &.only_icon {
-        width: 40px !important;
+        width: 27px !important;
         .title {
           display: none !important;
         }
         .title_wrap {
           margin: 0;
           left: 0;
+          width: 26px;
         }
         .close_btn {
           display: none !important;
@@ -53,9 +58,37 @@
         .tab_color_line {
           width: 100%;
           margin: 0;
-          height: 100%;
+          height: 100% !important;
           border-radius: 0;
           opacity: 0.5;
+          line-height: inherit;
+        }
+        &:hover {
+          .tab_color_line {
+            opacity: 1;
+          }
+          .title {
+            background: rgba(#000,0.8) !important;
+            color: #FFF !important;
+            display: inline-block !important;
+            position: fixed !important;
+            margin-top: 25px;
+            margin-left: -26px;
+            padding: round($padding/2) $padding*2;
+            z-index: 3;
+          }
+        }
+      }
+      &.need_mini_title {
+        .tab_color_line {
+          display: none;
+        }
+        .title_wrap {
+          //text-overflow: clip !important;
+          margin-left: $padding/2;
+        }
+        .title {
+          display: inline !important;
         }
       }
       &:last-child {
@@ -108,14 +141,15 @@
       }
       .tab_color_line {
         display: inline-block;
-        width: $grid_label;
+        margin-top: 4px;
+        width: $grid_label - 4px;
+        font-size: 10px;
+        height: $grid_label - 4px;
+        line-height: $grid_label - 4px;
         text-align: center;
-        height: $grid_label+round($padding/2) - 2px;
         vertical-align: top;
-        margin-right: round( $padding/2 );
-        opacity: 1;
-        border-bottom-left-radius: 3px;
-        border-bottom-right-radius: 3px;
+        margin-right: round( $padding/3 );
+        opacity: 0.8;
         i:before {
           margin: 0;
         }
