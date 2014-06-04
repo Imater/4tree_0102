@@ -42,7 +42,8 @@
     '$translate', '$http', '$q', '$rootScope', 'oAuth2Api', '$timeout', '$socket', '$location', 'settingsApi', function($translate, $http, $q, $rootScope, oAuth2Api, $timeout, $socket, $location, settingsApi) {
       return {
         _db: {
-          texts: {}
+          texts: {},
+          settings: {}
         },
         _tmp: {
           _diffs: {}
@@ -144,17 +145,38 @@
             return $location.hash(hash);
           }, 5000);
         },
-        setTab: function(el) {
+        fixTab: function(_id) {
           var found;
-          found = _.find(settingsApi.set.tabs, function(doc) {
+          found = _.find(settingsApi.tmp.tabs, function(doc) {
+            return _id === doc.tab_id;
+          });
+          if (found) {
+            return found.tmp = false;
+          }
+        },
+        setTab: function(el) {
+          var found, found_tmp, new_tab;
+          found = _.find(settingsApi.tmp.tabs, function(doc) {
             return el._id === doc.tab_id;
           });
-          if (!found) {
-            return settingsApi.set.tabs.push({
+          if (!found && settingsApi.tmp.tabs) {
+            found_tmp = _.find(settingsApi.tmp.tabs, function(doc) {
+              return doc.tmp;
+            });
+            new_tab = {
               tab_id: el._id,
               tm: new Date(),
-              show_only_icon: false
-            });
+              show_only_icon: false,
+              tmp: true
+            };
+            if (found_tmp) {
+              found_tmp.tab_id = el._id;
+              found_tmp.tm = new Date();
+              found_tmp.show_only_icon = false;
+              return found_tmp.tmp = true;
+            } else {
+              return settingsApi.tmp.tabs.push(new_tab);
+            }
           }
         },
         getTreeFromNet: function() {
@@ -248,6 +270,10 @@
             autoIncrement: false
           }, {
             name: 'texts',
+            keyPath: '_id',
+            autoIncrement: false
+          }, {
+            name: 'settings',
             keyPath: '_id',
             autoIncrement: false
           }, {
@@ -1400,7 +1426,11 @@
           found = this._db['texts'][text_id];
           if (found) {
             found.text = new_text;
-            return mythis.saveDiff('texts', text_id);
+            return mythis.saveDiff('texts', text_id).then(function(changed) {
+              if (changed) {
+                return mythis.fixTab(text_id);
+              }
+            });
           } else {
             if (text_id && new_text.length) {
               doc = {
@@ -1464,7 +1494,7 @@
                 if (patch && !_.isEmpty(patch)) {
                   mythis._tmp._diffs[el._id] = el;
                   return mythis.db.put('_diffs', el).done(function() {
-                    dfd.resolve();
+                    dfd.resolve('changed');
                     mythis.jsStartSyncInWhile();
                     $('.sync').addClass('need_sync');
                     return mythis.refreshView(db_name, [new_element._id]);
@@ -2010,6 +2040,53 @@
             _sha1: _sha1,
             string: string
           };
+        },
+        settingsSet: function(key_name, value) {
+          var found, mythis, new_set, old_found;
+          mythis = this;
+          found = mythis.settingsGet(key_name, 'return_object');
+          if (found) {
+            old_found = JSON.parse(JSON.stringify(found));
+            found.value = value;
+            found._sha1 = mythis.JSON_stringify(found)._sha1;
+            if (found && found._id) {
+              mythis.saveDiff('settings', found._id);
+            }
+            return found;
+            if (this.settingsGet.cache) {
+              return this.settingsGet.cache = {};
+            }
+          } else {
+            __log.info("AddSettings", key_name);
+            new_set = {
+              _id: new ObjectId().toString(),
+              key: key_name,
+              value: value,
+              _tm: new Date(),
+              user_id: settingsApi.set.user_id,
+              _new: true
+            };
+            this._db.settings[new_set._id] = new_set;
+            if (this.settingsGet.cache) {
+              this.settingsGet.cache = {};
+            }
+            mythis.saveDiff('settings', new_set._id);
+            return new_set;
+          }
+        },
+        settingsGet: function(key_name, return_object) {
+          var found, mythis;
+          mythis = this;
+          found = _.find(mythis._db.settings, function(el) {
+            return (el.key === key_name) && (el.del !== 1);
+          });
+          if (return_object) {
+            return found;
+          } else {
+            if (found) {
+              return found.value;
+            }
+          }
         }
       };
     }

@@ -16,7 +16,7 @@
         <div ng-include="'views/main_header.html'"></div>
     </div>
 
-    <div id="w_content_main">
+    <div id="w_content_main" ng-class="{blured: tmp.settings_show}">
 
         <!-- LEFT PANEL 0 -->
         <div id="p_left_side_wrap" ng-if="set.p_left_side_open" class="panel_id_0">
@@ -146,7 +146,9 @@
             </div>
         </div>
 
+
         <task-settings ng-model="set.set_task"></task-settings>
 
     </div>
+    <div ng-if="tmp.settings_show" ng-include="'views/main/settings.html'"></div>
 </div>

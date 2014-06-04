@@ -2,7 +2,7 @@
 
 .redactor_box {
   border: none;
-  z-index: 1 !important;
+  z-index: 0 !important;
 }
 
 .redactor_editor {
@@ -11,6 +11,11 @@
   min-height: 10em;
   
 }
+
+.redactor_toolbar.redactor-toolbar-external {
+  z-index: 0;
+}
+
 
 $border-color: darken($gray, 15%);
 

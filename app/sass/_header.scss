@@ -12,7 +12,7 @@
 .tab-state-highlight {
   background: red;
   height: $grid;
-  width: 5px;
+  width: 27px;
   line-height: $grid;
   display: inline-block;
   vertical-align: top;
@@ -21,7 +21,8 @@
 .top_tabs {
   height: $grid;
   .pull-right {
-    right: 0px
+    //right: 0px
+    margin-right: -25px;
   }
   .ul_main {
     list-style: none;
@@ -56,11 +57,12 @@
           display: none !important;
         }
         .tab_color_line {
+          font-size: 1.1em;
           width: 100%;
           margin: 0;
           height: 100% !important;
           border-radius: 0;
-          opacity: 0.5;
+          opacity: 0.8;
           line-height: inherit;
         }
         &:hover {
@@ -74,7 +76,10 @@
             position: fixed !important;
             margin-top: 25px;
             margin-left: -26px;
-            padding: round($padding/2) $padding*2;
+            padding: 0 $padding*2;
+            height: 15px;
+            line-height: 15px;
+            font-size: 9px;
             z-index: 3;
           }
         }
@@ -116,6 +121,7 @@
         }
         .tab_color_line {
           opacity: 1;
+          color: #FFF;
         }
       }
       .close_btn {
@@ -137,7 +143,10 @@
         }
 
       }
-      .title {
+      &.tmp {
+        .title {
+          font-style: italic;
+        }
       }
       .tab_color_line {
         display: inline-block;
@@ -162,4 +171,117 @@
     }
   }
 
+}
+
+.blured {
+}
+
+.all_settings {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.55);
+  .settings_wrap {
+    position: absolute;
+    background: rgba(255,255,255,1);
+    bottom: 0px;
+    left: 100px;
+    right: 100px;
+    height: 500px;
+    @include box-shadow();
+    .close_btn {
+      position: absolute;
+      right: $padding;
+      top: $padding;
+      color: $gray;
+      cursor: pointer;
+      width: $grid*2;
+      height: $grid*2;
+      text-align: right;
+      font-size: 1.2em;
+      z-index: 1;
+      &:hover {
+        color: $main_color;
+      }
+    }
+    label {
+      font-weight: normal;
+    }
+    h1 {
+      font-size: 1.5em;
+      color: $main_color;
+      margin: $padding 0;
+      padding: $padding*2 0;
+      border-bottom: 2px solid #EEE;
+    }
+    h2 {
+      font-size: 1.2em;
+      margin: $padding*2 0 $padding 0;
+      color: $main_color;
+    }
+    .left_panel {
+      z-index: 1;
+      @include absolute_me(0,0,0,0);
+      width: $settings_left_panel_width;
+      background: #EEE;
+      padding: $padding $padding*2;
+      h1 {
+        margin-left: $padding;
+      }
+      .left_menu {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        li {
+          padding: $padding;
+          color: $dark_gray;
+          cursor: pointer;
+          &.active {
+            color: #000;
+          }
+        }
+      }
+    }
+    .right_panel {
+      position: absolute;
+      @include absolute_me(0,0,0,0);
+      overflow-y: auto;
+      padding: $padding;
+      padding-left: $settings_left_panel_width + $grid;
+      .content {
+        .right_settings {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          ul {
+            margin: 0;
+            padding: 0 $grid;
+            list-style: none;
+          }
+        }
+        .explain {
+          display: none;
+        }
+        .status {
+          color: $gray;
+        }
+        li:hover {
+          .explain {
+            display: block;
+            position: absolute;
+            left: 0px;
+            top: 200px;
+            color: $main_color;
+            max-height: 200px;
+            overflow-y: auto;
+            width: $settings_left_panel_width;
+            padding: $padding*2;
+            z-index: 2;
+          }
+        }
+      }
+    }
+  }
 }

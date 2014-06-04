@@ -111,8 +111,8 @@ angular.module("4treeApp").directive "mySortableTab", ->
     console.info 'tab sort', el
     el.sortable
       revert: false
-      #distance: 10
-      helper: 'clone'
+      distance: 5
+      #helper: 'clone'
       tolerance: 'pointer'
       placeholder: "tab-state-highlight"
       #handle: '.handle, .col2'

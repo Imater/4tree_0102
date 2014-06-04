@@ -8,7 +8,8 @@
         tick_today_date_time: new Date().getTime(),
         focus: 1,
         focus_edit: 1,
-        tree_loaded: false
+        tree_loaded: false,
+        tabs: []
       };
       set = {
         v: 0,

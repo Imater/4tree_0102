@@ -4,7 +4,6 @@ angular.module("4treeApp").directive "onOutClick", [
     return (
       restrict: "A"
       link: (scope, element, attrs) ->
-        console.info 'hello', element
         element.bind "click", (e) ->
           e.stopPropagation()
           return

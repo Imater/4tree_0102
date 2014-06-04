@@ -32,7 +32,9 @@ sync = {
     args.old_row._tm = new Date()
     args.old_row._diff = args.diff;
     #при этом сохранится бекап в базе diff
-    args.old_row.save (err)-> 
+    args.old_row.markModified('value') if args.old_row.value
+    args.old_row.save (err, doc)->
+      MYLOG.log 'sync', 'ERROR MONGO ', { err, doc }
       dfd.resolve(args);
     dfd.promise();
   combineDiffsByTime: (_id)->

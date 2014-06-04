@@ -87,13 +87,20 @@
         display: inline-block;
         width: $grid;
         height: $grid;
+        line-height: $grid;
+        vertical-align: middle;
         margin-right: 0px;
         cursor: pointer;
-        &:nth-child(odd) {
-          margin-right: $padding;
+        i {
+          color: $gray;
+          display: inline-block;
+          line-height: $grid;
+          vertical-align: middle;
         }
-        &.main {
-          margin-right: $padding;
+        &:nth-child(2n) {
+          margin-right: 0px;
+        }
+        &.active {
           &:after {
             content: '\e825';
             font-family: 'fontello';
@@ -101,7 +108,7 @@
             text-align: center;
             line-height: $grid;
             position: absolute;
-            margin-left: $grid_box/10;
+            margin-left: 0;
             line-height: $grid_box;
             vertical-align: top;
           }

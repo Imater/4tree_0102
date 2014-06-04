@@ -3,16 +3,21 @@
         <ul class="ul_main"
             ng-controller="top_tabs_ctrl"
             my-sortable-tab>
-            <a ng-if="tab_width = getTabWidth()"></a>
-            <li ng-repeat="tab in set.tabs track by $index"
+            <a ng-if="(tab_width = getTabWidth())&&(getTabs())"></a>
+            <li ng-repeat="tab in fn.service.settingsApi.tmp.tabs track by $index"
                 class="li_tab"
-                ng-class="{active:(db.main_node[tmp.focus]._id==tab.tab_id), only_icon: tab.show_only_icon, need_mini_title: (!(g_tab=getTab(tab)).icon&&tab.show_only_icon)}"
+                ng-class="{active:(db.main_node[tmp.focus]._id==tab.tab_id),
+                           only_icon: tab.show_only_icon,
+                           need_mini_title: (!(g_tab=getTab(tab)).icon&&tab.show_only_icon),
+                           tmp: tab.tmp
+                           }"
                 ng-right-click="params.menu_open_index = $index"
                 data-id="{{tab.tab_id}}"
                 style="{{tab_width}}"
+                ng-click="clickTab(tab)"
                 title="{{!tab.show_only_icon?getTab(tab).title:''}}">
                 <div class="title_wrap"
-                     ng-click="clickTab(tab)">
+                     >
 
                     <span class="tab_color_line" ng-if="(g_tab.icon_color||g_tab.icon||tab.show_only_icon)"
                          style="background: {{getTab(tab).color}}">
@@ -24,10 +29,12 @@
                      ng-click="closeTab(tab)">&nbsp;
                 </div>
 
-                <span class="dropdown" ng-class="{open:(params.menu_open_index == $index), 'pull-right':($index>8 && $index>=set.tabs.length-1)}"
+                <span class="dropdown" ng-class="{open:(params.menu_open_index == $index), 'pull-right':($index>8 && $index>=tmp.tabs.length-1)}"
                       ng-if="params.menu_open_index == $index"
                       on-out-click="params.menu_open_index = undefined">
                     <ul class="dropdown-menu">
+                        <li ng-if="tab.tmp"><a ng-click="fixTab(tab)">Запомнить вкладку</a></li>
+                        <li ng-if="tab.tmp" class="divider"></li>
                         <li><a ng-click="closeTab(tab)">Закрыть</a></li>
                         <li><a ng-click="closeTab(tab, 'other')">Закрыть другие</a></li>
                         <li><a ng-click="closeTab(tab, 'right')">Закрыть вкладки справа</a></li>
@@ -38,7 +45,7 @@
                                 <input type="checkbox"
                                        id = "tab{{tab.tab_id}}"
                                        ng-model="tab.show_only_icon">
-                                <label for="tab{{tab.tab_id}}">только иконка</label>
+                                <label for="tab{{tab.tab_id}}">уменьшить</label>
                             </span>
                         </li>
                     </ul>
@@ -49,9 +56,8 @@
     </div>
 </div>
 
-<div class="header_menu">
 
-
+<div class="header_menu" ng-controller="menuController">
 
     <nav class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container-fluid">
@@ -62,26 +68,14 @@
               <span class="dropdown-toggle link user_photo" data-toggle="dropdown"><span class="photo" style="background:url('images/tmp/photo.jpg');"></span>
             </span>
               <ul class="dropdown-menu">
-                <li><a>Action</a></li>
-                <li><a>Another action</a></li>
-                <li><a>Something else here</a></li>
-                <li class="divider"></li>
-                <li><a>Separated link</a></li>
-                <li class="divider"></li>
-                <li><a>One more separated link</a></li>
+                <li><a ng-click="logout()">Выход</a></li>
               </ul>
             </span>
 
             <span class="dropdown">
               <span class="dropdown-toggle link" data-toggle="dropdown">4tree.ru</span>
               <ul class="dropdown-menu">
-                <li><a>Action</a></li>
-                <li><a>Another action</a></li>
-                <li><a>Something else here</a></li>
-                <li class="divider"></li>
-                <li><a>Separated link</a></li>
-                <li class="divider"></li>
-                <li><a>One more separated link</a></li>
+                  <li><a ng-click="showSettings()">Настройки...</a></li>
               </ul>
             </span>
 

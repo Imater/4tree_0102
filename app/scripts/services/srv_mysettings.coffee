@@ -22,6 +22,7 @@ angular.module("4treeApp").service 'settingsApi', [
         focus: 1
         focus_edit: 1
         tree_loaded: false
+        tabs:[]
       }
 
       set = {

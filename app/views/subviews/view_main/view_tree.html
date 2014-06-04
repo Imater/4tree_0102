@@ -37,6 +37,9 @@
                     </ul>
                 </li>
             </ul>
+            <ul>
+                <li ng-repeat="(key, val) in fn.service.db_tree._db.settings">{{val.key}} = {{val.value}}</li>
+            </ul>
             <ul ng-if="false">
                 <li ng-click="fn.service.syncApi.syncToServer()"><a class="btn btn-default">Отправить на сервер</a></li>
                 <li ng-click="send('Ok.Its working!')"><a class="btn btn-default">Сообщение</a></li>

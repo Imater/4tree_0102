@@ -16,7 +16,6 @@ kue = require('kue')
 jobs = kue.createQueue();
 winston = require('winston');
 
-console.info 'NEW _FILE_ IS GOOD !';
 
 MYLOG = require('../scripts/_js/mylog.js').mylog
 
@@ -57,7 +56,6 @@ if cluster.isMaster
   allWorkers = {}
 
   numCPUs = config.numCPUs if numCPUs > config.numCPUs
-  console.info 'hi!', process.execArgv[0]
   debug = process.execArgv[0].indexOf('--debug') != -1 if process.execArgv[0];
   MYLOG.log 'info', 'debug', debug, process.execArgv, process.execArgv.indexOf('--debug')
   
@@ -213,16 +211,22 @@ else
   require '../models/_js/model_tree.js'
   require '../models/_js/model_task.js'
   require '../models/_js/model_text.js'
+  require '../models/_js/model_set.js'
 
   Tree = mongoose.model('Tree');
   Task = mongoose.model('Task');
   Text = mongoose.model('Text');
+  Settings = mongoose.model('Settings');
 
   global._db_models = {
     tree: Tree
     tasks: Task
     texts: Text
+    settings: Settings
   }
+
+  #set1 = new Settings({ key:'test', value: "JOHN", _tm: new Date() });
+  #set1.save();
 
   elasticsearch = require 'elasticsearch'
   es_client = new elasticsearch.Client {
@@ -409,17 +413,17 @@ else
     )
     app.use express.static(__dirname + "/../../" + server_is)
 
-  subscriber.subscribe 'chanel_2'
-  subscriber.subscribe 'chanel_1'
+  #subscriber.subscribe 'chanel_2'
+  #subscriber.subscribe 'chanel_1'
 
   diff = require('../changeset/_js/changeset.js');
 
   logJson = require('../logJson/_js/logJson.js');
 
-
-  subscriber.on "message", (chanel, message)->
-    try message = JSON.parse message catch 
-    MYLOG.log 'info', chanel, message[0], message[1]
+  if false
+    subscriber.on "message", (chanel, message)->
+      try message = JSON.parse message catch
+      MYLOG.log 'info', chanel, message[0], message[1]
 
   exports.newMessage = (request, response)->
     MYLOG.log 'info', 'hi!'

@@ -47,7 +47,14 @@
       MYLOG.log('sync', 'apply_patch: После применения', args.old_row);
       args.old_row._tm = new Date();
       args.old_row._diff = args.diff;
-      args.old_row.save(function(err) {
+      if (args.old_row.value) {
+        args.old_row.markModified('value');
+      }
+      args.old_row.save(function(err, doc) {
+        MYLOG.log('sync', 'ERROR MONGO ', {
+          err: err,
+          doc: doc
+        });
         return dfd.resolve(args);
       });
       return dfd.promise();

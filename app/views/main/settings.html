@@ -1,0 +1,91 @@
+<div class="all_settings" ng-controller="settingsController">
+    <div class="settings_wrap" on-out-click="closeSettings()">
+        <div class="close_btn" ng-click="closeSettings()">
+            <i class="icon-cancel"></i>
+        </div>
+        <div class="left_panel">
+            <h1>4tree</h1>
+            <ul class="left_menu">
+                <li ng-class="{active:params.set_index==$index}"
+                    ng-click="params.set_index=$index"
+                    ng-repeat="set_title in settings_titles">
+                    {{set_title.title}}
+                </li>
+            </ul>
+        </div>
+        <div class="right_panel">
+            <div class="content">
+                <div ng-if="params.set_index==0">
+                    <h1>Настройки</h1>
+                    <h2>Синхронизация</h2>
+                    <ul class="right_settings">
+                        <li>
+                            <input id="set_autosync" type="checkbox" ng-model="set.autosync_on">
+                            <label for="set_autosync">Автоматическая синхронизация</label>
+                            <div ng-if="set.autosync_on" class="status">
+                                Через 1 секунду после изменения любых данных, они отправляются на сервер
+                            </div>
+                            <div ng-if="!set.autosync_on" class="status">
+                                Автосинхронизация отключена.
+                            </div>
+                            <div class="explain">
+                                Синхронизировать автоматически через 1 секунду после изменений
+                            </div>
+                        </li>
+                    </ul>
+
+                    <h2>Вид</h2>
+                    <ul class="right_settings">
+                        <li>
+                            <input id="set_show_tabs1" type="checkbox" ng-model="set.header_panel_opened">
+                            <label for="set_show_tabs1">Показывать верхние вкладки</label>
+                            <div class="explain">
+                                Позволяет управлять отображением верхних вкладок (табов)
+                            </div>
+                        </li>
+                        <li>
+                            <input id="set_show_tabs2" type="checkbox" ng-model="set.p_left_side_open">
+                            <label for="set_show_tabs2">Показывать левую панель</label>
+                            <div class="explain">
+                                Узкая крайняя панель. Можно открывать и закрывать кликом в её правую границу (полоску).
+                            </div>
+                        </li>
+                        <li>
+                            <input id="set_show_tabs3" type="checkbox" ng-model="set.p_right_side_open">
+                            <label for="set_show_tabs3">Показывать правую панель</label>
+                            <div class="explain">
+                                Узкая крайняя панель. Можно открывать и закрывать кликом в её левую границу (полоску).
+                                <br>
+                                <br>
+                                При втором клике в выбранный день календаря, панель информации закрывается.
+                            </div>
+                            <ul>
+                                <li ng-if="set.p_right_side_open">
+                                    <input id="set_show_tabs4" type="checkbox" ng-model="set.p_plan_of_day_open">
+                                    <label for="set_show_tabs4">Панель информации открыта</label>
+                                    <div class="explain">
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Кол-во отображаемых иконок в настройках заметки:<br>
+                            <input type="number" min="0" max="1000" ng-model="set.ms_show_icon_limit">
+                        </li>
+                    </ul>
+
+                </div>
+                <div ng-if="params.set_index==1">
+                    <h1>Пользователь</h1>
+                    <h2>Персональные данные</h2>
+                    <ul class="right_settings">
+                        <li><input type="checkbox"> Я вам пишу, чего же более</li>
+                        <li><input type="checkbox"> Я вам пишу, чего же более</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>

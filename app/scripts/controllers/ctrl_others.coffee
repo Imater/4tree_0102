@@ -124,19 +124,36 @@ angular.module("4treeApp").controller "searchController", ($scope, syncApi, db_t
 
 
 
+
 angular.module("4treeApp").controller "top_tabs_ctrl", ($scope, $rootScope, db_tree, settingsApi, $window, $timeout)->
   $scope.window_width = $window.innerWidth;
 
   $scope.params = { menu_open_index: undefined }
 
+  $scope.getTabs = ()->
+    get = db_tree.settingsGet('top_tabs')
+    settingsApi.tmp.tabs = get if get
+
+  $scope.$watch 'fn.service.settingsApi.tmp.tabs', (new_val, old_val)->
+    if new_val != old_val and !!new_val and !!old_val
+      new_val2 = _.filter new_val, (el)->
+        !el.tmp
+      old_val2 = _.filter old_val, (el)->
+        !el.tmp
+      dif = db_tree.diff.diff new_val2, old_val2
+      if dif
+        console.info 'saving...'
+        db_tree.settingsSet('top_tabs', new_val) if db_tree
+  , true
+
   get_mini_tab_width = _.throttle ()->
     round = (val)-> Math.round(val*100)/100;
-    mini_tabs = _.filter settingsApi.set.tabs, (tab) ->
+    mini_tabs = _.filter settingsApi.tmp.tabs, (tab) ->
       tab.show_only_icon
     mini_one_tab_width = round( (27/$window.innerWidth) * 100 );
     mini_all_tabs_width = round( (mini_tabs.length) * mini_one_tab_width );
     count = mini_tabs.length;
-    big_tabs_count = settingsApi.set.tabs.length - mini_tabs.length;
+    big_tabs_count = settingsApi.tmp.tabs.length - mini_tabs.length;
     one_big_tab_width = (100 - mini_all_tabs_width) / big_tabs_count;
     return one_big_tab_width
   , 3000
@@ -157,9 +174,9 @@ angular.module("4treeApp").controller "top_tabs_ctrl", ($scope, $rootScope, db_t
 
     if data and data.from>=0 and data.to>=0 and data.from != (data.to-1) and data.from_id
       $timeout ()->
-        console.info 'before moved', JSON.stringify settingsApi.set.tabs
-        settingsApi.set.tabs = _.cloneDeep(settingsApi.set.tabs).move(data.from, data.to-1);
-        console.info 'moved', JSON.stringify settingsApi.set.tabs
+        console.info 'before moved', JSON.stringify settingsApi.tmp.tabs
+        settingsApi.tmp.tabs = _.cloneDeep(settingsApi.tmp.tabs).move(data.from, data.to-1);
+        console.info 'moved', JSON.stringify settingsApi.tmp.tabs
 
 
   $scope.getTab = (tab)->
@@ -172,11 +189,14 @@ angular.module("4treeApp").controller "top_tabs_ctrl", ($scope, $rootScope, db_t
       $rootScope.$$childTail.db.main_node[ settingsApi.tmp.focus ] = found
       $rootScope.$$childTail.db.main_node[ settingsApi.tmp.focus_edit ] = found
 
+  $scope.fixTab = (tab)->
+    db_tree.fixTab(tab.tab_id);
+
   $scope.closeTab = (tab, close_type)->
     #alert 'close ' + JSON.stringify tab
     $scope.params.menu_open_index = undefined;
     tmp = undefined;
-    settingsApi.set.tabs = _.filter settingsApi.set.tabs, (el, key)->
+    settingsApi.tmp.tabs = _.filter settingsApi.tmp.tabs, (el, key)->
       if !close_type
         return el.tab_id != tab.tab_id
       else if close_type == 'other'
@@ -193,3 +213,20 @@ angular.module("4treeApp").controller "top_tabs_ctrl", ($scope, $rootScope, db_t
         return !tmp or tmp == key
 
 
+angular.module("4treeApp").controller "menuController", ($scope, $rootScope, db_tree, settingsApi, $window, $timeout)->
+  $scope.showSettings = ()->
+    $scope.tmp.settings_show = !$scope.tmp.settings_show;
+
+angular.module("4treeApp").controller "settingsController", ($scope, $rootScope, db_tree, settingsApi, $window, $timeout)->
+  $scope.params = { set_index: 0 };
+  $scope.settings_titles = [
+    {title: 'Настройки'}
+    {title: 'Пользователь'}
+    {title: 'Справка'}
+  ]
+
+  i = 0;
+  $scope.closeSettings = ()->
+    console.info 'close settings';
+    if (i++)
+      $scope.tmp.settings_show=false;

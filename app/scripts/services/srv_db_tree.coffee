@@ -24,6 +24,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
   ($translate, $http, $q, $rootScope, oAuth2Api, $timeout, $socket, $location, settingsApi) ->
     _db:
       texts: {}
+      settings: {}
     _tmp:
       _diffs: {}
     _cache: {}
@@ -96,11 +97,26 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         $location.hash( hash )
       , 5000
     #Функции работы с верхними Tabs
+    fixTab: (_id)->
+      found = _.find settingsApi.tmp.tabs, (doc)->
+        _id == doc.tab_id
+      found.tmp = false if found;
+
     setTab: (el)->
-      found = _.find settingsApi.set.tabs, (doc)->
+      found = _.find settingsApi.tmp.tabs, (doc)->
         el._id == doc.tab_id
-      if !found
-        settingsApi.set.tabs.push({ tab_id: el._id, tm: new Date(), show_only_icon:false });
+      if !found and settingsApi.tmp.tabs
+        found_tmp = _.find settingsApi.tmp.tabs, (doc)->
+          doc.tmp
+        new_tab = { tab_id: el._id, tm: new Date(), show_only_icon:false, tmp: true };
+        if found_tmp
+          found_tmp.tab_id = el._id;
+          found_tmp.tm = new Date();
+          found_tmp.show_only_icon = false;
+          found_tmp.tmp = true;
+        else
+          settingsApi.tmp.tabs.push(new_tab);
+
     getTreeFromNet: ()->
       mythis = @;
       dfd = $q.defer();
@@ -171,6 +187,11 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       }
       {
         name: 'texts',
+        keyPath: '_id',
+        autoIncrement: false
+      }
+      {
+        name: 'settings',
         keyPath: '_id',
         autoIncrement: false
       }
@@ -902,7 +923,9 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       found = @_db['texts'][text_id]
       if (found)
         found.text = new_text
-        mythis.saveDiff('texts', text_id)
+        mythis.saveDiff('texts', text_id).then (changed)->
+          mythis.fixTab(text_id) if changed
+
       else
         if text_id and new_text.length
           doc = {
@@ -954,7 +977,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
               mythis._tmp._diffs[el._id] = el
               mythis.db.put('_diffs', el).done ()->
                 #__log.info 'diff_saved'
-                dfd.resolve()
+                dfd.resolve('changed')
                 mythis.jsStartSyncInWhile()
                 $('.sync').addClass('need_sync');
                 mythis.refreshView db_name, [new_element._id] #обновляем все View с этим элементом
@@ -1341,6 +1364,37 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
       _id = json?._id;
       _sha1 = CryptoJS.SHA1(JSON.stringify(string)).toString().substr(0, 7)
       {_id, _sha1, string}
+    settingsSet: (key_name, value)->
+      mythis = @;
+      found = mythis.settingsGet(key_name, 'return_object');
+      if found
+        old_found = JSON.parse( JSON.stringify(found) )
+        found.value = value
+        #found._tm = new Date();
+        found._sha1 = mythis.JSON_stringify( found )._sha1
+        mythis.saveDiff('settings', found._id) if found and found._id
+        return found
+        @settingsGet.cache = {} if @settingsGet.cache
+      else
+        __log.info "AddSettings", key_name
+        new_set = {
+          _id: new ObjectId().toString()
+          key: key_name
+          value: value
+          _tm: new Date()
+          user_id: settingsApi.set.user_id
+          _new: true
+        }
+        @_db.settings[new_set._id] = new_set
+        @settingsGet.cache = {} if @settingsGet.cache
+        mythis.saveDiff('settings', new_set._id)
+        return new_set
+
+    settingsGet: (key_name, return_object)->
+      mythis = @;
+      found = _.find mythis._db.settings, (el)->
+        return (el.key == key_name) && (el.del != 1)
+      return if return_object then found else found.value if found
 
 
 

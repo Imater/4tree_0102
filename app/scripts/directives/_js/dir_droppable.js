@@ -138,7 +138,7 @@
         console.info('tab sort', el);
         el.sortable({
           revert: false,
-          helper: 'clone',
+          distance: 5,
           tolerance: 'pointer',
           placeholder: "tab-state-highlight"
         });
