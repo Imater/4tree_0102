@@ -21,7 +21,7 @@ $past_color: rgba(#ffc6cd, 1);
 $past_font_color: #000;
 $today_color: #ffc83f;
 $today_font_color: #000;
-$future_color: rgba(#d2f4c5, 1);
+$future_color: rgba(#c1d7f4, 1);
 $future_font_color: #000;
 
 $date_label_radius: 0px;
@@ -29,7 +29,8 @@ $date_label_radius_little: 0px;
 $date_label_padding: 0px;
 $date_dot_color: #FFF;
 $date_dot_opacity: 0.3;
-$date_width: $grid_label*2.2;
+$date_width: $grid_label*1.9;
+$grid_label_height: 15px;
 
 .nodate {
   background-color: rgba($today_color, 1) !important;
@@ -37,18 +38,20 @@ $date_width: $grid_label*2.2;
   //font-weight: bold !important;
 }
 
+
 .task_date {
-  display: inline-block;
+  display: block;
   background-color: $future_color;
   color: $future_font_color;
-  font-size: round($grid_label/2);
-  line-height: $grid_label;
+  font-size: 9px;
+  line-height: $grid_label_height;
   vertical-align: middle;
-  height: $grid_label;
+  height: $grid_label_height;
   min-width: $date_width*2;
   cursor: pointer;
   margin: 0;
-  position: relative;
+  position: absolute;
+  right: $padding;
   margin-right: $padding;
   &.red {
     background: $today_color;
@@ -56,7 +59,7 @@ $date_width: $grid_label*2.2;
   .myprogress {
     position: absolute;
     background: rgba($today_color, 1);
-    height: $grid_label;
+    height: $grid_label_height;
     left: 0;
     top: 0;
     z-index: 1;
@@ -82,11 +85,25 @@ $date_width: $grid_label*2.2;
     z-index: 1;
   }
   &.nodate {
+    color: #FFF !important;
     text-align: center;
-    width: $date_width*2;
+    min-width: $grid_label_height;
+    line-height: $grid_label_height;
+    height: $grid_label_height;
     background: $today_color;
     border-bottom-right-radius: $date_label_radius;
     border-top-right-radius: $date_label_radius;
+    i {
+      display: inline-block;
+      font-size: 9px;
+      margin-top: -2px;
+      margin-left: 0;
+      line-height: $grid_label_height;
+      vertical-align: middle;
+    }
+    i:before {
+      margin: 0 !important;
+    }
   }
 }
 
@@ -95,6 +112,10 @@ $date_width: $grid_label*2.2;
   white-space: nowrap;
   margin-bottom: $padding*2;
   color: #444;
+  margin-right: $date_width;
+  &.has_date {
+    margin-right: $date_width*2;
+  }
   &.next_action {
     color: #000;
     &:before {
@@ -155,6 +176,8 @@ $date_width: $grid_label*2.2;
     vertical-align: top;
   }
   .right_part {
+    margin-top: 1px;
+    vertical-align: top;
     display: inline-block;
     //border-left: 1px solid lighten($gray, 5%);
     padding-left: $padding;

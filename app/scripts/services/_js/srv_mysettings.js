@@ -23,6 +23,7 @@
         machine: localStorage.getItem('mongoMachineId'),
         autosync_on: true,
         server: "",
+        hide_task_in_tree: true,
         today_date: new Date(),
         today_date_time: new Date().getTime(),
         tabs: [],

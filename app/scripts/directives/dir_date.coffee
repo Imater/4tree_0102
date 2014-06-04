@@ -76,7 +76,8 @@ angular.module('4treeApp').directive 'miniDate', [
           step = Math.round( (settingsApi.tmp.tick_today_date_time)/(1000*30) )
           return step + ngModel.$modelValue.date1 +
                  ngModel.$modelValue.date2 +
-                 ngModel.$modelValue.did
+                 ngModel.$modelValue.did +
+                 ngModel.$modelValue.date_on
         , (newVal, oldVal)->
           if newVal != oldVal
             updateDate();
@@ -96,7 +97,11 @@ angular.module('4treeApp').directive 'miniDate', [
           dt2 = new Date(ngModel.$viewValue.date2).getTime();
           dt = settingsApi.tmp.tick_today_date_time;
 
-          el.html( txt );
+          if (!dt1 and !dt2) or !ngModel.$viewValue.date_on
+            el.html( '<i class="icon-clock"></i>' );
+          else
+            el.html( txt );
+
           progress = el.find('.myprogress');
           red = '';
           if dt>=dt1 and dt<=dt2
@@ -108,7 +113,7 @@ angular.module('4treeApp').directive 'miniDate', [
             progress.width(pr2+'%');
             red = 'red'
             progress.addClass('red');
-          if !dt1 and !dt2
+          if (!dt1 and !dt2) or !ngModel.$viewValue.date_on
             red = 'nodate';
           if ngModel.$viewValue.did
             red = 'did';

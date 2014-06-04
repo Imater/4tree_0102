@@ -382,38 +382,38 @@
         icons_collection: ['icon-progress-0', 'icon-progress-1', 'icon-progress-2', 'icon-progress-3', 'icon-dot', 'icon-dot-2', 'icon-dot-3', 'icon-thumbs-up-1', 'icon-thumbs-down', 'icon-minus', 'icon-plus', 'icon-star-empty', 'icon-star', 'icon-heart-empty', 'icon-heart', 'icon-lock-open', 'icon-lock', 'glyphicon glyphicon-eye-close', 'glyphicon glyphicon-eye-open', 'icon-phone', 'glyphicon glyphicon-phone-alt', 'icon-home-2', 'icon-stop', 'icon-cloud', 'glyphicon glyphicon-unchecked', 'icon-ok-1', 'icon-check', 'glyphicon glyphicon-ok-sign', 'icon-flash', 'icon-flight', 'icon-pencil-alt', 'icon-help-circle', 'icon-help', 'icon-wallet', 'icon-mail-2', 'icon-tree', 'icon-comment-inv', 'icon-chat-2', 'icon-article-alt', 'icon-rss', 'icon-volume', 'icon-aperture-alt', 'icon-layers', 'icon-emo-happy', 'icon-emo-wink', 'icon-emo-laugh', 'icon-emo-sunglasses', 'icon-emo-sleep', 'icon-emo-unhappy', 'icon-skiing', 'icon-twitter-bird', 'icon-gift', 'icon-basket', 'icon-dollar', 'icon-floppy', 'icon-doc-text', 'icon-calendar-2', 'icon-book-open', 'icon-camera', 'icon-search-1', 'icon-wrench-1', 'icon-umbrella', 'icon-music', 'icon-record', 'icon-feather', 'icon-calculator', 'icon-address', 'icon-pin', 'icon-basket-1', 'icon-steering-wheel', 'icon-bicycle', 'icon-swimming', 'icon-leaf', 'icon-mic', 'icon-target-1', 'icon-user', 'icon-monitor', 'icon-cd', 'icon-download', 'icon-link', 'icon-wrench', 'icon-clock', 'icon-at', 'icon-pause', 'icon-moon', 'icon-flag', 'icon-key', 'icon-users-1', 'icon-adjust', 'icon-eye', 'icon-print', 'icon-inbox', 'icon-flow-cascade', 'icon-college', 'icon-fast-food', 'icon-coffee', 'icon-palette', 'icon-top-list', 'icon-bag', 'icon-attach-1', 'icon-info', 'icon-home-1', 'icon-hourglass', 'icon-attention', 'icon-scissors', 'icon-pencil-neg', 'icon-tint', 'icon-chart-area', 'glyphicon glyphicon-stats', 'icon-chart-pie', 'icon-guidedog', 'icon-tag', 'icon-archive', 'icon-flow-line', 'icon-terminal', 'icon-eyedropper', 'icon-glass', 'icon-lamp', 'icon-folder-1', 'icon-doc-1', 'icon-doc-2', 'icon-book', 'icon-signal', 'icon-bookmark', 'glyphicon glyphicon-asterisk', 'glyphicon glyphicon-film', 'glyphicon glyphicon-remove', 'glyphicon glyphicon-off', 'glyphicon glyphicon-road', 'glyphicon glyphicon-headphones', 'glyphicon glyphicon-facetime-video', 'glyphicon glyphicon-map-marker', 'glyphicon glyphicon-play', 'glyphicon glyphicon-pause', 'glyphicon glyphicon-stop', 'glyphicon glyphicon-exclamation-sign', 'glyphicon glyphicon-gift', 'glyphicon glyphicon-fire', 'glyphicon glyphicon-magnet', 'glyphicon glyphicon-bullhorn', 'glyphicon glyphicon-certificate', 'glyphicon glyphicon-globe', 'glyphicon glyphicon-tasks', 'glyphicon glyphicon-filter', 'glyphicon glyphicon-dashboard', 'glyphicon glyphicon-phone', 'glyphicon glyphicon-usd', 'glyphicon glyphicon-euro', 'glyphicon glyphicon-gbp', 'glyphicon glyphicon-record', 'glyphicon glyphicon-send', 'glyphicon glyphicon-cutlery', 'glyphicon glyphicon-compressed', 'glyphicon glyphicon-tower', 'glyphicon glyphicon-tree-conifer'],
         icons_collection_colors: [
           {
-            color: '#265e12',
-            icon_color: '#b0ff8d'
+            color: '#ee1100',
+            icon_color: '#FFFFFF'
           }, {
-            color: '#198603',
-            icon_color: '#b0ff8d'
+            color: 'magenta',
+            icon_color: '#FFFFFF'
           }, {
-            color: '#ffaf10',
-            icon_color: '#9a6113'
+            color: '#ff6644',
+            icon_color: '#FFFFFF'
           }, {
-            color: '#f0cb09',
-            icon_color: '#9a6113'
+            color: '#feae2d',
+            icon_color: '#000000'
           }, {
-            color: '#993333',
-            icon_color: '#FFF'
+            color: '#fff200',
+            icon_color: '#000000'
           }, {
-            color: '#e0292b',
+            color: '#aacc22',
             icon_color: '#000'
           }, {
-            color: '#CC6699',
+            color: '#69d025',
+            icon_color: '#000'
+          }, {
+            color: '#22ccaa',
+            icon_color: '#000'
+          }, {
+            color: '#11aabb',
             icon_color: '#fff'
           }, {
-            color: '#ff0080',
+            color: '#4444dd',
             icon_color: '#fff'
           }, {
-            color: '#008AB8',
+            color: '#442299',
             icon_color: '#fff'
-          }, {
-            color: '#3F5D7D',
-            icon_color: '#fff'
-          }, {
-            color: 'gray',
-            icon_color: '#dedede'
           }, {
             color: '#000',
             icon_color: '#FFF'

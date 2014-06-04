@@ -7,7 +7,9 @@
 <script type="text/ng-template" id="views/subviews/task_one_line1.html">
 
 	<div class="one_task"
-         ng-class="{did:task.did, active:(task._id==set.set_task._id),
+         ng-class="{did:task.did,
+                    has_date: task.date1||task.date2,
+                    active:(task._id==set.set_task._id),
                     most_important:(task.importance>90&&task.importance<95),
                     most_important100:(task.importance>=95),
                     next_action: (tasks_by_id.next_action[0]._id == task._id)
@@ -16,8 +18,8 @@
 			<input type="checkbox" ng-model="task.did" ng-checked="task.did">
 		</div>
 		<div class="right_part">
+            <div class="taskdate_wrap" ng-click="set.set_task = task" mini-date ng-model="task"></div>
             <div class="title_wrap">
-                <div class="taskdate_wrap" ng-click="set.set_task = task" mini-date ng-model="task"></div>
                 <span class="title" contenteditable="true" ng-model="task.title" style="color:{{task.color}}"></span>
                 <span class="importance" ng-if="task.importance!=50">{{task.importance}}%</span>
             </div>

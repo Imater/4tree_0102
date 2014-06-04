@@ -490,22 +490,23 @@ angular.module("4treeApp").controller "MainCtrl", [ '$translate', '$scope', 'cal
       'glyphicon glyphicon-tree-conifer'
     ]
     icons_collection_colors: [
-      {color: '#265e12', icon_color: '#b0ff8d'}
-      {color: '#198603', icon_color: '#b0ff8d'}
 
-      {color: '#ffaf10', icon_color: '#9a6113'}
-      {color: '#f0cb09', icon_color: '#9a6113'}
+      {color: '#ee1100', icon_color: '#FFFFFF'}
+      {color: 'magenta', icon_color: '#FFFFFF'}
+      {color: '#ff6644', icon_color: '#FFFFFF'}
 
-      {color: '#993333', icon_color: '#FFF'}
-      {color: '#e0292b', icon_color: '#000'}
+      {color: '#feae2d', icon_color: '#000000'}
+      {color: '#fff200', icon_color: '#000000'}
 
-      {color: '#CC6699', icon_color: '#fff'}
-      {color: '#ff0080', icon_color: '#fff'}
+      {color: '#aacc22', icon_color: '#000'}
+      {color: '#69d025', icon_color: '#000'}
 
-      {color: '#008AB8', icon_color: '#fff'}
-      {color: '#3F5D7D', icon_color: '#fff'}
+      {color: '#22ccaa', icon_color: '#000'}
+      {color: '#11aabb', icon_color: '#fff'}
 
-      {color: 'gray', icon_color: '#dedede'}
+      {color: '#4444dd', icon_color: '#fff'}
+      {color: '#442299', icon_color: '#fff'}
+
       {color: '#000', icon_color: '#FFF'}
     ]
   }

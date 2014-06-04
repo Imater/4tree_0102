@@ -52,7 +52,15 @@ $border-color: darken($gray, 15%);
 .editor_wrap {
     padding: 0 3px 0px 0;
     font-family: $font_family;
-    img {
+    ::selection {
+      background: lightblue; /* Safari */
+      //color: yellow;
+    }
+    ::-moz-selection {
+      background: lightblue; /* Firefox */
+    }
+
+  img {
         max-width: 90%;
     }
 

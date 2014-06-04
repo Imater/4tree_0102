@@ -7,7 +7,7 @@
                 <div bindonce bo-text="box.day" class="box_day"></div>
                 <div bindonce class="box_month">{{box.month}} {{box.year}}</div>
                 <div class="minitasks_ol">
-                    <div class="time_element" ng-repeat="task in box.tasks" title="{{task.title}}" ng-class="{set_task:(set.set_task._id == task._id)}">
+                    <div class="time_element" ng-repeat="task in box.tasks track by $index" title="{{task.title}}" ng-class="{set_task:(set.set_task._id == task._id)}">
                       {{task._time}}
                     </div>
                 </div>

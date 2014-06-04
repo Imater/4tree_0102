@@ -186,6 +186,12 @@ angular.module("4treeApp").controller "top_tabs_ctrl", ($scope, $rootScope, db_t
     $scope.params.menu_open_index = undefined;
     found = db_tree._db.tree[tab.tab_id];
     if found and settingsApi.tmp.focus
+      if found._path
+        cnt = found._path.length-1;
+        _.each found._path, (el_id, i)->
+          if i<cnt
+            el = db_tree.jsFind(el_id)
+            el._panel[settingsApi.tmp.focus_edit]._open = true if el && settingsApi.tmp.focus_edit && !el._panel[settingsApi.tmp.focus_edit]._open
       $rootScope.$$childTail.db.main_node[ settingsApi.tmp.focus ] = found
       $rootScope.$$childTail.db.main_node[ settingsApi.tmp.focus_edit ] = found
 

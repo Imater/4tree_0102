@@ -160,6 +160,28 @@ $grid_box: $grid*1;
         border: none;
       }
     }
+    .task_in_note {
+      padding: $padding;
+      padding-top: 0px;
+      margin-right: $tree_grid;
+      .task_title {
+        display: inline-block;
+        color: $main_color;
+      }
+      .task_date {
+        opacity: 0.3;
+        margin: round($padding/2);
+        display: block !important;
+        //max-width: 50px;
+        margin-left: $padding;
+        position: relative;
+        margin-right: 0;
+        cursor: inherit;
+        &.nodate {
+          display: none !important;
+        }
+      }
+    }
   }
   .col4 {
     font-size: $tree_font_size;

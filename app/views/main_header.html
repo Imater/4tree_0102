@@ -23,7 +23,8 @@
                          style="background: {{getTab(tab).color}}">
                         <i ng-if="g_tab.icon" class="{{g_tab.icon}}" style="color:{{g_tab.icon_color}}"></i>
                     </span>
-                    <span class="title" ng-bind-html="getTab(tab).title"></span>
+                    <span class="title" ng-bind-html="g_tab.title"></span>
+                    <span ng-if="tab.show_only_icon" class="title_hint" ng-bind-html="g_tab.title"></span>
                 </div>
                 <div class="close_btn"
                      ng-click="closeTab(tab)">&nbsp;
@@ -117,9 +118,16 @@
               <li>
                   <span class="checkbox_title">
                       <input type="checkbox" id="show_tabs" ng-model="set.header_panel_opened">
-                      <label for="show_tabs">Показывать вкладки</label>
+                      <label for="show_tabs">Показывать верхние вкладки</label>
                   </span>
               </li>
+              <li>
+                  <span class="checkbox_title">
+                      <input id="hide_task_in_tree" type="checkbox" ng-model="set.hide_task_in_tree">
+                      <label for="hide_task_in_tree">Скрыть следующие действия в дереве</label>
+                  </span>
+              </li>
+
           </ul>
         </span>
 
