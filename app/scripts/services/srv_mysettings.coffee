@@ -26,7 +26,7 @@ angular.module("4treeApp").service 'settingsApi', [
       }
 
       set = {
-        v: 0
+        v: 1
         user_info:
           client_id: '4tree_client'
           client_secret: '4tree_secret'
@@ -58,8 +58,8 @@ angular.module("4treeApp").service 'settingsApi', [
         }
         panel: [
           {active: 7} #0
-          {active: 0} #1   0-дерево 1-карточки 2-mindmap 3-divider 4-календарь 5-редактор 6-none
-          {active: 5} #2
+          {active: 6} #1   0-дерево 1-карточки 2-mindmap 3-divider 4-календарь 5-редактор 6-none 7-week 8-sea
+          {active: 8} #2
           {active: 0} #3
         ]
         from_today_index: 0
@@ -144,6 +144,11 @@ angular.module("4treeApp").service 'settingsApi', [
             title: 'Неделя'
             icon: 'icon-calendar'
             template: 'views/subviews/view_main/view_week_calendar.html'
+          }
+          {
+            title: 'Море времени'
+            icon: 'glyphicon glyphicon-tint'
+            template: 'views/subviews/view_main/view_sea_time.html'
           }
         ]
         refresh: 0

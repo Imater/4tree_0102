@@ -12,7 +12,7 @@
         tabs: []
       };
       set = {
-        v: 0,
+        v: 1,
         user_info: {
           client_id: '4tree_client',
           client_secret: '4tree_secret',
@@ -46,9 +46,9 @@
           {
             active: 7
           }, {
-            active: 0
+            active: 6
           }, {
-            active: 5
+            active: 8
           }, {
             active: 0
           }
@@ -121,6 +121,10 @@
             title: 'Неделя',
             icon: 'icon-calendar',
             template: 'views/subviews/view_main/view_week_calendar.html'
+          }, {
+            title: 'Море времени',
+            icon: 'glyphicon glyphicon-tint',
+            template: 'views/subviews/view_main/view_sea_time.html'
           }
         ],
         refresh: 0,

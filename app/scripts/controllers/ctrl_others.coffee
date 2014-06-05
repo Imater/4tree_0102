@@ -236,3 +236,60 @@ angular.module("4treeApp").controller "settingsController", ($scope, $rootScope,
     console.info 'close settings';
     if (i++)
       $scope.tmp.settings_show=false;
+
+
+angular.module("4treeApp").controller "seaController", ($scope, $rootScope, db_tree, settingsApi, $window, $timeout)->
+
+
+  $scope.boats = [
+    {d1: new Date(2014,5,3,12,30).getTime(), d2: new Date(2014,5,5,19,30).getTime(), title: 'Дело идёт уже два дня, осталось чуть-чуть'},
+    {d1: new Date(2014,5,2,9,30).getTime(), d2: new Date(2014,5,3,9,30).getTime(), title: 'Дело прошло 2 дня назад'},
+    {d1: new Date(2014,5,1,9,30).getTime(), d2: new Date(2014,5,2,9,30).getTime(), title: 'Дело прошло 3 дня назад'},
+    {d1: new Date(2014,5,3,9,30).getTime(), d2: new Date(2014,5,9,9,30).getTime(), title: 'Дело идёт 2 дня, осталось 4 дня и через день наступят выходные'},
+    {d1: new Date(2014,5,5,6,30).getTime(), d2: new Date(2014,5,5,10,30).getTime(), title: 'Дело пора делать'},
+    {d1: new Date(2014,5,5,9,30).getTime(), d2: new Date(2014,5,9,13,30).getTime(), title: 'Дело пора делать, дата окончания через 4 дня'},
+    {d1: new Date(2014,5,15,9,30).getTime(), d2: new Date(2014,5,20,9,30).getTime(), title: 'До начала дела ещё пара недель'},
+    {d1: new Date(2014,5,3,9,30).getTime(), d2: new Date(2014,5,15,9,30).getTime(), title: 'Дело идёт 2 дня, осталось 10 дней'},
+  ]
+
+  $scope.zoom = 30;
+
+  $scope.updateBoats = ()->
+    round = (val)->
+      Math.round(val*10000)/10000
+    today = new Date().getTime();
+    width_days = 100/$scope.zoom;
+    _.each $scope.boats, (boat)->
+      one_day_width = (width_days);
+      d1_days = (parseFloat(boat.d1))/(24*60*60*1000);
+      d2_days = (parseFloat(boat.d2))/(24*60*60*1000);
+      d1_days_ago = (parseFloat(boat.d1) - today)/(24*60*60*1000);
+      d2_days_ago = (parseFloat(boat.d2) - today)/(24*60*60*1000);
+      left_procent = d1_days_ago * one_day_width;
+      days = parseInt(d2_days_ago - d1_days_ago);
+      days = 1 if days <= 0.5
+      console.info 'days = '+days;
+      width_procent = (d2_days - d1_days) * one_day_width;
+      boat.left = 50+round(left_procent) + '%';
+      boat.width = round(width_procent) + '%';
+      height = round(width_procent);
+      height = 7 if height< 7
+      height = 50 if height> 50
+      boat.height = height + 'px';
+      boat.containers = [];
+      boat.days = days;
+      day = days;
+      left_date = parseFloat(boat.d1);
+      while day--
+        this_date = left_date + (days-day)*24*60*60*1000;
+        week_day = new Date(this_date).getDay();
+        if week_day==0 or week_day==6
+          week_end = true
+        else
+          week_end = false
+        this_width = if days == 1 then boat.width else one_day_width+'%';
+        boat.containers.push({num:day, width: (this_width), height: '5px', week_end: week_end});
+
+  $scope.updateBoats();
+  $scope.$watch 'zoom', (new_val, old_val)->
+    $scope.updateBoats() if new_val != old_val
