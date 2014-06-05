@@ -9,12 +9,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/sass/_sea_time.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/subviews/view_main/view_sea_time.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/sass/_main.scss" afterPath="$PROJECT_DIR$/app/sass/_main.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/ctrl_others.coffee" afterPath="$PROJECT_DIR$/app/scripts/controllers/ctrl_others.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/srv_mysettings.coffee" afterPath="$PROJECT_DIR$/app/scripts/services/srv_mysettings.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/_js/srv_mysettings.js" afterPath="$PROJECT_DIR$/app/scripts/services/_js/srv_mysettings.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/sass/_sea_time.scss" afterPath="$PROJECT_DIR$/app/sass/_sea_time.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="56ee746e-8f1d-4d4a-a92c-f05706cc2e69" name="Rejected commit: Default" comment="Пробую сделать коммит" />
@@ -4056,8 +4051,8 @@
           <file leaf-file-name="view_sea_time.html" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/views/subviews/view_main/view_sea_time.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.10843374" vertical-offset="0" max-vertical-offset="1334">
-                  <caret line="5" column="46" selection-start-line="5" selection-start-column="46" selection-end-line="5" selection-end-column="46" />
+                <state vertical-scroll-proportion="0.34541577" vertical-offset="0" max-vertical-offset="973">
+                  <caret line="9" column="39" selection-start-line="9" selection-start-column="39" selection-end-line="9" selection-end-column="39" />
                   <folding />
                 </state>
               </provider>
@@ -4137,13 +4132,13 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="_sea_time.scss" pinned="false" current="false" current-in-tab="false">
+          <file leaf-file-name="_sea_time.scss" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/sass/_sea_time.scss">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-17.333334" vertical-offset="108" max-vertical-offset="2474">
-                  <caret line="32" column="21" selection-start-line="32" selection-start-column="21" selection-end-line="32" selection-end-column="21" />
+                <state vertical-scroll-proportion="0.28857717" vertical-offset="72" max-vertical-offset="2029">
+                  <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
                   <folding>
-                    <element signature="e#1000#1667#2" expanded="true" />
+                    <element signature="e#1002#1669#2" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -4179,10 +4174,10 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="ctrl_others.coffee" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="ctrl_others.coffee" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/scripts/controllers/ctrl_others.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.6429366" vertical-offset="4642" max-vertical-offset="6191">
+                <state vertical-scroll-proportion="0.0" vertical-offset="4642" max-vertical-offset="6190">
                   <caret line="290" column="58" selection-start-line="290" selection-start-column="58" selection-end-line="290" selection-end-column="58" />
                   <folding />
                 </state>
@@ -4327,9 +4322,9 @@
         <option value="$PROJECT_DIR$/app/sass/_header.scss" />
         <option value="$PROJECT_DIR$/app/scripts/services/srv_mysettings.coffee" />
         <option value="$PROJECT_DIR$/app/sass/_main.scss" />
-        <option value="$PROJECT_DIR$/app/sass/_sea_time.scss" />
-        <option value="$PROJECT_DIR$/app/views/subviews/view_main/view_sea_time.html" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/ctrl_others.coffee" />
+        <option value="$PROJECT_DIR$/app/views/subviews/view_main/view_sea_time.html" />
+        <option value="$PROJECT_DIR$/app/sass/_sea_time.scss" />
       </list>
     </option>
   </component>
@@ -4566,10 +4561,10 @@
     <data>$USER_HOME$/npm/lib/node_modules/mocha</data>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1680" />
+    <option name="x" value="970" />
     <option name="y" value="22" />
-    <option name="width" value="1200" />
-    <option name="height" value="1894" />
+    <option name="width" value="950" />
+    <option name="height" value="1174" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -4877,21 +4872,21 @@
     <property name="FullScreen" value="false" />
     <property name="TODO_SCOPE" value="4TREE-SOURCE" />
     <property name="LayoutCode.rearrangeEntriesHTML" value="false" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="294" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="145" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="294" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="145" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="298" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="147" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="969" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="462" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="297" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="147" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="287" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="142" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="300" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="148" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="971" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="462" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
@@ -5335,7 +5330,11 @@
       <created>1401876826222</created>
       <updated>1401876826223</updated>
     </task>
-    <option name="localTasksCounter" value="72" />
+    <task id="LOCAL-00072" summary="Сделал &quot;Море времени&quot;">
+      <created>1401943553168</created>
+      <updated>1401943553169</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
     <servers />
   </component>
   <component name="TodoView" selected-index="2">
@@ -5359,20 +5358,21 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1680" y="22" width="1200" height="1894" extended-state="6" />
+    <frame x="970" y="22" width="950" height="1174" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16943522" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" x="742" y="431" width="1178" height="594" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25671917" sideWeight="0.5005441" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="top" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23595506" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.27415732" sideWeight="0.49889868" order="5" side_tool="false" content_ui="tabs" x="856" y="544" width="824" height="502" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.27415732" sideWeight="0.49889868" order="5" side_tool="false" content_ui="tabs" x="856" y="544" width="824" height="502" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29583803" sideWeight="0.5004241" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" x="1249" y="22" width="415" height="1028" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32902032" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5519849" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32963374" sideWeight="0.4995759" order="14" side_tool="false" content_ui="tabs" x="721" y="55" width="938" height="979" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329863" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963374" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24936387" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.2245345" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="2880" y="22" width="419" height="1054" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.2245345" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="970" y="22" width="950" height="1174" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1264045" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="699" y="598" width="1200" height="596" />
       <window_info id="Pomodoro" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -5384,7 +5384,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29583803" sideWeight="0.4995759" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Mongo Runner" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32963374" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329863" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39944392" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Duplicates" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32993513" sideWeight="0.5" order="19" side_tool="false" content_ui="tabs" />
@@ -5412,7 +5411,6 @@
       <TodoPanelSettings />
     </option>
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
-    <MESSAGE value="Если документа нет на сервере, он запрашивает его у клиента при следующей синхронизации." />
     <MESSAGE value="Доделал синхронизацию. Продолжаю делать другие клиентские функции." />
     <MESSAGE value="Начинаю делать даты" />
     <MESSAGE value="Синхронизация обновляет все View, делаю настройку дел (Даты)" />
@@ -5437,7 +5435,8 @@
     <MESSAGE value="Практически доделал табы" />
     <MESSAGE value="Табы теперь синхронизируются между браузерами" />
     <MESSAGE value="При клике в табы, открываются все родители заметки" />
-    <option name="LAST_COMMIT_MESSAGE" value="При клике в табы, открываются все родители заметки" />
+    <MESSAGE value="Сделал &quot;Море времени&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Сделал &quot;Море времени&quot;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -5847,29 +5846,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/sass/_sea_time.scss">
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/ctrl_others.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-17.333334" vertical-offset="108" max-vertical-offset="2474">
-          <caret line="32" column="21" selection-start-line="32" selection-start-column="21" selection-end-line="32" selection-end-column="21" />
-          <folding>
-            <element signature="e#1000#1667#2" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="4642" max-vertical-offset="6190">
+          <caret line="290" column="58" selection-start-line="290" selection-start-column="58" selection-end-line="290" selection-end-column="58" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/subviews/view_main/view_sea_time.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.10843374" vertical-offset="0" max-vertical-offset="1334">
-          <caret line="5" column="46" selection-start-line="5" selection-start-column="46" selection-end-line="5" selection-end-column="46" />
+        <state vertical-scroll-proportion="0.34541577" vertical-offset="0" max-vertical-offset="973">
+          <caret line="9" column="39" selection-start-line="9" selection-start-column="39" selection-end-line="9" selection-end-column="39" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/ctrl_others.coffee">
+    <entry file="file://$PROJECT_DIR$/app/sass/_sea_time.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6429366" vertical-offset="4642" max-vertical-offset="6191">
-          <caret line="290" column="58" selection-start-line="290" selection-start-column="58" selection-end-line="290" selection-end-column="58" />
-          <folding />
+        <state vertical-scroll-proportion="0.28857717" vertical-offset="72" max-vertical-offset="2029">
+          <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
+          <folding>
+            <element signature="e#1002#1669#2" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

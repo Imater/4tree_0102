@@ -10,7 +10,7 @@
     left: 50%;
     height: 500px;
     width: 1px;
-    background: rgba(#000,0.05);
+    background: rgba(#000,0.03);
     z-index: 0;
   }
   .ul_boats {
@@ -22,14 +22,14 @@
       .title {
         margin-left: $padding;
       }
+      $sea_line_height: 2px;
       .sea {
         position: relative;
-        border-bottom:1px solid rgba(#4f8dff,0.1);
         vertical-align: bottom;
         overflow: hidden;
         white-space: nowrap;
-        min-height: 10px;
-        line-height: 10px;
+        min-height: $sea_line_height;
+        line-height: $sea_line_height;
         .today_line {
           position: absolute;
           left: 0px;
@@ -54,6 +54,7 @@
           vertical-align: bottom;
           min-width: 3%;
           .boat_body {
+            display: none;
             width: 110%;
             height: 7px !important;
             background: $main_color;
@@ -66,23 +67,18 @@
         .cont {
           display: inline-block;
           vertical-align: bottom;
-          height: 5px;
-          $tmp_color1: #ffe003;
+          height: $sea_line_height;
+          $tmp_color1: #ffb237;
           background: $tmp_color1;
-          border-top-left-radius: 3px;
-          border-top-right-radius: 3px;
+          margin-top: 1px;
           box-sizing:border-box;
           -moz-box-sizing:border-box;
           -webkit-box-sizing:border-box;
-          border-top: 1px solid darken($tmp_color1, 15%);
-          border-right: 1px solid darken($tmp_color1, 20%);
-          border-left: 1px solid darken($tmp_color1, 20%);
+          border-right: 1px solid #FFF;
           &.week_end {
-            $tmp_color1: #ff0006;
+            $tmp_color1: rgba(#ff000d,0.3);
             background: $tmp_color1;
-            border-top: 1px solid darken($tmp_color1, 15%);
-            border-right: 1px solid darken($tmp_color1, 20%);
-            border-left: 1px solid darken($tmp_color1, 20%);
+            border-right: 1px solid #FFF;
           }
         }
       }
