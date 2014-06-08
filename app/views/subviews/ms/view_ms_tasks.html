@@ -8,7 +8,7 @@
 
 	<div class="one_task"
          ng-class="{did:task.did,
-                    has_date: task.date1||task.date2,
+                    has_date1: task.date1||task.date2,
                     active:(task._id==set.set_task._id),
                     most_important:(task.importance>90&&task.importance<95),
                     most_important100:(task.importance>=95),
@@ -18,13 +18,16 @@
 			<input type="checkbox" ng-model="task.did" ng-checked="task.did">
 		</div>
 		<div class="right_part">
-            <div class="taskdate_wrap" ng-click="set.set_task = task" mini-date ng-model="task"></div>
+            <div ng-if="false" class="taskdate_wrap" ng-click="set.set_task = task" mini-date ng-model="task"></div>
+            <i ng-click="set.set_task = task" class="icon-record pull-right"></i>
             <div class="title_wrap">
                 <span class="title" contenteditable="true" ng-model="task.title" style="color:{{task.color}}"></span>
                 <span class="importance" ng-if="task.importance!=50">{{task.importance}}%</span>
             </div>
+            <time-line date1="task.date1" date2="task.date2" zoom="8" ng-model="task"></time-line>
 		</div>
-	</div>
+
+    </div>
 
 </script>
 <!-- End Templates -->

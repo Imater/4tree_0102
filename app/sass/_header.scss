@@ -10,9 +10,9 @@
 }
 
 .tab-state-highlight {
-  background: red;
+  background: #000;
   height: $grid;
-  width: 27px;
+  width: 100px;
   line-height: $grid;
   display: inline-block;
   vertical-align: top;
@@ -173,6 +173,8 @@
   }
 
 }
+
+
 
 .blured {
 }

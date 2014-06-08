@@ -1,0 +1,129 @@
+@charset "UTF-8";
+
+//параметры
+@import 'settings';
+
+$timeline_line_color: #AAA;
+$timeline_dates_font_color: rgba(#000,0.3);
+$timeline_dates_font_color_weekend: rgba(red,0.3);
+$timeline_line_color_today: #f5a014;
+$timeline_line_color_mark: #000;
+
+.timeline {
+  margin-top: $padding*2;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  height: 50px;
+  .absolutes {
+    position: absolute;
+    left: 0;
+    right: 0;
+    .today_line {
+      position: absolute;
+      left: 0;
+      margin-top: 0px;
+      height: 12px;
+      border-left: 1px solid rgba(red,1);
+      z-index: 2;
+    }
+    .line {
+      position: absolute;
+      height: 2px;
+      opacity: 0.8;
+      margin-top: 5px;
+      left: 0px;
+      right: 0px;
+      background: #888;
+      z-index: 0;
+    }
+    .event {
+      position: absolute;
+      left: 5%;
+      width: 200px;
+      height: 4px;
+      background: magenta;
+      margin-top: 4px;
+      z-index: 1;
+      cursor: ew-resize;
+      .d1 {
+        position: absolute;
+        left: 0px;
+        width: 8px;
+        height: 8px;
+        top: -2px;
+        content: "";
+        background: inherit;
+        border-radius: 5px;
+        cursor: col-resize;
+        z-index: 2;
+        text-align: left;
+      }
+      .d2 {
+        position: absolute;
+        right: 0px;
+        width: 8px;
+        height: 8px;
+        top: -2px;
+        content: "";
+        background: inherit;
+        border-radius: 5px;
+        cursor: col-resize;
+        z-index: 2;
+        text-align: right;
+      }
+      b {
+        position: absolute;
+        width: 5em;
+        margin-left: -2.5em;
+        font-size: 10px;
+        font-weight: normal;
+        text-align: center;
+        margin-top: 1.5em;
+      }
+    }
+  }
+  &:hover {
+    td {
+      color: $timeline_dates_font_color !important;
+    }
+  }
+  table {
+    width: 100%;
+    border-collapse: separate !important;
+    border-spacing: 0px;
+    table-layout: fixed;
+    z-index: 1;
+    tr {
+      td {
+        color: $timeline_dates_font_color;
+        color: #FFF !important;
+        text-align: center;
+        padding-top: 10px;
+        font-size: 8px;
+        overflow: hidden;
+        @include animate_me(color, 1s);
+        position: relative;
+        &:before {
+          content: '';
+          position: absolute;
+          width: 1px;
+          top: -5px;
+          left: 0px;
+          background: #FFF;
+          height: 20px;
+          z-index: 3;
+        }
+        &.today {
+          font-weight: bold;
+        }
+        &.mark {
+          //border-top: 2px solid $timeline_line_color_mark;
+        }
+        &.weekend {
+          color: $timeline_dates_font_color_weekend;
+        }
+      }
+    }
+  }
+}

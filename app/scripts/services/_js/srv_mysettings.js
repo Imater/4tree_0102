@@ -12,7 +12,7 @@
         tabs: []
       };
       set = {
-        v: 1,
+        v: 0,
         user_info: {
           client_id: '4tree_client',
           client_secret: '4tree_secret',
@@ -46,9 +46,9 @@
           {
             active: 7
           }, {
-            active: 6
+            active: 0
           }, {
-            active: 8
+            active: 6
           }, {
             active: 0
           }

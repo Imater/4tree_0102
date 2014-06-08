@@ -47,6 +47,35 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', e
 
 }
 
+.arrow_box {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #6e6e6e;
+}
+.arrow_box:after, .arrow_box:before {
+  bottom: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.arrow_box:after {
+  border-color: rgba(255, 255, 255, 0);
+  border-bottom-color: #ffffff;
+  border-width: 30px;
+  margin-left: -30px;
+}
+.arrow_box:before {
+  border-color: rgba(110, 110, 110, 0);
+  border-bottom-color: #6e6e6e;
+  border-width: 31px;
+  margin-left: -31px;
+}
+
 a {
     cursor: pointer;
 }
