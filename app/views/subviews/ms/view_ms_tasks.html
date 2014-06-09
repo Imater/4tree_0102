@@ -1,5 +1,12 @@
 <div class="note_tasks" ng-controller="editor_tasks">
 	<div ng-repeat="task in getTasks() track by $index" ng-include="'views/subviews/task_one_line1.html'"></div>
+    <div range-slider
+         min="0.5"
+         max="90"
+         model-max="tmp.zoom"
+         pin-handle="min"
+         show-values="true">
+    </div>
 	<textarea class="add_task_input" placeholder="Добавить дело..." hotkey="{'Enter':fn.service.db_tree.jsAddTask}" ng-model="new_task_title"></textarea>
 </div>
 
@@ -24,8 +31,8 @@
                 <span class="title" contenteditable="true" ng-model="task.title" style="color:{{task.color}}"></span>
                 <span class="importance" ng-if="task.importance!=50">{{task.importance}}%</span>
             </div>
-            <time-line date1="task.date1" date2="task.date2" zoom="2" ng-model="task"></time-line>
 		</div>
+        <time-line date1="task.date1" date2="task.date2" starttime="tmp.starttime" zoom="tmp.zoom" ng-model="task"></time-line>
 
     </div>
 

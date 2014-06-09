@@ -11,9 +11,9 @@
     <list default="true" id="6f64a873-6acd-463b-9a50-42805aa26d54" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/sass/_one_task.scss" afterPath="$PROJECT_DIR$/app/sass/_one_task.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/sass/_timeline.scss" afterPath="$PROJECT_DIR$/app/sass/_timeline.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/ctrl_main.coffee" afterPath="$PROJECT_DIR$/app/scripts/controllers/ctrl_main.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_main.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/_js/ctrl_main.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/directives/dir_timeline.coffee" afterPath="$PROJECT_DIR$/app/scripts/directives/dir_timeline.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/srv_mysettings.coffee" afterPath="$PROJECT_DIR$/app/scripts/services/srv_mysettings.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/_js/srv_mysettings.js" afterPath="$PROJECT_DIR$/app/scripts/services/_js/srv_mysettings.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/subviews/ms/view_ms_tasks.html" afterPath="$PROJECT_DIR$/app/views/subviews/ms/view_ms_tasks.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -3939,16 +3939,6 @@
     <splitter split-orientation="vertical" split-proportion="0.42350957">
       <split-first>
         <leaf>
-          <file leaf-file-name="dir_task_settings.coffee" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/scripts/directives/dir_task_settings.coffee">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1684">
-                  <caret line="16" column="41" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="dir_date.coffee" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/scripts/directives/dir_date.coffee">
               <provider selected="true" editor-type-id="text-editor">
@@ -3959,11 +3949,21 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="dir_task_settings.coffee" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/scripts/directives/dir_task_settings.coffee">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1684">
+                  <caret line="16" column="41" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="dir_timeline.coffee" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/scripts/directives/dir_timeline.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.41463414" vertical-offset="918" max-vertical-offset="3942">
-                  <caret line="68" column="12" selection-start-line="68" selection-start-column="12" selection-end-line="68" selection-end-column="12" />
+                <state vertical-scroll-proportion="0.36797753" vertical-offset="3176" max-vertical-offset="4726">
+                  <caret line="191" column="34" selection-start-line="191" selection-start-column="34" selection-end-line="191" selection-end-column="34" />
                   <folding />
                 </state>
               </provider>
@@ -4054,10 +4054,10 @@
           <file leaf-file-name="view_ms_tasks.html" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/views/subviews/ms/view_ms_tasks.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-17.333334" vertical-offset="0" max-vertical-offset="1287">
-                  <caret line="26" column="68" selection-start-line="26" selection-start-column="68" selection-end-line="26" selection-end-column="68" />
+                <state vertical-scroll-proportion="-2.0" vertical-offset="0" max-vertical-offset="1413">
+                  <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
                   <folding>
-                    <marker date="1402284781000" expanded="true" signature="464:828" placeholder="{...}" />
+                    <marker date="1402299259000" expanded="true" signature="619:983" placeholder="{...}" />
                   </folding>
                 </state>
               </provider>
@@ -4066,18 +4066,9 @@
           <file leaf-file-name="view_sea_time.html" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/views/subviews/view_main/view_sea_time.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="234" max-vertical-offset="558">
-                  <caret line="13" column="33" selection-start-line="13" selection-start-column="33" selection-end-line="13" selection-end-column="33" />
-                  <folding>
-                    <marker date="1401944603000" expanded="true" signature="51:995" placeholder="..." />
-                    <marker date="1401944603000" expanded="true" signature="109:839" placeholder="..." />
-                    <marker date="1401944603000" expanded="true" signature="164:829" placeholder="..." />
-                    <marker date="1401944603000" expanded="true" signature="284:815" placeholder="..." />
-                    <marker date="1401944603000" expanded="true" signature="367:610" placeholder="..." />
-                    <marker date="1401944603000" expanded="true" signature="645:796" placeholder="..." />
-                    <marker date="1401944603000" expanded="true" signature="674:722" placeholder="..." />
-                    <marker date="1401944603000" expanded="true" signature="862:988" placeholder="..." />
-                  </folding>
+                <state vertical-scroll-proportion="-15.851851" vertical-offset="58" max-vertical-offset="1228">
+                  <caret line="27" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -4139,8 +4130,8 @@
           <file leaf-file-name="_one_task.scss" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/sass/_one_task.scss">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-2.6666667" vertical-offset="2016" max-vertical-offset="4680">
-                  <caret line="116" column="16" selection-start-line="116" selection-start-column="16" selection-end-line="116" selection-end-column="16" />
+                <state vertical-scroll-proportion="-6.0" vertical-offset="1854" max-vertical-offset="4716">
+                  <caret line="112" column="0" selection-start-line="112" selection-start-column="0" selection-end-line="112" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -4164,8 +4155,8 @@
           <file leaf-file-name="_timeline.scss" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/sass/_timeline.scss">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.27272728" vertical-offset="1692" max-vertical-offset="3546">
-                  <caret line="109" column="18" selection-start-line="109" selection-start-column="18" selection-end-line="109" selection-end-column="18" />
+                <state vertical-scroll-proportion="0.2987552" vertical-offset="2322" max-vertical-offset="3970">
+                  <caret line="145" column="24" selection-start-line="145" selection-start-column="24" selection-end-line="145" selection-end-column="24" />
                   <folding />
                 </state>
               </provider>
@@ -4174,8 +4165,8 @@
           <file leaf-file-name="_tree_one_line.scss" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/sass/_tree_one_line.scss">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="3078" max-vertical-offset="8388">
-                  <caret line="171" column="20" selection-start-line="171" selection-start-column="20" selection-end-line="171" selection-end-column="20" />
+                <state vertical-scroll-proportion="-85.333336" vertical-offset="108" max-vertical-offset="9324">
+                  <caret line="134" column="0" selection-start-line="134" selection-start-column="0" selection-end-line="134" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -4244,8 +4235,8 @@
           <file leaf-file-name="srv_mysettings.coffee" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/scripts/services/srv_mysettings.coffee">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="3564">
-                  <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="4563">
+                  <caret line="34" column="22" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
                   <folding />
                 </state>
               </provider>
@@ -4308,7 +4299,6 @@
         <option value="$PROJECT_DIR$/app/sass/_editor.scss" />
         <option value="$PROJECT_DIR$/app/scripts/directives/dir_date.coffee" />
         <option value="$PROJECT_DIR$/app/views/main/settings.html" />
-        <option value="$PROJECT_DIR$/app/sass/_tree_one_line.scss" />
         <option value="$PROJECT_DIR$/app/scripts/services/srv_db_tree.coffee" />
         <option value="$PROJECT_DIR$/app/views/subviews/view_mini_settings.html" />
         <option value="$PROJECT_DIR$/app/views/subviews/view_calendar_box.html" />
@@ -4320,13 +4310,14 @@
         <option value="$PROJECT_DIR$/app/sass/_header.scss" />
         <option value="$PROJECT_DIR$/app/sass/_main.scss" />
         <option value="$PROJECT_DIR$/app/index.html" />
-        <option value="$PROJECT_DIR$/app/scripts/services/srv_mysettings.coffee" />
         <option value="$PROJECT_DIR$/app/views/subviews/view_main/view_tree.html" />
-        <option value="$PROJECT_DIR$/app/sass/_one_task.scss" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/ctrl_main.coffee" />
-        <option value="$PROJECT_DIR$/app/scripts/directives/dir_timeline.coffee" />
+        <option value="$PROJECT_DIR$/app/sass/_tree_one_line.scss" />
+        <option value="$PROJECT_DIR$/app/scripts/services/srv_mysettings.coffee" />
         <option value="$PROJECT_DIR$/app/views/subviews/ms/view_ms_tasks.html" />
+        <option value="$PROJECT_DIR$/app/sass/_one_task.scss" />
         <option value="$PROJECT_DIR$/app/sass/_timeline.scss" />
+        <option value="$PROJECT_DIR$/app/scripts/directives/dir_timeline.coffee" />
       </list>
     </option>
   </component>
@@ -5212,7 +5203,11 @@
       <created>1402245721221</created>
       <updated>1402245721222</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="Сейчас буду делать так, чтобы timeline можно было сдвигать и менять масштаб">
+      <created>1402286828799</created>
+      <updated>1402286828799</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TodoView" selected-index="2">
@@ -5289,7 +5284,6 @@
       <TodoPanelSettings />
     </option>
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
-    <MESSAGE value="Синхронизация обновляет все View, делаю настройку дел (Даты)" />
     <MESSAGE value="В дереве отображается кол-во дел у каждого элемента" />
     <MESSAGE value="Наладил сортировку. Делаю выбор следующего действия." />
     <MESSAGE value="Настроил цвета дат." />
@@ -5314,7 +5308,8 @@
     <MESSAGE value="Сделал &quot;Море времени&quot;" />
     <MESSAGE value="Более скромное &quot;Море времени&quot;" />
     <MESSAGE value="Сделал море времени" />
-    <option name="LAST_COMMIT_MESSAGE" value="Сделал море времени" />
+    <MESSAGE value="Сейчас буду делать так, чтобы timeline можно было сдвигать и менять масштаб" />
+    <option name="LAST_COMMIT_MESSAGE" value="Сейчас буду делать так, чтобы timeline можно было сдвигать и менять масштаб" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -5563,23 +5558,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/subviews/view_main/view_sea_time.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="234" max-vertical-offset="558">
-          <caret line="13" column="33" selection-start-line="13" selection-start-column="33" selection-end-line="13" selection-end-column="33" />
-          <folding>
-            <marker date="1401944603000" expanded="true" signature="51:995" placeholder="..." />
-            <marker date="1401944603000" expanded="true" signature="109:839" placeholder="..." />
-            <marker date="1401944603000" expanded="true" signature="164:829" placeholder="..." />
-            <marker date="1401944603000" expanded="true" signature="284:815" placeholder="..." />
-            <marker date="1401944603000" expanded="true" signature="367:610" placeholder="..." />
-            <marker date="1401944603000" expanded="true" signature="645:796" placeholder="..." />
-            <marker date="1401944603000" expanded="true" signature="674:722" placeholder="..." />
-            <marker date="1401944603000" expanded="true" signature="862:988" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/sass/_editor.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1062" max-vertical-offset="1242">
@@ -5614,14 +5592,6 @@
             <marker date="1401965356000" expanded="true" signature="433:2034" placeholder="{...}" />
             <marker date="1401965356000" expanded="true" signature="1369:1509" placeholder="{...}" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/sass/_tree_one_line.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3078" max-vertical-offset="8388">
-          <caret line="171" column="20" selection-start-line="171" selection-start-column="20" selection-end-line="171" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5661,14 +5631,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1818">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/services/srv_mysettings.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="4171">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -5713,14 +5675,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/sass/_one_task.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.6666667" vertical-offset="2016" max-vertical-offset="4680">
-          <caret line="116" column="16" selection-start-line="116" selection-start-column="16" selection-end-line="116" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/subviews/view_main/view_text.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1438">
@@ -5729,28 +5683,60 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/sass/_tree_one_line.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-85.333336" vertical-offset="108" max-vertical-offset="9324">
+          <caret line="134" column="0" selection-start-line="134" selection-start-column="0" selection-end-line="134" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/subviews/view_main/view_sea_time.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-15.851851" vertical-offset="58" max-vertical-offset="1228">
+          <caret line="27" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/subviews/ms/view_ms_tasks.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-17.333334" vertical-offset="0" max-vertical-offset="1287">
-          <caret line="26" column="68" selection-start-line="26" selection-start-column="68" selection-end-line="26" selection-end-column="68" />
+        <state vertical-scroll-proportion="-2.0" vertical-offset="0" max-vertical-offset="1413">
+          <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
           <folding>
-            <marker date="1402284781000" expanded="true" signature="464:828" placeholder="{...}" />
+            <marker date="1402299259000" expanded="true" signature="619:983" placeholder="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/services/srv_mysettings.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="4563">
+          <caret line="34" column="22" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/sass/_one_task.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.0" vertical-offset="1854" max-vertical-offset="4716">
+          <caret line="112" column="0" selection-start-line="112" selection-start-column="0" selection-end-line="112" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/sass/_timeline.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.27272728" vertical-offset="1692" max-vertical-offset="3546">
-          <caret line="109" column="18" selection-start-line="109" selection-start-column="18" selection-end-line="109" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.2987552" vertical-offset="2322" max-vertical-offset="3970">
+          <caret line="145" column="24" selection-start-line="145" selection-start-column="24" selection-end-line="145" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/scripts/directives/dir_timeline.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.41463414" vertical-offset="918" max-vertical-offset="3942">
-          <caret line="68" column="12" selection-start-line="68" selection-start-column="12" selection-end-line="68" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.36797753" vertical-offset="3176" max-vertical-offset="4726">
+          <caret line="191" column="34" selection-start-line="191" selection-start-column="34" selection-end-line="191" selection-end-column="34" />
           <folding />
         </state>
       </provider>

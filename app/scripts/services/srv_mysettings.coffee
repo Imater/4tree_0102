@@ -19,6 +19,8 @@ angular.module("4treeApp").service 'settingsApi', [
       tmp = {
         tick_today_date: new Date()
         tick_today_date_time: new Date().getTime()
+        starttime: new Date().getTime()
+        zoom: 8
         focus: 1
         focus_edit: 1
         tree_loaded: false

@@ -4,8 +4,8 @@
 @import 'settings';
 
 $timeline_line_color: #AAA;
-$timeline_dates_font_color: rgba(#000,0.3);
-$timeline_dates_font_color_weekend: rgba(red,0.3);
+$timeline_dates_font_color: rgba(#000,0.8);
+$timeline_dates_font_color_weekend: rgba(red,0.9);
 $timeline_line_color_today: #f5a014;
 $timeline_line_color_mark: #000;
 
@@ -13,11 +13,67 @@ $timeline_line_color_mark: #000;
   width: 100%;
   position: relative;
   height: 50px;
+  overflow: hidden;
+  &:hover {
+    .label {
+      color: $timeline_dates_font_color !important;
+      &.weekend {
+        color: $timeline_dates_font_color_weekend !important;
+      }
+    }
+    .event i {
+      color: #000 !important;
+    }
+  }
   .absolutes {
     position: absolute;
     left: 0;
     right: 0;
-    top: 0;
+    margin-top: $padding*2;
+    .table_wrap {
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      cursor: move;
+      .label {
+        overflow: hidden;
+        position: absolute;
+        font-weight: normal;
+        color: #FFF;
+        text-align: center;
+        top: -6px;
+        padding-top: 28px;
+        font-size: 9px;
+        overflow: hidden;
+        @include animate_me(color, 0.5s);
+        &:before {
+          content: '';
+          position: absolute;
+          width: 1px;
+          left: 0px;
+          background: #FFF;
+          top: 10px;
+          height: 8px;
+          z-index: 2;
+        }
+        &:after {
+          content: '';
+          position: absolute;
+          width: 1px;
+          right: 0px;
+          background: #FFF;
+          top: 10px;
+          height: 8px;
+          z-index: 2;
+        }
+        &.today {
+          font-weight: bold;
+        }
+        &.mark {
+          //border-top: 2px solid $timeline_line_color_mark;
+        }
+      }
+    }
     .today_line {
       position: absolute;
       left: 0;
@@ -25,7 +81,7 @@ $timeline_line_color_mark: #000;
       height: 12px;
       border-left: 1px solid rgba(red,1);
       z-index: 3;
-      margin-left: 3px;
+      margin-left: -1px;
     }
     .line {
       position: absolute;
@@ -41,14 +97,21 @@ $timeline_line_color_mark: #000;
       position: absolute;
       left: 5%;
       width: 200px;
-      height: 2px;
-      background: $main_color;
-      margin-top: 5px;
+      height: 10px;
+      margin-top: 1px;
       z-index: 1;
       cursor: ew-resize;
+      .event_line {
+        position: absolute;
+        background: $main_color;
+        left: 0px;
+        right: 0;
+        top: 4px;
+        height: 2px;
+      }
       .d1 {
         position: absolute;
-        left: 0px;
+        left: -4px;
         width: 8px;
         height: 8px;
         top: -3px;
@@ -56,12 +119,12 @@ $timeline_line_color_mark: #000;
         background: inherit;
         border-radius: 5px;
         cursor: col-resize;
-        z-index: 1;
+        z-index: 2;
         text-align: left;
       }
       .d2 {
         position: absolute;
-        right: 0px;
+        right: -4px;
         width: 8px;
         height: 8px;
         top: -3px;
@@ -74,69 +137,31 @@ $timeline_line_color_mark: #000;
       }
       b {
         position: absolute;
-        width: 5em;
-        margin-left: -2.5em;
-        font-size: 10px;
+        min-width: 4em;
+        margin-left: -2em;
+        font-size: 9px;
         font-weight: normal;
         text-align: center;
         color: $dark_gray;
-        margin-top: -1.6em;
+        margin-top: -1.5em;
+        background: #FFF;
+        padding-right: $padding*2;
       }
       i {
         position: absolute;
-        width: 5em;
-        margin-left: -2.5em;
-        font-size: 10px;
+        z-index: 3;
+        min-width: 4em;
+        margin-left: -2em;
+        font-size: 9px;
         font-weight: normal;
         text-align: center;
-        margin-top: 1.2em;
-        color: $gray;
+        margin-top: 8px;
+        color: #FFF;
         font-style: normal;
-      }
-    }
-  }
-  &:hover {
-    td {
-      color: $timeline_dates_font_color !important;
-    }
-  }
-  .table_wrap {
-    table {
-      margin-top: $padding*2;
-      width: 100%;
-      border-collapse: separate !important;
-      border-spacing: 0px;
-      table-layout: fixed;
-      cursor: move;
-      tr {
-        td {
-          color: $timeline_dates_font_color;
-          color: #FFF !important;
-          text-align: center;
-          padding-top: 10px;
-          font-size: 8px;
-          overflow: hidden;
-          @include animate_me(color, 1s);
-          position: relative;
-          &:before {
-            content: '';
-            position: absolute;
-            width: 3px;
-            top: -5px;
-            left: 0px;
-            background: #FFF;
-            height: 20px;
-            z-index: 1;
-          }
-          &.today {
-            font-weight: bold;
-          }
-          &.mark {
-            //border-top: 2px solid $timeline_line_color_mark;
-          }
-          &.weekend {
-            color: $timeline_dates_font_color_weekend;
-          }
+        background: rgba(#FFF,0.9);
+        @include animate_me(color, 0.5s);
+        &.soon {
+          color: #888;
         }
       }
     }

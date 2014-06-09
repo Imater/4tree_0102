@@ -110,7 +110,6 @@ $grid_label_height: 15px;
 
 .one_task {
   white-space: nowrap;
-  margin-bottom: $padding*2;
   color: #444;
   margin-right: $date_width;
   .icon-record {
@@ -177,6 +176,9 @@ $grid_label_height: 15px;
   .left_part {
     display: inline-block;
     vertical-align: top;
+  }
+  .timeline {
+    margin-left: $padding*3;
   }
   .right_part {
     margin-top: 1px;
