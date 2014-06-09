@@ -113,6 +113,9 @@ $grid_label_height: 15px;
   margin-bottom: $padding*2;
   color: #444;
   margin-right: $date_width;
+  .icon-record {
+    opacity: 0.1;
+  }
   &.has_date {
     margin-right: $date_width*2;
   }

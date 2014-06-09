@@ -66,10 +66,11 @@ angular.module("4treeApp").directive "timeLine", ->
           answer.class = "datetoday"  if minutes >= 0
         else answer.class = "datepast"  if minutes < 0
         answer
-      fora: 2*24*60*60*1000
+      fora: 0*24*60*60*1000
       timeToProcent: (time)->
-        now = new Date().getTime();
-        answer = 100*(@fora+time-now)/(scope.zoom * 24 * 60 * 60 * 1000)
+        now = new Date();
+        now_day = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+        answer = 100*(@fora+time-now_day)/(scope.zoom * 24 * 60 * 60 * 1000)
         answer
       pixelToTime: (pixel)->
         now = new Date().getTime();
@@ -81,9 +82,9 @@ angular.module("4treeApp").directive "timeLine", ->
           '<div class="absolutes">'+
           '<div class="today_line"></div>'+
           '<div class="line"></div>'+
-          '<div class="event"><div class="d1"><b></b></div><div class="d2"><b></b></div></div>'+
+          '<div class="event"><div class="d1"><b></b><i></i></div><div class="d2"><b></b><i></i></div></div>'+
           '</div>'+
-          '<table class="noselectable"><tr>';
+          '<div class="table_wrap"><table class="noselectable"><tr>';
         i = 0;
         now = new Date().getTime();
         today_format = moment(now).format("DD/MM/YYYY");
@@ -95,20 +96,21 @@ angular.module("4treeApp").directive "timeLine", ->
           today_td = moment(today).format("DD/MM/YYYY");
           table += '<td data-date="'+today_td+'" class="'+dayclass+'">'+(new Date(today).getDate())+'</td>'
 
-        table += '</tr></table></div>';
+        table += '</tr></table></div></div>';
         return table
       drawEvent: (d1, d2) ->
         d1 = new Date( d1 ).getTime();
         d2 = new Date( d2 ).getTime();
         now = new Date().getTime();
         d1_diff = timeline.jsDateDiff( new Date( d1 ) );
-        tm1 = '';
-        tm2 = '';
+        console.info JSON.stringify d1_diff
         d2_diff = timeline.jsDateDiff( new Date( d2 ) );
-        el.find('.d1').attr('title', moment(d1).format("DD/MM/YYYY hh:ss") ).find('b').html( d1_diff.text ).
-           find('i').html(tm1);
-        el.find('.d2').attr('title', moment(d2).format("DD/MM/YYYY hh:ss") ).find('b').html( d2_diff.text ).
-           find('i').html(tm2);
+        tm1 = moment(d1).format('H:mm');
+        tm2 = moment(d2).format('H:mm');
+        el.find('.d1').attr('title', moment(d1).format("DD/MM/YYYY HH:MM") ).find('b').html( d1_diff.text );
+        el.find('.d1').find('i').html(tm1);
+        el.find('.d2').attr('title', moment(d2).format("DD/MM/YYYY HH:MM") ).find('b').html( d2_diff.text );
+        el.find('.d2').find('i').html(tm2);
         left_today = @timeToProcent( now );
         el.find('.today_line').css({'left': left_today+'%'})
         left = @timeToProcent(d1);
@@ -164,7 +166,7 @@ angular.module("4treeApp").directive "timeLine", ->
         x = e.clientX - startX
         y = e.clientY - startY
         #console.info 'y = ',y, move_element
-        #x = x * 1/(1+Math.abs(y));
+        x = x + y*0.1;
         if move_element == 'd1'
           d1 = new Date( timeline.pixelToTime( x ) );
         if move_element == 'd2'
