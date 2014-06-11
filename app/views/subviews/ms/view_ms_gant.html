@@ -1,0 +1,23 @@
+<div class="note_tasks" ng-controller="editor_tasks">
+    <div ng-repeat="task in getTasks() track by $index" ng-include="'views/subviews/task_gant.html'"></div>
+</div>
+
+<!-- Begin Templates -->
+<script type="text/ng-template" id="views/subviews/task_gant.html">
+
+    <div class="one_task"
+         ng-class="{did:task.did,
+                    has_date1: task.date1||task.date2,
+                    active:(task._id==set.set_task._id),
+                    most_important:(task.importance>90&&task.importance<95),
+                    most_important100:(task.importance>=95),
+                    next_action: (tasks_by_id.next_action[0]._id == task._id)
+                    }" ng-controller="save_task_db_simple">
+        <time-line ng-if="true" date1="task.date1" date2="task.date2" title="task.title" starttime="tmp.starttime" zoom="tmp.zoom" ng-model="task"></time-line>
+
+    </div>
+
+</script>
+
+
+<!-- End Templates -->

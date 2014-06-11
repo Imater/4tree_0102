@@ -6,6 +6,7 @@ angular.module("4treeApp").directive "timeLine", ->
     date1: '='
     date2: '='
     zoom: '='
+    title: '='
     starttime: '='
   }
   require: "?ngModel"
@@ -102,12 +103,12 @@ angular.module("4treeApp").directive "timeLine", ->
                    'data-date="'+today_td+'"'+
                    ' style="left:'+ label_left + '%; width:'+label_width+'%"' +
                    ' class="label '+dayclass+'">'+
-                   (moment(today).format('DD.MM'))+
+                   (moment(today).format('DD'))+
                    '</div>';
 
         table += '</div><div class="today_line"></div>'+
           '<div class="line"></div>'+
-          '<div class="event"><div class="event_line"><div class="d1"><b></b><i></i></div>'+
+          '<div class="event"><div class="title"></div><div class="event_line"><div class="d1"><b></b><i></i></div>'+
           ''+
           '<div class="d2"><b></b><i></i></div></div></div>'+
           '</div>';
@@ -124,6 +125,7 @@ angular.module("4treeApp").directive "timeLine", ->
         di1 = el.find('.d1').find('i').html(tm1);
         el.find('.d2').attr('title', moment(d2).format("DD/MM/YYYY H:mm") ).find('b').html( d2_diff.text );
         di2 = el.find('.d2').find('i').html(tm2);
+        el.find('.title').html(scope.title);
         if Math.abs(d1 - now) < 2*24*60*60*1000
           di1.addClass('soon');
         if Math.abs(d2 - now) < 2*24*60*60*1000
@@ -206,7 +208,7 @@ angular.module("4treeApp").directive "timeLine", ->
 
     timeline.drawEvent(scope.date1, scope.date2);
 
-    scope.$watch 'date1+date2', (new_val, old_val)->
+    scope.$watch 'date1+date2+title', (new_val, old_val)->
       if new_val != old_val
         timeline.drawEvent(scope.date1, scope.date2);
 

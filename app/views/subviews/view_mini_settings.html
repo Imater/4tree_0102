@@ -51,15 +51,22 @@
 		</div>
 
 
+        <h10 ng-click="set.mini_tasks_hide = !set.mini_tasks_hide" ng-class="{open:!set.mini_tasks_hide}">
+            Календарь ({{fn.service.db_tree.getView('tasks', 'tasks_by_tree_id').result[tree._id].cnt}})
+        </h10>
+        <div class="note_mini_settings" ng-if="tasks_by_id = fn.service.db_tree.getView('tasks', 'tasks_by_tree_id').result[tree._id]||true">
+            <div ng-include="'views/subviews/ms/view_ms_gant.html'"></div>
+        </div>
 
-		<h10 ng-click="set.mini_tasks_hide = !set.mini_tasks_hide" ng-class="{open:!set.mini_tasks_hide}">
+        <h10 ng-click="set.mini_tasks_hide = !set.mini_tasks_hide" ng-class="{open:!set.mini_tasks_hide}">
             Дела ({{fn.service.db_tree.getView('tasks', 'tasks_by_tree_id').result[tree._id].cnt}})
         </h10>
-		<div class="note_mini_settings" ng-if="tasks_by_id = fn.service.db_tree.getView('tasks', 'tasks_by_tree_id').result[tree._id]||true">
-			<div ng-include="'views/subviews/ms/view_ms_tasks.html'"></div>
-		</div>
+        <div class="note_mini_settings" ng-if="tasks_by_id = fn.service.db_tree.getView('tasks', 'tasks_by_tree_id').result[tree._id]||true">
+            <div ng-include="'views/subviews/ms/view_ms_tasks.html'"></div>
+        </div>
 
-	</div>
+
+    </div>
 
 
 </div>

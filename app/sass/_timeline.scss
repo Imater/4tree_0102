@@ -21,8 +21,10 @@ $timeline_line_color_mark: #000;
         color: $timeline_dates_font_color_weekend !important;
       }
     }
-    .event i {
-      color: #000 !important;
+    .event {
+      i,b {
+        opacity: 1 !important;
+      }
     }
   }
   .absolutes {
@@ -41,8 +43,8 @@ $timeline_line_color_mark: #000;
         font-weight: normal;
         color: #FFF;
         text-align: center;
-        top: -6px;
-        padding-top: 28px;
+        top: -8px;
+        padding-bottom: 5px;
         font-size: 9px;
         overflow: hidden;
         @include animate_me(color, 0.5s);
@@ -51,16 +53,6 @@ $timeline_line_color_mark: #000;
           position: absolute;
           width: 1px;
           left: 0px;
-          background: #FFF;
-          top: 10px;
-          height: 8px;
-          z-index: 2;
-        }
-        &:after {
-          content: '';
-          position: absolute;
-          width: 1px;
-          right: 0px;
           background: #FFF;
           top: 10px;
           height: 8px;
@@ -77,8 +69,8 @@ $timeline_line_color_mark: #000;
     .today_line {
       position: absolute;
       left: 0;
-      margin-top: 0px;
-      height: 12px;
+      margin-top: 2px;
+      height: 7px;
       border-left: 1px solid rgba(red,1);
       z-index: 3;
       margin-left: -1px;
@@ -90,7 +82,7 @@ $timeline_line_color_mark: #000;
       margin-top: 5px;
       left: 0px;
       right: 0px;
-      background: #CCC;
+      background: #EEE;
       z-index: 0;
     }
     .event {
@@ -101,6 +93,12 @@ $timeline_line_color_mark: #000;
       margin-top: 1px;
       z-index: 1;
       cursor: ew-resize;
+      .title {
+        position: absolute;
+        left: 0px;
+        font-size: 10px;
+        bottom: 10px;
+      }
       .event_line {
         position: absolute;
         background: $main_color;
@@ -111,10 +109,10 @@ $timeline_line_color_mark: #000;
       }
       .d1 {
         position: absolute;
-        left: -4px;
-        width: 8px;
-        height: 8px;
-        top: -3px;
+        left: -2px;
+        width: 4px;
+        height: 4px;
+        top: -1px;
         content: "";
         background: inherit;
         border-radius: 5px;
@@ -124,10 +122,10 @@ $timeline_line_color_mark: #000;
       }
       .d2 {
         position: absolute;
-        right: -4px;
-        width: 8px;
-        height: 8px;
-        top: -3px;
+        right: -2px;
+        width: 4px;
+        height: 4px;
+        top: -1px;
         content: "";
         background: inherit;
         border-radius: 5px;
@@ -136,18 +134,19 @@ $timeline_line_color_mark: #000;
         text-align: right;
       }
       b {
+        opacity: 0;
         position: absolute;
         min-width: 4em;
         margin-left: -2em;
         font-size: 9px;
         font-weight: normal;
         text-align: center;
-        color: $dark_gray;
-        margin-top: -1.5em;
+        color: $gray;
+        margin-top: 8px ;
         background: #FFF;
-        padding-right: $padding*2;
       }
       i {
+        opacity: 0;
         position: absolute;
         z-index: 3;
         min-width: 4em;
@@ -155,13 +154,13 @@ $timeline_line_color_mark: #000;
         font-size: 9px;
         font-weight: normal;
         text-align: center;
-        margin-top: 8px;
+        margin-top: -1.5em;
         color: #FFF;
         font-style: normal;
         background: rgba(#FFF,0.9);
         @include animate_me(color, 0.5s);
         &.soon {
-          color: #888;
+          color: $gray;
         }
       }
     }

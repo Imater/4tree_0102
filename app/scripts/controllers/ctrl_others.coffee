@@ -46,6 +46,7 @@ angular.module("4treeApp").controller "save_task_db_simple", ($scope, syncApi, d
       $rootScope.$emit("jsFindAndSaveDiff",'tasks', new_value, old_value);
 
 angular.module("4treeApp").controller "editor_tasks", ($scope, db_tree, $rootScope)->
+
   $scope.$watch 'task.importance', (new_value, old_value)->
     if new_value != old_value
       db_tree.clearCache();
