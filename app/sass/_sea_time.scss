@@ -4,81 +4,11 @@
 @import 'settings';
 
 .sea_time {
-  padding:  $grid $padding;
-  .today_l {
-    position: absolute;
-    left: 50%;
-    height: 500px;
-    width: 1px;
-    background: rgba(#000,0.05);
-    z-index: 0;
-  }
-  .ul_boats {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    .li_boat {
-      padding: $padding;
-      .title {
-        margin-left: $padding;
-      }
-      $sea_line_height: 2px;
-      .sea {
-        opacity: 0.5;
-        position: relative;
-        vertical-align: bottom;
-        overflow: hidden;
-        white-space: nowrap;
-        min-height: $sea_line_height;
-        line-height: $sea_line_height;
-        .today_line {
-          position: absolute;
-          left: 0px;
-          right: 50%;
-          height: 100%;
-          width: auto;
-          box-sizing: border-box;
-          -moz-box-sizing: border-box;
-          -webkit-box-sizing: border-box;
-          z-index: 1;
-        }
-        .boat {
-          vertical-align: bottom;
-          min-width: 3%;
-          .boat_body {
-            display: none;
-            width: 110%;
-            height: 7px !important;
-            background: $main_color;
-            margin-left: -5%;
-            bottom: 6px;
-            border-bottom-left-radius: 50px;
-            border-bottom-right-radius: 20px;
-          }
-        }
-        .cont {
-          &:first-child {
-            border-bottom-left-radius: 30px;
-            border-top-left-radius: 30px;
-            background: red !important;
-          }
-          display: inline-block;
-          vertical-align: bottom;
-          height: $sea_line_height;
-          $tmp_color1: #ffb237;
-          background: $tmp_color1;
-          margin-top: 1px;
-          box-sizing:border-box;
-          -moz-box-sizing:border-box;
-          -webkit-box-sizing:border-box;
-          border-right: 1px solid #FFF;
-          &.week_end {
-            $tmp_color1: rgba(#ff000d,0.8);
-            background: $tmp_color1;
-            border-right: 1px solid #FFF;
-          }
-        }
-      }
-    }
+  padding: $grid $padding;
+  overflow-y: auto;
+  white-space: nowrap;
+  li {
+    display: inline-block;
+    width: 25px;
   }
 }

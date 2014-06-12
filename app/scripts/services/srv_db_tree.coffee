@@ -366,7 +366,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
         day1 = new Date(values.value.date1).getTime();
         day2 = new Date(values.value.date2).getTime()
         days = (day2 - day1)/(24*60*60*1000);
-        if days > 0
+        if days > 0 and days < 500
           while (days--)>0
             day = day1 + days*24*60*60*1000;
             key = moment( new Date(day) );

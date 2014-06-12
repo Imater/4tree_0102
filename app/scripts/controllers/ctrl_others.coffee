@@ -239,58 +239,86 @@ angular.module("4treeApp").controller "settingsController", ($scope, $rootScope,
       $scope.tmp.settings_show=false;
 
 
-angular.module("4treeApp").controller "seaController", ($scope, $rootScope, db_tree, settingsApi, $window, $timeout)->
+angular.module("4treeApp").controller "seaController", ($scope, $rootScope, db_tree, settingsApi, $window, $timeout, $compile)->
+  template = "<b>Привет: {{name}}</b>";
+  $scope.getEventForGant = (start_date, finish_date)->
+    key = moment(start_date).format('YYYY-MM-DD');
+    tasks = db_tree.getView('tasks', 'tasks_by_date').result[key]
+    tasks
+  return
 
 
-  $scope.boats = [
-    {d1: new Date(2014,5,3,12,30).getTime(), d2: new Date(2014,5,5,19,30).getTime(), title: 'Дело идёт уже два дня, осталось чуть-чуть'},
-    {d1: new Date(2014,5,2,9,30).getTime(), d2: new Date(2014,5,3,9,30).getTime(), title: 'Дело прошло 2 дня назад'},
-    {d1: new Date(2014,5,1,9,30).getTime(), d2: new Date(2014,5,2,9,30).getTime(), title: 'Дело прошло 3 дня назад'},
-    {d1: new Date(2014,5,3,9,30).getTime(), d2: new Date(2014,5,9,9,30).getTime(), title: 'Дело идёт 2 дня, осталось 4 дня и через день наступят выходные'},
-    {d1: new Date(2014,5,5,6,30).getTime(), d2: new Date(2014,5,5,10,30).getTime(), title: 'Дело пора делать'},
-    {d1: new Date(2014,5,5,9,30).getTime(), d2: new Date(2014,5,9,13,30).getTime(), title: 'Дело пора делать, дата окончания через 4 дня'},
-    {d1: new Date(2014,5,15,9,30).getTime(), d2: new Date(2014,5,20,9,30).getTime(), title: 'До начала дела ещё пара недель'},
-    {d1: new Date(2014,5,3,9,30).getTime(), d2: new Date(2014,5,15,9,30).getTime(), title: 'Дело идёт 2 дня, осталось 10 дней'},
-  ]
+angular.module("4treeApp").directive "gantCalendar", ($compile, $timeout)->
+  #templateUrl: 'views/subviews/time_line.html'
+  #transclude: true
+  restrict: "A"
+  scope: {
+    getEvent: '&'
+    viewType: '=' #month, day
+  }
+  require: "?ngModel"
+  link: ($scope, el, attrs, ngModel) ->
 
-  $scope.zoom = 30;
+    timeline = {
+      start_date_time: new Date(2014,5,7,11,0).getTime()
+      multiply: 2
+      col_width: 25
+      start_add_from: 100
+      main_width: el.width()
+      how_much_col_need: ()->
+        @col_count = Math.round( (@main_width / @col_width) * @multiply );
+      stepTimeByViewType: ()->
+        step = switch
+          when $scope.viewType == 'month' then 24*60*60*1000
+          when $scope.viewType == 'day' then 60*60*1000
 
-  $scope.updateBoats = ()->
-    round = (val)->
-      Math.round(val*10000)/10000
-    today = new Date().getTime();
-    width_days = 100/$scope.zoom;
-    _.each $scope.boats, (boat)->
-      one_day_width = (width_days);
-      d1_days = (parseFloat(boat.d1))/(24*60*60*1000);
-      d2_days = (parseFloat(boat.d2))/(24*60*60*1000);
-      d1_days_ago = (parseFloat(boat.d1) - today)/(24*60*60*1000);
-      d2_days_ago = (parseFloat(boat.d2) - today)/(24*60*60*1000);
-      left_procent = d1_days_ago * one_day_width;
-      days = parseInt(d2_days_ago - d1_days_ago);
-      days = 1 if days <= 0.5
-      console.info 'days = '+days;
-      width_procent = (d2_days - d1_days) * one_day_width;
-      boat.left = 50+round(left_procent) + '%';
-      boat.width = round(width_procent) + '%';
-      height = round(width_procent);
-      height = 7 if height< 7
-      height = 50 if height> 50
-      boat.height = height + 'px';
-      boat.containers = [];
-      boat.days = days;
-      day = days;
-      left_date = parseFloat(boat.d1);
-      while day--
-        this_date = left_date + (days-day)*24*60*60*1000;
-        week_day = new Date(this_date).getDay();
-        if week_day==0 or week_day==6
-          week_end = true
-        else
-          week_end = false
-        this_width = if days == 1 then boat.width else one_day_width+'%';
-        boat.containers.push({num:day, width: (this_width), height: '5px', week_end: week_end});
+      renderBackgroundCalendar: (need_before)->
+        max_count = @how_much_col_need();
+        count = 0;
+        if need_before
+          width_before = el.prop('scrollWidth');
+        while (count++)<max_count
+          #renderCol = $compile('<li>{{label}}</li>');
+          today = @start_date_time + count*@stepTimeByViewType()
+          element = "<li>"+count+"</li>";
+          if !need_before
+            el.append element
+          else
+            el.prepend element
+        if el.scrollLeft() == 0
+          el.scrollLeft(200);
+        if need_before
+          width_after = el.prop('scrollWidth');
+          console.info 'sl = ', width_after - width_before
+          el.scrollLeft( width_after - width_before )
+      scrollThrottle: _.throttle ()->
+          scrollLeft = el.scrollLeft();
+          diff = el.prop('scrollWidth') - (scrollLeft+el.width());
+          if diff < @start_add_from
+            console.info 'need_add'
+            @renderBackgroundCalendar()
+          else if scrollLeft < 101
+            console.info 'scrLeft', scrollLeft
+            @renderBackgroundCalendar('before')
+      , 500
+    }
 
-  $scope.updateBoats();
-  $scope.$watch 'zoom', (new_val, old_val)->
-    $scope.updateBoats() if new_val != old_val
+    el.on 'scroll', (e, t)->
+      timeline.scrollThrottle()
+
+    $scope.$watch 'viewType', ()->
+      timeline.renderBackgroundCalendar();
+
+###
+    renderBackgroundTemplate = $compile('#seaview');
+
+    $timeout ()->
+      el.html 'tis = '+JSON.stringify $scope.getEvent({startDate: start_date, finishDate: finish_date})
+      $scope.title = 'Fucking...'
+      sc = $scope.$new();
+      sc.title = 'tuc';
+      el.html renderBackgroundTemplate(sc)
+    , 1000
+
+###
+

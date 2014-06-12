@@ -12,7 +12,7 @@ $timeline_line_color_mark: #000;
 .timeline {
   width: 100%;
   position: relative;
-  height: 50px;
+  height: 25px;
   overflow: hidden;
   &:hover {
     .label {
@@ -97,7 +97,7 @@ $timeline_line_color_mark: #000;
         position: absolute;
         left: 0px;
         font-size: 10px;
-        bottom: 10px;
+        bottom: 8px;
       }
       .event_line {
         position: absolute;

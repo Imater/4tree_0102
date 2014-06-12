@@ -1,29 +1,10 @@
-<div class="sea_time" ng-controller="seaController">
-    <div class="today_l"></div>
-    <ul class="ul_boats">
-        <li ng-repeat="boat in boats" class="li_boat">
-            <input type="checkbox">
-            <span class="title">{{boat.title}}</span>
-            <div class="sea">
-                <div class="today_line"></div>
-                <span class="cont"
-                     ng-repeat="container in boat.containers"
-                     ng-class="{week_end:container.week_end}"
-                     style="margin-left:{{$index==0?boat.left:0}} ;width:{{container.width}};">
-                </span>
-                <div class="boat"
-                     style="margin-left:{{boat.left}};width: {{boat.width}};">
-                    <div class="boat_body"></div>
-                </div>
-            </div>
-        </li>
-    </ul>
-    <div range-slider
-         min="1"
-         max="90"
-         model-max="zoom"
-         pin-handle="min"
-         show-values="true">
+<div ng-controller="seaController">
+    <div class="sea_time" gant-calendar view-type='month'
+                   get-event="getEventForGant(startDate, finishDate)"
+                   style="width: 100%;">
     </div>
 </div>
 
+<div id="one_col">
+    <b>Fuck... {{label}}</b>
+</div>
