@@ -240,15 +240,24 @@ angular.module("4treeApp").controller "settingsController", ($scope, $rootScope,
 
 
 angular.module("4treeApp").controller "seaController", ($scope, $rootScope, db_tree, settingsApi, $window, $timeout, $compile)->
-  template = "<b>Привет: {{name}}</b>";
-  $scope.getEventForGant = (start_date, finish_date)->
-    key = moment(start_date).format('YYYY-MM-DD');
-    tasks = db_tree.getView('tasks', 'tasks_by_date').result[key]
-    tasks
+
+  $scope.getEventForGant = (startDate, colCount, stepBy)->
+    events = [];
+    today = startDate;
+    endDate = moment(startDate).add(stepBy, colCount);
+    while (today < endDate)
+      key = moment(today).format('YYYY-MM-DD');
+      tasks = db_tree.getView('tasks', 'tasks_by_date').result[key]
+      if tasks
+        events = events.concat(tasks);
+      today = moment(today).add(stepBy, 1);
+    console.info 'events = ', JSON.stringify events
+    events
   return
 
 
-angular.module("4treeApp").directive "gantCalendar", ($compile, $timeout)->
+
+angular.module("4treeApp").directive "gantCalendar", ($compile, $timeout, $templateCache)->
   #templateUrl: 'views/subviews/time_line.html'
   #transclude: true
   restrict: "A"
@@ -260,54 +269,154 @@ angular.module("4treeApp").directive "gantCalendar", ($compile, $timeout)->
   link: ($scope, el, attrs, ngModel) ->
 
     timeline = {
-      start_date_time: new Date(2014,5,7,11,0).getTime()
       multiply: 2
       col_width: 25
       start_add_from: 100
+      t1: new Date(2014,5,7).getTime()
+      t2: new Date(2014,6,7).getTime()
+      now: new Date().getTime()
+      today_date: moment().format('YYYY-MM-D')
       main_width: el.width()
+      addType: 'days'
+      col_count: 10
       how_much_col_need: ()->
         @col_count = Math.round( (@main_width / @col_width) * @multiply );
       stepTimeByViewType: ()->
         step = switch
           when $scope.viewType == 'month' then 24*60*60*1000
           when $scope.viewType == 'day' then 60*60*1000
-
-      renderBackgroundCalendar: (need_before)->
-        max_count = @how_much_col_need();
-        count = 0;
-        if need_before
-          width_before = el.prop('scrollWidth');
-        while (count++)<max_count
+        console.info step, $scope.viewType
+        return step
+      init: ()->
+        @how_much_col_need();
+        @t1 = moment().subtract(@addType, @col_count/2);
+        @t2 = @t1;
+        console.info 't1 = '+@t1, 't2 = '+@t2
+        @renderBackgroundCalendar();
+        half = el.prop('scrollWidth')/4;
+        el.scrollLeft(half);
+        el.on 'scroll', ()->
+          timeline.scrollThrottle()
+      renderCols: (t1, amount)->
+        today = t1
+        t2 = moment(t1).add(@addType, amount);
+        elements = {cols: ""};
+        while (today < t2)
           #renderCol = $compile('<li>{{label}}</li>');
-          today = @start_date_time + count*@stepTimeByViewType()
-          element = "<li>"+count+"</li>";
-          if !need_before
-            el.append element
+          year_name = moment(today).format('YYYY');
+          month_name = moment(today).format('MMMM');
+          date_num = moment(today).format('D');
+          week_name = moment(today).format('dd');
+          time_name = moment(today).format('H:mm');
+          time_name = '' if @addType!='hours';
+
+          if date_num == '1'
+            class_insert = 'first_day';
           else
-            el.prepend element
-        if el.scrollLeft() == 0
-          el.scrollLeft(200);
-        if need_before
+            class_insert = '';
+
+          if new Date(today).getDay() == 6 || new Date(today).getDay() == 0
+            class_insert += ' weekend';
+
+          if new Date(today).getDay() == 1
+            class_insert += ' week ';
+
+          elements.cols += "<li class='"+class_insert+"' style='width:"+@col_width+"px'>";
+
+          events = []
+
+          spreadLevel = (events)->
+            _.each events, (event)->
+              event._level = Math.round(Math.random()*10);
+
+          spreadLevel(events);
+
+          if moment(today).format('YYYY-MM-D') == @today_date
+            elements.cols += '<div class="events">';
+            _.each events, (el)->
+              margin_top = el._level * 25;
+              elements.cols += '<div class="event" style="margin-left:'+el.left+'px;'+
+                               'width:'+el.width+'px;background:'+el.color+';top:'+margin_top+'px;"></div>';
+            elements.cols += '</div>';
+
+
+          if date_num == '1'
+            elements.cols += "<div class='month_year_name visible'><span class='month'>"+
+                month_name+
+              " </span>";
+            elements.cols += "<span class='year'>"+
+                year_name+
+              " </span></div>";
+          else
+            elements.cols += "<div class='month_year_name'>&nbsp;</div>";
+
+          elements.cols += " <div class='day'>"+
+            date_num+
+            " </div>";
+          elements.cols += " <div class='day_week'>"+
+            week_name+
+            " </div>";
+
+          elements.cols += " <div class='time'>"+
+            time_name+
+            " </div>";
+
+
+
+
+          elements.cols += "</li>";
+
+
+
+
+          today = moment(today).add(@addType, 1);
+        elements.t2 = moment(today);
+        return elements
+    renderEvents: (t1, col_count)->
+      console.info 'renderEvents = ', t1, col_count
+      $scope.sea_events = $scope.getEvent({startDate: t1, colCount: col_count, stepBy: @addType});
+
+      template = $templateCache.get('event.html');
+      compiled = $compile(template)($scope);
+      el.find('.events').append(compiled);
+
+
+    renderBackgroundCalendar: (need_before)->
+      if need_before
+        width_before = el.prop('scrollWidth');
+      if !need_before
+        elements = @renderCols(@t2, @col_count);
+        el.append elements.cols;
+        @renderEvents(@t2, @col_count);
+        @t2 = elements.t2
+      else
+        calc_t1 = moment(@t1).subtract(@addType, @col_count);
+        elements = @renderCols(calc_t1, @col_count);
+        el.prepend elements.cols
+        @renderEvents(calc_t1, @col_count);
+        @t1 = calc_t1
+
+
+      if need_before
           width_after = el.prop('scrollWidth');
           console.info 'sl = ', width_after - width_before
           el.scrollLeft( width_after - width_before )
-      scrollThrottle: _.throttle ()->
-          scrollLeft = el.scrollLeft();
-          diff = el.prop('scrollWidth') - (scrollLeft+el.width());
-          if diff < @start_add_from
-            console.info 'need_add'
-            @renderBackgroundCalendar()
-          else if scrollLeft < 101
-            console.info 'scrLeft', scrollLeft
-            @renderBackgroundCalendar('before')
-      , 500
+
+
+    scrollThrottle: _.throttle ()->
+      scrollLeft = el.scrollLeft();
+      diff = el.prop('scrollWidth') - (scrollLeft+el.width());
+      if diff < @start_add_from
+        console.info 'need_add'
+        @renderBackgroundCalendar()
+      else if scrollLeft < 101
+        console.info 'scrLeft', scrollLeft
+        @renderBackgroundCalendar('before')
+    , 500
     }
 
-    el.on 'scroll', (e, t)->
-      timeline.scrollThrottle()
-
     $scope.$watch 'viewType', ()->
-      timeline.renderBackgroundCalendar();
+      timeline.init();
 
 ###
     renderBackgroundTemplate = $compile('#seaview');

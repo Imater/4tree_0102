@@ -1,10 +1,16 @@
 <div ng-controller="seaController">
-    <div class="sea_time" gant-calendar view-type='month'
-                   get-event="getEventForGant(startDate, finishDate)"
+
+    <div class="sea_time" gant-calendar view-type="'month'"
+                   get-event="getEventForGant(startDate, colCount, stepBy)"
                    style="width: 100%;">
     </div>
+
+    <script type="text/ng-template" id="event.html">
+        <div ng-repeat="one_event in sea_events track by $index">
+            {{one_event.title}}
+        </div>
+    </script>
+    {{see_events}}
+
 </div>
 
-<div id="one_col">
-    <b>Fuck... {{label}}</b>
-</div>

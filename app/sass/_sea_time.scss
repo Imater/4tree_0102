@@ -3,12 +3,63 @@
 //параметры
 @import 'settings';
 
+$light_color_line: #EEE;
+$week_color_line: #CCC;
+$dark_color_line: #EEE;
+
 .sea_time {
-  padding: $grid $padding;
-  overflow-y: auto;
+  overflow-y: hidden;
   white-space: nowrap;
+  height: 300px;
   li {
+    position: relative;
     display: inline-block;
-    width: 25px;
+    color: $dark_gray;
+    min-height: 100%;
+    text-align: center;
+    border-left: 1px solid $light_color_line;
+    margin-top: 25px;
+    .events {
+      position: absolute;
+      z-index: 1;
+      margin-top: 50px;
+      .event {
+        position: absolute;
+        display: block;
+        width: 350px;
+        height: 10px;
+        z-index: 1;
+      }
+    }
+    &.first_day {
+      border-left-color: $dark_color_line;
+      border-left-width: 1px;
+    }
+    &.week {
+      border-left-color: $week_color_line;
+      .month_year_name {
+        &.visible {
+          border-left-color: $week_color_line;
+        }
+      }
+    }
+    &.weekend {
+      .day_week, .day {
+        color: #ff0006;
+      }
+    }
+
+    .month_year_name {
+      margin-top: -25px;
+      font-size: 1.3em;
+      color: $main_color;
+      padding-left: $padding;
+      padding-bottom: $padding/2;
+      border-left: 1px solid transparent;
+      margin-left: -1px;
+      &.visible {
+        border-color: $dark_color_line;
+      }
+    }
   }
 }
