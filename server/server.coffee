@@ -10,6 +10,7 @@ config = require('./config.js').config;
 
 cluster = require('cluster')
 http = require('http')
+http.globalAgent.maxSockets = Infinity
 numCPUs = require('os').cpus().length
 $ = require('jquery')
 kue = require('kue')

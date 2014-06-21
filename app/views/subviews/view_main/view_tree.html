@@ -28,8 +28,8 @@
                 <li class="tree2"
                     frang-tree-repeat="tree in fn.service.db_tree.jsFindByParent(set.main_parent_id[panel_id]) track by $index">
                     {{tree._id}}
-                    <!--<div ng-include="'views/subviews/view_one_line0.html'"></div>-->
-                    <one-note render-time></one-note>
+                    <div ng-include="'views/subviews/view_one_line0.html'"></div>
+                    <!-- <one-note render-time></one-note> -->
                     <ul ng-if="tree._childs>0&&tree._panel[panel_id]._open"
                         frang-tree-insert-children="fn.service.db_tree.jsFindByParent(tree._id)" my-sortable
                         class="sortable" data-parent-id="{{tree._id}}">
@@ -112,9 +112,17 @@
                     <span class="taskdate_wrap left" ng-click="set.set_task = task" mini-date ng-model="tasks_by_id.next_action[0]"></span>
                 </div>
             </div>
-            <div class="col4" ng-click="fn.service.db_tree.jsAddNote(tree); $event.stopPropagation();">
-                <div class="col4table">
-                    <i class="icon-plus"></i>
+            <div class="col4" ng-click-off="fn.service.db_tree.jsAddNote(tree); $event.stopPropagation();">
+                <div class="col4table dropdown-toggle" data-toggle="dropdown">
+                    <div class="btn-group">
+                        <i class="icon-down-open dropdown-toggle" data-toggle="dropdown"></i>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="#">Добавить вниз</a></li>
+                            <li><a href="#">Добавить вправо</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Удалить</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

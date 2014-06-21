@@ -1070,7 +1070,7 @@ angular.module("4treeApp").service 'db_tree', ['$translate', '$http', '$q', '$ro
             __log.debug 'syncApply', 'Применяю первое подтверждение для ' + confirm_id, { confirm_element };
             __log.debug 'syncApply', 'Мне прислали _sha1 = ' + confirm_element._sha1, {};
             # тут нужно учесть, вдруг во время синхронизации элемент изменился
-            # TODO Нужно учесть, вдруг элемент изменился
+            # TO-DO Нужно учесть, вдруг элемент изменился
             mythis.getElement(db_name, confirm_id).then (doc)->
               if doc
                 __log.debug 'syncApply', 'В своей базе (+patch) я нашёл _sha1 = ' + doc._sha1, { doc };

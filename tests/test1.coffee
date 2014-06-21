@@ -1,4 +1,4 @@
-# Мой первый тест в Шторме
+# Мой первый тест в Шторме!
 should = require('should')
 assert = require('assert')
 

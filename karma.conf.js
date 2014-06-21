@@ -9,6 +9,15 @@ module.exports = function(config) {
     // testing framework to use (jasmine/mocha/qunit/...)
     frameworks: ['jasmine'],
 
+    preprocessors: {
+      'app/**/*.html': ['ng-html2js'],
+      'app/scripts/**/*.js': ['coverage']
+    },
+
+    ngHtml2JsPreprocessor: {
+      moduleName: 'templates'
+    },
+
     // list of files / patterns to load in the browser
     files: [
       'app/bower_components/jquery/dist/jquery.js',
@@ -24,10 +33,10 @@ module.exports = function(config) {
       'app/bower_components/angular-animate/angular-animate.js',
       'app/bower_components/angular-redactor/angular-redactor.js',
       'app/bower_components/CryptoJS-v3.1.2-2/rollups/sha3.js',
-      'app/bower_components/CryptoJS-v3.1.2-2/rollups/aes.js',      
-      'app/bower_components/CryptoJS-v3.1.2-2/rollups/rabbit.js',      
-      'app/bower_components/CryptoJS-v3.1.2-2/rollups/rc4.js',      
-      'app/bower_components/CryptoJS-v3.1.2-2/rollups/tripledes.js',      
+      'app/bower_components/CryptoJS-v3.1.2-2/rollups/aes.js',
+      'app/bower_components/CryptoJS-v3.1.2-2/rollups/rabbit.js',
+      'app/bower_components/CryptoJS-v3.1.2-2/rollups/rc4.js',
+      'app/bower_components/CryptoJS-v3.1.2-2/rollups/tripledes.js',
       'app/bower_components/momentjs/moment.js',
       "app/bower_components/angular-strap/dist/angular-strap.js",
       "app/bower_components/sass-bootstrap/dist/js/bootstrap.js",
@@ -35,17 +44,18 @@ module.exports = function(config) {
       "app/bower_components/ng-tags-input/ng-tags-input.js",
       "app/bower_components/ng-clip-master/dest/ng-clip.js",
       "app/bower_components/zeroclipboard/ZeroClipboard.js",
-      //'app/bower_components/underscore/underscore.js',
+      'app/bower_components/underscore/underscore.js',
       'others/mongo-objectid.js',
       'app/bower_components/angular-virtual-scroll/angular-virtual-scroll.js',
       "app/bower_components/angular-range-slider/angular.rangeSlider.js",
       "app/others/lodash.underscore.js",
-      'app/scripts/*.js',
+      'app/*.html',
       'app/scripts/**/*.js',
-      'app/scripts/services/_js/*.js',
       'app/others/**/*.js',
-      'test/mock/**/*.js',
-      'test/spec/**/*.js'
+      'tests/unit/**/*.js',
+      'tests/mock/**/*.js',
+      'tests/spec/**/*.js',
+      'app/scripts/_js/app.js'
     ],
 
     // list of files / patterns to exclude

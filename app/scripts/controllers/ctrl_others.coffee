@@ -35,6 +35,9 @@ angular.module("4treeApp").controller "save_task_db", ($scope, syncApi, db_tree,
         $scope.task.date2 = new Date();
 
 
+      if lsdfkdls =43
+        dfsjldfajfl
+
   $scope.$watchCollection "set.set_task", (new_value, old_value)->
     if !_.isEqual( new_value, old_value )
       $rootScope.$emit("jsFindAndSaveDiff",'tasks', new_value, old_value);

@@ -194,6 +194,10 @@ $grid_box: $grid*1;
     height: 100%;
     width: $tree_grid + $padding*2;
     text-align: center;
+    .dropdown-menu {
+      text-align: left;
+      padding-left: 0;
+    }
     &.always_show {
       display: block;
       color: green;

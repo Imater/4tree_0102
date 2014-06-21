@@ -1295,7 +1295,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
       }
 
       if (data !== '') {
-        // todo: we should only do decodePayload for xhr transports
+        // to-do: we should only do decodePayload for xhr transports
         var msgs = io.parser.decodePayload(data);
 
         if (msgs && msgs.length) {
@@ -1446,7 +1446,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
     Transport.prototype.onClose = function () {
       var self = this;
 
-      /* FIXME: reopen delay causing a infinit loop
+      /* FIX-ME: reopen delay causing a infinit loop
        this.reopenTimeout = setTimeout(function () {
        self.open();
        }, this.socket.options['reopen delay']);*/
